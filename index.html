@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 151 by KaneTheMediocre</title>
+    <title>Umo Space 167 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -11,10 +11,11 @@
     <script>
         // declare variables
         const FPS = 30;
+		setInterval(update, 1000 / FPS);// set up interval (game loop)
         var canvas, context;
         canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
         context = canvas.getContext("2d");
-		var time = 0;
+		var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
 		var system = 1; //0 is menu, 1 is home system.  Higher numbers eventually refer to procedurally generated systems.
 		var thrustmultiplier = 1; //Adjusts thruster sensitivity
 		var launchmultiplier = 1; //not really used
@@ -26,20 +27,21 @@
 		var mapscale = 128; //Map zoom
 		var energy = 50;
 		var thruster = 50;
-		var radarrange = 20000;//Defines distance a ship can be from the player and still be targetable
-		var money = 1000;
+		var money = 100;
 		var gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
 		var drawdistance = Math.sqrt(canvas.width*canvas.width/4+canvas.height*canvas.height/4)+200;
 		var w1 = 1; //Presence or weapons, upgrades etc.
 		var w2 = 0; //Upgraded weapons have values >1
 		var w3 = 0; 
 		var w4 = 0; 
-		var w5 = 1;
-		var w6 = 1;
-		var w7 = 1;
-		var w8 = 1;
-		var w9 = 1;
-		var w0 = 1;
+		var w5 = 0;
+		var w6 = 0;
+		var w7 = 0;
+		var w8 = 0;
+		var w9 = 0;
+		var w0 = 0;
+		var mdx = 0;
+		var mdy = 0;
 		var wstatus = [w0,w1,w2,w3,w4,w5,w6,w7,w8,w9];//not used yet, index numbers match weapon numbers, will replace w# variables.
 		var wnames = ["Probe","Blaster","Mine","Flakker","Railgun","SpreadShot", "Lazzzor","Double Rainbow","Spectral Disintigrator","Bapadoop"]; //also not used yet
 		var a1 = 0; //armor upgrades
@@ -56,7 +58,46 @@
 		var radarrange = 4000;//Defines distance a ship can be from the player and still be targetable
 		var closestdistance = 999999;//needs to be larger than radarrange 
 		var closestindex = 0; //defaults to self-targeting if no ships in range
-        setInterval(update, 1000 / FPS);// set up interval (game loop)
+		var storytime = 0;//timestamp of last story event
+		var storymessages = ["Well theres a fancy ship if I ever gave you one 10 seconds ago.  Let me show you the controls.  Flying and shooting is simple enough, right click for thrust, left click to shoot, and point the mouse in whatever direction you want to face.  Going anywhere in particular is more complicated, and if you wander around without a destination, you'll find what space is really made made of:  Nothing.",
+		"You can cycle navigation modes with the N key.  Your nav computer can be off, targeting planets, or targeting stations.  The < and > keys will cycle through available nav targets.  The compass in the bottom right corner will point towards your nav target, and the name and distance.  The chart to the left gives more information if you're interested.  For now let's set the nav computer planetary mode, and select Merz.",
+			//first check after 2 messages, navtarget==5 and navactive == 1
+			"Great!  That's where you'll be going next.  But to help you know your place in the universe, your HUD also has a map.  The M key cycles between a full-screen display, a corner display, and off.  I recommend the corner.  You can zoom in and out with the + and - keys.",
+			"The yellow rectangle in the center of the map is where you and the space you can see are located.  Planets, moons, and stations are drawn on the map, and planetary orbits are shown with grey lines.  Try zooming way out (- key) so that the whole system is in view.",
+			//second check after 4 messages, zoom > some number
+			"Nifty, right?  OK, so we're not going nearly that far away, so zoom back in on us and the inner planets.",
+			//3rd check after 5 messages, zoom < some number
+			"OK, so thats basically what you need to fly this burrito to Merz.  Just do a close flyby and then head back to The Merry Merzian.  The burrito will be delivered automagically.",
+			//4th check after 6 messages, ships[0].distance(planets[5])<500
+			"Good job.  Now get back to the Merry Merzian.  Remember you can use your nav computer to find the station.  When you're close you'll dock automatically.",
+			//5th check after 7 messages, dockstate == 2
+			"Alright, good job.  I suppose we should talk about the 'bots.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  The Umobots around Merz aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.",
+			"Bots can be destroyed, and in fact the Institute pays for their destruction, but replacements are never far behind.  Most space stations are built trailing or leading planets in their orbits around the their sun, because it keeps them farther away from the Umobots than orbiting the planet.  The Umobots don't chase after ships, and they only swarm around natural planetary bodies, so stations can be safe if they're not too close to a planet.",
+			"No one knows where they came from, or why they suddenly started appearing 30 years ago.  But life off-world has changed dramatically since they came.  And not entirely for the worse--Most of your ships systems were developed by reverse engineering the remains of Umobots, and a whole new space industry has developed around both fighting and studying the 'bots",
+			"You better learn a thing or two about combat before I send you anywhere more dangerous, eh?  The top left corner of your HUD has 4 important indicators.  At the top the green bar indicates your ship's health.  It's a basic measure of how close you are to blowing up.  Don't blow up.",
+			"The next blue bar is your shield strength.  Your shield is a fast regenerating energy barrier that prevents your ship from being damaged by occasional minor hits.  Don't enter combat without a full shield, and get out if it ever goes down to 0.  A weak shield will still reduce the damage you take compared to no shield at all.",
+			"The next red bar is your weapons energy.  The ship has capacitors to provide the burst current that the ships reactor can't directly provide.  The red bar indicates their energy level.",
+			"Finally, the orange bar at the bottom shows your thruster energy level.  Just like your weapons, the ship's thrust capacitors recharge quickly with power from the reactor.  Don't get caught in a fight without any go-juice to spare for escape or evasive maneuvers.",
+			"Below all of the status bars is an weapons indicator showing what weapon is selected.  Right now you've just got the basic blaster (weapon 1), but soon you'll be selecting them using the number keys (0-9)",
+			"The last part of the HUD we need to talk about is the targeting computer.  Your radar can detect enemies within a certain distance (4000p), and often tell you useful information about them.  The [ and ] keys are used to cycle through available targets.  When in visual range, you'll also see a targeting reticle around your target.  The list of bots with names and distances is helpful if you're hunting a bot by name.",
+			//respawn a bot in Merz orbit after 16 messages
+			"Speaking of which, why don't you do me a favor and destroy a particular bot in Merz orbit?  The name is ",
+			//display bots randomized name as part of 17th message.
+			//check for ships[notsure].hp == -1000
+			"Alright good job.  Now before you get carried away come back to the station and I'll fit your ship with something a little more powerful.",
+			//after 18th message, check for dockstate == 2
+			"Alright wait here for a moment while I work on your ship.  Your basic blaster, while not having any extraordinary capabilities, is energy efficient and effective for most situations.  The Mine launcher, is extraordinarily powerful but only useful in very special circumstances.  The Mine barely leaves your ship with any velocity of it's own, so you need to use your ship's velocity to throw it, then thrust away before impact.",
+			"Firing the launcher again before the mine has detonated resets the mine in front of your ship, but you can switch back to your blaster after you've launched the mine.  The mine will persist for a full minute or when it hits something, whichever comes first.  New weapons an upgrades can be purchased at stations like the Merry Merzian, but I'm installing the mine launcher for free.  Go ahead and launch, it should be ready.",
+			//after 20th message, check for dockstate ==0
+			"OK now switch to weapon 2 and give it a shot.",
+			//after 21st messsge, check for wep==2
+			//check for bombs[1].timer>0 or something
+			//set w2=0, and wep == 1
+			"Hmm, that's not supposed to happen.  Dock back here again and I'll fix it.  I'll even give you a full refund.",
+			//after 22nd message, check for dockstate==2
+			"Huh, looks like it was a software problem all along.  OK, I promise next time it won't blow up in your face.  If it does I'll give you a double-refund on it. "
+			]
+		
 		function showchart(chartdataxy, xspace, yspace, x,y){ //displays chart with specified cell dimensions and position
 			 var i = 0 //assumes each column is same length, otherwise error
 			 var j = 0;
@@ -74,10 +115,10 @@
 		//var cxytest = [ ["first", "column", "of", "words"], ["2nd", "column", "of", "words"]       ];
 		//showchart(cxytest, 64, 16, 300,300);
 		function showmessage(message){ //Displays a message, breaking it up into multiple lines as needed.  No word continuity or overflow handling yet.
-			var maxlength = (canvas.width-840)/11; //estimating font width to 10 px, allotting 150 px margins
+			var maxlength = (canvas.width-820)/11; //estimating font width to 10 px, allotting 150 px margins
 			var maxlines = canvas.height/(24*6); //estimating font height to 24 px, allotting 1/6 of screen, only used for overflow handling (eventually)
 			var starty = Math.floor(canvas.height*5/6 - 24); //allotting bottom 1/6 of screen + 24 px fudge factor
-			var startx = 420;
+			var startx = 408;
 			var lines = 1 + Math.floor(message.length/maxlength);
 			context.font='16px Courier New';
 			context.fillStyle = "white";  
@@ -106,16 +147,17 @@
 		constructor(intromessage){
 			this.msgstart = 0; //Time that current message began
 			this.sender = "Tutorial"; //Who sent the message
-			this.senderx = 420;//Math.floor(canvas.width/2) - Math.floor(this.sender.length/2);
+			this.senderx = 420;//Math.floor(canvas.width/2) - Math.floor(this.sender.length/2);//not used?
 			this.sendery = Math.floor(canvas.height*5/6 - 50);
 			this.msgnow = intromessage; //Text of message
-			this.msgtime = Math.floor(this.msgnow.length*1.5) + 120; //message duration
+			this.msgtime = Math.floor(this.msgnow.length*1.25) + 30; //message duration
 			}
 		newmsg(sndr, msg, thetime){//used to put a new message into the object
 			this.msgstart = thetime;
 			this.sender = sndr;
 			this.senderx = Math.floor(canvas.width/2) - Math.floor(this.sender.length/2);
 			this.msgnow = msg;
+			this.msgtime = Math.floor(this.msgnow.length*1.5) + 120;
 			}
 		display(thetime){
 			if (thetime<(this.msgstart+this.msgtime)){			
@@ -130,6 +172,7 @@
 			context.font='16px Courier New';
 			context.fillStyle = keycolor;  
 			context.fillText(keystring,xpos,ypos);
+			context.beginPath();//added after obsoleting the function due to a bug.  Maybe fixes it?
 			context.strokeStyle = keycolor;
 			context.rect(xpos-8,ypos-16,24,24);
 			context.stroke();
@@ -229,7 +272,7 @@
 			var thecolors = ["hotpink","deeppink","fuchsia","darkviolet","purple","indigo","salmon","crimson","red","darkred","orange","orangered","gold","yellow","khaki","lime","mediumspringgreen","seagreen","green","darkgreen","olive","teal","aqua","steelblue","lightskyblue","deepskyblue","blue","navy","tan","chocolate","sienna","maroon","silver","darkgrey","dimgrey"];
 			return thecolors[Math.floor(Math.random()*thecolors.length)];
 			}
-		function drawmap(mplanets,scale,xx,yy, px, py){//scale of -1 indicates autozoom?  xx,yy are screen coords
+		function drawmap(mplanets, mstations,scale,xx,yy, px, py){//scale of -1 indicates autozoom?  xx,yy are screen coords
 					var i = mplanets.length; //px, py are perspective x and y
 					var x = 0;
 					var y = 0;
@@ -259,6 +302,19 @@
 							context.lineWidth = 1; 
 							context.stroke();	//ok now actually draw it.	
 							}
+						}
+					var i = mstations.length; //px, py are perspective x and y
+					var x = 0;
+					var y = 0;
+					var size = 1;
+					while (i>0){
+						i = i-1;
+						x = xx + mstations[i].x/scale - px/scale ;
+						y = yy + mstations[i].y/scale - py/scale;
+						size = 1+ Math.floor(mstations[i].s/scale);
+						context.fillStyle = mstations[i].c; //drawing planet
+						context.fillRect(x, y, 3, 3); 
+						context.fill();
 						}
 					}
 		//drawmap(planets,1000,canvas.width/2,200);//scale of -1 indicates autozoom?  xx,yy are screen coords
@@ -465,6 +521,17 @@
 			context.lineWidth = 4;
 			context.stroke();		 
 		}
+		drawdot(viewx, viewy){ //Draws as a solid circle
+			var x = this.x - viewx + canvas.width/2;
+			var y = this.y - viewy + canvas.height/2;
+			context.beginPath();
+			context.strokeStyle = this.c;
+			context.arc(x, y, this.s, 0, 2 * Math.PI, false);
+			context.fillStyle = this.c;
+			context.fill();
+			context.lineWidth = 2;
+			context.stroke();		 
+		}
 		drawstation(viewx, viewy){ //input variables are player ship position
 			var x = this.x - viewx + canvas.width/2;//stations are squares for now
 			var y = this.y - viewy + canvas.height/2;
@@ -654,6 +721,146 @@
 		}
 	}//end Umo class.//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 //////////////////////////////slashes because I want to see this spot easily//////////////////////////////////////////////////////////////////////////////////
+
+
+
+//////Special bomb in development/////////////////////////////////////////////
+class Clusterbranch{
+	constructor(starttime,startx,starty,startvx,startvy,startdir,startsize,endsize,startcolor,maxlength,curl,decay){
+		this.t=starttime;
+		this.s = startsize;
+		this.esize = endsize;
+		this.c = startcolor;
+		this.ml = maxlength;
+		this.x = startx;
+		this.y = starty; 
+		this.vx = startvx;
+		this.vy = startvy;
+		this.decay = decay;
+		this.curl = curl;
+		this.d = startdir;
+		this.branch = [new Umo(startx,starty,startsize,startcolor)];
+		this.branch[0].vx = this.vx;
+		this.branch[0].vy = this.vy;
+		var i=0;
+		while (i<maxlength){
+			i=i+1;
+			this.s = this.s*this.decay;
+			this.d = this.d + this.curl;
+			this.x = this.x+this.s*Math.cos(this.d);
+			this.y = this.y+this.s*Math.sin(this.d);
+			if (this.c == "red"){this.c = "orange";}
+			else if (this.c == "orange"){this.c = "yellow";}
+			else if (this.c == "yellow"){this.c = "green";}
+			else if (this.c == "green"){this.c = "blue";}
+			else if (this.c == "blue"){this.c = "purple";}
+			else if (this.c == "purple"){this.c = "red";}
+			this.branch.push(new Umo(this.x,this.y,this.s,this.c));
+			this.branch[this.branch.length-1].vx = this.vx;
+			this.branch[this.branch.length-1].vy = this.vy;
+			}
+		}
+	draw(viewx,viewy,thetime){
+		var dt = thetime-this.t;
+		if (dt<this.branch.length){var i=dt;}
+		else{var i=this.branch.length;}
+		while(i>0){
+			i=i-1;
+			this.branch[i].drawdot(viewx,viewy);
+			}
+		}
+	update1(){ //Pure motion update.
+		var i=this.branch.length;
+		while (i>0){
+			i=i-1;
+			this.branch[i].update1();
+			if (this.branch[i].c == "red"){this.branch[i].c = "purple";}
+			else if (this.branch[i].c == "purple"){this.branch[i].c = "blue";}
+			else if (this.branch[i].c == "blue"){this.branch[i].c = "green";}
+			else if (this.branch[i].c == "green"){this.branch[i].c = "yellow";}
+			else if (this.branch[i].c == "yellow"){this.branch[i].c = "orange";}
+			else if (this.branch[i].c == "orange"){this.branch[i].c = "red";}
+			}
+		}
+	}
+let testbranch = new Clusterbranch(0,500,500,4,4,1,42,12,"red",12,0.1,0.95);
+class Clusterbomb{
+	constructor(starttime,startx,starty,startvx,startvy,startn,branchmod,startsize,decay,startcolor,maxlength,curl){
+		this.t=starttime;
+		this.s = startsize;
+		this.c = startcolor;
+		this.ml = maxlength;
+		this.x = startx;
+		this.y = starty; 
+		this.vx = startvx;
+		this.vy = startvy;
+		this.decay =decay;
+		this.curl = curl;
+		var branchspacing = 2*Math.PI/startn;
+		var stage1branches = [];
+		var i=0;
+		while (i<startn){
+			stage1branches.push(new Clusterbranch(this.t,this.x,this.y,this.vx,this.vy,i*branchspacing,this.s,0,this.c,branchmod,this.curl*(Math.random()*2-1),this.decay));
+			i=i+1;
+			}	
+		var i=0;
+		var stage2branches = [];
+		while (i<stage1branches.length){
+			stage2branches.push(new Clusterbranch(stage1branches[i].t+branchmod,stage1branches[i].x,stage1branches[i].y,stage1branches[i].vx,stage1branches[i].vy,stage1branches[i].d,stage1branches[i].s,0,stage1branches[i].c,branchmod,this.curl*(Math.random()*2-1),this.decay));
+			stage2branches.push(new Clusterbranch(stage1branches[i].t+branchmod,stage1branches[i].x,stage1branches[i].y,stage1branches[i].vx,stage1branches[i].vy,stage1branches[i].d,stage1branches[i].s,0,stage1branches[i].c,branchmod,stage1branches[i].curl,this.decay));
+			i=i+1
+			}
+		var i=0;
+		var stage3branches = [];
+		while (i<stage2branches.length){
+			stage3branches.push(new Clusterbranch(stage2branches[i].t+branchmod,stage2branches[i].x,stage2branches[i].y,stage2branches[i].vx,stage2branches[i].vy,stage2branches[i].d,stage2branches[i].s,0,stage2branches[i].c,branchmod,this.curl*(Math.random()*2-1),this.decay));
+			stage3branches.push(new Clusterbranch(stage2branches[i].t+branchmod,stage2branches[i].x,stage2branches[i].y,stage2branches[i].vx,stage2branches[i].vy,stage2branches[i].d,stage2branches[i].s,0,stage2branches[i].c,branchmod,stage2branches[i].curl,this.decay));
+			i=i+1
+			}		
+		this.s1b = stage1branches;
+		this.s2b = stage2branches;
+		this.s3b = stage3branches;
+		}
+	draw(viewx,viewy, thetime){
+		var i=0;
+		while (i<this.s3b.length){
+			this.s3b[i].draw(viewx,viewy,thetime)
+			i=i+1;
+			}
+		var i=0;
+		while (i<this.s2b.length){
+			this.s2b[i].draw(viewx,viewy,thetime)
+			i=i+1;
+			}
+		var i=0;
+		while (i<this.s1b.length){
+			this.s1b[i].draw(viewx,viewy,thetime)
+			i=i+1;
+			}
+		
+		}
+	update1(){ //Pure motion update.
+		var i=this.s1b.length;
+		while (i>0){
+			i=i-1;
+			this.s1b[i].update1();
+			}
+		var i=this.s2b.length;
+		while (i>0){
+			i=i-1;
+			this.s2b[i].update1();
+			}		
+		var i=this.s3b.length;
+		while (i>0){
+			i=i-1;
+			this.s3b[i].update1();
+			}		
+		}
+	}	
+var testcluster = new Clusterbomb(0,100,100,2,2,5,8,48,0.95,"red",233,0.3);
+//let testcluster = new Clusterbomb(0,ships[0].x+100,ships[0].y,ships[0].vx,ships[0].vy,5,8,48,0.95,"red",233,0.3);
+
+
 /////////////////////////////Begin system class///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class System{
 	constructor(index, name, x, y){
@@ -793,8 +1000,8 @@ class Mission{
 	}
 	//////////////////Function tests
 	let testsystem = new System(2,"thetestsystem");
-	let playerradio = new Radio("Welcome to Umo Space.  Fight robots, make money, trade cargo (eventually), buy upgrades, and see the universe.");
 	testsystem.randomplanets();
+	let playerradio = new Radio(" ");
 	let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
 	let mission2 =  new Mission("assassinate", 0, 6, "A nasty robot in earf orbit needs to be removed.",1500, 0);
 	//constructor(missiontype, morigin, mtarget,mmessage,mreward)
@@ -923,7 +1130,7 @@ randomplayerverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
 normalizepoly(randomplayerverts); //Makes the ship have at least 2 vertices at maximum radius (1).
 player1.polytheta = randomplayerverts[0];//Assigns randomized polygon
 player1.polyradius = randomplayerverts[1]; //to player1 ship
-player1.setorbit(planets[5], 600, 3, -1); 
+player1.setorbit(planets[0], 32000, 0.3, 1); 
 var ships = [player1];
 ///////Special Station Umos//////////////////////////////////////////////////////////////////////////////
 let terranoutpost = new Umo (0,0,128, randcolor());
@@ -1117,18 +1324,15 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	home.botbombs[i].maxhp = 1; //with planets 
 	home.botbombs[i].shield=0;  
 	}
-
-var clicktester = 0;
-
-//////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update() {
 	time = time + 1;
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
-	if (mapactive == 1){drawmap(planets,mapscale,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y);}//centered map
-	if (mapactive == 2){drawmap(planets,mapscale,200,canvas.height-150,ships[0].x, ships[0].y);
+	if (mapactive == 1){drawmap(planets,outposts,mapscale,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y);}//centered map
+	if (mapactive == 2){drawmap(planets,outposts,mapscale,200,canvas.height-150,ships[0].x, ships[0].y);
 		context.fillStyle = "black";//Background is black
 		context.fillRect(0, 0, canvas.width, canvas.height-300); //erase non-corner map area
 		context.fillRect(400, canvas.height-300, canvas.width,canvas.height); //erase non-corner map area
@@ -1138,47 +1342,22 @@ function update() {
 		context.strokeStyle = "blue";
 		context.stroke();	
 		}
-		//All the outpost in-loop stuff will be here for now...
-		planets[0].gravitate(terranoutpost);
-		planets[0].gravitate(merzoutpost);
-		planets[0].gravitate(jupeoutpost);
-		planets[0].gravitate(anusoutpost);
-		terranoutpost.d = terranoutpost.directionof(planets[0]);
-		merzoutpost.d = merzoutpost.directionof(planets[0]);
-		jupeoutpost.d = jupeoutpost.directionof(planets[0]);
-		anusoutpost.d = anusoutpost.directionof(planets[0]);//Station always points at sun, or maybe away from sun.
-		terranoutpost.update1();
-		merzoutpost.update1();
-		jupeoutpost.update1();
-		anusoutpost.update1();
-		if (ships[0].distance(terranoutpost)<drawdistance+terranoutpost.s/2){ //if ships[i] is near
-			terranoutpost.drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
-			if (ships[0].distance(terranoutpost)<160){
-				terranoutpost.dock(ships[0]);
-				dockstate = 1;
+//Outpost stuff all handled here.....
+		var i=0;
+		while (i<outposts.length){
+			planets[0].gravitate(outposts[i]);
+			outposts[i].d = outposts[i].directionof(planets[0]);
+			outposts[i].update1();
+			if (ships[0].distance(outposts[i])<drawdistance+outposts[i].s/2){ //if ships[i] is near
+				outposts[i].drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
+			if (ships[0].distance(outposts[i])<160){
+				outposts[i].dock(ships[0]);
+				dockstate = i+1;
 				}		
 			}
-		if (ships[0].distance(merzoutpost)<drawdistance+merzoutpost.s/2){ //if ships[i] is near
-			merzoutpost.drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
-			if (ships[0].distance(merzoutpost)<160){
-				merzoutpost.dock(ships[0]);
-				dockstate = 2;
-				}		
+			i=i+1;
 			}
-		if (ships[0].distance(jupeoutpost)<drawdistance+jupeoutpost.s/2){ //if ships[i] is near
-			jupeoutpost.drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
-			if (ships[0].distance(jupeoutpost)<160){
-				jupeoutpost.dock(ships[0]);
-				dockstate = 3;
-				}		
-			}
-		if (ships[0].distance(anusoutpost)<drawdistance+anusoutpost.s/2){ //if ships[i] is near
-			anusoutpost.drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
-			if (ships[0].distance(anusoutpost)<160){
-				anusoutpost.dock(ships[0]);
-				dockstate = 4;
-				}		
-			}
+
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships///////////////////////////////////////////////////
 			var i = planets.length;
 			while (i>0){//For all planets...
@@ -1190,6 +1369,7 @@ function update() {
 					planets[i].active = 1; //activate
 					}	
 				}
+///////////////////Drawing/////////////////////////////////////////////////////////////////////////////////////
 			var i=ships.length; //draw ships and planets///////////////////////////////////
 			while (i>0){ //for all ships,
 				i=i-1;
@@ -1271,7 +1451,7 @@ function update() {
 			var i = planets.length;
 			var j = ships.length;
 			var k = playerbombs.length;
-			while (i>0){ //For all planets
+			while (i>0){ //For all planets (and bombs and ships)
 				i=i-1;
 				j = ships.length;
 				while (j>0){ //For all ships to each planet
@@ -1291,7 +1471,7 @@ function update() {
 				}
 			j = ships.length;
 			k = playerbombs.length;
-			while (j>0){ //for all ships...
+			while (j>0){ //for all ships (and bombs)
 				j=j-1;
 				k = playerbombs.length;
 				while (k>0){
@@ -1322,7 +1502,7 @@ function update() {
 			var j = ships.length; 
 			while (j>1){ //Does not act on ship[0], which is player1.  This means botbomb length is 1 less than ships.  Index must be adjusted accordingly
 				j=j-1; 
-				if ( (  ships[j].distance(planets[ships[j].parentid]) > 4000  )&&(ships[j].hp>0) ){//If this bot got lost....
+				if ( (  ships[j].distance(planets[ships[j].parentid]) > 6000  )&&(ships[j].hp>0) ){//If this bot got lost....
 					var savedhp = ships[j].hp; //remember it's hitpoints... 
 					ships[j].respawn(planets[ships[j].parentid]); //Respawn...
 					ships[j].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
@@ -1330,7 +1510,11 @@ function update() {
 				if (ships[0].distance(ships[j]) < 5000){ //Don't do anything if player is far
 					ships[j].track(ships[0]); //Bots point towards player
 					if ((Math.random()>0.96) && (botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-						ships[j].launchbomb(botbombs[j-1], 12, 80); //12 pixels per frame, 80 frames.					
+						var howclose = ships[j].distance(planets[ships[j].parentid])-(ships[j].s+planets[ships[j].parentid].s);
+						var lookat =  pointingat(ships[j].directionof(planets[ships[j].parentid]),ships[j].d,ships[j].distance(planets[ships[j].parentid]),ships[j].parentid.s);
+						//		function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
+						//if ((howclose>500)||(lookat==0)){}
+						ships[j].launchbomb(botbombs[j-1], 12, 80); 					
 						}
 					}
 				}
@@ -1351,7 +1535,7 @@ function update() {
 			context.font='12px Arial';
 			context.fillStyle = "white"; 
 			var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
-			var radarrange = 5000;//Defines distance a ship can be from the player and still be targetable
+			//var radarrange = 5000;//Defines distance a ship can be from the player and still be targetable
 			var closestdistance = 999999;//needs to be larger than radarrange 
 			var closestindex = 0; //defaults to self-targeting if no ships in range
 			var i=0;//Excludes player ship
@@ -1390,7 +1574,7 @@ function update() {
 					context.fillText("No targets in range", canvas.width-160, 24);
 					}
 				}
-			if (shiptarget>shipsinrange.length-1){shiptarget = closestindex;}
+			if (shiptarget>shipsinrange.length-1){shiptarget = 0;}
 			if (shipsinrange.length>0){
 				//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
 				ships[0].drawcompass2(shipsinrange[shiptarget][0],canvas.width-64, 96, 64); //Targeting computer compass
@@ -1413,6 +1597,9 @@ function update() {
 			//drawaskey(96,canvas.height-320,"M","white");
 			//drawaskey(canvas.width-32,canvas.height-200,">","white");
 			//drawaskey(canvas.width-64,canvas.height-200,"<","white");
+		
+			
+			
 			//drawaskey(canvas.width-96,canvas.height-200,"N","white");
 ///////////////Navigation hud///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (navactive > 0){
@@ -1446,7 +1633,7 @@ function update() {
 			var sindv =  Math.sin(dv[1]-ships[0].directionof(thenavtarget))*dv[0];
 			var escape = Math.sqrt(thenavtarget.m*2*.0003/ships[0].distance(thenavtarget));
 			var navchart2 = [ ["Name","Class", "Size", "Mass", "Parent", "Orbit Radius", "Orbit speed", "Orbit Position"], [name, pclass, size, mass, parent, Math.floor(orbitradius), Math.floor(orbitspeed), orbitpos.toFixed(3)],  ["Distance","DeltaV", "Cos DV", "Sin DV", "Gravity", "Escape","X","Y"], [Math.floor(distance),deltav, cosdv.toFixed(3), sindv.toFixed(3), gravity, escape.toFixed(3),Math.floor(planets[navtarget].x), Math.floor(planets[navtarget].y)]  ];
-			showchart(navchart2, 80, 16, canvas.width-500,canvas.height-160);	
+			showchart(navchart2, 80, 16, canvas.width-480,canvas.height-160);	
 			}
 			context.fillText("Press N key to cycle navigation computer mode",canvas.width-300,canvas.height-8);
 ////////////////////////Map/////////////////////////////////////
@@ -1480,7 +1667,7 @@ function update() {
 	if (ships[0].hp==-1000){
 	context.fillStyle = "red";
 	context.font='24px Arial';
-	context.fillText("You ded bruh."+ships[0].deadtime,canvas.width/2,canvas.height/2);
+	context.fillText("u ded bruh."+ships[0].deadtime,canvas.width/2,canvas.height/2);
 	context.fillStyle = "white";
 	context.font='12px Arial';
 	}
@@ -1559,13 +1746,187 @@ if (wep==0){//wep == 11 to disable, wep should ==0
 			ships[0].polyradius = ships[j].polyradius;
 			}
 		}
-//////////////////////Time Triggers//////////////////////////////////////////////////////////////////////
-if (time==300){
-playerradio.newmsg("Dudeman",mission1.message,time);//newmsg(sndr, msg, thetime)
-}
-if (time==500){
-playerradio.newmsg("Dudeman",mission2.message+ships[mission2.target].name,time);//newmsg(sndr, msg, thetime)
-}
+//////crapware bomb testing goes here
+		testcluster.update1();	
+		testcluster.draw(ships[0].x,ships[0].y,time);
+		
+//////////////////////Story and Time Triggered Events//////////////////////////////////////////////////////////////////////
+var dstory = time - storytime;
+switch(storystate){//Tutorial missions so far.
+	case 0:
+		if (dstory==10){
+			playerradio.newmsg("Tutorial Dude",storymessages[0],time);//newmsg(sndr, msg, thetime)
+			}
+		if (dstory == 600){
+			playerradio.newmsg("Tutorial Dude",storymessages[1],time);//newmsg(sndr, msg, thetime)
+			}
+		if ((dstory>930)&&(navtarget==5)&&(navactive==1)){
+			storystate = 1;
+			storytime = time;
+			}
+		break;
+	case 1:
+		if (dstory==15){
+			playerradio.newmsg("Tutorial Dude",storymessages[2],time);//newmsg(sndr, msg, thetime)
+			}
+		if (dstory == 600){
+			playerradio.newmsg("Tutorial Dude",storymessages[3],time);//newmsg(sndr, msg, thetime)
+			}
+		if ((dstory>630)&&(mapscale>1024)&&(mapactive>0)){
+			storystate=2;
+			storytime = time;
+			}
+	break;
+	case 2:
+		if (dstory==15){
+			playerradio.newmsg("Tutorial Dude",storymessages[4],time);//newmsg(sndr, msg, thetime)
+			}
+		if ((dstory>60)&&(mapscale<128)&&(mapactive>0)){
+			storystate=3;
+			storytime = time;
+			}
+	break;
+	case 3:
+		if (dstory==15){
+			playerradio.newmsg("Tutorial Dude",storymessages[5],time);//newmsg(sndr, msg, thetime)
+			}
+		if ((dstory>60)&&(ships[0].distance(planets[5])<512)){
+			storystate=4;
+			storytime = time;
+			}
+	break;
+	case 4:
+		if (dstory==15){
+			playerradio.newmsg("Tutorial Dude",storymessages[6],time);//newmsg(sndr, msg, thetime)
+			}
+		if ((dstory>60)&&(dockstate==2)){
+			storystate=5;
+			storytime = time;
+			}
+	break;
+		case 5:
+		if (dstory==playerradio.msgtime){//Doesn't work as-is, totalmsgtime was ill-conceived.  I'll probably have to either brute-force hardcode the msg timing, or advance storystate with each message.
+			playerradio.newmsg("Tutorial Dude",storymessages[7],time);//newmsg(sndr, msg, thetime)
+			storystate = 6;
+			storytime = time;
+			}
+	break;
+	case 6:
+		if (dstory==playerradio.msgtime){//Doesn't work as-is, totalmsgtime was ill-conceived.  I'll probably have to either brute-force hardcode the msg timing, or advance storystate with each message.
+			playerradio.newmsg("Tutorial Dude",storymessages[8],time);//newmsg(sndr, msg, thetime)
+			storystate = 7;
+			storytime = time;
+			}
+	break;		
+	case 7:
+		if (dstory==playerradio.msgtime){//Doesn't work as-is, totalmsgtime was ill-conceived.  I'll probably have to either brute-force hardcode the msg timing, or advance storystate with each message.
+			playerradio.newmsg("Tutorial Dude",storymessages[9],time);//newmsg(sndr, msg, thetime)
+			storystate = 8;
+			storytime = time;
+			}
+	break;		
+	case 8:
+		if (dstory==playerradio.msgtime){//Doesn't work as-is, totalmsgtime was ill-conceived.  I'll probably have to either brute-force hardcode the msg timing, or advance storystate with each message.
+			playerradio.newmsg("Tutorial Dude",storymessages[10],time);//newmsg(sndr, msg, thetime)
+			storystate = 9;
+			storytime = time;
+			}
+	break;		
+	case 9:
+		if (dstory==playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[11],time);//newmsg(sndr, msg, thetime)
+			storystate = 10;
+			storytime = time;
+			}
+	break;		
+	case 10:
+		if (dstory==playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[12],time);//newmsg(sndr, msg, thetime)
+			storystate = 11;
+			storytime = time;
+			}
+	break;		
+	case 11:
+		if (dstory==playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[13],time);//newmsg(sndr, msg, thetime)
+			storystate = 12;
+			storytime = time;
+			}
+	break;	
+	case 12:
+		if (dstory==playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[14],time);//newmsg(sndr, msg, thetime)
+			storystate = 13;
+			storytime = time;
+			}
+	break;			
+	case 13:
+		if (dstory==playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[15],time);//newmsg(sndr, msg, thetime)
+			storystate = 14;
+			storytime = time;
+			}
+	break;		
+	case 14:
+		if (dstory==playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[16]+ships[9].name,time);//newmsg(sndr, msg, thetime)
+			ships[9].respawn(planets[ships[9].parentid]);
+			storystate = 15;
+			storytime = time;
+			}
+	break;	
+
+	case 15:
+		if ((dstory>playerradio.msgtime)&&(ships[9].hp==-1000)){
+			playerradio.newmsg("Tutorial Dude",storymessages[17],time);//newmsg(sndr, msg, thetime)
+			storystate = 16;
+			storytime = time;
+			}
+	break;		
+	case 16:
+		if ((dstory>playerradio.msgtime)&&(dockstate==2)){
+			playerradio.newmsg("Tutorial Dude",storymessages[18],time);//newmsg(sndr, msg, thetime)
+			storystate = 17;
+			storytime = time;
+			}
+	break;
+	case 17:
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[19],time);//newmsg(sndr, msg, thetime)
+			storystate = 18;
+			storytime = time;
+			}
+	break;	
+	case 18:
+		if (dstory==playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[20],time);//newmsg(sndr, msg, thetime)
+			w2=1;
+			storystate = 19;
+			storytime = time;
+			}
+	break;	
+	case 19:
+		if ((wep==2) && (playerbombs[1].s>32)){//If w2 has fired and exploded
+			playerradio.newmsg("Tutorial Dude",storymessages[21],time);//newmsg(sndr, msg, thetime)
+			wep=1;
+			w2=0;
+			storystate = 20;
+			storytime = time;
+			}
+	break;	
+	case 20:
+		if (dockstate==2){//if player has retuirned to the merry merz
+			playerradio.newmsg("Tutorial Dude",storymessages[22],time);//newmsg(sndr, msg, thetime)
+			w2=1;
+			storystate = 21;
+			storytime = time;
+			}
+	break;	
+	}
+//if (time==300){
+//playerradio.newmsg("Dudeman",mission1.message,time);//newmsg(sndr, msg, thetime)
+//}
+
 //Mission checks///////////////////////////////////////////////////////////////////
 var completemission1 = mission1.check(ships,planets,playerradio); //Saves mission reward money to variable if mission is completed, check function also modifies storystate
 money = money + completemission1[0];
@@ -1678,8 +2039,59 @@ window.addEventListener("keydown", function (event) {
 		shopitem = shopitem + 1;
 		if (shopitem>9){shopitem = 0;}
       break;   //handled in detail elsewhere
+    case "End":
+		w1 = 2;
+		w2 = 2;
+		w3 = 2;
+		w4 = 1;
+		w5 = 1;
+		w6 = 1;
+		w7 = 1;
+		w8 = 1;
+		w9 = 1;
+		w0 = 1;
+		money = money +10000;
+      break;   //handled in detail elsewhere
+
+    case "x":
+		var clustercolor = "red";
+		//if (time%6==0){clustercolor="red";}
+		////if (time%6==1){clustercolor="orange";}
+		//if (time%6==2){clustercolor="yellow";}
+		//if (time%6==3){clustercolor="green";}
+		//if (time%6==4){clustercolor="blue";}
+		//if (time%6==5){clustercolor="purple";}
+
+		testcluster = new Clusterbomb(time,ships[0].x+mdx,ships[0].y+mdy,ships[0].vx,ships[0].vy,12,16,32,0.95,clustercolor,233,0.3);
+      break;   //handled in detail elsewhere
 	case "s":
-		if (shop == 0){shop = 1;} else {shop = 0;}
+		var tbx = ships[0].x+100;
+		var tby = ships[0].y+100;
+		var curlr1 = Math.random()-0.5;
+		var curlr2 = Math.random()-0.5;
+		var curlr3 = Math.random()-0.5;
+		var curlr4= Math.random()-0.5;
+		var curlr5 = Math.random()-0.5;
+		var curlr6 = Math.random()-0.5;
+		var dirr1 = Math.random()*2*Math.PI;
+		var dirr2 = Math.random()*2*Math.PI;
+		var dirr3 = Math.random()*2*Math.PI;
+		testbranch2 = new Clusterbranch(time,tbx,tby,ships[0].vx,ships[0].vy,dirr1,48,12,"red",16,curlr1,0.95);
+		testbranch3 = new Clusterbranch(time,tbx,tby,ships[0].vx,ships[0].vy,dirr2,48,12,"red",20,curlr2,0.95);
+		testbranch4 = new Clusterbranch(time,tbx,tby,ships[0].vx,ships[0].vy,dirr3,48,12,"red",24,curlr3,0.95);
+		
+		testbranch5 = new Clusterbranch(time+16,testbranch2.x,testbranch2.y,ships[0].vx,ships[0].vy,testbranch2.d,testbranch2.s,24,testbranch2.c,24,curlr1,0.95);
+		testbranch6 = new Clusterbranch(time+20,testbranch3.x,testbranch3.y,ships[0].vx,ships[0].vy,testbranch3.d,testbranch3.s,20,testbranch3.c,20,curlr2,0.95);
+		testbranch7 = new Clusterbranch(time+24,testbranch4.x,testbranch4.y,ships[0].vx,ships[0].vy,testbranch4.d,testbranch4.s,8,testbranch4.c,16,curlr3,0.95);
+		testbranch8 = new Clusterbranch(time+16,testbranch2.x,testbranch2.y,ships[0].vx,ships[0].vy,testbranch2.d,testbranch2.s,12,testbranch2.c,24,curlr4,0.95);
+		testbranch9 = new Clusterbranch(time+20,testbranch3.x,testbranch3.y,ships[0].vx,ships[0].vy,testbranch3.d,testbranch3.s,10,testbranch3.c,20,curlr5,0.95);
+		testbranch10 = new Clusterbranch(time+24,testbranch4.x,testbranch4.y,ships[0].vx,ships[0].vy,testbranch4.d,testbranch4.s,8,testbranch4.c,16,curlr6,0.95);
+		
+		
+		
+		
+		
+		//starttime,startx,starty,startvx,startvy,startdir,startsize,endsize,startcolor,maxlength){
       break;
 	 case "Enter": //Most of the functional shopping code goes here.
 		if (dockstate == 1){//Only works in shop 1, Earf station
@@ -1855,10 +2267,10 @@ window.addEventListener("keydown", function (event) {
 }//end update function
 document.addEventListener("mousemove", mouseMoveHandler, false);
 function mouseMoveHandler(e) {
-    var dx =  e.clientX - canvas.width/2;
-	var dy =  e.clientY - canvas.height/2;
-	moused = -1*Math.atan2(dx,dy) - Math.PI/2;
-	mousedistance = Math.sqrt(dx*dx+dy*dy);
+    mdx =  e.clientX - canvas.width/2;
+	mdy =  e.clientY - canvas.height/2;
+	moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
+	mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
 	//clicktester=clicktester+1;  //Apparently also fucked, but not normally a problem.
 } //I should figure that out better.
 document.addEventListener("mousedown", mouseDownHandler, false);
@@ -1875,7 +2287,7 @@ if (mousestate==1){ //if it's the left button
 	if (wep == 2){
 		if ((w2 > 1)&&(playerbombs[1].timer > 4)){playerbombs[1].timer = 6;} 
 		else if ((energy > 50)&&(w2>0)){ 
-			ships[0].launchbomb(playerbombs[1],1, 600);//A mere 1 pixel per frame, but for 600 frames (20s).
+			ships[0].launchbomb(playerbombs[1],1, 1800);//A mere 1 pixel per frame, but for 1800 frames (60s).
 			energy = energy - 50;
 			}
 		}
@@ -1911,7 +2323,7 @@ if (mousestate==1){ //if it's the left button
 			}
 		}
 	if (wep == 6){
-		if (energy > 1){ //If ship has energy
+		if (energy > 30){ //If ship has energy
 			var i = ships.length;
 			while (i>1){//For all ships except 0
 				i = i - 1; 
@@ -1965,14 +2377,14 @@ if (mousestate==1){ //if it's the left button
 			ships[0].d = shipdsave + spread*5.5;
 			ships[0].launchbomb(playerbombs[19],24, 24);				
 			ships[0].d = shipdsave;//restores original ship direction
-			energy = energy - 60; 
+			energy = energy - 64; 
 			}
 		}
 	if (wep == 9){
 		if ((energy > 75)&&(w9>0)){ //If ship has energy and weapon 4.
 				ships[0].launchbomb(playerbombs[26],16, 120); 
 				playerbombs[26].hp = 1000;//weapon 9 uses a special bomb that can bounce of planets				
-				energy = energy - 60; 
+				energy = energy - 80; 
 			}
 		}
 	if (wep == 0){
