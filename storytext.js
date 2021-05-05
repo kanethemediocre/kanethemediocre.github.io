@@ -11,15 +11,15 @@
 			//4th check after 6 messages, ships[0].distance(planets[5])<500
 			"Good job.  Now get back to the Merry Merzian.  Remember you can use your nav computer to find the station.  When you're close you'll dock automatically.",
 			//5th check after 7 messages, dockstate == 2
-			"Alright, good job.  I suppose we should talk about the 'bots.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  The Umobots around Merz aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.",
-			"Bots can be destroyed, and in fact the Institute pays for their destruction, but replacements are never far behind.  Most space stations are built trailing or leading planets in their orbits around the their sun, because it keeps them farther away from the Umobots than orbiting the planet.  The Umobots don't chase after ships, and they only swarm around natural planetary bodies, so stations can be safe if they're not too close to a planet.",
-			"No one knows where t hey came from, or why they suddenly started appearing 30 years ago.  But life off-world has changed dramatically since they came.  And not entirely for the worse--Most of your ships systems were developed by reverse engineering the remains of Umobots, and a whole new space industry has developed around both fighting and studying the 'bots",
+			"Alright, good job.  I suppose we should talk about the 'bots.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  Around Merz they aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.",
+			"Bots can be destroyed (in fact the Institute pays bounties for this), but replacements are never far behind.  Space stations are built trailing or leading planets in solar orbits to keep them farther away from the Umobots in planetary orbit.",
+			"No one knows where they came from, or why they suddenly started appearing 30 years ago.  But life off-world has changed dramatically since they came.  Most of your ships systems are reverse engineered Umobot pieces, and a whole new industry has developed around both fighting and studying the 'bots",
 			"You better learn a thing or two about combat before I send you anywhere more dangerous, eh?  The top left corner of your HUD has 4 important indicators.  At the top the green bar indicates your ship's health.  It's a basic measure of how close you are to blowing up.  Don't blow up.",
 			"The next blue bar is your shield strength.  Your shield is a fast regenerating energy barrier that prevents your ship from being damaged by occasional minor hits.  Don't enter combat without a full shield, and get out if it ever goes down to 0.  A weak shield will still reduce the damage you take compared to no shield at all.",
 			"The next red bar is your weapons energy.  The ship has capacitors to provide the burst current that the ships reactor can't directly provide.  The red bar indicates their energy level.",
 			"Finally, the orange bar at the bottom shows your thruster energy level.  Just like your weapons, the ship's thrust capacitors recharge quickly with power from the reactor.  Don't get caught in a fight without any go-juice to spare for escape or evasive maneuvers.",
-			"The most important indicator of all is your money.  Below all of the status bars is an weapons indicator showing what weapons are available and which weapon is selected.  Right now you've just got the basic blaster (weapon 1), but soon you'll be selecting them using the number keys (0-9)",
-			"The last part of the HUD we need to talk about is the targeting computer.  Your radar can detect enemies within a certain distance (4000p), and often tell you useful information about them.  The [ and ] keys are used to cycle through available targets.  When in visual range, you'll also see a targeting reticle around your target.  The list of bots with names and distances is helpful if you're hunting a bot by name.",
+			"The most important indicator of all is your money, but we'll talk more about that later.  Below the status bars is a weapons indicator highlighting your current weapon in green, and showing available weapons in white (just weapon 1 for now).",
+			"The last part of the HUD we need to talk about is the targeting computer.  Your radar can detect enemies within a certain distance (4000p, as shown by the green circle on your map), and tell you useful information about them.  Use the [ and ] keys to select targets.  In visual range, you'll also see a targeting reticle around your target.",
 			//respawn a bot in Merz orbit after 16 messages
 			"Speaking of which, why don't you do me a favor and destroy a particular bot in Merz orbit?  The name is ",
 			//display bots randomized name as part of 17th message.
@@ -38,7 +38,13 @@
 			"Huh, looks like it was a software problem all along.  OK, I promise next time it won't blow up in your face.  If it does I'll give you a double-refund on it. ",
 			//check for w2 firing like before
 			"Alright so it looks like it's working better.  You still need to not fly into it, or it's blast.  Note that you can switch to a different weapon after you have fired the mine, and it will persist for about a minute.",
-			"Good pilots can sometimes use their ships to throw the mine, but if they don't keep an eye on their thrust energy reserves they'll get caught in the blast."
+			"Good pilots can sometimes use their ships to throw the mine, but if they don't keep an eye on their thrust energy reserves they'll get caught in the blast.",
+			"In space, money is everything.  At stations like the Merry Merzian you can spend it on repairs or upgrades.  You get paid by the Institute for destroying umo bots, and of course the institute pays more for more advanced, more dangerous 'bots.",
+			"You can also buy cargo at some stations, and sell it somewhere else at a different (hopefully higher) price.  Often the most profitable routes are the most dangerous, and involve delivery at a planet surrounded by 'bots.",
+			"If you don't mind being told what to do, missions usually offer more pay for your time than a comparable activity would earn without taking a mission.  You may have noticed an extra $200 after the delivery, and $400 after destroying the bot for me.",
+			"Mission payments are paid out in addition to any money you might make from standard institute bounties or other concurrent activities.  Always be on the lookout for ways to get paid twice.",
+			"Yo Yo this is the 2nd to last message.",
+			"Yo Yo this is the last message."
 			]
 			return storymessages
 			}

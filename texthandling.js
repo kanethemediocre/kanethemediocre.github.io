@@ -82,7 +82,7 @@
 			this.senderx = 420;//Math.floor(canvas.width/2) - Math.floor(this.sender.length/2);//not used?
 			this.sendery = Math.floor(canvas.height*5/6 - 50);
 			this.msgnow = intromessage; //Text of message
-			this.msgtime = Math.floor(this.msgnow.length*1.25) + 30; //message duration
+			this.msgtime = Math.floor(this.msgnow.length*1.5) + 120; //message duration
 			this.log = [this.msgnow];
 			}
 		newmsg(sndr, msg, thetime){//used to put a new message into the object
@@ -103,7 +103,7 @@
 			}
 		showlog(index){
 			var logchart = [ this.log  ];
-			context.font = "10px Ariel";
+			context.font = "11px Verdana";
 			showchart(logchart, 64, 16, 16,300);	
 		}
 		}////end class radio

@@ -299,7 +299,7 @@
 			if ((thruster > 0)&&(this.thrust > 0)){ //skips these calculations if no thrust
 				this.vx = this.vx + this.thrust*Math.cos(this.d);
 				this.vy = this.vy + this.thrust*Math.sin(this.d);
-				thruster = thruster - this.thrust*12;
+				thruster = thruster - 24;//this.thrust*12; //this.thrust*12 is good for adjustible thrust, which I abandoned, but bad for boosters, which I added.
 				}
 			this.thrust = 0; //keeps thrusters momentary
 			this.x = this.x + this.vx;

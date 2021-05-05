@@ -132,7 +132,20 @@ else if (mousestate==2){//if its the right button
 		outposts[dockstate-1].undock(ships[0]);
 		dockstate = 0;
 		}
-	ships[0].thrust = 2*thrustmultiplier;
+	if (thruster>0){
+		ships[0].thrust = 2*thrustmultiplier;
+		var td = 48;
+		var tr = 24;
+		var x = Math.cos(ships[0].d+Math.PI)*td + canvas.width/2;
+		var y = Math.sin(ships[0].d+Math.PI)*td + canvas.height/2;
+		context.beginPath();
+		context.strokeStyle = "orange";
+		context.arc(x, y, tr, 0, 2 * Math.PI, false);
+		context.fillStyle = "orange";
+		context.fill();
+		context.lineWidth = 2;
+		context.stroke();	
+		}
 	} 
 }
 document.addEventListener("mouseup", mouseUpHandler, false);

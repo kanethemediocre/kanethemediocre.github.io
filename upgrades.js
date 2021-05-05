@@ -3,7 +3,7 @@ class Upgrade{
 		this.name = name;//"Super blaster"
 		this.description=description; //"The super blaster is super dope"
 		this.price = price;
-		this.type = type;
+		this.type = type;//"armor","shield","shieldregen","radar","thruster"
 		this.id = ID;
 		}
 	}

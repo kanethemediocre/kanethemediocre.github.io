@@ -4,6 +4,12 @@ window.addEventListener("keydown", function (event) {
     return; // Do nothing if the event was already processed
   }
   switch (event.key) {  //events for all the keyboard keys
+    case "q":
+	 qblaster.fire(ships[0],[playerbombs[0]]);
+      break;   
+	 case "f":
+     qblaster.plusboom(ships[0],[playerbombs[0]]);
+      break;    
     case " ":
       playerradio.msgtime = 1;
       break;   
@@ -15,6 +21,15 @@ window.addEventListener("keydown", function (event) {
 		if (launchmultiplier < 2){ launchmultiplier = launchmultiplier + .25; }
 		else {	launchmultiplier = 0; }
       break;	  
+	case "b": //Booster selection
+		if (boosters[0]==boosters.length-1){boosters[0]=0;}else{boosters[0]=boosters[0]+1;}
+      break;	
+	case "g": //Booster activation
+		if (boosters[boosters[0]]>0){//if selected booster is in stock
+			boosters[boosters[0]]=boosters[boosters[0]]-1; //remove 1 from stock of selected booster
+			ships[0].thrust = 64*2^(boosters[0]); //boost hard
+			}
+      break;	  	  
 	case "1":    //This is how weapon switching is handled.
 		if (w1>0){ wep = 1; } //If weapon is present, switch to it.		
 		break; //Nothing happens on keypress otherwise.
@@ -164,6 +179,9 @@ window.addEventListener("keydown", function (event) {
 					}
 			}else if ((shopitem == 5)&&(money>799)){
 				ships[0].hp = 2 * ships[0].maxhp;  //Adds hit points beyond maximum -- can't repair it!
+			}else if ((shopitem == 6)&&(money>499)){
+				boosters[1] = boosters[1]+2; //Adds hit points beyond maximum -- can't repair it!
+				money = money - 500;
 				}
 			}//end of shop 1 handling
 //	var shopchart1 = [ ["$20 Repair hull","$400 w2 Mine", "$200 w3 Flakker", "$600 w1 Blaster Upgrade I (detonator)","$1000 Armor Upgrade I","$3000 Radar Upgrade I","$400 Single-use extra hull","EMPTY","EMPTY","EMPTY"]  ];
@@ -197,9 +215,12 @@ window.addEventListener("keydown", function (event) {
 					radarrange = 6000;
 					money = money - 3000;
 					}
-			}else if ((shopitem == 6)&&(money>799)){
+			}else if ((shopitem == 6)&&(money>399)){
 				ships[0].hp = 2 * ships[0].maxhp;  //Adds hit points beyond maximum -- can't repair it!
 				money = money - 800;
+			}else if ((shopitem == 7)&&(money>499)){
+				boosters[1] = boosters[1]+2; //Adds hit points beyond maximum -- can't repair it!
+				money = money - 500;
 				}
 		}//end of shop 2 handling//////////////////////////////////////////////////////////////////////////////
 
