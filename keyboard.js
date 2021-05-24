@@ -118,16 +118,6 @@ window.addEventListener("keydown", function (event) {
 		if (shopitem>9){shopitem = 0;}
       break;   //handled in detail elsewhere
     case "End":
-		w1 = 2;
-		w2 = 2;
-		w3 = 2;
-		w4 = 1;
-		w5 = 1;
-		w6 = 1;
-		w7 = 1;
-		w8 = 1;
-		w9 = 1;
-		w0 = 1;
 		money = money +10000;
       break;   //handled in detail elsewhere
 
@@ -146,18 +136,15 @@ window.addEventListener("keydown", function (event) {
 		if (diagnostic == 0){diagnostic=1;}else {diagnostic=0;}
 
       break;
-	 case "Enter": //Most of the functional shopping code goes here.
-	 
-	 
-	 //new way here/////////////////////////////////////////////////////////////////
+	 case "Enter": //The enter key purchases the currently selected shop item
 	 if ((dockstate > 0)&&(dockstate<allshops.length)){//check if docked and shop exists
 		 if (shopitem<allshops[dockstate].inv.length){//check for shopitem available
 			if (allshops[dockstate].inv[shopitem].itemprice()<=money){
 				money = money - allshops[dockstate].inv[shopitem].itemprice();
-				allshops[dockstate].inv[shopitem].buy(money,ships[0]);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+				allshops[dockstate].inv[shopitem].buy(money,ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 			}
-		 }		 
-	 }
+		}		 
+	}
 
       break;
     default:

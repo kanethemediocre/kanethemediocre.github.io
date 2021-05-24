@@ -223,6 +223,8 @@ class Blaster{
 			}		
 	}
 	drawstats(xpos,ypos){
+		context.fillStyle = "green";
+		context.font = "12px Ariel";
 		var blasterchartlabels = ["Name","Type","Price","Energy Cost","Damage","Speed","Blast","Projectiles","Timer","Level"];
 		var blasterchartvalues = [this.name,this.type,this.price,this.ecost,this.hurt,this.speed,this.boom,this.n,this.timer,this.level];
 		var blasterchart = [blasterchartlabels,blasterchartvalues];

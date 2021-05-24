@@ -51,20 +51,8 @@ var thruster = 50;
 var money = 100;
 var gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
 var drawdistance = Math.sqrt(canvas.width*canvas.width/4+canvas.height*canvas.height/4)+200;
-var w1 = 1; //Presence of weapons.  Upgrades now handled in blaster class.
-var w2 = 0; 
-var w3 = 0; 
-var w4 = 0; 
-var w5 = 0;
-var w6 = 0;
-var w7 = 0;
-var w8 = 0;
-var w9 = 0;
-var w0 = 0;
 var mdx = 0;
 var mdy = 0;
-var wstatus = [w0,w1,w2,w3,w4,w5,w6,w7,w8,w9];//not used yet, index numbers match weapon numbers, will replace w# variables.
-var wnames = ["Probe","Blaster","Mine","Flakker","Railgun","SpreadShot", "Lazzzor","Double Rainbow","Spectral Disintigrator","Bapadoop"]; //also not used yet
 var a1 = 0; //armor upgrades
 var s1 = 0; //Shield upgrades
 var wep = 1; //Currently selected weapon
@@ -84,7 +72,6 @@ var storymessages =  loadstorymessages();//storytext.js
 var task = "Read the tutorial";
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats.  Might get used for other items.
-
 
 
 

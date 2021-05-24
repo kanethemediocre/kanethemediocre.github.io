@@ -139,8 +139,6 @@ function hud(){
 	context.fillText("Task: "+task,8,200);
 	if (diagnostic == 1){allblasters[wep].drawstats(8,250);}
 	
-	//context.fillText(wep,32,144);
-	context.fillText("Mouse aims, left-flick fires, right-click thrusts, 1234567890 selects weapons. M toggles map mode, N toggles nav computer mode, < and > cycles nav targets, [ and ] cycles enemy targets, T for closest target (sometimes)",128,10);
 	if (ships[0].hp==-1000){
 		context.fillStyle = "red";
 		context.font='24px Arial';
@@ -161,4 +159,6 @@ function hud(){
 		if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}
 		allshops[dockstate].draw(400,400,shopitem);
 	}
+	//draw cargo stuff
+	playerinventory.draw(8,450);
 }

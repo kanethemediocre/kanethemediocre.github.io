@@ -42,7 +42,7 @@ class Shopitem{
 		if (this.type == "blaster"){
 			thisprice = allblasters[this.i].nextupcost();
 		}else if (this.type == "cargo"){
-			thisprice = allcargos[this.i].price;
+			thisprice = allcargos[this.i].baseprice;
 		}else if (this.type == "upgrade"){
 			//thisprice = 69;
 			thisprice = allupgrades[this.i].price*2**(this.utier);
@@ -51,7 +51,7 @@ class Shopitem{
 		}
 		return thisprice;		
 	}
-	buy(playermoney, playership){ //this function is for the player purchasing a shopitem object.  
+	buy(playermoney, playership, inventory){ //this function is for the player purchasing a shopitem object.  
 		if (this.type == "blaster"){
 			//stuff to buy the blaster/blaster upgrade
 			if (this.utype == "buy"){
@@ -107,8 +107,8 @@ class Shopitem{
 		}else if (this.type == "booster"){
 			//stuff to buy the booster
 		}else if (this.type == "cargo"){
-			//stuff to buy the cargo
-		}
+			inventory.takecargo(this.i, 1);
+			}
 	}
 	available(playership){
 		var buyable = false;

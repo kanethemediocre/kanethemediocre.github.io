@@ -25,20 +25,43 @@ let allcargos = [iron,water,phosphorus,oxygen,cheese,weet,dankcheese,szyrup,tiny
 class Inventory{
 	constructor(cargospace){// let bob = new Inventory(10)
 		this.maxcargo = cargospace;
-		this.cargo = []; //list of strings
+		this.cargo = []; //list of integer quanitites, indexes parallel with allcargos
 		this.blasters = [];
 		this.upgrades = [];//not sure if/how this will be used
-	}
-	takecargo(thecargo){//takes 1 unit of thecargo as a string indicating cargo type
-		if (this.cargo.length<this.maxcargo){
-			this.cargo.push(thecargo); 
-			}
-		}
-	givecargo(thecargo){
 		var i=0;
-		var found = false;
-		//while (i<this.cargo.length){
-			//if ()
-			//}
+		while (i<allcargos.length){
+			this.cargo.push(0);//establishes 0 cargo in inventory for all possible cargo items
+			i=i+1;
+		}
+	}
+	totalcargo(){
+		var total = 0;
+		var i=0;
+		while (i<this.cargo.length){
+			total = total + this.cargo[i];
+			i=i+1;
+			}
+		return total;
+		}
+	takecargo(cargoi, quantity){//takes cargo index cargoi, and integer quantity.
+		this.cargo[cargoi] = this.cargo[cargoi]+quantity;		
+		}
+	givecargo(cargoi, quantity){//This filters for available cargo space, but i
+		this.cargo[cargoi] = this.cargo[cargoi]-quantity;		
+		}
+	draw(xpos,ypos){
+		context.fillStyle = "yellow";
+		context.font = "12px Ariel";
+		context.fillText("Total cargo: "+this.totalcargo(),xpos,ypos-32);
+		context.fillText("Maximum cargo: "+this.maxcargo,xpos,ypos-16);
+		var i=0;
+		while (i<this.cargo.length){
+			context.fillText(allcargos[i].name,xpos,ypos+16*i);
+			context.fillText(this.cargo[i],xpos+128,ypos+16*i);
+			i=i+1;
+		}
 	}
 }
+let playerinventory = new Inventory(10);
+playerinventory.takecargo(0,4);//for testing
+
