@@ -3,15 +3,16 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b17 by KaneTheMediocre</title>
+    <title>Umo Space 167b28 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
-    <canvas id="gameCanvas" width="1600" height="900"></canvas>
+<canvas id="gameCanvas" width="1600" height="900"></canvas>
 <script type="text/javascript" src="umo.js"></script>
+<script type="text/javascript" src="upgrades.js"></script>	
+<script type="text/javascript" src="blasters.js"></script>	
 <script type="text/javascript" src="shop.js"></script>		
 <script type="text/javascript" src="cargo.js"></script>		
-<script type="text/javascript" src="blasters.js"></script>	
 <script type="text/javascript" src="texthandling.js"></script>
 <script type="text/javascript" src="graphics.js"></script>
 <script type="text/javascript" src="system.js"></script>
@@ -25,6 +26,8 @@
 <script type="text/javascript" src="keyboard.js"></script>
 <script type="text/javascript" src="storyfunction.js"></script>
 <script type="text/javascript" src="hud.js"></script>
+	
+	
 <script>
 // declare variables
 const FPS = 30;
@@ -48,8 +51,8 @@ var thruster = 50;
 var money = 100;
 var gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
 var drawdistance = Math.sqrt(canvas.width*canvas.width/4+canvas.height*canvas.height/4)+200;
-var w1 = 1; //Presence or weapons, upgrades etc.
-var w2 = 0; //Upgraded weapons have values >1
+var w1 = 1; //Presence of weapons.  Upgrades now handled in blaster class.
+var w2 = 0; 
 var w3 = 0; 
 var w4 = 0; 
 var w5 = 0;
@@ -78,7 +81,13 @@ var closestdistance = 999999;//needs to be larger than radarrange
 var closestindex = 0; //defaults to self-targeting if no ships in range
 var storytime = 0;//timestamp of last story event
 var storymessages =  loadstorymessages();//storytext.js
+var task = "Read the tutorial";
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
+var diagnostic = 1; //0 is not displayed, 1 is weapon stats.  Might get used for other items.
+
+
+
+
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -117,7 +126,7 @@ randomplayerverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
 normalizepoly(randomplayerverts); //Makes the ship have at least 2 vertices at maximum radius (1).
 player1.polytheta = randomplayerverts[0];//Assigns randomized polygon
 player1.polyradius = randomplayerverts[1]; //to player1 ship
-player1.setorbit(planets[0], 32000, 0.3, 1); 
+player1.setorbit(planets[0], 32000, 0.212, 1); 
 var ships = [player1];
 ///////Special Station Umos//////////////////////////////////////////////////////////////////////////////
 let outposts= loadhomeoutposts();
@@ -154,11 +163,22 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	home.botbombs[i].shield=0;  
 	}
 var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
+
+let waldo = new Umo(0,0,1000,"purple");
+waldo.setorbit(home.planets[0], 1000000, 0, 1);
+//size adjust for collision at 10,000
+//waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
+//Size should be inversely related to the distance from event horizon
+//Size at 1
 ////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update() {
 	time = time + 1;
+	//testing zone
+	//waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
+	//Size should be inversely related to the distance from event horizon
+	//end testing zone	
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
 	if (mapactive == 1){drawmap(planets,outposts,mapscale,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y,radarrange);}//centered map
@@ -200,29 +220,69 @@ function update() {
 			}	
 		}
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
+
+	var i=0;//New weapon handling stuff
+	while (i<allblasters.length){//Draw any active bombs from allblasters.
+		allblasters[i].draw(ships[0].x,ships[0].y);
+		allblasters[i].update1();
+		var j=0;
+		i=i+1;
+		}
 	home.draw2(ships[0].x,ships[0].y); //draws home system planets, ships, and bot bombs if close
 	home.updateall(); //Updates everthing in system
 	home.gravitateall(); //gravitates everything in system
-	home.gravitateothers(playerbombs);
-	i = playerbombs.length; //for all player bombs
-	while (i>0){
+	
+	var i = planets.length; //gravitates bombs from allblasters
+	var k = allblasters.length;
+	while (i>0){//for all planets....
 		i=i-1;
-		if (ships[0].distance(playerbombs[i])<drawdistance){ // if bombs[i] is near
-			playerbombs[i].drawbomb(ships[0].x,ships[0].y); //draw bomb from ship[0]'s view
+		var k = allblasters.length;
+		while (k>0){ //For all blasters to each planet
+			k=k-1;
+			allblasters[k].fall(planets[i]);
 			}
-		}					
-	i = playerbombs.length; //update player bombs
-	while (i>0){
-		i=i-1;
-		playerbombs[i].update1();
-		playerbombs[i].updatebomb();
-		}			
+		}
+	
+	
+	
+	//home.gravitateothers(playerbombs);	
 	if (thruster<100){thruster=thruster+1;} //External variable updates
 	if (energy<100){energy = energy +1;}
 ////////////collisions/////////////////////////////////////////////////////
+
+
+	var j = ships.length;//New scheme bomb collisions.  Works alongside but will replace old scheme.
+	var k = allblasters.length;
+	while (j>0){ //for all ships (and bombs)
+		j=j-1;
+		k = allblasters.length;
+		while (k>0){
+			k=k-1;
+			if (ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
+				allblasters[k].scollide(ships[j]);
+				if (ships[j].hp<0){
+					var getcash = Math.floor(Math.random()*21+10)*ships[j].level;
+					money = money + getcash;
+					gotmoney = [30,getcash];
+					}//Doesn't handle death, just cash.
+				}
+			}
+		}
+	var i = planets.length;
+	var k = allblasters.length;
+	while (i>0){//for all planets....
+		i=i-1;
+		var k = allblasters.length;
+		while (k>0){ //For all blasters to each planet
+			k=k-1;
+			//planets[i].circlecollide(playerbombs[k]); 
+			allblasters[k].pcollide(planets[i]);
+			}
+		}
+
 	var i = planets.length;
 	var j = ships.length;
-	var k = playerbombs.length;
+	//var k = playerbombs.length;
 	while (i>0){ //For all planets (and bombs and ships)
 		i=i-1;
 		j = ships.length;
@@ -230,33 +290,15 @@ function update() {
 			j=j-1;
 			planets[i].circlecollide(ships[j]);
 			}
-		k = playerbombs.length;
-		while (k>0){ //For all bombs to each planet
-			k=k-1;
-			planets[i].circlecollide(playerbombs[k]); 
-			}
 		k = botbombs.length;
-		while (k>0){ //For all bombs to each planet
+		while (k>0){ //For all bot bombs to each planet
 			k=k-1; 
 			planets[i].circlecollide(botbombs[k]);
 			}
 		}
 	j = ships.length;
-	k = playerbombs.length;
-	while (j>0){ //for all ships (and bombs)
+	while (j>0){ //for all ships (and botbombs)
 		j=j-1;
-		k = playerbombs.length;
-		while (k>0){
-			k=k-1;
-			if (ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
-				playerbombs[k].bombcollide(ships[j]);
-				if (ships[j].hp<0){
-					var getcash = Math.floor(Math.random()*21+10)*ships[j].level;
-					money = money + getcash;
-					gotmoney = [30,getcash];
-					}//Doesn't handle death, just cash.
-				}
-			}	
 		k = botbombs.length;
 		while (k>0){
 			k=k-1;
@@ -282,10 +324,10 @@ function update() {
 		if (ships[0].distance(ships[j]) < 5000){ //Don't do anything if player is far
 			ships[j].track(ships[0]); //Bots point towards player
 			if ((Math.random()>0.96) && (botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-				var howclose = ships[j].distance(planets[ships[j].parentid])-(ships[j].s+planets[ships[j].parentid].s);
-				var lookat =  pointingat(ships[j].directionof(planets[ships[j].parentid]),ships[j].d,ships[j].distance(planets[ships[j].parentid]),ships[j].parentid.s);
+				var howclose = ships[j].distance(planets[ships[j].parentid])-(ships[j].s+planets[ships[j].parentid].s); //check if close
+				var lookat =  pointingat(ships[j].directionof(planets[ships[j].parentid]),ships[j].d,ships[j].distance(planets[ships[j].parentid]),ships[j].parentid.s);//check if pointing at parent planet
 				//		function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
-				//if ((howclose>500)||(lookat==0)){}
+				//if ((howclose>1500)||(lookat==0)){ships[j].launchbomb(botbombs[j-1], 12, 80); } //doesnt work how i want.
 				ships[j].launchbomb(botbombs[j-1], 12, 80); 					
 				}
 			}
@@ -328,10 +370,6 @@ function update() {
 	testcluster.draw(ships[0].x,ships[0].y,time);
 //////////////////////Story and Time Triggered Events//////////////////////////////////////////////////////////////////////
 	storycheck();
-	//var completemission1 = mission1.check(ships,planets,playerradio); //Saves mission reward money to variable if mission is completed, check function also modifies storystate
-	//money = money + completemission1[0];
-	//if (completemission1[1]>0){storystate=completemission1[1];}
-
 }//end update function
     </script>
 </body>

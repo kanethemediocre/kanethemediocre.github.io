@@ -21,7 +21,7 @@ let dankcheese = new Cargo("Dank Cheese","Cheese is already a valuable commodity
 let szyrup = new Cargo("Sweet Juice","Ubiquitous beverage of choice in deep space settlements.  It's pretty good if you don't ask too many questions about it.",150);
 
 let tinywizards = new Cargo("Tiny Wizards","Widely used for tabletop gaming, these figurines are inexplicably valuable in some markets",80);
-let allthecargos = [iron,water,phosphorus,oxygen,cheese,weet,dankcheese,szyrup,tinywizards];
+let allcargos = [iron,water,phosphorus,oxygen,cheese,weet,dankcheese,szyrup,tinywizards];
 class Inventory{
 	constructor(cargospace){// let bob = new Inventory(10)
 		this.maxcargo = cargospace;

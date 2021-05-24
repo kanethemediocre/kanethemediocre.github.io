@@ -316,7 +316,7 @@
 				this.respawn(theplanets[this.parentid]); //maybe change how I handle this
 				}
 			}
-			updatebomb(){ //Handles timer and explosions
+		updatebomb(){ //Handles timer and explosions
 			this.timer= this.timer -1;
 			if (this.timer == 0){this.killbomb();}
 			if (this.timer == 1){this.s = 100*this.boombuff;}
@@ -367,8 +367,8 @@
 			}
 		launchbomb(thebomb, mag, time){ //This allows significant weapon customization in the function call. 
 			thebomb.match(this);	// Mag is how hard the bomb is pushed, time is how long before the bomb detonates on it's own.
-			thebomb.x = thebomb.x + (this.s+thebomb.s+4)*Math.cos(this.d);
-			thebomb.y = thebomb.y + (this.s+thebomb.s+4)*Math.sin(this.d); 
+			thebomb.x = thebomb.x + (this.s+16)*Math.cos(this.d);
+			thebomb.y = thebomb.y + (this.s+16)*Math.sin(this.d); 
 			thebomb.timer = time;
 			thebomb.hp = 1;
 			thebomb.push(mag,this.d);

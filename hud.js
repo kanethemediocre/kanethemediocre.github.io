@@ -122,31 +122,22 @@ function hud(){
 		context.fillStyle = "white";
 		}
 	context.fillStyle = "red";
-	context.fillRect(8+8*wep,96,8,16);
-	if (w0>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("0",8,110);
-	if (w1>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("1",16,110);
-	if (w2>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("2",24,110);
-	if (w3>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("3",32,110);
-	if (w4>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("4",40,110);
-	if (w5>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("5",48,110);
-	if (w6>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("6",56,110);
-	if (w7>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("7",64,110);
-	if (w8>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("8",72,110);
-	if (w9>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-	context.fillText("9",80,110);
+	context.fillRect(8*wep,96,8,16);
+	
+	var i=0;//This indicates selected and available blasters to the user
+	while(i<10){
+		if (allblasters[i].phas){context.fillStyle = "white";}else{context.fillStyle = "grey";}
+		context.fillText(i,8*i,110);
+		i=i+1;
+	}
+	
 	context.fillStyle = "white";
 	context.fillText(boosters[0],8,150);
 	context.fillText(boosters[boosters[0]],8,175);
-	
+	context.font='12px Arial';
+	context.fillStyle = "green"; 
+	context.fillText("Task: "+task,8,200);
+	if (diagnostic == 1){allblasters[wep].drawstats(8,250);}
 	
 	//context.fillText(wep,32,144);
 	context.fillText("Mouse aims, left-flick fires, right-click thrusts, 1234567890 selects weapons. M toggles map mode, N toggles nav computer mode, < and > cycles nav targets, [ and ] cycles enemy targets, T for closest target (sometimes)",128,10);
@@ -161,61 +152,13 @@ function hud(){
 	context.font='12px Arial';
 	playerradio.display(time);
 //Journal display if active
-if (journalactive){
+	if (journalactive){
 		context.fillStyle = "teal";
 		playerradio.showlog(0);
-	}
+		}
 ////Shopping!//////////////////////////////////////////////////////
-if (dockstate==1){//Earf station
-	context.fillText("Up and Down to select, Enter to purchase.",canvas.width/2+64,canvas.height/2-120);
-	var shopchart1 = [ ["$20 Repair hull", "$200 w3 Flakker", "$600 w1 Blaster Upgrade I (detonator)","$1000 w3 Flakker Upgrade I (damage)","$1000 w6 Laser","$800 Single-use extra hull","$500 Booster I","EMPTY","EMPTY","EMPTY"]  ];
-	context.font='12px Arial';
-	context.fillStyle = "white";
-	showchart(shopchart1, 80,20,canvas.width/2+64, canvas.height/2-90);	
-	context.fillText(shopitem,canvas.width/2+64,canvas.height/2+120);	
-	context.beginPath(); 
-	context.rect(canvas.width/2+60,canvas.height/2-104+20*shopitem, 256, 18); //This is the item selection indicator
-	context.lineWidth = 2; 
-	context.strokeStyle = "green";
-	context.stroke();	
-	}
-if (dockstate==2){//Merz station
-	context.fillText("Up and Down to select, Enter to purchase.",canvas.width/2+64,canvas.height/2-120);
-	var shopchart1 = [ ["$20 Repair hull","$400 w2 Mine", "$200 w3 Flakker", "$600 w1 Blaster Upgrade I (detonator)","$1000 Armor Upgrade I","$3000 Radar Upgrade I","$400 Single-use extra hull","$500 Booster I","EMPTY","EMPTY"]  ];
-	context.font='12px Arial';
-	context.fillStyle = "white";
-	showchart(shopchart1, 80,20,canvas.width/2+64, canvas.height/2-90);	
-	context.fillText(shopitem,canvas.width/2+64,canvas.height/2+120);	
-	context.beginPath(); 
-	context.rect(canvas.width/2+60,canvas.height/2-104+20*shopitem, 256, 18); //This is the item selection indicator
-	context.lineWidth = 2; 
-	context.strokeStyle = "green";
-	context.stroke();	
-	}
-if (dockstate==3){//Jupe station
-	context.fillText("Up and Down to select, Enter to purchase.",canvas.width/2+64,canvas.height/2-120);
-	var shopchart1 = [ ["$20 Repair hull","$400 w2 Mine", "$200 w3 Flakker", "$1000 w4 Railgun","$600 w1 Blaster Upgrade I (detonator)","$1200 w2 Mine Upgrade I (detonator)","$1000 w3 Flakker Upgrade I (damage)","$1000 Armor Upgrade I","$2000 Shield Upgrade I","$800 Single-use extra hull"]  ];
-	context.font='12px Arial';
-	context.fillStyle = "white";
-	showchart(shopchart1, 80,20,canvas.width/2+64, canvas.height/2-90);	
-	context.fillText(shopitem,canvas.width/2+64,canvas.height/2+120);	
-	context.beginPath(); 
-	context.rect(canvas.width/2+60,canvas.height/2-104+20*shopitem, 256, 18); //This is the item selection indicator
-	context.lineWidth = 2; 
-	context.strokeStyle = "green";
-	context.stroke();	
-	}
-if (dockstate==4){//Anus station
-	context.fillText("Up and Down to select, Enter to purchase.",canvas.width/2+64,canvas.height/2-120);
-	var shopchart1 = [ ["$20 Repair hull","$1000 w4 Railgun","$2400 w5 SpreadShot Cannon","$4000 w6 Lazzor","$6000 w7 Double Rainbow","$4000 w8 Spectral Disintegrator", "$10000 w9 Bapadoop","$2000 Shield Upgrade I","$400 Single-use extra hull","EMPTY"]  ];
-	context.font='12px Arial';
-	context.fillStyle = "white";
-	showchart(shopchart1, 80,20,canvas.width/2+64, canvas.height/2-90);	
-	context.fillText(shopitem,canvas.width/2+64,canvas.height/2+120);	
-	context.beginPath(); 
-	context.rect(canvas.width/2+60,canvas.height/2-104+20*shopitem, 256, 18); //This is the item selection indicator
-	context.lineWidth = 2; 
-	context.strokeStyle = "green";
-	context.stroke();	
+	if ((dockstate>0)&&(dockstate<allshops.length)){
+		if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}
+		allshops[dockstate].draw(400,400,shopitem);
 	}
 }
