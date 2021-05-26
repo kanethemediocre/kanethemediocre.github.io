@@ -42,7 +42,7 @@ class Shopitem{
 		if (this.type == "blaster"){
 			thisprice = allblasters[this.i].nextupcost();
 		}else if (this.type == "cargo"){
-			thisprice = allcargos[this.i].baseprice;
+			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[dockstate].cargoprices[this.i]);
 		}else if (this.type == "upgrade"){
 			//thisprice = 69;
 			thisprice = allupgrades[this.i].price*2**(this.utier);
@@ -110,7 +110,7 @@ class Shopitem{
 			inventory.takecargo(this.i, 1);
 			}
 	}
-	available(playership){
+	available(playership, pinv){
 		var buyable = false;
 		if (this.type == "blaster"){
 			if (this.utype == "buy"){
@@ -136,7 +136,11 @@ class Shopitem{
 					buyable = true;
 					}
 				}
-		}else{ buyable = true;}
+		}else if (this.type == "cargo"){
+			if (pinv.maxcargo > pinv.totalcargo()){
+				buyable = true;
+				}
+			}else{buyable = true;}
 		return buyable;
 		}
 	}
@@ -146,8 +150,15 @@ class Shop{
 		this.description = description; 
 		this.home = storelocation; //a station umo
 		this.inv = inv;//list of shopitem objects
+		this.cargoprices = [];//list of price multipliers, index matching allcargos list
+		var i=0;
+		while (i<allcargos.length){
+			var pricemulti = 0.5+Math.random();
+			this.cargoprices.push(pricemulti); //fill array with 1x multipliers by default
+			i=i+1;
+			}
 		}
-	draw(xpos,ypos,item){//screen coords of top corner, item index
+	drawbuymenu(xpos,ypos,item){//screen coords of top corner, item index
 		var x = xpos;
 		var y = ypos;
 		context.font='16px Arial';
@@ -174,18 +185,37 @@ class Shop{
 		var i=0;
 		while (i<this.inv.length){
 			context.fillStyle = "grey";
-			if (this.inv[i].available(ships[0])){
+			if (this.inv[i].available(ships[0],playerinventory)){//Used global variable instead of reference
 				context.fillStyle = "white";
-			}
+				}
 			context.fillText(this.inv[i].namestring().slice(0,16),x,y+32+16*i);
 			context.fillText(this.inv[i].describestring().slice(0,16),x+80,y+32+16*i);
 			context.fillText(this.inv[i].itemprice(),x+200,y+32+16*i);
 			context.fillText(this.inv[i].utype.slice(0,16),x+300,y+32+16*i);
 			i=i+1;
-		}
-		
-		
+			}
 		}	
+	
+	drawsellmenu(xpos,ypos,item){//screen coords of top corner, item index
+		var x = xpos;
+		var y = ypos;
+		context.font='16px Arial';
+		context.fillStyle = "white";
+		context.fillText("Welcome to "+this.name,x,y);
+		context.font='12px Arial';
+		context.fillText(allcargos[item].description,x,y+256);
+		context.fillText('X',x-16,y+32+item*16);
+		//replace showchart function
+		var i=0;
+		while (i<allcargos.length){
+			if (playerinventory.cargo[i]>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}//Used global variable instead of reference
+			context.fillText(allcargos[i].name.slice(0,16),x,y+32+16*i);
+			context.fillText(allcargos[i].description.slice(0,16),x+80,y+32+16*i);
+			context.fillText(Math.floor(allcargos[i].baseprice*allshops[dockstate].cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
+			i=i+1;
+			}
+		}		
+
 	}
 let repairshopitem = new Shopitem("upgrade",0,"repair",0);
 let buyw2item = new Shopitem("blaster",2,"buy",0); //Mine weapon
@@ -193,21 +223,24 @@ let buyw3item = new Shopitem("blaster",3,"buy",0); //Flakker weapon
 let buyw4item = new Shopitem("blaster",4,"buy",0);//Railgun weapon
 let remotew1item = new Shopitem("blaster",1,"remote",1);//blaster remote upgrade
 let booster0 = new Shopitem("booster",0,"buy",0); //Tier 0 booster
-let merzianshopitem7 = new Shopitem("cargo",0,"buy",1);//The upgrade tier variable will used as a price multiplier for cargo
-let merzianshopitem8 = new Shopitem("cargo",1,"buy",1); 
-let merzianshopitem9 = new Shopitem("cargo",2,"buy",1); 
-let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster0,merzianshopitem7,merzianshopitem8,merzianshopitem9];
+let buycargo0 = new Shopitem("cargo",0,"buy",1);//The upgrade tier variable will used as a price multiplier for cargo
+let buycargo0x0d5 = new Shopitem("cargo",0,"buy",0.5);//The upgrade tier variable will used as a price multiplier for cargo
+let buycargo0x2 = new Shopitem("cargo",0,"buy",2);//The upgrade tier variable will used as a price multiplier for cargo
+let buycargo1 = new Shopitem("cargo",1,"buy",1); 
+let buycargo2 = new Shopitem("cargo",2,"buy",1); 
+let buyw0item = new Shopitem("blaster",0,"buy",0); //probe
+let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster0,buycargo0x0d5,buycargo1,buycargo2,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
 
 //let billshopitem1 = new Shopitem("upgrade",0,"repair",0);
 //let billshopitem2 = new Shopitem("blaster",2,"buy",0); //Mine weapon
 //let billshopitem3 = new Shopitem("blaster",3,"buy",0); //Flakker weapon
-let billshopitem4 = new Shopitem("blaster",1,"damage",1); //Blaster damage upgrade
-let billshopitem5 = new Shopitem("blaster",3,"damage",1); //Flakker damage upgrade
+let upw1damage = new Shopitem("blaster",1,"damage",1); //Blaster damage upgrade
+let upw3damage = new Shopitem("blaster",3,"damage",1); //Flakker damage upgrade
 let armorupitem = new Shopitem("upgrade",1,"armor",1); //Armor upgrade
-let billshopitem7 = new Shopitem("cargo",2,"buy",1); 
-let billshopitem8 = new Shopitem("cargo",3,"buy",1); 
-let billshopitems = [repairshopitem,buyw2item,buyw3item,billshopitem4,billshopitem5,armorupitem,billshopitem7,billshopitem8]
+//let billshopitem7 = new Shopitem("cargo",2,"buy",1); 
+let buycargo3 = new Shopitem("cargo",3,"buy",1); 
+let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,armorupitem,buycargo2,buycargo3]
 let billbits = new Shop("Bills Billion Bits", 0, "Welcome to Earf", billshopitems);
 
 //let jojoshopitem1 = new Shopitem("upgrade",0,"repair",0);
@@ -217,9 +250,9 @@ let buyw9item = new Shopitem("blaster",9,"buy",0); //Beepadoop (big bomb)
 let remotew2item = new Shopitem("blaster",2,"remote",1); //Mine remote detonator upgrade
 let jojoshopitem7 = new Shopitem("upgrade",2,"shield",1); //Flakker damage upgrade
 let jojoshopitem8 = new Shopitem("upgrade",4,"radar",1); //Armor upgrade
-let jojoshopitem9 = new Shopitem("cargo",2,"buy",1); 
-let jojoshopitem10 = new Shopitem("cargo",5,"buy",1); 
-let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,armorupitem,jojoshopitem7,jojoshopitem8,jojoshopitem9,jojoshopitem10];
+//let jojoshopitem9 = new Shopitem("cargo",2,"buy",1); 
+let buycargo5 = new Shopitem("cargo",5,"buy",1); 
+let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,armorupitem,jojoshopitem7,jojoshopitem8,buycargo2,buycargo5];
 let jojocheese = new Shop("JoJo's House of Cheese", 2, "Jupe Fantastico", jojoshopitems);
 
 //let dangshopitem1 = new Shopitem("upgrade",0,"repair",0);
@@ -232,6 +265,6 @@ let dangshopitem7 = new Shopitem("blaster",1,"damage",1);
 let dangshopitem8 = new Shopitem("upgrade",3,"shieldregen",1);
 let dangshopitem9 = new Shopitem("cargo",1,"buy",0);
 let dangshopitem10 = new Shopitem("cargo",6,"buy",0);
-let dangshopitems = [repairshopitem,buyw4item,dangshopitem3,dangshopitem4,dangshopitem5,dangshopitem6,dangshopitem7,dangshopitem8,dangshopitem9,dangshopitem10];
+let dangshopitems = [repairshopitem,buyw4item,dangshopitem3,dangshopitem4,dangshopitem5,dangshopitem6,dangshopitem7,dangshopitem8,dangshopitem9,dangshopitem10,buycargo0x2];
 let dangustown = new Shop("Dangustown", 2, "It's YOUR Anus!", dangshopitems);
 let allshops = [0,billbits,merrymerz,jojocheese,dangustown];

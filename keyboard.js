@@ -111,11 +111,13 @@ window.addEventListener("keydown", function (event) {
       break;
     case "ArrowUp":
 		shopitem = shopitem - 1;
-		if (shopitem<0){shopitem = 9;}
+		if ((shopitem<0)&&(shopmode == 0)){shopitem = allshops[dockstate].inv.length-1;}
+		if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-1;}
       break;
     case "ArrowDown":
 		shopitem = shopitem + 1;
-		if (shopitem>9){shopitem = 0;}
+		if ((shopitem>allshops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
+		if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
       break;   //handled in detail elsewhere
     case "End":
 		money = money +10000;
@@ -138,15 +140,34 @@ window.addEventListener("keydown", function (event) {
       break;
 	 case "Enter": //The enter key purchases the currently selected shop item
 	 if ((dockstate > 0)&&(dockstate<allshops.length)){//check if docked and shop exists
-		 if (shopitem<allshops[dockstate].inv.length){//check for shopitem available
-			if (allshops[dockstate].inv[shopitem].itemprice()<=money){
-				money = money - allshops[dockstate].inv[shopitem].itemprice();
-				allshops[dockstate].inv[shopitem].buy(money,ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+		if (shopmode == 0){
+			 if (shopitem<allshops[dockstate].inv.length){//check for shopitem exists
+				if (allshops[dockstate].inv[shopitem].itemprice()<=money){ //check if player has enough money
+					if (allshops[dockstate].inv[shopitem].available(ships[0],playerinventory)){ //check if player has prerequisites / doesn't already own item
+						money = money - allshops[dockstate].inv[shopitem].itemprice();
+						allshops[dockstate].inv[shopitem].buy(money,ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+					}
+				}
+			}		 
+		}else if (shopmode == 1){
+			//if (playerinventory.cargo.length <= shopitem){shopitem = 0;}
+			if (playerinventory.cargo[shopitem]>0){
+				playerinventory.cargo[shopitem]=playerinventory.cargo[shopitem]-1;
+				money = money + Math.floor(allcargos[shopitem].baseprice*allshops[dockstate].cargoprices[shopitem]);
 			}
-		}		 
-	}
-
+			
+		}
+	 }
       break;
+	 case "Backspace": //The enter key purchases the currently selected shop item
+		if (shopmode == 0) {
+			shopmode = 1;
+			shopitem = 0;
+		}else{
+			shopmode = 0;
+			shopitem = 0;
+			}
+	  break;
     default:
       return; // Quit when this doesn't handle the key event.
   } //end event key handling switch

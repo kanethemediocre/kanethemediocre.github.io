@@ -130,7 +130,6 @@ function hud(){
 		context.fillText(i,8*i,110);
 		i=i+1;
 	}
-	
 	context.fillStyle = "white";
 	context.fillText(boosters[0],8,150);
 	context.fillText(boosters[boosters[0]],8,175);
@@ -156,8 +155,13 @@ function hud(){
 		}
 ////Shopping!//////////////////////////////////////////////////////
 	if ((dockstate>0)&&(dockstate<allshops.length)){
-		if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}
-		allshops[dockstate].draw(400,400,shopitem);
+		if (shopmode == 0){
+			if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}
+			allshops[dockstate].drawbuymenu(400,400,shopitem);
+		}else if (shopmode == 1){
+			//if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}//make this work with cargos
+			allshops[dockstate].drawsellmenu(400,400,shopitem);
+		}
 	}
 	//draw cargo stuff
 	playerinventory.draw(8,450);

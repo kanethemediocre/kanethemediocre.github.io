@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b28 by KaneTheMediocre</title>
+    <title>Umo Space 167b35 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -11,8 +11,8 @@
 <script type="text/javascript" src="umo.js"></script>
 <script type="text/javascript" src="upgrades.js"></script>	
 <script type="text/javascript" src="blasters.js"></script>	
-<script type="text/javascript" src="shop.js"></script>		
-<script type="text/javascript" src="cargo.js"></script>		
+<script type="text/javascript" src="cargo.js"></script>
+<script type="text/javascript" src="shop.js"></script>			
 <script type="text/javascript" src="texthandling.js"></script>
 <script type="text/javascript" src="graphics.js"></script>
 <script type="text/javascript" src="system.js"></script>
@@ -72,6 +72,7 @@ var storymessages =  loadstorymessages();//storytext.js
 var task = "Read the tutorial";
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats.  Might get used for other items.
+var shopmode = 0; //0 is buy menu, 1 is sell menu
 
 
 
@@ -346,7 +347,7 @@ function update() {
 		var j = ships.length;
 		while (j>1){ //for all ships...
 			j=j-1;
-			if (playerbombs[27].collide(ships[j])){//Checks for collision only
+			if (allblasters[0].bombs[0].collide(ships[j])){//Checks for collision only
 				ships[0].polytheta = ships[j].polytheta;//Applies enemy polygon to player
 				ships[0].polyradius = ships[j].polyradius;
 				}
