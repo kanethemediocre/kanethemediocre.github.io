@@ -124,7 +124,7 @@ class Blaster{
 			this.bombs[i].boombuff = this.boom;
 			this.bombs[i].hp = 1;
 			this.bombs[i].shield = 1;
-			if (this.etier == 1){
+			if (this.etier >0){
 				this.bombs[i].hp = 100;
 				this.bombs[i].shield = 1;
 			}

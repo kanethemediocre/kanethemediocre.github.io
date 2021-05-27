@@ -35,6 +35,15 @@ anusoutpost.polytheta = totheta;
 anusoutpost.polyradius = toradii;
 anusoutpost.setorbit(planets[0], 170000, 0.05, 1);//set in orbit around sun behind jupe
 
-var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost];
-return outposts
+let randoutpost = new Umo(0,0,128, randcolor());
+randoutpost.parentid = 0;
+randoutpost.name = "Rando's";
+var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
+var toradii = [1,1,1,1]; //rectangle
+randoutpost.polytheta = totheta;
+randoutpost.polyradius = toradii;
+randoutpost.setorbit(planets[0], 32000, 0.3, 1);//set in orbit around sun trailing earf
+
+var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost, randoutpost];
+return outposts;
 }

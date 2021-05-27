@@ -79,11 +79,25 @@ class Shopitem{
 					}
 				}
 			if (this.utype == "bounce"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()&&(allblasters[this.i].btier == 0) ) ){ //verify player doesnt already have blaster, and has enough money
 					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
 					allblasters[this.i].plusbounce();
 					}
 				}
+			if (this.utype == "n"){
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
+					allblasters[this.i].plusn();
+					}
+				}
+			if (this.utype == "timer"){
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
+					allblasters[this.i].plustimer();
+					}
+				}
+				
+				
 			
 		}else if (this.type == "upgrade"){
 			if (this.utype =="armor"){
@@ -118,7 +132,7 @@ class Shopitem{
 					buyable = true;
 					}
 				}
-			if (this.utype == "damage"){//can always upgrade damage (for now)
+			if ((this.utype == "damage")&&(allblasters[this.i].phas)&&(allblasters[this.i].dtier<allblasters[this.i].maxhurt)){//can always upgrade damage (for now)
 				buyable = true;
 				}
 			if (this.utype == "remote"){ //can only upgrade remote detonator once.
@@ -127,12 +141,22 @@ class Shopitem{
 					}
 				}
 			if (this.utype == "speed"){ //can always upgrade speed
-				if (allblasters[this.i].phas==true){ //verify player already has blaster.
+				if ((allblasters[this.i].phas==true)&&(allblasters[this.i].stier<allblasters[this.i].maxspeed)){ //verify player already has blaster.
 					buyable = true;
 					}
 				}
 			if (this.utype == "bounce"){//can only upgrade bounce once.
-				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].rtier == 0) ){ //verify player already has blaster, and doesn't have bounce upgrade
+				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].etier == 0) ){ //verify player already has blaster, and doesn't have bounce upgrade
+					buyable = true;
+					}
+				}
+			if (this.utype == "timer"){//can only upgrade bounce once.
+				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].ttier<allblasters[this.i].maxtimer) ){ //verify player already has blaster, and doesn't have bounce upgrade
+					buyable = true;
+					}
+				}
+			if (this.utype == "boom"){//can only upgrade bounce once.
+				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].btier<allblasters[this.i].maxboom) ){ //verify player already has blaster, and doesn't have bounce upgrade
 					buyable = true;
 					}
 				}
@@ -266,5 +290,26 @@ let dangshopitem8 = new Shopitem("upgrade",3,"shieldregen",1);
 let dangshopitem9 = new Shopitem("cargo",1,"buy",0);
 let dangshopitem10 = new Shopitem("cargo",6,"buy",0);
 let dangshopitems = [repairshopitem,buyw4item,dangshopitem3,dangshopitem4,dangshopitem5,dangshopitem6,dangshopitem7,dangshopitem8,dangshopitem9,dangshopitem10,buycargo0x2];
-let dangustown = new Shop("Dangustown", 2, "It's YOUR Anus!", dangshopitems);
-let allshops = [0,billbits,merrymerz,jojocheese,dangustown];
+let dangustown = new Shop("Dangustown", 3, "It's YOUR Anus!", dangshopitems);
+
+let randshopitems = [];
+var i = 0;
+while (i<16){
+	var randblaster = Math.floor(Math.random()*10);
+	var randblasterfxseed = Math.floor(Math.random()*8);
+	var randblastfx = "buy";
+	if (randblasterfxseed == 1){randblastfx = "damage";}
+	else if (randblasterfxseed == 2){randblastfx = "speed";}
+	else if (randblasterfxseed == 3){randblastfx = "bounce";}
+	else if (randblasterfxseed == 4){randblastfx = "remote";}	
+	else if (randblasterfxseed == 5){randblastfx = "n";}
+	else if (randblasterfxseed == 6){randblastfx = "boom";}
+	else if (randblasterfxseed == 7){randblastfx = "timer";}
+	randshopitems.push(new Shopitem("blaster",randblaster,randblastfx,0));
+	i=i+1;
+}
+
+let randoshop = new Shop("Rando's",4, "Randomized items", randshopitems);
+
+
+let allshops = [0,billbits,merrymerz,jojocheese,dangustown,randoshop];
