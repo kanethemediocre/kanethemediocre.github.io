@@ -74,9 +74,6 @@ var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boost
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats.  Might get used for other items.
 var shopmode = 0; //0 is buy menu, 1 is sell menu
 
-
-
-
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
 	var dd = dir - objdir; //How much off the actual direction are you pointing?

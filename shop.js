@@ -115,8 +115,8 @@ class Shopitem{
 			} else if (this.utype =="radar"){
 				radarrange = radarrange + 1000;
 				this.utier = this.utier+1;
-			} else if (this.utype =="thrust"){
-				//increase player thrust multiplier.
+			} else if (this.utype =="cargo"){
+				playerinventory.maxcargo = playerinventory.maxcargo + 5; //refers to global, not passed variable.
 				}
 		}else if (this.type == "booster"){
 			//stuff to buy the booster
@@ -292,9 +292,9 @@ let dangshopitem10 = new Shopitem("cargo",6,"buy",0);
 let dangshopitems = [repairshopitem,buyw4item,dangshopitem3,dangshopitem4,dangshopitem5,dangshopitem6,dangshopitem7,dangshopitem8,dangshopitem9,dangshopitem10,buycargo0x2];
 let dangustown = new Shop("Dangustown", 3, "It's YOUR Anus!", dangshopitems);
 
-let randshopitems = [];
+let randshopitems1 = [];
 var i = 0;
-while (i<16){
+while (i<12){
 	var randblaster = Math.floor(Math.random()*10);
 	var randblasterfxseed = Math.floor(Math.random()*8);
 	var randblastfx = "buy";
@@ -305,11 +305,24 @@ while (i<16){
 	else if (randblasterfxseed == 5){randblastfx = "n";}
 	else if (randblasterfxseed == 6){randblastfx = "boom";}
 	else if (randblasterfxseed == 7){randblastfx = "timer";}
-	randshopitems.push(new Shopitem("blaster",randblaster,randblastfx,0));
+	randshopitems1.push(new Shopitem("blaster",randblaster,randblastfx,0));
 	i=i+1;
 }
+let randoshop1 = new Shop("Marlon Rando's Randomized Blasters",4, "Randomized items", randshopitems1);
 
-let randoshop = new Shop("Rando's",4, "Randomized items", randshopitems);
+let randshopitems2 = [];
 
-
-let allshops = [0,billbits,merrymerz,jojocheese,dangustown,randoshop];
+var i = 0;
+while (i<12){
+	var randupgrade = Math.floor(Math.random()*6);
+	var randupgradetype = "repair";
+	if (randupgrade == 1){randupgradetype = "armor";}
+	else if (randupgrade == 2){randupgradetype = "shield";}
+	else if (randupgrade == 3){randupgradetype = "shieldregen";}
+	else if (randupgrade == 4){randupgradetype = "radar";}	
+	else if (randupgrade == 5){randupgradetype = "cargo";}
+	randshopitems2.push(new Shopitem("upgrade",randupgrade,randupgradetype,0));
+	i=i+1;
+}
+let randoshop2 = new Shop("Rando Calrissian's Randomized Upgrades",4, "Randomized items", randshopitems2);
+let allshops = [0,billbits,merrymerz,jojocheese,dangustown,randoshop1,randoshop2];

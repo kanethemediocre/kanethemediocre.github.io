@@ -35,15 +35,25 @@ anusoutpost.polytheta = totheta;
 anusoutpost.polyradius = toradii;
 anusoutpost.setorbit(planets[0], 170000, 0.05, 1);//set in orbit around sun behind jupe
 
-let randoutpost = new Umo(0,0,128, randcolor());
-randoutpost.parentid = 0;
-randoutpost.name = "Rando's";
+let randoutpost1 = new Umo(0,0,128, randcolor());
+randoutpost1.parentid = 0;
+randoutpost1.name = "Marlon Rando's Randomized Blasters";
 var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
 var toradii = [1,1,1,1]; //rectangle
-randoutpost.polytheta = totheta;
-randoutpost.polyradius = toradii;
-randoutpost.setorbit(planets[0], 32000, 0.3, 1);//set in orbit around sun trailing earf
+randoutpost1.polytheta = totheta;
+randoutpost1.polyradius = toradii;
+randoutpost1.setorbit(planets[0], 32000, 0.3, 1);//set in orbit around sun trailing earf
 
-var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost, randoutpost];
+let randoutpost2 = new Umo(0,0,128, randcolor());
+randoutpost2.parentid = 0;
+randoutpost2.name = "Rando Calrissian's Randomized Upgrades";
+var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
+var toradii = [1,1,1,1]; //rectangle
+randoutpost2.polytheta = totheta;
+randoutpost2.polyradius = toradii;
+randoutpost2.setorbit(planets[0], 32000, 0.32, 1);//set in orbit around sun trailing earf
+
+
+var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost, randoutpost1,randoutpost2];
 return outposts;
 }
