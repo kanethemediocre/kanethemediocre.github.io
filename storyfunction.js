@@ -52,7 +52,7 @@ switch(storystate){//Tutorial missions so far.
 	//	if (dstory==5){
 	//		playerradio.newmsg("Tutorial Dude",storymessages[5],time);//newmsg(sndr, msg, thetime)
 	//		}
-		if ((dstory>5)&&(ships[0].distance(planets[5])<512)){
+		if ((dstory>5)&&(systems[playersystem].ships[0].distance(systems[playersystem].planets[5])<512)){
 			playerradio.newmsg("Tutorial Dude",storymessages[6],time);//newmsg(sndr, msg, thetime)
 			task = "Dock at the Merry Merzian";
 			storystate=7;
@@ -134,9 +134,9 @@ switch(storystate){//Tutorial missions so far.
 	break;			
 	case 16:
 		if (dstory>playerradio.msgtime){
-			playerradio.newmsg("Tutorial Dude",storymessages[16]+ships[9].name,time);//newmsg(sndr, msg, thetime)
-			task = "Destroy ship "+ships[9].name+" near Merz";
-			ships[9].respawn(planets[ships[9].parentid]);
+			playerradio.newmsg("Tutorial Dude",storymessages[16]+systems[playersystem].ships[9].name,time);//newmsg(sndr, msg, thetime)
+			task = "Destroy ship "+systems[playersystem].ships[9].name+" near Merz";
+			ships[9].respawn(systems[playersystem].planets[ships[9].parentid]);
 			storystate = 17;
 			storytime = time;
 			}
@@ -170,16 +170,17 @@ switch(storystate){//Tutorial missions so far.
 		if (dstory>playerradio.msgtime){
 			playerradio.newmsg("Tutorial Dude",storymessages[20],time);//newmsg(sndr, msg, thetime)
 			task = "Try out the Mine (weapon 2)";
-			w2=1;
+			allblasters[2].phas = true;
 			storystate = 21;
 			storytime = time;
 			}
 	break;	
 	case 21:
-		if ((wep==2) && (playerbombs[1].s>32)){//If w2 has fired and exploded
+		if ((wep==2) && (allblasters[2].timer > 7)){//If w2 has fired 
 			playerradio.newmsg("Tutorial Dude",storymessages[21],time);//newmsg(sndr, msg, thetime)
+			allblasters[2].timer = 7;
 			wep=1;
-			w2=0;
+			allblasters[2].phas = false;
 			storystate = 22;
 			storytime = time;
 			}
@@ -187,7 +188,7 @@ switch(storystate){//Tutorial missions so far.
 	case 22:
 		if (dockstate==2){//if player has retuirned to the merry merz
 			playerradio.newmsg("Tutorial Dude",storymessages[22],time);//newmsg(sndr, msg, thetime)
-			w2=1;
+			allblasters[2].phas = true;
 			storystate = 23;
 			storytime = time;
 			}

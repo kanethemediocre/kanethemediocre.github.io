@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b35 by KaneTheMediocre</title>
+    <title>Umo Space 167b44 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -29,7 +29,7 @@
 	
 	
 <script>
-// declare variables
+// declare global variables/////////////////////////////////////////////////
 const FPS = 30;
 setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
@@ -73,6 +73,7 @@ var task = "Read the tutorial";
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats.  Might get used for other items.
 var shopmode = 0; //0 is buy menu, 1 is sell menu
+var playersystem = 1; 
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -85,13 +86,12 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 		return 1;
 		}else {return 0;}
 	}
-	//////////////////Function tests
-	let testsystem = new System(2,"thetestsystem",0,500000);
-	testsystem.randomplanets();
-	let playerradio = new Radio(" ");
-	//let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
-	let mission2 =  new Mission("assassinate", 0, 6, "A nasty robot in earf orbit needs to be removed.",1500, 0);
-	////constructor(missiontype, morigin, mtarget,mmessage,mreward)
+//////////////////Function tests
+let testsystem = new System(2,"thetestsystem",0,0);
+testsystem.randomplanets();
+let playerradio = new Radio(" ");
+//let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
+////constructor(missiontype, morigin, mtarget,mmessage,mreward)
 ////////Declarations//////////////////////////////////////////////////////////////////////////////////
 ////////This is basically the game world/////////////////////////////////////////////////////////////////
 ////////Player stuff///////////////////////////////////////////////////////////
@@ -119,38 +119,42 @@ let outposts= loadhomeoutposts();
 let playerbombs = loadplayerbombs();
 let botbombs=[];
 let home = new System(1,"Sool",0,0);
-home.planets = planets;
+
+
+home.planets = planets;//these are from loadhomesystem function output, which defines the starter system.
 home.ships = ships;
 home.botbombs = botbombs;
 home.outposts = outposts;
+let systems = [0,home,testsystem];
 //////procedural bot ship generation//////////////////////////////////////////////////////////////////////////////////////////////////
-home.addrandomgang(1,2,24);
-home.addrandomgang(2,3,3);
-home.addrandomgang(3,3,2);//no moon bots
-home.addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
-home.addrandomgang(10,3,4);
-home.addrandomgang(11,4,6);
-home.addrandomgang(12,3,5);
-home.addrandomgang(14,2,7);
-home.addrandomgang(15,4,9);
-home.addrandomgang(16,4,10);
-home.addrandomgang(17,4,8);
-home.addrandomgang(18,2,11);
-home.addrandomgang(21,2,6);
-home.addrandomgang(22,2,6);
-home.addrandomgang(23,4,4);//no tune bots
-home.addrandomgang(25,5,16);
-var i = home.botbombs.length;
+systems[playersystem].addrandomgang(1,2,24);
+systems[playersystem].addrandomgang(2,3,3);
+systems[playersystem].addrandomgang(3,3,2);//no moon bots
+systems[playersystem].addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
+systems[playersystem].addrandomgang(10,3,4);
+systems[playersystem].addrandomgang(11,4,6);
+systems[playersystem].addrandomgang(12,3,5);
+systems[playersystem].addrandomgang(14,2,7);
+systems[playersystem].addrandomgang(15,4,9);
+systems[playersystem].addrandomgang(16,4,10);
+systems[playersystem].addrandomgang(17,4,8);
+systems[playersystem].addrandomgang(18,2,11);
+systems[playersystem].addrandomgang(21,2,6);
+systems[playersystem].addrandomgang(22,2,6);
+systems[playersystem].addrandomgang(23,4,4);//no tune bots
+systems[playersystem].addrandomgang(25,5,16);
+systems[playersystem].addrandomgang(26,8,32);
+var i = systems[playersystem].botbombs.length;
 while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	i=i-1;
-	home.botbombs[i].hp = 1;  //Set hitpoints to 1 so they explode on contact
-	home.botbombs[i].maxhp = 1; //with planets 
-	home.botbombs[i].shield=0;  
+	systems[playersystem].botbombs[i].hp = 1;  //Set hitpoints to 1 so they explode on contact
+	systems[playersystem].botbombs[i].maxhp = 1; //with planets 
+	systems[playersystem].botbombs[i].shield=0;  
 	}
 var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
 
-let waldo = new Umo(0,0,1000,"purple");
-waldo.setorbit(home.planets[0], 1000000, 0, 1);
+//let waldo = new Umo(0,0,1000,"purple");
+//waldo.setorbit(home.planets[0], 1000000, 0, 1);
 //size adjust for collision at 10,000
 //waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
 //Size should be inversely related to the distance from event horizon
@@ -166,8 +170,8 @@ function update() {
 	//end testing zone	
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
-	if (mapactive == 1){drawmap(planets,outposts,mapscale,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y,radarrange);}//centered map
-	if (mapactive == 2){drawmap(planets,outposts,mapscale,200,canvas.height-150,ships[0].x, ships[0].y,radarrange);
+	if (mapactive == 1){drawmap(systems[playersystem].planets,systems[playersystem].outposts,mapscale,canvas.width/2,canvas.height/2, systems[playersystem].ships[0].x, systems[playersystem].y,radarrange);}//centered map
+	if (mapactive == 2){drawmap(systems[playersystem].planets,systems[playersystem].outposts,mapscale,200,canvas.height-150,systems[playersystem].ships[0].x, systems[playersystem].ships[0].y,radarrange);
 		context.fillStyle = "black";//Background is black
 		context.fillRect(0, 0, canvas.width, canvas.height-300); //erase non-corner map area
 		context.fillRect(400, canvas.height-300, canvas.width,canvas.height); //erase non-corner map area
@@ -180,80 +184,77 @@ function update() {
 //Outpost stuff all handled here.....
 	//home.dockcheck(dockstate); //abstracting docking code seems to keep player stuck docked
 	var i=0;
-	while (i<outposts.length){
+	while (i<systems[playersystem].outposts.length){
 		//planets[0].gravitate(outposts[i]);
 		//outposts[i].d = outposts[i].directionof(planets[0]);
 		//outposts[i].update1();
-		if (ships[0].distance(outposts[i])<drawdistance+outposts[i].s/2){ //if ships[i] is near
+		if (systems[playersystem].ships[0].distance(systems[playersystem].outposts[i])<drawdistance+systems[playersystem].outposts[i].s/2){ //if ships[i] is near
 			//outposts[i].drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
-			if (ships[0].distance(outposts[i])<160){
-				outposts[i].dock(ships[0]);
+			if (systems[playersystem].ships[0].distance(systems[playersystem].outposts[i])<160){
+				systems[playersystem].outposts[i].dock(systems[playersystem].ships[0]);
 				dockstate = i+1;
 				}		
 			}
 		i=i+1;
 		}
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships.  Not used yet.///////////////////////////////////////////////////
-	var i = planets.length;
+	var i = systems[playersystem].planets.length;
 	while (i>0){//For all planets...
 		i=i-1;
-		var adist = ships[0].distance(planets[i]);
-		if ((planets[i].active==1)&&(adist>20000)){//If planet is already active and far away 
-			planets[i].active = 0; //deactivate
-		}else if ((planets[i].active==0)&&(adist<10000)){//else if planet is inactive and close
-			planets[i].active = 1; //activate
+		var adist = systems[playersystem].ships[0].distance(systems[playersystem].planets[i]);
+		if ((systems[playersystem].planets[i].active==1)&&(adist>20000)){//If planet is already active and far away 
+			systems[playersystem].planets[i].active = 0; //deactivate
+		}else if ((systems[playersystem].planets[i].active==0)&&(adist<10000)){//else if planet is inactive and close
+			systems[playersystem].planets[i].active = 1; //activate
 			}	
 		}
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
 
 	var i=0;//New weapon handling stuff
 	while (i<allblasters.length){//Draw any active bombs from allblasters.
-		allblasters[i].draw(ships[0].x,ships[0].y);
+		allblasters[i].draw(systems[playersystem].ships[0].x,systems[playersystem].ships[0].y);
 		allblasters[i].update1();
 		var j=0;
 		i=i+1;
 		}
-	home.draw2(ships[0].x,ships[0].y); //draws home system planets, ships, and bot bombs if close
-	home.updateall(); //Updates everthing in system
-	home.gravitateall(); //gravitates everything in system
+	systems[playersystem].draw2(systems[playersystem].ships[0].x,systems[playersystem].ships[0].y); //draws home system planets, ships, and bot bombs if close
+	systems[playersystem].updateall(); //Updates everthing in system
+	systems[playersystem].gravitateall(); //gravitates everything in system
 	
-	var i = planets.length; //gravitates bombs from allblasters
+	var i = systems[playersystem].planets.length; //gravitates bombs from allblasters
 	var k = allblasters.length;
 	while (i>0){//for all planets....
 		i=i-1;
 		var k = allblasters.length;
 		while (k>0){ //For all blasters to each planet
 			k=k-1;
-			allblasters[k].fall(planets[i]);
+			allblasters[k].fall(systems[playersystem].planets[i]);
 			}
 		}
-	
-	
-	
 	//home.gravitateothers(playerbombs);	
 	if (thruster<100){thruster=thruster+1;} //External variable updates
 	if (energy<100){energy = energy +1;}
 ////////////collisions/////////////////////////////////////////////////////
 
 
-	var j = ships.length;//New scheme bomb collisions.  Works alongside but will replace old scheme.
+	var j = systems[playersystem].ships.length;//New scheme bomb collisions.  Works alongside but will replace old scheme.
 	var k = allblasters.length;
 	while (j>0){ //for all ships (and bombs)
 		j=j-1;
 		k = allblasters.length;
 		while (k>0){
 			k=k-1;
-			if (ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
-				allblasters[k].scollide(ships[j]);
-				if (ships[j].hp<0){
-					var getcash = Math.floor(Math.random()*21+10)*ships[j].level;
+			if (systems[playersystem].ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
+				allblasters[k].scollide(systems[playersystem].ships[j]);
+				if (systems[playersystem].ships[j].hp<0){
+					var getcash = Math.floor(Math.random()*21+10)*systems[playersystem].ships[j].level;
 					money = money + getcash;
 					gotmoney = [30,getcash];
 					}//Doesn't handle death, just cash.
 				}
 			}
 		}
-	var i = planets.length;
+	var i = systems[playersystem].planets.length;
 	var k = allblasters.length;
 	while (i>0){//for all planets....
 		i=i-1;
@@ -261,35 +262,35 @@ function update() {
 		while (k>0){ //For all blasters to each planet
 			k=k-1;
 			//planets[i].circlecollide(playerbombs[k]); 
-			allblasters[k].pcollide(planets[i]);
+			allblasters[k].pcollide(systems[playersystem].planets[i]);
 			}
 		}
 
-	var i = planets.length;
-	var j = ships.length;
+	var i = systems[playersystem].planets.length;
+	var j = systems[playersystem].ships.length;
 	//var k = playerbombs.length;
 	while (i>0){ //For all planets (and bombs and ships)
 		i=i-1;
-		j = ships.length;
+		j = systems[playersystem].ships.length;
 		while (j>0){ //For all ships to each planet
 			j=j-1;
-			planets[i].circlecollide(ships[j]);
+			systems[playersystem].planets[i].circlecollide(systems[playersystem].ships[j]);
 			}
-		k = botbombs.length;
+		k = systems[playersystem].botbombs.length;
 		while (k>0){ //For all bot bombs to each planet
 			k=k-1; 
-			planets[i].circlecollide(botbombs[k]);
+			systems[playersystem].planets[i].circlecollide(systems[playersystem].botbombs[k]);
 			}
 		}
-	j = ships.length;
+	j = systems[playersystem].ships.length;
 	while (j>0){ //for all ships (and botbombs)
 		j=j-1;
-		k = botbombs.length;
+		k = systems[playersystem].botbombs.length;
 		while (k>0){
 			k=k-1;
-			if (ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
-				botbombs[k].bombcollide(ships[j]);
-				if (ships[j].hp<0){
+			if (systems[playersystem].ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
+				systems[playersystem].botbombs[k].bombcollide(systems[playersystem].ships[j]);
+				if (systems[playersystem].ships[j].hp<0){
 					var getcash = Math.floor(Math.random()*21+10);
 					//money = money + getcash;//disabled bot kill payouts for now
 					//gotmoney = [30,getcash];
@@ -298,19 +299,19 @@ function update() {
 			}	
 		}
 ////////////AI behavior section///////////////////////////////////////////////
-	var j = ships.length; 
+	var j = systems[playersystem].ships.length; 
 	while (j>1){ //Does not act on ship[0], which is player1.  This means botbomb length is 1 less than ships.  Index must be adjusted accordingly
 		j=j-1; 
-		if ( (  ships[j].distance(planets[ships[j].parentid]) > 10000  )&&(ships[j].hp>0) ){//If this bot got lost....
-			var savedhp = ships[j].hp; //remember it's hitpoints... 
-			ships[j].respawn(planets[ships[j].parentid]); //Respawn...
-			ships[j].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
+		if ( (  systems[playersystem].ships[j].distance(systems[playersystem].planets[systems[playersystem].ships[j].parentid]) > 10000  )&&(systems[playersystem].ships[j].hp>0) ){//If this bot got lost....
+			var savedhp = systems[playersystem].ships[j].hp; //remember it's hitpoints... 
+			systems[playersystem].ships[j].respawn(systems[playersystem].planets[systems[playersystem].ships[j].parentid]); //Respawn...
+			systems[playersystem].ships[j].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
 			}
-		if (ships[0].distance(ships[j]) < 5000){ //Don't do anything if player is far
-			ships[j].track(ships[0]); //Bots point towards player
-			if ((Math.random()>0.96) && (botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-				var howclose = ships[j].distance(planets[ships[j].parentid])-(ships[j].s+planets[ships[j].parentid].s); //check if close
-				var lookat =  pointingat(ships[j].directionof(planets[ships[j].parentid]),ships[j].d,ships[j].distance(planets[ships[j].parentid]),ships[j].parentid.s);//check if pointing at parent planet
+		if (systems[playersystem].ships[0].distance(systems[playersystem].ships[j]) < 5000){ //Don't do anything if player is far
+			systems[playersystem].ships[j].track(systems[playersystem].ships[0]); //Bots point towards player
+			if ((Math.random()>0.96) && (systems[playersystem].botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+				//var howclose = systems[playersystem].ships[j].distance(systems[playersystem].planets[systems[playersystem].ships[j].parentid])-(systems[playersystem].ships[j].s+systems[playersystem].planets[systems[playersystem].ships[j].parentid].s); //check if close
+				//var lookat =  pointingat(ships[j].directionof(planets[ships[j].parentid]),ships[j].d,ships[j].distance(planets[ships[j].parentid]),ships[j].parentid.s);//check if pointing at parent planet
 				//		function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 				//if ((howclose>1500)||(lookat==0)){ships[j].launchbomb(botbombs[j-1], 12, 80); } //doesnt work how i want.
 				ships[j].launchbomb(botbombs[j-1], 12, 80); 					
@@ -318,41 +319,41 @@ function update() {
 			}
 		}
 ///////Respawn handling////////////////////////////////////////////////////////////////////////////////////////////
-	j = ships.length;
+	j = systems[playersystem].ships.length;
 	while (j>0){
 		j = j - 1;
-		if ((ships[j].deadtime < 0) && (ships[j].hp == -1000)){ //Death is handled in the update1
-			ships[j].respawn(planets[ships[j].parentid]); 
+		if ((systems[playersystem].ships[j].deadtime < 0) && (systems[playersystem].ships[j].hp == -1000)){ //Death is handled in the update1
+			systems[playersystem].ships[j].respawn(systems[playersystem].planets[systems[playersystem].ships[j].parentid]); 
 			}
 		}
 //////////Mouse turning/////////////////////////////////
-	ships[0].d = moused+Math.PI; //Instant turning because its easy for now
+	systems[playersystem].ships[0].d = moused+Math.PI; //Instant turning because its easy for now
 //HUD information/////////////////////////////////////////////////////////////////////////////////////
 //pointingat test///pointingat(objdir,dir,distance,size)
-	var pointingtest = pointingat(ships[0].directionof(planets[3]), ships[0].d, ships[0].distance(planets[3]),planets[3].s)
+	//var pointingtest = pointingat(systems[playersystem].ships[0].directionof(systems[playersystem].planets[3]), systems[playersystem].ships[0].d, systems[playersystem].ships[0].distance(systems[playersystem].planets[3]),systems[playersystem].planets[3].s)
 //Targeting HUD code in hud.js////////////////////////////////////////////////////////////////////////////////////////////////
 	hud();
 //////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
-//Now here i'm kludging rapid fire with 6 w8 bombs.  It worked.
-	if((mousestate==1)&&(time%4==0)&&(wep==8)&&(energy>6)){
-		var n = Math.floor(time/4)%6;
-		ships[0].launchbomb(playerbombs[20+n],16,16);//A mere 1 pixel per frame, but for 600 frames (20s).
-		energy = energy - 6;
-		}
+//Now here i'm kludging rapid fire with 6 w8 bombs.  It worked.  
+//	if((mousestate==1)&&(time%4==0)&&(wep==8)&&(energy>6)){ //obselete from playerbombs era
+//		var n = Math.floor(time/4)%6;
+//		ships[0].launchbomb(playerbombs[20+n],16,16);//A mere 1 pixel per frame, but for 600 frames (20s).
+//		energy = energy - 6;
+//		}
 ///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
 	if (wep==0){//wep == 11 to disable, wep should ==0
-		var j = ships.length;
+		var j = systems[playersystem].ships.length;
 		while (j>1){ //for all ships...
 			j=j-1;
-			if (allblasters[0].bombs[0].collide(ships[j])){//Checks for collision only
-				ships[0].polytheta = ships[j].polytheta;//Applies enemy polygon to player
-				ships[0].polyradius = ships[j].polyradius;
+			if (allblasters[0].bombs[0].collide(systems[playersystem].ships[j])){//Checks for collision only
+				systems[playersystem].ships[0].polytheta = systems[playersystem].ships[j].polytheta;//Applies enemy polygon to player
+				systems[playersystem].ships[0].polyradius = systems[playersystem].ships[j].polyradius;
 				}
 			}
 		}
 //////crapware bomb testing goes here
 	testcluster.update1();	
-	testcluster.draw(ships[0].x,ships[0].y,time);
+	testcluster.draw(systems[playersystem].ships[0].x,systems[playersystem].ships[0].y,time);
 //////////////////////Story and Time Triggered Events//////////////////////////////////////////////////////////////////////
 	storycheck();
 }//end update function

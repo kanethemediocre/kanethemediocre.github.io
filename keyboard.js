@@ -5,7 +5,7 @@ window.addEventListener("keydown", function (event) {
   }
   switch (event.key) {  //events for all the keyboard keys
     case "q":
-	 qblaster.fire(ships[0],time);
+	 qblaster.fire(systems[playersystem].ships[0],time);
 	 money = money +1;
 	 //qblaster.draw(ships[0].x,ships[0].y);
       break;   
@@ -21,7 +21,7 @@ window.addEventListener("keydown", function (event) {
 	case "g": //Booster activation
 		if (boosters[boosters[0]]>0){//if selected booster is in stock
 			boosters[boosters[0]]=boosters[boosters[0]]-1; //remove 1 from stock of selected booster
-			ships[0].thrust = 64*2^(boosters[0]); //boost hard
+			systems[playersystem].ships[0].thrust = 64*2^(boosters[0]); //boost hard
 			}
       break;	  	  
 	case "1":    //This is how weapon switching is handled.
@@ -57,10 +57,10 @@ window.addEventListener("keydown", function (event) {
 	case "n": 
 		if (navactive == 0){
 			navactive = 1;
-			if (navtarget>planets.length-1){navtarget=0;}
+			if (navtarget>systems[playersystem].planets.length-1){navtarget=0;}
 		} else if (navactive == 1) {
 			navactive = 2;
-			if (navtarget > outposts.length-1){navtarget=0;}
+			if (navtarget > systems[playersystem].outposts.length-1){navtarget=0;}
 		} else if (navactive == 2){navactive = 0;}
     	  break;
 	case "m": 
@@ -80,23 +80,23 @@ window.addEventListener("keydown", function (event) {
 	case ".": 
 			if (navactive == 1){
 				navtarget = navtarget+1;
-				if (navtarget == planets.length){ navtarget = 0; }
+				if (navtarget == systems[playersystem].planets.length){ navtarget = 0; }
 			}else if (navactive == 2){
 				navtarget = navtarget+1;
-				if (navtarget == outposts.length){navtarget = 0; }
+				if (navtarget == systems[playersystem].outposts.length){navtarget = 0; }
 				}
     	  break;
 	case ",": 
 		if (navactive == 1){
 			navtarget = navtarget-1;
-			if (navtarget == -1){ navtarget = planets.length-1; }
+			if (navtarget == -1){ navtarget = systems[playersystem].planets.length-1; }
 		}else if (navactive == 2){
 			navtarget = navtarget-1;
-			if (navtarget == -1){ navtarget = outposts.length-1; }
+			if (navtarget == -1){ navtarget = systems[playersystem].outposts.length-1; }
 			}
 		break;		  
 	case "w": 
-		ships[0].respawn(planets[navtarget]);
+		systems[playersystem].ships[0].respawn(systems[playersystem].planets[navtarget]);
      	 break;
 	case "]": 
 		if (shiptarget == shipsinrange.length-1){ shiptarget = 0; }
@@ -135,7 +135,12 @@ window.addEventListener("keydown", function (event) {
 		testcluster = new Clusterbomb(time,ships[0].x+mdx,ships[0].y+mdy,ships[0].vx,ships[0].vy,12,6,32,0.9,clustercolor,233,0.3);
       break;   //handled in detail elsewhere
 	case "z":
-		if (diagnostic == 0){diagnostic=1;}else {diagnostic=0;}
+		if (diagnostic == 3){diagnostic=0;}else {diagnostic=diagnostic+1;}
+
+      break;
+	 case "v":
+		playersystem = 2;
+		systems[2].ships.push(systems[1].ships[0]);
 
       break;
 	 case "Enter": //The enter key purchases the currently selected shop item
@@ -143,9 +148,9 @@ window.addEventListener("keydown", function (event) {
 		if (shopmode == 0){
 			 if (shopitem<allshops[dockstate].inv.length){//check for shopitem exists
 				if (allshops[dockstate].inv[shopitem].itemprice()<=money){ //check if player has enough money
-					if (allshops[dockstate].inv[shopitem].available(ships[0],playerinventory)){ //check if player has prerequisites / doesn't already own item
+					if (allshops[dockstate].inv[shopitem].available(systems[playersystem].ships[0],playerinventory)){ //check if player has prerequisites / doesn't already own item
 						money = money - allshops[dockstate].inv[shopitem].itemprice();
-						allshops[dockstate].inv[shopitem].buy(money,ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+						allshops[dockstate].inv[shopitem].buy(money,systems[playersystem].ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 					}
 				}
 			}		 

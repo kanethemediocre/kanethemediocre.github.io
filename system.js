@@ -7,7 +7,7 @@ class System{
 		this.planets = []; //list of planets (to be generated)
 		this.ships = []; //list of ships (to be generated)
 		this.botbombs = []; //list of bombs used in system
-		this.outposts = []; //list of outposts in system
+		this.outposts = [0]; //list of outposts in system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.difficulty = 1; //Scales ship generation attributes
 		this.x = x;
 		this.y = y;
@@ -50,11 +50,11 @@ class System{
 		var i= this.planets.length;
 		while  (i>0){
 			i=i-1;
-			var xtol = canvas.width/2+planets[i].s;
+			var xtol = canvas.width/2+this.planets[i].s;
 			var xdif = this.planets[i].x-viewx;
 			if (xdif < xtol){
 				if (xdif > -1*xtol){
-					var ytol = canvas.height/2+planets[i].s;
+					var ytol = canvas.height/2+this.planets[i].s;
 					var ydif = this.planets[i].y-viewy;
 					if (ydif < ytol){
 						if (ydif > -1*ytol){
@@ -117,8 +117,8 @@ class System{
 			this.botbombs[i].updatebomb();
 			}
 
-		var i = this.outposts.length; //update bot bombs
-		while (i>0){
+		var i = this.outposts.length; //update outposts, ignoring index 0
+		while (i>1){
 			i=i-1;
 			this.outposts[i].update1();
 			this.outposts[i].d = this.outposts[i].directionof(planets[0]);
@@ -140,7 +140,7 @@ class System{
 				}				
 			}
 		var i = this.outposts.length;
-		while (i>0){
+		while (i>1){
 			i=i-1;
 			this.planets[0].gravitate(this.outposts[i]);	
 			}
@@ -194,22 +194,7 @@ class System{
 				this.planets[i].circlecollide(this.botbombs[k]);
 				}
 			}
-		//j = ships.length;
-		//k = playerbombs.length;
-		//while (j>0){ //for all ships (and bombs)
-		//	j=j-1;
-		//	k = playerbombs.length;
-		//	while (k>0){
-		//		k=k-1;
-		//		if (ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
-		//			playerbombs[k].bombcollide(ships[j]);
-		//			if (ships[j].hp<0){
-		//				var getcash = Math.floor(Math.random()*21+10)*ships[j].level;
-		//				money = money + getcash;
-		//				gotmoney = [30,getcash];
-		//				}//Doesn't handle death, just cash.
-		//			}
-		//		}	
+		
 			k = this.botbombs.length;
 			while (k>0){
 				k=k-1;
@@ -227,7 +212,7 @@ class System{
 		var  i = externalplanets.length 		
 	}
 	randomplanets(){
-		var numplanets = Math.floor(Math.random()*16+2);//random number of planets, 2-17
+		var numplanets = Math.floor(Math.random()*8+8);//random number of planets, 2-17
 		var orbitradius = 0; //randomized in the loop
 		var planetsize = 0; //randomized in the loop
 		this.planets.push( new Umo(this.x,this.y,Math.floor(Math.random()*3000+1000), "orange") ); //make the sun 
@@ -241,26 +226,54 @@ class System{
 			this.planets[i].name = randname(4);//random 4 character name
 			this.planets[i].setorbit(this.planets[0], orbitradius, Math.random()*6.28, 1);
 			this.planets[i].parentid = 0; //establishes star (planet[0] as parent planet
-			//this.randommoons(i);
+			//this.randommoons(i); //this might be problematic because it increases the size of the planets array, inside a loop indexing the planets array.
+			}
+		var i=1;
+		var numplanets = this.planets.length;
+		while (i<numplanets-1){
+			this.randommoons(i); //still doesn't work here (new system appears empty)
+			i=i+1;
 			}
 		}
 	randommoons(index){//index is of planet
-		var nummoons = Math.floor(Math.random()*planets[index].s/150 )//Planets < 150 in size have 0 chance of a moon, planet 300 in size has 50% chance of 1 moon, etc.
+		var nummoons = Math.floor(Math.random()*this.planets[index].s/150 )//Planets < 150 in size have 0 chance of a moon, planet 300 in size has 50% chance of 1 moon, etc.
 		var moonsize = 0; //randomized in loop
 		var moonorbitr = 0;//randomized in loop
 		var moonindex = 0; //set in loop
-		i = nummoons;
+		var i = nummoons;
 		while (i>0){
 			i=i-1;
 			moonsize = Math.floor(Math.random()*this.planets[index].s/3+10);//radius is 10 plus up to 1/3 of parent planet
 			moonorbitr = Math.floor(this.planets[index].s*(Math.random()*3+1.5)); //orbit radius is 1.5x parent planet radius + up to 3x parent planet radius
-			moonindex = this.planets.length-1;
+			moonindex = this.planets.length;//no -1 because push comes on next line
 			this.planets.push( new Umo(0,0,moonsize, randcolor()) );
 			this.planets[moonindex].name = randname(4);
 			this.planets[moonindex].parentid = index;
 			this.planets[moonindex].setorbit(this.planets[index],moonorbitr,Math.random()*6.28, 1);//orbit direction is 1, not random
 			}
 		}
+	
+	randomoutposts(){
+		this.outposts.push( new Umo(0,0,128, randcolor()));
+		var lastindex = this.outposts.length-1;
+		this.outposts[lastindex].parentid = 0;
+		this.outposts[lastindex].name = "Bill's Billion Bits";
+		var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
+		var toradii = [1,1,1,1]; //rectangle
+		this.outposts[lastindex].polytheta = totheta;
+		this.outposts[lastindex].polyradius = toradii;
+		this.outposts[lastindex].setorbit(planets[0], 20000, 0.25, 1);//set in orbit around sun behind earf 
+		//hacked in bills stuff, finish randomizing this...
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	levelup(botindex,levels){//adds "levels" to make bots tougher
 		var i = levels;
 		while(i>0){

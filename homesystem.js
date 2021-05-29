@@ -1,7 +1,7 @@
 function loadhomesystem(){
 	let sun = new Umo(0, 0, 2048, "orange"); //planet initialization/////////////
 	sun.name = "Sool";
-	let murc = new Umo(0,8000,150,"brown");//initial position irrelevant
+	let murc = new Umo(0,8000,150,"brown");//1//initial position irrelevant
 	murc.name = "Murc";
 	murc.setorbit(sun, 8000, 0, 1);
 	murc.parentid = 0;
@@ -101,6 +101,12 @@ function loadhomesystem(){
 	tron.name = "Tron";
 	tron.setorbit(tune,1500,0,1);
 	tron.parentid = 24;
-	let homeplanets = [sun,murc,vnus,earf,moon,merz,fobz,deem,jupe,heyo,erpa,mede,isto,tern,thys,dion,raya,itan,peet,anus,aril,umbi,titi,bron,tune,tron];
+	let xxxx = new Umo(0,0,550,"black");//26
+	xxxx.name = "Xxxx";
+	xxxx.setorbit(sun,320000,0,1);
+	xxxx.parentid = 0;
+	
+	
+	let homeplanets = [sun,murc,vnus,earf,moon,merz,fobz,deem,jupe,heyo,erpa,mede,isto,tern,thys,dion,raya,itan,peet,anus,aril,umbi,titi,bron,tune,tron,xxxx];
 	return homeplanets;
 	}

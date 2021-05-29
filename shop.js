@@ -7,9 +7,8 @@ class Shopitem{
 	constructor(itype, iindex, utype, utier){
 		this.type = itype; //"cargo","blaster","upgrade","booster"
 		this.i = iindex; //Index of blaster, or of cargo, or of item, from separate lists
-		this.utype = utype; //For blasters: "damage","blast","speed","timer","bounce","remote", "buy"
-		this.utier = utier;
-		//For upgrades: "armor","shield","shieldregen","thrust","thrustadjust","radar"
+		this.utype = utype; //For blasters: "damage","blast","speed","timer","bounce","remote", "buy"//For upgrades: "armor","shield","shieldregen","thrust","thrustadjust","radar"
+		this.utier = utier;//Tier of upgrade.  Used by boosters only a the moment.
 	}
 	namestring(){ //returns name of blaster, cargo, upgrade, booster etc.
 		var thisname = "Undefined Item"; //error handling by default
@@ -47,7 +46,7 @@ class Shopitem{
 			//thisprice = 69;
 			thisprice = allupgrades[this.i].price*2**(this.utier);
 		}else if (this.type == "booster"){
-			thisprice = 999; //Replace with real price as it is determined
+			thisprice = 400*(2**this.utier); //Replace with real price as it is determined
 		}
 		return thisprice;		
 	}
@@ -119,7 +118,7 @@ class Shopitem{
 				playerinventory.maxcargo = playerinventory.maxcargo + 5; //refers to global, not passed variable.
 				}
 		}else if (this.type == "booster"){
-			//stuff to buy the booster
+			boosters[this.utier] = boosters[this.utier]+2;
 		}else if (this.type == "cargo"){
 			inventory.takecargo(this.i, 1);
 			}
@@ -246,14 +245,14 @@ let buyw2item = new Shopitem("blaster",2,"buy",0); //Mine weapon
 let buyw3item = new Shopitem("blaster",3,"buy",0); //Flakker weapon
 let buyw4item = new Shopitem("blaster",4,"buy",0);//Railgun weapon
 let remotew1item = new Shopitem("blaster",1,"remote",1);//blaster remote upgrade
-let booster0 = new Shopitem("booster",0,"buy",0); //Tier 0 booster
+let booster1 = new Shopitem("booster",0,"buy",1); //Tier 0 booster
 let buycargo0 = new Shopitem("cargo",0,"buy",1);//The upgrade tier variable will used as a price multiplier for cargo
 let buycargo0x0d5 = new Shopitem("cargo",0,"buy",0.5);//The upgrade tier variable will used as a price multiplier for cargo
 let buycargo0x2 = new Shopitem("cargo",0,"buy",2);//The upgrade tier variable will used as a price multiplier for cargo
 let buycargo1 = new Shopitem("cargo",1,"buy",1); 
 let buycargo2 = new Shopitem("cargo",2,"buy",1); 
 let buyw0item = new Shopitem("blaster",0,"buy",0); //probe
-let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster0,buycargo0x0d5,buycargo1,buycargo2,buyw0item];
+let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0x0d5,buycargo1,buycargo2,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
 
 //let billshopitem1 = new Shopitem("upgrade",0,"repair",0);

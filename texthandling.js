@@ -98,7 +98,7 @@
 				context.font='16px Courier New';
 				context.fillStyle = "red";  
 				context.fillText(this.sender+":",this.senderx,this.sendery);
-				showmessage(this.msgnow.slice(0, (thetime-this.msgstart)*2 ));
+				showmessage(this.msgnow.slice(0, (thetime-this.msgstart)*1 ));
 				}
 			}
 		showlog(index){
