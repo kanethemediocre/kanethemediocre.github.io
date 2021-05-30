@@ -139,8 +139,10 @@ window.addEventListener("keydown", function (event) {
 
       break;
 	 case "v":
-		playersystem = 2;
 		systems[2].ships.push(systems[1].ships[0]);
+		systems[2].randomplanets();
+		systems[2].enemypopulate(5,4,16);
+		playersystem = 2;
 
       break;
 	 case "Enter": //The enter key purchases the currently selected shop item

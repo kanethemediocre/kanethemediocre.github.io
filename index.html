@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b44 by KaneTheMediocre</title>
+    <title>Umo Space 167b45 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -88,7 +88,6 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	}
 //////////////////Function tests
 let testsystem = new System(2,"thetestsystem",0,0);
-testsystem.randomplanets();
 let playerradio = new Radio(" ");
 //let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
 ////constructor(missiontype, morigin, mtarget,mmessage,mreward)
@@ -127,29 +126,29 @@ home.botbombs = botbombs;
 home.outposts = outposts;
 let systems = [0,home,testsystem];
 //////procedural bot ship generation//////////////////////////////////////////////////////////////////////////////////////////////////
-systems[playersystem].addrandomgang(1,2,24);
-systems[playersystem].addrandomgang(2,3,3);
-systems[playersystem].addrandomgang(3,3,2);//no moon bots
-systems[playersystem].addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
-systems[playersystem].addrandomgang(10,3,4);
-systems[playersystem].addrandomgang(11,4,6);
-systems[playersystem].addrandomgang(12,3,5);
-systems[playersystem].addrandomgang(14,2,7);
-systems[playersystem].addrandomgang(15,4,9);
-systems[playersystem].addrandomgang(16,4,10);
-systems[playersystem].addrandomgang(17,4,8);
-systems[playersystem].addrandomgang(18,2,11);
-systems[playersystem].addrandomgang(21,2,6);
-systems[playersystem].addrandomgang(22,2,6);
-systems[playersystem].addrandomgang(23,4,4);//no tune bots
-systems[playersystem].addrandomgang(25,5,16);
-systems[playersystem].addrandomgang(26,8,32);
-var i = systems[playersystem].botbombs.length;
+systems[1].addrandomgang(1,2,24);
+systems[1].addrandomgang(2,3,3);
+systems[1].addrandomgang(3,3,2);//no moon bots
+systems[1].addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
+systems[1].addrandomgang(10,3,4);
+systems[1].addrandomgang(11,4,6);
+systems[1].addrandomgang(12,3,5);
+systems[1].addrandomgang(14,2,7);
+systems[1].addrandomgang(15,4,9);
+systems[1].addrandomgang(16,4,10);
+systems[1].addrandomgang(17,4,8);
+systems[1].addrandomgang(18,2,11);
+systems[1].addrandomgang(21,2,6);
+systems[1].addrandomgang(22,2,6);
+systems[1].addrandomgang(23,4,4);//no tune bots
+systems[1].addrandomgang(25,5,16);
+systems[1].addrandomgang(26,8,32);
+var i = systems[1].botbombs.length;
 while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	i=i-1;
-	systems[playersystem].botbombs[i].hp = 1;  //Set hitpoints to 1 so they explode on contact
-	systems[playersystem].botbombs[i].maxhp = 1; //with planets 
-	systems[playersystem].botbombs[i].shield=0;  
+	systems[1].botbombs[i].hp = 1;  //Set hitpoints to 1 so they explode on contact
+	systems[1].botbombs[i].maxhp = 1; //with planets 
+	systems[1].botbombs[i].shield=0;  
 	}
 var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
 
@@ -314,7 +313,7 @@ function update() {
 				//var lookat =  pointingat(ships[j].directionof(planets[ships[j].parentid]),ships[j].d,ships[j].distance(planets[ships[j].parentid]),ships[j].parentid.s);//check if pointing at parent planet
 				//		function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 				//if ((howclose>1500)||(lookat==0)){ships[j].launchbomb(botbombs[j-1], 12, 80); } //doesnt work how i want.
-				ships[j].launchbomb(botbombs[j-1], 12, 80); 					
+				systems[playersystem].ships[j].launchbomb(systems[playersystem].botbombs[j-1], 12, 80); 					
 				}
 			}
 		}

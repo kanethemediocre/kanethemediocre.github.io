@@ -33,11 +33,11 @@ class System{
 		var i= this.ships.length;
 		while  (i>0){
 			i=i-1;
-			var xtol = canvas.width/2+ships[i].s;
+			var xtol = canvas.width/2+this.ships[i].s;
 			var xdif = this.ships[i].x-viewx;
 			if (xdif < xtol){
 				if (xdif > -1*xtol){
-					var ytol = canvas.height/2+ships[i].s;
+					var ytol = canvas.height/2+this.ships[i].s;
 					var ydif = this.ships[i].y-viewy;
 					if (ydif < ytol){
 						if (ydif > -1*ytol){
@@ -67,11 +67,11 @@ class System{
 		var i= this.botbombs.length;
 		while  (i>0){
 			i=i-1;
-			var xtol = canvas.width/2+botbombs[i].s;
+			var xtol = canvas.width/2+this.botbombs[i].s;
 			var xdif = this.botbombs[i].x-viewx;
 			if (xdif < xtol){
 				if (xdif > -1*xtol){
-					var ytol = canvas.height/2+botbombs[i].s;
+					var ytol = canvas.height/2+this.botbombs[i].s;
 					var ydif = this.botbombs[i].y-viewy;
 					if (ydif < ytol){
 						if (ydif > -1*ytol){
@@ -84,11 +84,11 @@ class System{
 		var i= this.outposts.length;
 		while  (i>0){
 			i=i-1;
-			var xtol = canvas.width/2+outposts[i].s;
+			var xtol = canvas.width/2+this.outposts[i].s;
 			var xdif = this.outposts[i].x-viewx;
 			if (xdif < xtol){
 				if (xdif > -1*xtol){
-					var ytol = canvas.height/2+outposts[i].s;
+					var ytol = canvas.height/2+this.outposts[i].s;
 					var ydif = this.outposts[i].y-viewy;
 					if (ydif < ytol){
 						if (ydif > -1*ytol){
@@ -212,7 +212,7 @@ class System{
 		var  i = externalplanets.length 		
 	}
 	randomplanets(){
-		var numplanets = Math.floor(Math.random()*8+8);//random number of planets, 2-17
+		var numplanets = Math.floor(Math.random()*6+6);//random number of planets, 5-11
 		var orbitradius = 0; //randomized in the loop
 		var planetsize = 0; //randomized in the loop
 		this.planets.push( new Umo(this.x,this.y,Math.floor(Math.random()*3000+1000), "orange") ); //make the sun 
@@ -220,23 +220,23 @@ class System{
 		var i=0;
 		while (i<numplanets-1){
 			i=i+1; //planets[0] is already the sun, so we can skip index 0;
-			orbitradius = Math.floor( (Math.random()*Math.random()*250000) + 2000); //Minimum radius 2000, 1/r density factor
+			orbitradius = Math.floor( (Math.random()*Math.random()*250000) + 4*this.planets[0].s); //Minimum orbit radius 4x sun radius, 1/r density factor
 			planetsize = Math.floor( Math.random()*Math.random()*800 + Math.random()*100+100 ); //Minimum size 100, 
 			this.planets.push( new Umo(0,0,planetsize, randcolor() ) );//this is where the planet gets added to the array
 			this.planets[i].name = randname(4);//random 4 character name
 			this.planets[i].setorbit(this.planets[0], orbitradius, Math.random()*6.28, 1);
 			this.planets[i].parentid = 0; //establishes star (planet[0] as parent planet
-			//this.randommoons(i); //this might be problematic because it increases the size of the planets array, inside a loop indexing the planets array.
 			}
 		var i=1;
 		var numplanets = this.planets.length;
 		while (i<numplanets-1){
-			this.randommoons(i); //still doesn't work here (new system appears empty)
+			this.randommoons(i); 
 			i=i+1;
 			}
 		}
+		
 	randommoons(index){//index is of planet
-		var nummoons = Math.floor(Math.random()*this.planets[index].s/150 )//Planets < 150 in size have 0 chance of a moon, planet 300 in size has 50% chance of 1 moon, etc.
+		var nummoons = Math.floor(Math.random()*this.planets[index].s/100 )//Planets < 120 in size have 0 chance of a moon, planet 240 in size has 50% chance of 1 moon, etc.
 		var moonsize = 0; //randomized in loop
 		var moonorbitr = 0;//randomized in loop
 		var moonindex = 0; //set in loop
@@ -244,7 +244,7 @@ class System{
 		while (i>0){
 			i=i-1;
 			moonsize = Math.floor(Math.random()*this.planets[index].s/3+10);//radius is 10 plus up to 1/3 of parent planet
-			moonorbitr = Math.floor(this.planets[index].s*(Math.random()*3+1.5)); //orbit radius is 1.5x parent planet radius + up to 3x parent planet radius
+			moonorbitr = Math.floor(this.planets[index].s*(Math.random()*3.5+1.5)+80); //orbit radius is 1.5x parent planet radius + up to 3.5x parent planet radius... plus 80.
 			moonindex = this.planets.length;//no -1 because push comes on next line
 			this.planets.push( new Umo(0,0,moonsize, randcolor()) );
 			this.planets[moonindex].name = randname(4);
@@ -253,20 +253,27 @@ class System{
 			}
 		}
 	
-	randomoutposts(){
-		this.outposts.push( new Umo(0,0,128, randcolor()));
-		var lastindex = this.outposts.length-1;
-		this.outposts[lastindex].parentid = 0;
-		this.outposts[lastindex].name = "Bill's Billion Bits";
-		var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
-		var toradii = [1,1,1,1]; //rectangle
-		this.outposts[lastindex].polytheta = totheta;
-		this.outposts[lastindex].polyradius = toradii;
-		this.outposts[lastindex].setorbit(planets[0], 20000, 0.25, 1);//set in orbit around sun behind earf 
+	randomoutposts(num){//num is number of outposts
+		var i=0;
+		while (i<num){
+			this.outposts.push( new Umo(0,0,128, randcolor()));
+			var lastindex = this.outposts.length-1;
+			this.outposts[lastindex].parentid = 0;
+			this.outposts[lastindex].name = randname(8)+"'s "+randname(7)+" "+randname(5);
+			var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
+			var toradii = [1,1,1,1]; //rectangle
+			this.outposts[lastindex].polytheta = totheta;
+			this.outposts[lastindex].polyradius = toradii;
+			var pickedplanet = Math.floor(Math.random()*(this.planets.length-2))+1;//station will be in a solar following orbit to the chosen planet
+			while (this.planets[pickedplanet].parentid !== 0){//No outpost generated if planet is actually a moon.
+				pickedplanet = Math.floor(Math.random()*(this.planets.length-2))+1;//tries again to find a not-moon
+				}
+			var orbitdistance = this.planets[0].distance(this.planets[pickedplanet]);
+			this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, 0.25, 1);//This properly sets orbital distance but NOT angular position in orbit.
 		//hacked in bills stuff, finish randomizing this...
 		
-	}
-	
+			}
+		}
 	
 	
 	
@@ -285,18 +292,18 @@ class System{
 				}
 			if (bonus==1){ //extra shield
 				this.ships[botindex].maxshield = this.ships[botindex].maxshield+50;
-				ships[botindex].shield = ships[botindex].shield+50;
+				this.ships[botindex].shield = this.ships[botindex].shield+50;
 				}
 			if (bonus==2){ //extra shield regen
-				ships[botindex].shieldregen = ships[botindex].shieldregen+0.25;
+				this.ships[botindex].shieldregen = this.ships[botindex].shieldregen+0.25;
 				}			
 			if (bonus==3){ //extra bomb damage
-				botbombs[botindex-1].hurt = botbombs[botindex-1].hurt+8;
+				this.botbombs[botindex-1].hurt = this.botbombs[botindex-1].hurt+8;
 				}						
 			if (bonus==4){ //extra bomb blast
-				botbombs[botindex-1].boombuff = botbombs[botindex-1].boombuff+0.25;//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
+				this.botbombs[botindex-1].boombuff = this.botbombs[botindex-1].boombuff+0.25;//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
 				}			
-			ships[botindex].level = ships[botindex].level+1;
+			this.ships[botindex].level = this.ships[botindex].level+1;
 			}
 		}
 	addrandomgang(planetindex, num,level){ //Adds a gang of enemy ships, level describes difficulty (not used yet)
@@ -322,7 +329,18 @@ class System{
 			this.ships[botindex].polytheta = gangpolytheta;
 			this.ships[botindex].polyradius = gangpolyradius;
 			this.botbombs.push( new Umo(0,0,0,"red"));
+			this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
+			this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
+			this.botbombs[this.botbombs.length-1].shield=0;  
 			this.levelup(botindex,level);
+			}
+		}
+	enemypopulate(num,minlevel,maxlevel){ //Adds gangs of enemy ships, level describes difficulty, num is size of each gang.
+		var i=1;
+		while (i<this.planets.length-1){
+			var templevel = Math.floor(minlevel + Math.random()*(maxlevel+1 - minlevel));
+			this.addrandomgang(i,num,templevel);
+			i=i+1;
 			}
 		}
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////
