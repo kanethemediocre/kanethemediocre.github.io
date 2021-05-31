@@ -95,6 +95,12 @@ class Shopitem{
 					allblasters[this.i].plustimer();
 					}
 				}
+			if (this.utype == "boom"){
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
+					allblasters[this.i].plustimer();
+					}
+				}
 				
 				
 			

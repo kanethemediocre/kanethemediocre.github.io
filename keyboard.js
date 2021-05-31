@@ -139,11 +139,8 @@ window.addEventListener("keydown", function (event) {
 
       break;
 	 case "v":
-		systems[2].ships.push(systems[1].ships[0]);
-		systems[2].randomplanets();
-		systems[2].enemypopulate(5,4,16);
-		playersystem = 2;
-
+		if (playersystem <15){playersystem = playersystem + 1;}
+		else  {playersystem = 1;}
       break;
 	 case "Enter": //The enter key purchases the currently selected shop item
 	 if ((dockstate > 0)&&(dockstate<allshops.length)){//check if docked and shop exists
@@ -162,7 +159,6 @@ window.addEventListener("keydown", function (event) {
 				playerinventory.cargo[shopitem]=playerinventory.cargo[shopitem]-1;
 				money = money + Math.floor(allcargos[shopitem].baseprice*allshops[dockstate].cargoprices[shopitem]);
 			}
-			
 		}
 	 }
       break;

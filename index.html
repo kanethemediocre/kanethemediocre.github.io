@@ -88,6 +88,19 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	}
 //////////////////Function tests
 let testsystem = new System(2,"thetestsystem",0,0);
+let testsystem2 = new System(3,"wwww",0,0);
+let testsystem3 = new System(3,"wwww",0,0);
+let testsystem4 = new System(3,"wwww",0,0);
+let testsystem5 = new System(3,"wwww",0,0);
+let testsystem6 = new System(3,"wwww",0,0);
+let testsystem7 = new System(3,"wwww",0,0);
+let testsystem8 = new System(3,"wwww",0,0);
+let testsystem9 = new System(3,"wwww",0,0);
+let testsystem10 = new System(3,"wwww",0,0);
+let testsystem11 = new System(3,"wwww",0,0);
+let testsystem12 = new System(3,"wwww",0,0);
+let testsystem13 = new System(3,"wwww",0,0);
+let testsystem14 = new System(3,"wwww",0,0);
 let playerradio = new Radio(" ");
 //let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
 ////constructor(missiontype, morigin, mtarget,mmessage,mreward)
@@ -124,7 +137,50 @@ home.planets = planets;//these are from loadhomesystem function output, which de
 home.ships = ships;
 home.botbombs = botbombs;
 home.outposts = outposts;
-let systems = [0,home,testsystem];
+let systems = [0,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
+			systems[2].ships.push(systems[1].ships[0]);
+			systems[2].randomplanets();
+			systems[2].enemypopulate(5,4,16);
+			systems[3].ships.push(systems[1].ships[0]);
+			systems[3].randomplanets();
+			systems[3].enemypopulate(5,4,16);
+			systems[4].ships.push(systems[1].ships[0]);
+			systems[4].randomplanets();
+			systems[4].enemypopulate(5,4,16);
+			systems[5].ships.push(systems[1].ships[0]);
+			systems[5].randomplanets();
+			systems[5].enemypopulate(5,4,16);
+			systems[6].ships.push(systems[1].ships[0]);
+			systems[6].randomplanets();
+			systems[6].enemypopulate(5,4,16);
+			systems[7].ships.push(systems[1].ships[0]);
+			systems[7].randomplanets();
+			systems[7].enemypopulate(5,4,16);
+			systems[8].ships.push(systems[1].ships[0]);
+			systems[8].randomplanets();
+			systems[8].enemypopulate(5,4,16);
+			systems[9].ships.push(systems[1].ships[0]);
+			systems[9].randomplanets();
+			systems[9].enemypopulate(5,4,16);
+			systems[10].ships.push(systems[1].ships[0]);
+			systems[10].randomplanets();
+			systems[10].enemypopulate(5,4,16);			
+			systems[11].ships.push(systems[1].ships[0]);
+			systems[11].randomplanets();
+			systems[11].enemypopulate(5,4,16);			
+			systems[12].ships.push(systems[1].ships[0]);
+			systems[12].randomplanets();
+			systems[12].enemypopulate(5,4,16);
+			systems[13].ships.push(systems[1].ships[0]);
+			systems[13].randomplanets();
+			systems[13].enemypopulate(5,4,16);			
+			systems[14].ships.push(systems[1].ships[0]);
+			systems[14].randomplanets();
+			systems[14].enemypopulate(5,4,16);			
+			systems[15].ships.push(systems[1].ships[0]);
+			systems[15].randomplanets();
+			systems[15].enemypopulate(5,4,16);			
+			
 //////procedural bot ship generation//////////////////////////////////////////////////////////////////////////////////////////////////
 systems[1].addrandomgang(1,2,24);
 systems[1].addrandomgang(2,3,3);
