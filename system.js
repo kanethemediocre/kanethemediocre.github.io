@@ -8,6 +8,7 @@ class System{
 		this.ships = []; //list of ships (to be generated)
 		this.botbombs = []; //list of bombs used in system
 		this.outposts = [0]; //list of outposts in system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
+		this.shops = [0]; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.difficulty = 1; //Scales ship generation attributes
 		this.x = x;
 		this.y = y;
@@ -221,7 +222,17 @@ class System{
 		while (i<numplanets-1){
 			i=i+1; //planets[0] is already the sun, so we can skip index 0;
 			orbitradius = Math.floor( (Math.random()*Math.random()*250000) + 4*this.planets[0].s); //Minimum orbit radius 4x sun radius, 1/r density factor
-			planetsize = Math.floor( Math.random()*Math.random()*800 + Math.random()*100+100 ); //Minimum size 100, 
+			planetsize = Math.floor( Math.random()*Math.random()*800 + Math.random()*100+100 ); //Minimum size 100,
+			var i = 1;
+			while (i<this.planets.length){
+				var otherdist = this.planets[0].distance(this.planets[i]);
+				var proximity = Math.abs(orbitradius - otherdist);
+				if (proximity < 6*(this.planets[i].s+planetsize)){
+					orbitradius = Math.floor( (Math.random()*Math.random()*250000) + 4*this.planets[0].s);//rerandomizes orbit
+					var i=0; //re-checks new orbitradius....
+					}
+				i=i+1;
+				}
 			this.planets.push( new Umo(0,0,planetsize, randcolor() ) );//this is where the planet gets added to the array
 			this.planets[i].name = randname(4);//random 4 character name
 			this.planets[i].setorbit(this.planets[0], orbitradius, Math.random()*6.28, 1);
@@ -233,6 +244,8 @@ class System{
 			this.randommoons(i); 
 			i=i+1;
 			}
+		this.randomoutposts(1);
+		
 		}
 		
 	randommoons(index){//index is of planet
@@ -254,8 +267,8 @@ class System{
 		}
 	
 	randomoutposts(num){//num is number of outposts
-		var i=0;
-		while (i<num){
+		var i=1;
+		while (i<num+1){//num + 1 because first outpost is index 1.
 			this.outposts.push( new Umo(0,0,128, randcolor()));
 			var lastindex = this.outposts.length-1;
 			this.outposts[lastindex].parentid = 0;
@@ -269,17 +282,32 @@ class System{
 				pickedplanet = Math.floor(Math.random()*(this.planets.length-2))+1;//tries again to find a not-moon
 				}
 			var orbitdistance = this.planets[0].distance(this.planets[pickedplanet]);
-			this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, 0.25, 1);//This properly sets orbital distance but NOT angular position in orbit.
-		//hacked in bills stuff, finish randomizing this...
-		
+			var orbitposition = this.planets[0].directionof(this.planets[pickedplanet]);
+			this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, orbitposition+0.25, 1);//This properly sets orbital distance, maybe properly sets orbit position.
+			//Now add the shop...
+			
+			
+			
+			var randshopitems3 = [];
+			var j = 0;
+			while (j<6){
+				var randblaster = Math.floor(Math.random()*10);
+				var randblasterfxseed = Math.floor(Math.random()*8);
+				var randblastfx = "buy";
+				if (randblasterfxseed == 1){randblastfx = "damage";}
+				else if (randblasterfxseed == 2){randblastfx = "speed";}
+				else if (randblasterfxseed == 3){randblastfx = "bounce";}
+				else if (randblasterfxseed == 4){randblastfx = "remote";}	
+				else if (randblasterfxseed == 5){randblastfx = "n";}
+				else if (randblasterfxseed == 6){randblastfx = "boom";}
+				else if (randblasterfxseed == 7){randblastfx = "timer";}
+				randshopitems3.push(new Shopitem("blaster",randblaster,randblastfx,0));
+				j=j+1;
+			}
+			this.shops.push(new Shop("XXXXXXXXXX",lastindex, "whaaaaaaaaaaaaaat", randshopitems3));
+			i=i+1;
 			}
 		}
-	
-	
-	
-	
-	
-	
 	
 	levelup(botindex,levels){//adds "levels" to make bots tougher
 		var i = levels;

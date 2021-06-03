@@ -1,5 +1,5 @@
 		function loadstorymessages(){
-		var storymessages = ["Let me show you the controls.  Flying and shooting is simple enough, right click for thrust, left click to shoot, and point the mouse in whatever direction you want to face.  Going anywhere in particular is more complicated, and if you wander around without a destination, you'll find what space is really made made of:  Nothing.",
+		var storymessages = ["Right click for thrust, left click to shoot, and point the mouse in whatever direction you want to face, and don't forget that you have to slow down at the other end.  Going anywhere in particular is more complicated, and if you wander around without a destination, you'll find what space is really made made of:  Nothing.",
 		"You can cycle navigation modes between targeting planets, targeting stations, and off with the N key.  < and > will cycle through available nav targets.  The bottom right compass will point towards your nav target, and indicates name and distance.  The chart to the left gives more information if you're interested.  Try selecting planet Merz.",
 			//first check after 2 messages, navtarget==5 and navactive == 1
 			"Great!  That's where you'll be going next.  But to help you know your place in the universe, your HUD also has a map.  The M key cycles between a full-screen display, a corner display, and off.  I recommend the corner.  You can zoom in and out with the + and - keys.",
@@ -7,9 +7,9 @@
 			//second check after 4 messages, zoom > some number
 			"Nifty, right?  OK, so we're not going nearly that far away, so zoom back in on us and the inner planets.",
 			//3rd check after 5 messages, zoom < some number
-			"OK, so thats basically what you need to fly this burrito to Merz.  Just do a close flyby and then head back to The Merry Merzian.  The burrito will be delivered automagically.",
+			"OK, so thats basically what you need to fly this burrito to Merz.  Just do a close flyby--the rest is automatic--and then head back to The Merry Merzian.",
 			//4th check after 6 messages, ships[0].distance(planets[5])<500
-			"Good job.  Now get back to the Merry Merzian.  Remember you can use your nav computer to find the station.  When you're close you'll dock automatically.",
+			"Good job.  Now get back to the Merry Merzian.  Remember you can use your nav (N, <, >) computer to find the station.  When you're close you'll dock automatically.",
 			//5th check after 7 messages, dockstate == 2
 			"Alright, good job.  I suppose we should talk about the 'bots.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  Around Merz they aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.",
 			"Bots can be destroyed (in fact the Institute pays bounties for this), but replacements are never far behind.  Space stations are built trailing or leading planets in solar orbits to keep them farther away from the Umobots in planetary orbit.",

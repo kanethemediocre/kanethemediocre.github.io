@@ -66,8 +66,14 @@ function hud(){
 ///////////////Navigation hud///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (navactive > 0){
 		var thenavtarget=0;
-		if (navactive==1){thenavtarget=systems[playersystem].planets[navtarget];}
-		if (navactive==2){thenavtarget=systems[playersystem].outposts[navtarget];}
+		if (navactive==1){
+			thenavtarget=systems[playersystem].planets[navtarget];
+			}
+		if (navactive==2){
+			if (navtarget == 0) {navtarget =1;}
+			else if (navtarget>systems[playersystem].outposts.length-1){navtarget = 1;			}
+			thenavtarget=systems[playersystem].outposts[navtarget];
+			}
 		thenavtarget.drawcompass(systems[playersystem].ships[0],canvas.width-64,canvas.height-96, 64); //Nav computer compass for planets
 		var solardistance = systems[playersystem].planets[0].distance(systems[playersystem].ships[0]); //distance to sun
 		var solargravity = (.0003*systems[playersystem].planets[0].m)/(solardistance*solardistance); //Gravitational influence of sun, pixels per frame per frame.
@@ -153,13 +159,13 @@ function hud(){
 		playerradio.showlog(0);
 		}
 ////Shopping!//////////////////////////////////////////////////////
-	if ((dockstate>0)&&(dockstate<allshops.length)){
+	if ((dockstate>0)&&(dockstate<systems[playersystem].shops.length)){
 		if (shopmode == 0){
-			if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}
-			allshops[dockstate].drawbuymenu(400,400,shopitem);
+			if (shopitem >= systems[playersystem].shops[dockstate].inv.length){shopitem=0;}
+			systems[playersystem].shops[dockstate].drawbuymenu(400,400,shopitem);
 		}else if (shopmode == 1){
 			//if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}//make this work with cargos
-			allshops[dockstate].drawsellmenu(400,400,shopitem);
+			systems[playersystem].shops[dockstate].drawsellmenu(400,400,shopitem);
 		}
 	}
 	//draw cargo stuff

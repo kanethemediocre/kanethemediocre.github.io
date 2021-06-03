@@ -29,7 +29,7 @@ class Blaster{
 		this.maxtimer = maxtimer;
 		this.id = ID;
 		this.c = bombcolor; 
-		this.firing == false;//for use with rapid blasters
+		this.firing =-1;//for use with rapid blasters.  -1 is inactive, 0 and above are bomb indices
 		this.level = 0;
 		this.rtier = 0; //number of remote upgrades applied (max 1)
 		this.etier = 0; //number of "elastic"(bounce) upgrades applied
@@ -158,8 +158,7 @@ class Blaster{
 			//theship.hp = 600;
 			theship.launchbomb(this.bombs[0],this.speed,this.timer);	
 		}else if (this.type == "rapid"){
-			//rapid fire handling here
-			//Probably set some flag to active, which will handle based on mouse state rather than on mousedown event.
+			this.firing = 0;
 		}else if (this.type == "spread"){
 			//theship.hp = 100*this.bombs.length; //works here
 			var spread = 0.5; //arbitrary angle in radians.
@@ -241,7 +240,8 @@ class Blaster{
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of projectiles",2000,"spread",               10,5,10,8,1,10,0.75,0.25,3,4,2,2,80,16,10,30,"white","ID not implemented");
 	 let weapon6 = new Blaster("joe","Unique beam weapon",1000,"beam",                                                   10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles",5000,"spread",          8,5,10,8,1,10,0.2,0.1,10,12,2,2,80,16,10,50,"white","ID not implemented");
-	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster",1000,"rapid",                         12,6,10,12,2,10,0.2,0.1,10,1,0,0,40,8,10,11,"white","ID not implemented");
+	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster",1000,"rapid",                         12,6,10,12,2,10,0.2,0.1,10,6,0,0,20,8,10,11,"white","ID not implemented");
+	 weapon8.phas = true; //testing
 	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba",20000,"plain",                                           64,8,10,12,2,10,3,0.25,10,1,0,0,40,8,10,99,"white","ID not implemented");
 	 let weapon0 = new Blaster("Probe","Highly configurable sensor probe",1000,"type variable not used yet",             10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 let boss1weapon = new Blaster("joe","Simple, but energy efficient blaster",1000,"type variable not used yet",       10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");

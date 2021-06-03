@@ -329,5 +329,7 @@ while (i<12){
 	randshopitems2.push(new Shopitem("upgrade",randupgrade,randupgradetype,0));
 	i=i+1;
 }
+let upshopitem1 = ("upgrade",0,"repair",0);
+let upshopitem2 = ("upgrade",1,"armor",0);
 let randoshop2 = new Shop("Rando Calrissian's Randomized Upgrades",4, "Randomized items", randshopitems2);
 let allshops = [0,billbits,merrymerz,jojocheese,dangustown,randoshop1,randoshop2];

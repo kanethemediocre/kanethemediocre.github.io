@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b45 by KaneTheMediocre</title>
+    <title>Umo Space 167b53 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -61,7 +61,7 @@ var mousedistance = 0; // Distance to mouse cursor
 var mousestate = 0;
 var shop = 0; //O indicates not shopping, 1 indicates a shop, 2 might indicate a different shop....
 var shopitem = 0; //Indicates item selected in the shop.
-var storystate = 0;//Player progress in story missions
+var storystate = 20;//Player progress in story missions
 var dockstate = 0; //Player dock status, 0 is undocked, 1 is docked at station 1, etc...
 var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
 var radarrange = 4000;//Defines distance a ship can be from the player and still be targetable
@@ -86,21 +86,20 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 		return 1;
 		}else {return 0;}
 	}
-//////////////////Function tests
-let testsystem = new System(2,"thetestsystem",0,0);
-let testsystem2 = new System(3,"wwww",0,0);
-let testsystem3 = new System(3,"wwww",0,0);
-let testsystem4 = new System(3,"wwww",0,0);
-let testsystem5 = new System(3,"wwww",0,0);
-let testsystem6 = new System(3,"wwww",0,0);
-let testsystem7 = new System(3,"wwww",0,0);
-let testsystem8 = new System(3,"wwww",0,0);
-let testsystem9 = new System(3,"wwww",0,0);
-let testsystem10 = new System(3,"wwww",0,0);
-let testsystem11 = new System(3,"wwww",0,0);
-let testsystem12 = new System(3,"wwww",0,0);
-let testsystem13 = new System(3,"wwww",0,0);
-let testsystem14 = new System(3,"wwww",0,0);
+let testsystem = new System(2,randname(4),0,0);
+let testsystem2 = new System(3,randname(4),0,0);
+let testsystem3 = new System(4,randname(4),0,0);
+let testsystem4 = new System(5,randname(4),0,0);
+let testsystem5 = new System(6,randname(4),0,0);
+let testsystem6 = new System(7,randname(4),0,0);
+let testsystem7 = new System(8,randname(4),0,0);
+let testsystem8 = new System(9,randname(4),0,0);
+let testsystem9 = new System(10,randname(4),0,0);
+let testsystem10 = new System(11,randname(4),0,0);
+let testsystem11 = new System(12,randname(4),0,0);
+let testsystem12 = new System(13,randname(4),0,0);
+let testsystem13 = new System(14,randname(4),0,0);
+let testsystem14 = new System(15,randname(4),0,0);
 let playerradio = new Radio(" ");
 //let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
 ////constructor(missiontype, morigin, mtarget,mmessage,mreward)
@@ -137,51 +136,52 @@ home.planets = planets;//these are from loadhomesystem function output, which de
 home.ships = ships;
 home.botbombs = botbombs;
 home.outposts = outposts;
+home.shops = allshops;
 let systems = [0,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
-			systems[2].ships.push(systems[1].ships[0]);
-			systems[2].randomplanets();
-			systems[2].enemypopulate(5,4,16);
-			systems[3].ships.push(systems[1].ships[0]);
-			systems[3].randomplanets();
-			systems[3].enemypopulate(5,4,16);
-			systems[4].ships.push(systems[1].ships[0]);
-			systems[4].randomplanets();
-			systems[4].enemypopulate(5,4,16);
-			systems[5].ships.push(systems[1].ships[0]);
-			systems[5].randomplanets();
-			systems[5].enemypopulate(5,4,16);
-			systems[6].ships.push(systems[1].ships[0]);
-			systems[6].randomplanets();
-			systems[6].enemypopulate(5,4,16);
-			systems[7].ships.push(systems[1].ships[0]);
-			systems[7].randomplanets();
-			systems[7].enemypopulate(5,4,16);
-			systems[8].ships.push(systems[1].ships[0]);
-			systems[8].randomplanets();
-			systems[8].enemypopulate(5,4,16);
-			systems[9].ships.push(systems[1].ships[0]);
-			systems[9].randomplanets();
-			systems[9].enemypopulate(5,4,16);
-			systems[10].ships.push(systems[1].ships[0]);
-			systems[10].randomplanets();
-			systems[10].enemypopulate(5,4,16);			
-			systems[11].ships.push(systems[1].ships[0]);
-			systems[11].randomplanets();
-			systems[11].enemypopulate(5,4,16);			
-			systems[12].ships.push(systems[1].ships[0]);
-			systems[12].randomplanets();
-			systems[12].enemypopulate(5,4,16);
-			systems[13].ships.push(systems[1].ships[0]);
-			systems[13].randomplanets();
-			systems[13].enemypopulate(5,4,16);			
-			systems[14].ships.push(systems[1].ships[0]);
-			systems[14].randomplanets();
-			systems[14].enemypopulate(5,4,16);			
-			systems[15].ships.push(systems[1].ships[0]);
-			systems[15].randomplanets();
-			systems[15].enemypopulate(5,4,16);			
+systems[2].ships.push(systems[1].ships[0]);
+systems[2].randomplanets();
+systems[2].enemypopulate(5,4,16);
+systems[3].ships.push(systems[1].ships[0]);
+systems[3].randomplanets();
+systems[3].enemypopulate(5,4,16);
+systems[4].ships.push(systems[1].ships[0]);
+systems[4].randomplanets();
+systems[4].enemypopulate(5,4,16);
+systems[5].ships.push(systems[1].ships[0]);
+systems[5].randomplanets();
+systems[5].enemypopulate(5,4,16);
+systems[6].ships.push(systems[1].ships[0]);
+systems[6].randomplanets();
+systems[6].enemypopulate(5,4,16);
+systems[7].ships.push(systems[1].ships[0]);
+systems[7].randomplanets();
+systems[7].enemypopulate(5,4,16);
+systems[8].ships.push(systems[1].ships[0]);
+systems[8].randomplanets();
+systems[8].enemypopulate(5,4,16);
+systems[9].ships.push(systems[1].ships[0]);
+systems[9].randomplanets();
+systems[9].enemypopulate(5,4,16);
+systems[10].ships.push(systems[1].ships[0]);
+systems[10].randomplanets();
+systems[10].enemypopulate(5,4,16);			
+systems[11].ships.push(systems[1].ships[0]);
+systems[11].randomplanets();
+systems[11].enemypopulate(5,4,16);			
+systems[12].ships.push(systems[1].ships[0]);
+systems[12].randomplanets();
+systems[12].enemypopulate(5,4,16);
+systems[13].ships.push(systems[1].ships[0]);
+systems[13].randomplanets();
+systems[13].enemypopulate(5,4,16);			
+systems[14].ships.push(systems[1].ships[0]);
+systems[14].randomplanets();
+systems[14].enemypopulate(5,4,16);			
+systems[15].ships.push(systems[1].ships[0]);
+systems[15].randomplanets();
+systems[15].enemypopulate(5,4,16);			
 			
-//////procedural bot ship generation//////////////////////////////////////////////////////////////////////////////////////////////////
+//////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
 systems[1].addrandomgang(1,2,24);
 systems[1].addrandomgang(2,3,3);
 systems[1].addrandomgang(3,3,2);//no moon bots
@@ -208,8 +208,9 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	}
 var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
 
-//let waldo = new Umo(0,0,1000,"purple");
-//waldo.setorbit(home.planets[0], 1000000, 0, 1);
+let waldo = new Umo(0,0,1000,"purple");
+waldo.setorbit(home.planets[0], 1000000, 0, 1);
+systems[1].planets.push()
 //size adjust for collision at 10,000
 //waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
 //Size should be inversely related to the distance from event horizon
@@ -220,7 +221,7 @@ var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].v
 function update() {
 	time = time + 1;
 	//testing zone
-	//waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
+	waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
 	//Size should be inversely related to the distance from event horizon
 	//end testing zone	
 	context.fillStyle = "black";//Background is black
@@ -290,8 +291,6 @@ function update() {
 	if (thruster<100){thruster=thruster+1;} //External variable updates
 	if (energy<100){energy = energy +1;}
 ////////////collisions/////////////////////////////////////////////////////
-
-
 	var j = systems[playersystem].ships.length;//New scheme bomb collisions.  Works alongside but will replace old scheme.
 	var k = allblasters.length;
 	while (j>0){ //for all ships (and bombs)
@@ -389,12 +388,16 @@ function update() {
 //Targeting HUD code in hud.js////////////////////////////////////////////////////////////////////////////////////////////////
 	hud();
 //////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
-//Now here i'm kludging rapid fire with 6 w8 bombs.  It worked.  
-//	if((mousestate==1)&&(time%4==0)&&(wep==8)&&(energy>6)){ //obselete from playerbombs era
-//		var n = Math.floor(time/4)%6;
+  
+	if((mousestate==1)&&(time%4==0)&&(wep == 8)&&(energy>6)){ //obselete from playerbombs era
+		//allblasters[wep].firing = allblasters[wep].firing + 1;
+		var n = Math.floor(time/4)%6;
+
+		systems[playersystem].ships[0].launchbomb(allblasters[wep].bombs[n],allblasters[wep].speed,allblasters[wep].timer);
+
 //		ships[0].launchbomb(playerbombs[20+n],16,16);//A mere 1 pixel per frame, but for 600 frames (20s).
-//		energy = energy - 6;
-//		}
+		energy = energy - 6;
+	}
 ///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
 	if (wep==0){//wep == 11 to disable, wep should ==0
 		var j = systems[playersystem].ships.length;

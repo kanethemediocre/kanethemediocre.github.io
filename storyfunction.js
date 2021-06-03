@@ -11,7 +11,7 @@ switch(storystate){//Tutorial missions so far.
 	case 1:
 		if (dstory>playerradio.msgtime){
 			playerradio.newmsg("Tutorial Dude",storymessages[1],time);//newmsg(sndr, msg, thetime)
-			task = "Select Merz on your nav computer";
+			task = "Select Merz on your nav computer (N,<,>)";
 			storystate = 2;
 			storytime = time;
 			}
@@ -27,7 +27,7 @@ switch(storystate){//Tutorial missions so far.
 	case 3:
 		if (dstory>playerradio.msgtime){
 			playerradio.newmsg("Tutorial Dude",storymessages[3],time);//newmsg(sndr, msg, thetime)
-			task = "Zoom out on the map to show the whole system";
+			task = "Zoom out on the map to show the whole system( - )";
 			storystate = 4;
 			storytime = time;
 			}
@@ -35,7 +35,7 @@ switch(storystate){//Tutorial missions so far.
 	case 4:
 		if ((dstory>playerradio.msgtime)&&(mapscale>1024)&&(mapactive>0)){
 			playerradio.newmsg("Tutorial Dude",storymessages[4],time);
-			task = "Zoom in on the map so only the nearby inner planets are shown";
+			task = "Zoom in on the map so only the nearby inner planets are shown ( + )";
 			storystate=5;
 			storytime = time;
 			}
@@ -177,11 +177,12 @@ switch(storystate){//Tutorial missions so far.
 	break;	
 	case 21:
 		if ((wep==2) && (allblasters[2].timer > 7)){//If w2 has fired 
-			playerradio.newmsg("Tutorial Dude",storymessages[21],time);//newmsg(sndr, msg, thetime)
-			allblasters[2].timer = 7;
+			//allblasters[2].timer = 7;
 			wep=1;
 			allblasters[2].phas = false;
 			storystate = 22;
+			playerradio.newmsg("Tutorial Dude",storymessages[21],time);//newmsg(sndr, msg, thetime)
+			task = "Return to the Merzian for service";
 			storytime = time;
 			}
 	break;	
@@ -190,6 +191,7 @@ switch(storystate){//Tutorial missions so far.
 			playerradio.newmsg("Tutorial Dude",storymessages[22],time);//newmsg(sndr, msg, thetime)
 			allblasters[2].phas = true;
 			storystate = 23;
+			task = "Read the tutorial";
 			storytime = time;
 			}
 	break;	

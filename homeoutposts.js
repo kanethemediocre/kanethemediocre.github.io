@@ -54,6 +54,6 @@ randoutpost2.polyradius = toradii;
 randoutpost2.setorbit(planets[0], 32000, 0.32, 1);//set in orbit around sun trailing earf
 
 
-var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost, randoutpost1,randoutpost2];
+var outposts = [0,terranoutpost, merzoutpost, jupeoutpost, anusoutpost, randoutpost1,randoutpost2];
 return outposts;
 }

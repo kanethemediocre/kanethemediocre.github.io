@@ -11,10 +11,12 @@ function mouseDownHandler(e) {
 mousestate = e.buttons;
 if (mousestate==1){ //if it's the left button
 	if (wep < 10){
-		allblasters[wep].fire(systems[playersystem].ships[0],time);
-		energy = energy - allblasters[wep].ecost;
+		if (energy>allblasters[wep].ecost){
+			allblasters[wep].fire(systems[playersystem].ships[0],time);
+			energy = energy - allblasters[wep].ecost;
+			}
 		}
-	}
+	}	
 else if (mousestate==2){//if its the right button
 	if (dockstate>0){
 		systems[playersystem].outposts[dockstate-1].undock(systems[playersystem].ships[0]);//undock function sets relative position and velocity.  Maybe other stuff.
