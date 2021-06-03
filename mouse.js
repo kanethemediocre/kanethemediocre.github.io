@@ -18,9 +18,9 @@ if (mousestate==1){ //if it's the left button
 		}
 	}	
 else if (mousestate==2){//if its the right button
-	if (dockstate>0){
-		systems[playersystem].outposts[dockstate-1].undock(systems[playersystem].ships[0]);//undock function sets relative position and velocity.  Maybe other stuff.
-		dockstate = 0;
+	if (dockstate>=0){
+		systems[playersystem].outposts[dockstate].undock(systems[playersystem].ships[0]);//undock function sets relative position and velocity.  Maybe other stuff.
+		dockstate = -1;
 		}
 	if (thruster>0){
 		systems[playersystem].ships[0].thrust = 2*thrustmultiplier;

@@ -241,7 +241,7 @@ class Blaster{
 	 let weapon6 = new Blaster("joe","Unique beam weapon",1000,"beam",                                                   10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles",5000,"spread",          8,5,10,8,1,10,0.2,0.1,10,12,2,2,80,16,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster",1000,"rapid",                         12,6,10,12,2,10,0.2,0.1,10,6,0,0,20,8,10,11,"white","ID not implemented");
-	 weapon8.phas = true; //testing
+	 //weapon8.phas = true; //testing
 	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba",20000,"plain",                                           64,8,10,12,2,10,3,0.25,10,1,0,0,40,8,10,99,"white","ID not implemented");
 	 let weapon0 = new Blaster("Probe","Highly configurable sensor probe",1000,"type variable not used yet",             10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 let boss1weapon = new Blaster("joe","Simple, but energy efficient blaster",1000,"type variable not used yet",       10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");

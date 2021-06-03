@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b53 by KaneTheMediocre</title>
+    <title>Umo Space 167b54 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -61,8 +61,8 @@ var mousedistance = 0; // Distance to mouse cursor
 var mousestate = 0;
 var shop = 0; //O indicates not shopping, 1 indicates a shop, 2 might indicate a different shop....
 var shopitem = 0; //Indicates item selected in the shop.
-var storystate = 20;//Player progress in story missions
-var dockstate = 0; //Player dock status, 0 is undocked, 1 is docked at station 1, etc...
+var storystate = 0;//Player progress in story missions
+var dockstate = -1; //Player dock status, 0 is undocked, 1 is docked at station 1, etc...
 var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
 var radarrange = 4000;//Defines distance a ship can be from the player and still be targetable
 var closestdistance = 999999;//needs to be larger than radarrange 
@@ -209,8 +209,10 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
 
 let waldo = new Umo(0,0,1000,"purple");
-waldo.setorbit(home.planets[0], 1000000, 0, 1);
-systems[1].planets.push()
+waldo.name = "Waldo";
+waldo.setorbit(home.planets[0], 320000, Math.PI, 1);
+systems[1].planets.push(waldo);
+//player1.setorbit(home.planets[0], 28000, 0.05, 1);
 //size adjust for collision at 10,000
 //waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
 //Size should be inversely related to the distance from event horizon
@@ -220,10 +222,6 @@ systems[1].planets.push()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update() {
 	time = time + 1;
-	//testing zone
-	waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
-	//Size should be inversely related to the distance from event horizon
-	//end testing zone	
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
 	if (mapactive == 1){drawmap(systems[playersystem].planets,systems[playersystem].outposts,mapscale,canvas.width/2,canvas.height/2, systems[playersystem].ships[0].x, systems[playersystem].y,radarrange);}//centered map
@@ -248,11 +246,35 @@ function update() {
 			//outposts[i].drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
 			if (systems[playersystem].ships[0].distance(systems[playersystem].outposts[i])<160){
 				systems[playersystem].outposts[i].dock(systems[playersystem].ships[0]);
-				dockstate = i+1;
+				dockstate = i;
 				}		
 			}
 		i=i+1;
 		}
+		
+	//waldo stuff, special planet/maybe wormhole
+	if (systems[playersystem].ships[0].distance(waldo)>10000){
+		waldo.s = 100000000 / (home.ships[0].distance(waldo));
+		}
+	else {waldo.s = 10000;}
+	waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
+	waldo.gravitate(systems[playersystem].ships[0]); //pull only player ship
+	waldo.c = randcolor(); //groovy
+	systems[playersystem].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
+	waldo.update1();
+	waldo.drawplanet(systems[playersystem].ships[0].x,systems[playersystem].ships[0].y);
+	if (waldo.collide(systems[playersystem].ships[0])){
+		playersystem = playersystem+1;
+		if (playersystem > systems.length-1){
+			playersystem = 1;
+			}
+		systems[playersystem].ships[0].x = -0.75*systems[playersystem].ships[0].x;
+		systems[playersystem].ships[0].y = -0.75*systems[playersystem].ships[0].y;
+		systems[playersystem].ships[0].vx = 0; //Otherwise players inherit the momentum acquired in descent.
+		systems[playersystem].ships[0].vy = 0;
+		navtarget = 0;
+		}
+	//Size should be inversely related to the distance from event horizon
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships.  Not used yet.///////////////////////////////////////////////////
 	var i = systems[playersystem].planets.length;
 	while (i>0){//For all planets...

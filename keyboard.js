@@ -57,10 +57,10 @@ window.addEventListener("keydown", function (event) {
 	case "n": 
 		if (navactive == 0){
 			navactive = 1;
-			if (navtarget>systems[playersystem].planets.length-1){navtarget=0;}
+			if (navtarget>systems[playersystem].planets.length-2){navtarget=0;}
 		} else if (navactive == 1) {
 			navactive = 2;
-			if (navtarget > systems[playersystem].outposts.length-1){navtarget=0;}
+			if (navtarget > systems[playersystem].outposts.length-2){navtarget=0;}
 		} else if (navactive == 2){navactive = 0;}
     	  break;
 	case "m": 
@@ -80,10 +80,10 @@ window.addEventListener("keydown", function (event) {
 	case ".": 
 			if (navactive == 1){
 				navtarget = navtarget+1;
-				if (navtarget == systems[playersystem].planets.length){ navtarget = 0; }
+				if (navtarget == systems[playersystem].planets.length-1){ navtarget = 0; }
 			}else if (navactive == 2){
 				navtarget = navtarget+1;
-				if (navtarget == systems[playersystem].outposts.length){navtarget = 0; }
+				if (navtarget > systems[playersystem].outposts.length-1){navtarget = 0; }
 				}
     	  break;
 	case ",": 
@@ -143,7 +143,7 @@ window.addEventListener("keydown", function (event) {
 		else  {playersystem = 1;}
       break;
 	 case "Enter": //The enter key purchases the currently selected shop item
-	 if ((dockstate > 0)&&(dockstate<systems[playersystem].shops.length)){//check if docked and shop exists
+	 if ((dockstate >= 0)&&(dockstate<systems[playersystem].shops.length)){//check if docked and shop exists
 		if (shopmode == 0){
 			 if (shopitem<systems[playersystem].shops[dockstate].inv.length){//check for shopitem exists
 				if (systems[playersystem].shops[dockstate].inv[shopitem].itemprice()<=money){ //check if player has enough money

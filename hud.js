@@ -70,8 +70,8 @@ function hud(){
 			thenavtarget=systems[playersystem].planets[navtarget];
 			}
 		if (navactive==2){
-			if (navtarget == 0) {navtarget =1;}
-			else if (navtarget>systems[playersystem].outposts.length-1){navtarget = 1;			}
+			if (navtarget < 0) {navtarget =0;}//maybe not necessary?
+			else if (navtarget>systems[playersystem].outposts.length-1){navtarget = 0;			}
 			thenavtarget=systems[playersystem].outposts[navtarget];
 			}
 		thenavtarget.drawcompass(systems[playersystem].ships[0],canvas.width-64,canvas.height-96, 64); //Nav computer compass for planets
@@ -142,6 +142,7 @@ function hud(){
 	context.font='12px Arial';
 	context.fillStyle = "green"; 
 	context.fillText("Task: "+task,8,200);
+	context.fillText("Dockstate: "+dockstate,8,250);
 	
 	if (systems[playersystem].ships[0].hp==-1000){
 		context.fillStyle = "red";
@@ -159,7 +160,7 @@ function hud(){
 		playerradio.showlog(0);
 		}
 ////Shopping!//////////////////////////////////////////////////////
-	if ((dockstate>0)&&(dockstate<systems[playersystem].shops.length)){
+	if ((dockstate>=0)&&(dockstate<systems[playersystem].shops.length)){
 		if (shopmode == 0){
 			if (shopitem >= systems[playersystem].shops[dockstate].inv.length){shopitem=0;}
 			systems[playersystem].shops[dockstate].drawbuymenu(400,400,shopitem);

@@ -7,8 +7,8 @@ class System{
 		this.planets = []; //list of planets (to be generated)
 		this.ships = []; //list of ships (to be generated)
 		this.botbombs = []; //list of bombs used in system
-		this.outposts = [0]; //list of outposts in system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
-		this.shops = [0]; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
+		this.outposts = []; //list of outposts in system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
+		this.shops = []; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.difficulty = 1; //Scales ship generation attributes
 		this.x = x;
 		this.y = y;
@@ -119,7 +119,7 @@ class System{
 			}
 
 		var i = this.outposts.length; //update outposts, ignoring index 0
-		while (i>1){
+		while (i>0){
 			i=i-1;
 			this.outposts[i].update1();
 			this.outposts[i].d = this.outposts[i].directionof(planets[0]);
@@ -141,7 +141,7 @@ class System{
 				}				
 			}
 		var i = this.outposts.length;
-		while (i>1){
+		while (i>0){
 			i=i-1;
 			this.planets[0].gravitate(this.outposts[i]);	
 			}
@@ -168,7 +168,7 @@ class System{
 		while (i<outposts.length){
 			if (ships[0].distance(outposts[i])<160){
 				outposts[i].dock(ships[0]);
-				dockstate = i+1;//Maybe add this to system update function, but that implicitly passes dockstate which might not work in other languages.
+				dockstate = i;//Maybe add this to system update function, but that implicitly passes dockstate which might not work in other languages.
 				}		
 			i=i+1;
 			}
@@ -244,7 +244,7 @@ class System{
 			this.randommoons(i); 
 			i=i+1;
 			}
-		this.randomoutposts(1);
+		this.randomoutposts(3);
 		
 		}
 		
@@ -267,8 +267,8 @@ class System{
 		}
 	
 	randomoutposts(num){//num is number of outposts
-		var i=1;
-		while (i<num+1){//num + 1 because first outpost is index 1.
+		var i=0;
+		while (i<num){//
 			this.outposts.push( new Umo(0,0,128, randcolor()));
 			var lastindex = this.outposts.length-1;
 			this.outposts[lastindex].parentid = 0;
@@ -304,7 +304,7 @@ class System{
 				randshopitems3.push(new Shopitem("blaster",randblaster,randblastfx,0));
 				j=j+1;
 			}
-			this.shops.push(new Shop("XXXXXXXXXX",lastindex, "whaaaaaaaaaaaaaat", randshopitems3));
+			this.shops.push(new Shop("XXXXXXXXXX",i, "whaaaaaaaaaaaaaat", randshopitems3));
 			i=i+1;
 			}
 		}
