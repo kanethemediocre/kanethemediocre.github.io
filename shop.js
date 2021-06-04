@@ -179,6 +179,7 @@ class Shop{
 		this.description = description; 
 		this.home = storelocation; //a station umo
 		this.inv = inv;//list of shopitem objects
+		this.missions = []; 
 		this.cargoprices = [];//list of price multipliers, index matching allcargos list
 		var i=0;
 		while (i<allcargos.length){
@@ -193,6 +194,10 @@ class Shop{
 		context.font='16px Arial';
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
+		context.font='24px Arial';
+		context.fillStyle = systems[playersystem].outposts[this.home].c;
+		context.fillText("Buy",x,y-24);
+		context.fillStyle = "white";
 		var names = [];
 		var descriptions = [];
 		var prices = [];
@@ -231,6 +236,10 @@ class Shop{
 		context.font='16px Arial';
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
+		context.font='24px Arial';
+		context.fillStyle = systems[playersystem].outposts[this.home].c;
+		context.fillText("Sell",x,y-24);
+		context.fillStyle = "white";
 		context.font='12px Arial';
 		context.fillText(allcargos[item].description,x,y+256);
 		context.fillText('X',x-16,y+32+item*16);
@@ -244,7 +253,18 @@ class Shop{
 			i=i+1;
 			}
 		}		
-
+	drawworkmenu(xpos, ypos, item){
+		var x = xpos;
+		var y = ypos;
+		context.font='16px Arial';
+		context.fillStyle = "white";
+		context.fillText("Welcome to "+this.name,x,y);
+		context.font='24px Arial';
+		context.fillStyle = systems[playersystem].outposts[this.home].c;
+		context.fillText("Work",x,y-24);
+		}
+	
+	
 	}
 let repairshopitem = new Shopitem("upgrade",0,"repair",0);
 let buyw2item = new Shopitem("blaster",2,"buy",0); //Mine weapon

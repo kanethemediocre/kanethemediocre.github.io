@@ -103,7 +103,7 @@ function loadhomesystem(){
 	tron.parentid = 24;
 	let xxxx = new Umo(0,0,550,"black");//26
 	xxxx.name = "Xxxx";
-	xxxx.setorbit(sun,320000,0,1);
+	xxxx.setorbit(sun,320000,0,-1);
 	xxxx.parentid = 0;
 	
 	

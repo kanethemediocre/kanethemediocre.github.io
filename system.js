@@ -210,7 +210,7 @@ class System{
 				}	
 			}	
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
-		var  i = externalplanets.length 		
+		var  i = externalplanets.length;//unfinished... 		
 	}
 	randomplanets(){
 		var numplanets = Math.floor(Math.random()*6+6);//random number of planets, 5-11

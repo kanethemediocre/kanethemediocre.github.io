@@ -60,7 +60,7 @@ switch(storystate){//Tutorial missions so far.
 			}
 	break;
 	case 7:
-		if ((dstory>60)&&(dockstate==2)){
+		if ((dstory>60)&&(dockstate==1)){
 			playerradio.newmsg("Tutorial Dude",storymessages[7],time);//newmsg(sndr, msg, thetime)
 			task = "Read the tutorial";
 			storystate=8;
@@ -150,7 +150,7 @@ switch(storystate){//Tutorial missions so far.
 			}
 	break;	
 	case 18:
-		if ((dstory>playerradio.msgtime)&&(dockstate==2)){
+		if ((dstory>playerradio.msgtime)&&(dockstate==1)){
 			playerradio.newmsg("Tutorial Dude",storymessages[18],time);//newmsg(sndr, msg, thetime)
 			money = money + 400;
 			task = "Read the tutorial";
@@ -187,7 +187,7 @@ switch(storystate){//Tutorial missions so far.
 			}
 	break;	
 	case 22:
-		if (dockstate==2){//if player has retuirned to the merry merz
+		if (dockstate==1){//if player has retuirned to the merry merz
 			playerradio.newmsg("Tutorial Dude",storymessages[22],time);//newmsg(sndr, msg, thetime)
 			allblasters[2].phas = true;
 			storystate = 23;
@@ -240,12 +240,95 @@ switch(storystate){//Tutorial missions so far.
 	case 29:
 		if (dstory>playerradio.msgtime){
 			playerradio.newmsg("Tutorial Dude",storymessages[29],time);//newmsg(sndr, msg, thetime)
+			task = "Go to Jojo's and drop off a merry package."
 			storystate = 30;
 			storytime = time;
 			}
 	break;
+	case 30:
+		if (dockstate == 2){
+			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
+			money = money + 800;
+			storystate = 35;
+			storytime = time;
+			}
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[30],time);//newmsg(sndr, msg, thetime)
+			storystate = 31;
+			storytime = time;
+			}
+	break;
+	case 31:
 	
+		if (dockstate == 2){
+			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
+			money = money + 800;
+			storystate = 35;
+			storytime = time;
+			}
+			
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[31],time);//newmsg(sndr, msg, thetime)
+			storystate = 32;
+			storytime = time;
+			}
+	break;
+
+	case 32:
 	
+		if (dockstate == 2){
+			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
+			money = money + 800;
+			storystate = 35;
+			storytime = time;
+			}
 	
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[32],time);//newmsg(sndr, msg, thetime)
+			storystate = 33;
+			storytime = time;
+			}
+	break;
+
+	case 33:
+		if (dockstate == 2){
+			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
+			money = money + 800;
+			storystate = 35;
+			storytime = time;
+			}
+	
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[33],time);//newmsg(sndr, msg, thetime)
+			storystate = 34;
+			storytime = time;
+			}
+	break;
+
+	case 34:
+		if (dockstate==2){
+			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
+			money = money + 800;
+			storystate = 35;
+			storytime = time;
+			}
+	break;
+	
+	case 35:
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[35],time);//newmsg(sndr, msg, thetime)
+			storystate = 36;
+			storytime = time;
+			}
+	break;
+
+	case 36:
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude",storymessages[36],time);//newmsg(sndr, msg, thetime)
+			storystate = 37;
+			storytime = time;
+			}
+	break;
+
 	}
 }

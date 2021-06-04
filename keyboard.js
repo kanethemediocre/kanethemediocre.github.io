@@ -163,13 +163,8 @@ window.addEventListener("keydown", function (event) {
 	 }
       break;
 	 case "Backspace": //The enter key purchases the currently selected shop item
-		if (shopmode == 0) {
-			shopmode = 1;
-			shopitem = 0;
-		}else{
-			shopmode = 0;
-			shopitem = 0;
-			}
+		shopmode = shopmode +1;
+		if (shopmode > 2) { shopmode = 0; }
 	  break;
     default:
       return; // Quit when this doesn't handle the key event.

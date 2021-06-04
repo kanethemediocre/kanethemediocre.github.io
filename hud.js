@@ -167,6 +167,8 @@ function hud(){
 		}else if (shopmode == 1){
 			//if (shopitem >= allshops[dockstate].inv.length){shopitem=0;}//make this work with cargos
 			systems[playersystem].shops[dockstate].drawsellmenu(400,400,shopitem);
+		}else if (shopmode == 2){
+			systems[playersystem].shops[dockstate].drawworkmenu(400,400,shopitem);
 		}
 	}
 	//draw cargo stuff
