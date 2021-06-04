@@ -235,6 +235,7 @@ class System{
 				i=i+1;
 				}
 			this.planets.push( new Umo(0,0,planetsize, randcolor() ) );//this is where the planet gets added to the array
+			this.planets[i].c2 = randcolor();
 			this.planets[i].name = randname(4);//random 4 character name
 			this.planets[i].setorbit(this.planets[0], orbitradius, Math.random()*6.28, 1);
 			this.planets[i].parentid = 0; //establishes star (planet[0] as parent planet
@@ -261,6 +262,7 @@ class System{
 			moonorbitr = Math.floor(this.planets[index].s*(Math.random()*3.5+1.5)+80); //orbit radius is 1.5x parent planet radius + up to 3.5x parent planet radius... plus 80.
 			moonindex = this.planets.length;//no -1 because push comes on next line
 			this.planets.push( new Umo(0,0,moonsize, randcolor()) );
+			this.planets[moonindex].c2 = randcolor();
 			this.planets[moonindex].name = randname(4);
 			this.planets[moonindex].parentid = index;
 			this.planets[moonindex].setorbit(this.planets[index],moonorbitr,Math.random()*6.28, 1);//orbit direction is 1, not random

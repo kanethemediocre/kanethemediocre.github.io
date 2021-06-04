@@ -5,6 +5,7 @@
 			this.x = xxx; //x
 			this.y = yyy; //y
 			this.c = ccc; //color
+			this.c2 = 0; //Not a color, used to exclude 2-tone functions on single color umos.
 			this.s = sss; //size
 			this.d = 0; // direction
 			this.vx = 0; //start with 0 velocity 
@@ -197,6 +198,13 @@
 			context.arc(x, y, this.s, 0, 2 * Math.PI, false); //draws the circle
 			context.lineWidth = 16; //circle is thicc
 			context.stroke();	//ok now actually draw it.
+			if ((this.c2!==0)&&(this.s>16)){
+				context.beginPath();
+				context.strokeStyle = this.c2; //sets planet color
+				context.arc(x, y, this.s-8, 0, 2 * Math.PI, false); //draws the circle
+				context.lineWidth = 8; //circle is thicc
+				context.stroke();	//ok now actually draw it.
+				}
 			context.fillStyle = "white"; 
 			context.font='20px Arial';
 			context.fillText(this.name,x,y);		
