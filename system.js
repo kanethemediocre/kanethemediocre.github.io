@@ -6,6 +6,7 @@ class System{
 		this.name = name; //name of system for display
 		this.planets = []; //list of planets (to be generated)
 		this.ships = []; //list of ships (to be generated)
+		this.npc = []; //More ship umos, but not enemy ais.  Not yet used.
 		this.botbombs = []; //list of bombs used in system
 		this.outposts = []; //list of outposts in system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.shops = []; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
@@ -283,13 +284,16 @@ class System{
 				}
 			var orbitdistance = this.planets[0].distance(this.planets[pickedplanet]);
 			var orbitposition = this.planets[0].directionof(this.planets[pickedplanet]);
-			this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, orbitposition+0.25, 1);//This properly sets orbital distance, maybe properly sets orbit position.
+			this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, orbitposition+0.2+Math.random()*0.3, 1);//This properly sets orbital distance, maybe properly sets orbit position.
 			//Now add the shop...
 			
 			
 			
 			var randshopitems3 = [];
-			var j = 0;
+			randshopitems3.push(repairshopitem);
+			randshopitems3.push(booster1);//Scope issues here?
+			
+			var j = 2;
 			while (j<6){
 				var randblaster = Math.floor(Math.random()*10);
 				var randblasterfxseed = Math.floor(Math.random()*8);
@@ -304,6 +308,23 @@ class System{
 				randshopitems3.push(new Shopitem("blaster",randblaster,randblastfx,0));
 				j=j+1;
 			}
+			while (j<9){
+				var randupgrade = Math.floor(Math.random()*6);
+				var randupgradetype = "repair";
+				if (randupgrade == 1){randupgradetype = "armor";}
+				else if (randupgrade == 2){randupgradetype = "shield";}
+				else if (randupgrade == 3){randupgradetype = "shieldregen";}
+				else if (randupgrade == 4){randupgradetype = "radar";}	
+				else if (randupgrade == 5){randupgradetype = "cargo";}
+				randshopitems3.push(new Shopitem("upgrade",randupgrade,randupgradetype,0));
+				j=j+1;
+				}
+			while (j<12){
+				var randcargo = Math.floor(Math.random()*allcargos.length);
+				randshopitems3.push(new Shopitem("cargo",randcargo,"buy",1));
+				j=j+1;
+				}
+			
 			this.shops.push(new Shop("XXXXXXXXXX",i, "whaaaaaaaaaaaaaat", randshopitems3));
 			i=i+1;
 			}

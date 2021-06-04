@@ -54,6 +54,12 @@ function hud(){
 		}
 	//targetchart(shipsinrange,64,16,canvas.width-200,700);
 	//maybe causeing the graphical problems?
+	
+	drawaskey(32,149,"B","white");
+	drawaskey(32,176,"G","white");
+	
+	drawaskey(canvas.width-64,360,"Z","white");
+	
 	drawaskey(canvas.width-324,32,"[","white");
 	drawaskey(canvas.width-324,64,"]","white");
 	drawaskey(canvas.width-324,96,"T","white");

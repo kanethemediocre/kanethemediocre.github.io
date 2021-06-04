@@ -71,9 +71,10 @@ var storytime = 0;//timestamp of last story event
 var storymessages =  loadstorymessages();//storytext.js
 var task = "Read the tutorial";
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
-var diagnostic = 1; //0 is not displayed, 1 is weapon stats.  Might get used for other items.
-var shopmode = 0; //0 is buy menu, 1 is sell menu
+var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
+var shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
 var playersystem = 1; 
+var probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -237,22 +238,16 @@ function update() {
 	//home.dockcheck(dockstate); //abstracting docking code seems to keep player stuck docked
 	var i=0;
 	while (i<systems[playersystem].outposts.length){
-		//planets[0].gravitate(outposts[i]);
-		//outposts[i].d = outposts[i].directionof(planets[0]);
-		//outposts[i].update1();
-		if (systems[playersystem].ships[0].distance(systems[playersystem].outposts[i])<drawdistance+systems[playersystem].outposts[i].s/2){ //if ships[i] is near
-			//outposts[i].drawstation(ships[0].x,ships[0].y); //draw station from ship[0]'s view
-			if (systems[playersystem].ships[0].distance(systems[playersystem].outposts[i])<160){
-				systems[playersystem].outposts[i].dock(systems[playersystem].ships[0]);
-				dockstate = i;
-				}		
-			}
+		if (systems[playersystem].ships[0].distance(systems[playersystem].outposts[i])<160){
+			systems[playersystem].outposts[i].dock(systems[playersystem].ships[0]);
+			dockstate = i;
+			}		
 		i=i+1;
 		}
 		
 	//waldo stuff, special planet/maybe wormhole
 	if (systems[playersystem].ships[0].distance(waldo)>10000){
-		waldo.s = 100000000 / (home.ships[0].distance(waldo));
+		waldo.s = 100000000000000000 / (home.ships[0].distance(waldo)*home.ships[0].distance(waldo)*home.ships[0].distance(waldo));// hz * hz / dist * dist
 		}
 	else {waldo.s = 10000;}
 	waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
@@ -422,8 +417,14 @@ function update() {
 		while (j>1){ //for all ships...
 			j=j-1;
 			if (allblasters[0].bombs[0].collide(systems[playersystem].ships[j])){//Checks for collision only
-				systems[playersystem].ships[0].polytheta = systems[playersystem].ships[j].polytheta;//Applies enemy polygon to player
-				systems[playersystem].ships[0].polyradius = systems[playersystem].ships[j].polyradius;
+				if (probemode == 0){//clones color
+					systems[playersystem].ships[0].c = systems[playersystem].ships[j].c
+				}else if (probemode == 1){//clones shape
+					systems[playersystem].ships[0].polytheta = systems[playersystem].ships[j].polytheta;//Applies enemy polygon to player
+					systems[playersystem].ships[0].polyradius = systems[playersystem].ships[j].polyradius;
+				}else if (probemode == 2){
+					//do more cool stuff			
+					}
 				}
 			}
 		}

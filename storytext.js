@@ -49,7 +49,7 @@
 			"Make sure you're pointing the right way before you fire the booster, and make sure you packed an extra for braking.  You might also need another pair to get back ",
 			"Also, Try not to tangle with the local 'bots around Jupe and moons, they're more dangerous than the 'bots around Merz by far.  The station is far enough away that you shouldn't need to engage them.",
 			"Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or just take time to explore or seek your own fortune.",
-			"Yo Yo this is the last message3.",		
+			"Welcome to Earf!  I'm Bill.  Dudeman tells me you're learning to fly, and I'm looking for cheap labor.",		
 			"Yo Yo this is the last message2.",
 			"Yo Yo this is the last message1."
 			]

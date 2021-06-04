@@ -116,7 +116,7 @@ window.addEventListener("keydown", function (event) {
       break;
     case "ArrowDown":
 		shopitem = shopitem + 1;
-		if ((shopitem>systems[playersystem].systems[playersystem].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
+		if ((shopitem>systems[playersystem].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
 		if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
       break;   //handled in detail elsewhere
     case "End":
@@ -166,6 +166,10 @@ window.addEventListener("keydown", function (event) {
 		shopmode = shopmode +1;
 		if (shopmode > 2) { shopmode = 0; }
 	  break;
+	 case "p": 
+		probemode = probemode + 1;
+		if (probemode > 2) { probemode = 0;}
+      break;
     default:
       return; // Quit when this doesn't handle the key event.
   } //end event key handling switch

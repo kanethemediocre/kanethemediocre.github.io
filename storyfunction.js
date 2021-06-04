@@ -249,6 +249,7 @@ switch(storystate){//Tutorial missions so far.
 		if (dockstate == 2){
 			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
 			money = money + 800;
+			task = "Go to Earf and meet Bill";
 			storystate = 35;
 			storytime = time;
 			}
@@ -263,6 +264,7 @@ switch(storystate){//Tutorial missions so far.
 		if (dockstate == 2){
 			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
 			money = money + 800;
+			task = "Go to Earf and meet Bill";
 			storystate = 35;
 			storytime = time;
 			}
@@ -279,6 +281,7 @@ switch(storystate){//Tutorial missions so far.
 		if (dockstate == 2){
 			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
 			money = money + 800;
+			task = "Go to Earf and meet Bill";
 			storystate = 35;
 			storytime = time;
 			}
@@ -294,6 +297,7 @@ switch(storystate){//Tutorial missions so far.
 		if (dockstate == 2){
 			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
 			money = money + 800;
+			task = "Go to Earf and meet Bill";
 			storystate = 35;
 			storytime = time;
 			}
@@ -309,14 +313,16 @@ switch(storystate){//Tutorial missions so far.
 		if (dockstate==2){
 			playerradio.newmsg("Tutorial Dude",storymessages[34],time);//newmsg(sndr, msg, thetime)
 			money = money + 800;
+			task = "Go to Earf and meet Bill";
 			storystate = 35;
 			storytime = time;
 			}
 	break;
 	
 	case 35:
-		if (dstory>playerradio.msgtime){
+		if (dockstate == 0){
 			playerradio.newmsg("Tutorial Dude",storymessages[35],time);//newmsg(sndr, msg, thetime)
+			task = "Listen to Bill";
 			storystate = 36;
 			storytime = time;
 			}

@@ -114,6 +114,10 @@ class Blaster{
 			this.timer=this.btimer+this.uptimer*this.ttier; 
 			}
 		}
+	plusx(){
+		this.xtier = this.xtier+1;
+		this.levelcalc();
+		}
 	fire(theship,thetime){ //thebombs would normally be an array with one member umo
 		//theship.hp = 1; //works here...
 		var i=0; 
@@ -247,12 +251,10 @@ class Blaster{
 	 8,5,10,8,1,10,0.2,0.1,10,12,2,2,80,16,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster with good damage output.",3000,"rapid",                         
 	 12,6,10,12,2,10,0.2,0.1,10,6,0,0,16,2,10,11,"white","ID not implemented");
-	 weapon8.phas = true; //testing
 	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.",20000,"plain",                                           
 	 64,8,10,12,2,10,3,0.25,10,1,0,0,40,8,10,99,"white","ID not implemented");
 	 let weapon0 = new Blaster("Probe","Provides detailed info about Umos on contact.  Upgradeable to provide many other functions.",1000,"probe",                      
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
-	 
 	 let boss1weapon = new Blaster("joe","Simple, but energy efficient blaster",1000,"type variable not used yet",       
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 
