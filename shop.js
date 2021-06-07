@@ -43,8 +43,7 @@ class Shopitem{
 		}else if (this.type == "cargo"){
 			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[dockstate].cargoprices[this.i]);
 		}else if (this.type == "upgrade"){
-			//thisprice = 69;
-			thisprice = allupgrades[this.i].price*2**(this.utier);
+			thisprice = allupgrades[this.i].price*2**(allupgrades[this.i].tier);
 		}else if (this.type == "booster"){
 			thisprice = 400*(2**this.utier); //Replace with real price as it is determined
 		}
@@ -60,7 +59,7 @@ class Shopitem{
 					}
 				}
 			if (this.utype == "damage"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ 
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost() && (allblasters[this.i].dtier<allblasters[this.i].maxhurt)) ){ //verify player doesnt already have blaster, and has enough money, and hasn't maxed out the damage upgrade
 					playermoney = playermoney - allblasters[this.i].nextupcost();
 					allblasters[this.i].plusdamage();
 					}
@@ -72,57 +71,65 @@ class Shopitem{
 					}
 				}
 			if (this.utype == "speed"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost() && (allblasters[this.i].stier<allblasters[this.i].maxspeed)) ){ //verify player doesnt already have blaster, and has enough money, and hasn't maxed out the speed upgrade
 					playermoney = playermoney - allblasters[this.i].nextupcost(); 
 					allblasters[this.i].plusspeed();
 					}
 				}
 			if (this.utype == "bounce"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()&&(allblasters[this.i].btier == 0) ) ){ //verify player doesnt already have blaster, and has enough money
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()&&(allblasters[this.i].btier == 0) ) ){ //verify player doesnt already have blaster, and has enough money, and doesn't already have the upgrade
 					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
 					allblasters[this.i].plusbounce();
 					}
 				}
 			if (this.utype == "n"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) && (allblasters[this.i].etier==0) )  { //verify player doesnt already have blaster, and doesn't already have the upgrade
 					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
 					allblasters[this.i].plusn();
 					}
 				}
 			if (this.utype == "timer"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost() && (allblasters[this.i].ttier<allblasters[this.i].maxtimer)) ){ //verify player doesnt already have blaster, and has enough money, and hasn't maxed out the timer upgrade
 					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
 					allblasters[this.i].plustimer();
 					}
 				}
 			if (this.utype == "boom"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) ){ //verify player doesnt already have blaster, and has enough money
+				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()&&(allblasters[this.i].btier<allblasters[this.i].maxboom)) ){ //verify player doesnt already have blaster, and has enough money
 					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
 					allblasters[this.i].plustimer();
 					}
 				}
-				
-				
-			
-		}else if (this.type == "upgrade"){
-			if (this.utype =="armor"){
+		}else if (this.type == "upgrade"){ //don't like the way utype is being used instead of referencing the upgrade and index.
+			if (this.i==1){
 				playership.maxhp = playership.maxhp + 200; 
 				playership.hp = playership.maxhp; 
-				this.utier = this.utier+1;
-			} else if (this.utype =="repair"){
+				upgrades[this.i].tier = upgrades[this.i].tier + 1;
+				//this.utier = this.utier+1;
+			} else if (this.i==0){
 				playership.hp = playership.maxhp; 
-			} else if (this.utype =="shield"){
+				//upgrades[this.i].tier = upgrades[this.i].tier + 1;
+			} else if (this.i==2){
 				playership.maxshield = playership.maxshield + 50; 
-				this.utier = this.utier+1;
-			} else if (this.utype =="shieldregen"){
+				upgrades[this.i].tier = upgrades[this.i].tier + 1;
+				//this.utier = this.utier+1;
+			} else if (this.i==3){
 				playership.shieldregen = playership.shieldregen + 0.25;
-				this.utier = this.utier+1;
-			} else if (this.utype =="radar"){
+				upgrades[this.i].tier = upgrades[this.i].tier + 1;
+				//this.utier = this.utier+1;
+			} else if (this.i==4){
 				radarrange = radarrange + 1000;
-				this.utier = this.utier+1;
-			} else if (this.utype =="cargo"){
+				upgrades[this.i].tier = upgrades[this.i].tier + 1;
+				//this.utier = this.utier+1;
+			} else if (this.i==5){
 				playerinventory.maxcargo = playerinventory.maxcargo + 5; //refers to global, not passed variable.
+				upgrades[this.i].tier = upgrades[this.i].tier + 1;
+			} else if (this.i==6){
+				thrustmultiplier = thrustmultiplier + 0.5; //refers to global, not passed variable.
+				upgrades[this.i].tier = upgrades[this.i].tier + 1;
 				}
+				
+				
 		}else if (this.type == "booster"){
 			boosters[this.utier] = boosters[this.utier]+2;
 		}else if (this.type == "cargo"){

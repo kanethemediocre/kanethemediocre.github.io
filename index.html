@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b59 by KaneTheMediocre</title>
+    <title>Umo Space 167b61 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -51,14 +51,14 @@ var thruster = 50;
 var money = 100;
 var gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
 var drawdistance = Math.sqrt(canvas.width*canvas.width/4+canvas.height*canvas.height/4)+200;
-var mdx = 0;
+var mdx = 0; //I think these were for the mouse?  Not sure if used.
 var mdy = 0;
 var a1 = 0; //armor upgrades
 var s1 = 0; //Shield upgrades
 var wep = 1; //Currently selected weapon
 var moused = 0; //Direction currently indicated by mouse
 var mousedistance = 0; // Distance to mouse cursor
-var mousestate = 0;
+var mousestate = 0; //describes state of mouse buttons
 var shop = 0; //O indicates not shopping, 1 indicates a shop, 2 might indicate a different shop....
 var shopitem = 0; //Indicates item selected in the shop.
 var storystate = 0;//Player progress in story missions
@@ -73,7 +73,7 @@ var task = "Read the tutorial";
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
 var shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
-var playersystem = 1; 
+var playersystem = 1; //Waldo is special.
 var probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
@@ -403,12 +403,9 @@ function update() {
 //Targeting HUD code in hud.js////////////////////////////////////////////////////////////////////////////////////////////////
 	hud();
 //////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
-  
-	if((mousestate==1)&&(time%4==0)&&(wep == 8)&&(energy>6)){ //obselete from playerbombs era
-		//allblasters[wep].firing = allblasters[wep].firing + 1;
+	if((mousestate==1)&&(time%4==0)&&(wep == 8)&&(energy>6)){ 
 		var n = Math.floor(time/4)%6;
 		systems[playersystem].ships[0].launchbomb(allblasters[wep].bombs[n],allblasters[wep].speed,allblasters[wep].timer);
-//		ships[0].launchbomb(playerbombs[20+n],16,16);//A mere 1 pixel per frame, but for 600 frames (20s).
 		energy = energy - 6;
 	}
 ///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
@@ -434,6 +431,35 @@ function update() {
 //////////////////////Story and Time Triggered Events//////////////////////////////////////////////////////////////////////
 	storycheck();
 }//end update function
+
+//Notes//////////////////////////////////////////////////////
+
+//Bounce blaster upgrade doesn't work, and IDK why
+//Random upgrade shop doesn't even make sense, let alone work
+//Mine quest is broken, just ditch it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </script>
 </body>
 </html>

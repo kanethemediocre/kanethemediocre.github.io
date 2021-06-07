@@ -28,6 +28,7 @@
 			this.parentid = 0;
 			this.active = 1; //Flag indicating if ship (or planet's ships) needs to be considered by the game engine 
 			this.shopchart = [];//["Item Name","Item type",price,tier]
+			this.target = 0; //For ai use
 			}
 		update1(){ //Pure motion update.
 			this.x = this.x + this.vx;
@@ -116,15 +117,15 @@
 			this.vx = this.vx + mag*Math.cos(dir);
 			this.vy = this.vy + mag*Math.sin(dir);
 		}
-		circlecollide(that){ //circular bouncing where 1 object is affected
-			var dir = this.directionof(that);
-			var dvx = this.vx - that.vx;
-			var dvy = this.vy - that.vy;
-			var thedeltav = this.deltav2(that);
-			var dvmag = thedeltav[0];
-			var dvdir = thedeltav[1];
-			var pushmag = Math.cos(dir - dvdir)*dvmag;
+		circlecollide(that){			//circular bouncing where 1 object is affected
 			if (this.distance(that) < (this.s + that.s)) {
+				var dir = this.directionof(that);
+				var dvx = this.vx - that.vx;
+				var dvy = this.vy - that.vy;
+				var thedeltav = this.deltav2(that);
+				var dvmag = thedeltav[0];
+				var dvdir = thedeltav[1];
+				var pushmag = Math.cos(dir - dvdir)*dvmag;
 				that.push(-2*pushmag, (this.directionof(that)));
 				that.damage(this.hurt); 
 				}
@@ -145,8 +146,6 @@
 			var avx2 = 2*that.m*bvx/this.m;
 			var avta2 = [avx2,0]; //Magnitude, direction again
 			var av2 = [avx2,dir]; //also maybe backwards?
-			
-			
 			}
 		bombcollide(that){ //explodes on contact, damages every frame in explosion
 			if (this.distance(that) < (this.s + that.s)) {

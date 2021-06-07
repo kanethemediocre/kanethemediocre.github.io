@@ -1,50 +1,46 @@
 function hud(){
 	context.font='12px Arial';
 	context.fillStyle = "white"; 
-	var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
+	var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
 	var closestdistance = 999999;//needs to be larger than radarrange 
 	var closestindex = 0; //defaults to self-targeting if no ships in range
 	var i=0;//Excludes player ship
 	while (i<systems[playersystem].ships.length-1){ //this loop makes the short list
 		i=i+1;
 		var tdistance = Math.floor(systems[playersystem].ships[0].distance(systems[playersystem].ships[i]));
-		//if (tdistance<radarrange){systems[playersystem].shipsinrange.push([systems[playersystem].ships[i],tdistance,i]);}//shallow-copy ship into shipsinrange, with global index for reference [theship,distance,index]
+		if (tdistance<radarrange){
+			shipsinrange.push(i);
+			}
 		}
 	var i=0;
-	while (i<shipsinrange.length){//this loop finds the closest ship
-		if (shipsinrange[i][1]<closestdistance){
-			closestdistance = shipsinrange[i][1];//tracks closest distance,
-			//closestindex = shipsinrange[i][2]; //and the global index (as in ships[index]) of the closest ship
-			closestindex = i;					
-			}
-		i=i+1;
-		}
 	if (nmeactive == 1){//if targeting computer is on...
-		var i=0;
-		var nmechartnames = [];
-		var nmechartdistances = [];
-		while (i<shipsinrange.length){
-			var shipname = shipsinrange[i][0].name;
-			var shipdistance = shipsinrange[i][1];
-			nmechartnames.push(shipname);
-			nmechartdistances.push(shipdistance);
-			i=i+1;
-			}
-		var nmechart1 = [nmechartnames,nmechartdistances];//maybe sort this by distance some day.
-		//var cxytest = [ ["first", "column", "of", "words"], ["2nd", "column", "of", "words"]       ];
-		targetchart(shipsinrange,64,16,canvas.width-300,16);
+			context.font='12px Courier New';
+			var sorttargets = [];//No sorting yet
+			var i = 0 //assumes each column is same length, otherwise error
+			while(i<shipsinrange.length){
+				var cellposx = canvas.width-300;
+				var cellposy = 16+i*16;
+				context.fillStyle = systems[playersystem].ships[shipsinrange[i]].c
+				context.fillText(systems[playersystem].ships[shipsinrange[i]].name,cellposx,cellposy);
+				var cellposx = canvas.width-300+64;
+				var shipdistance = systems[playersystem].ships[0].distance(systems[playersystem].ships[shipsinrange[i]]);
+				context.fillText(shipdistance,cellposx,cellposy);
+				i=i+1;
+				}
+			context.fillStyle = "white";  
 		if (shipsinrange.length == 0){
 			context.font = '20px Ariel';
 			context.fillStyle = "red";
 			context.fillText("No targets in range", canvas.width-160, 24);
 			}
-		}
+
 	if (shiptarget>shipsinrange.length-1){shiptarget = 0;}
+	else if (shiptarget<0){shiptarget = 0;}
 	if (shipsinrange.length>0){
 		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
-		systems[playersystem].ships[0].drawcompass2(shipsinrange[shiptarget][0],canvas.width-64, 96, 64); //Targeting computer compass
-		shipsinrange[shiptarget][0].drawreticle(systems[playersystem].ships[0].x,systems[playersystem].ships[0].y); //Targeting reticle
-		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen"],[shipsinrange[shiptarget][0].name, shipsinrange[shiptarget][0].level, shipsinrange[shiptarget][0].hp,  shipsinrange[shiptarget][0].shield,  botbombs[shipsinrange[shiptarget][2]-1].hurt, botbombs[shipsinrange[shiptarget][2]-1].boombuff,shipsinrange[shiptarget][0].shieldregen]];
+		systems[playersystem].ships[0].drawcompass2(systems[playersystem].ships[shipsinrange[shiptarget]],canvas.width-64, 96, 64); //Targeting computer compass
+		systems[playersystem].ships[shipsinrange[shiptarget]].drawreticle(systems[playersystem].ships[0].x,systems[playersystem].ships[0].y); //Targeting reticle
+		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen"],[systems[playersystem].ships[shipsinrange[shiptarget]].name, systems[playersystem].ships[shipsinrange[shiptarget]].level, systems[playersystem].ships[shipsinrange[shiptarget]].hp,  systems[playersystem].ships[shipsinrange[shiptarget]].shield,  systems[playersystem].botbombs[shipsinrange[shiptarget]-1].hurt, systems[playersystem].botbombs[shipsinrange[shiptarget]-1].boombuff,systems[playersystem].ships[shipsinrange[shiptarget]].shieldregen]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 
 		context.rect(canvas.width-304,4+16*shiptarget, 160, 16); //This is the item selection indicator
@@ -52,6 +48,7 @@ function hud(){
 		context.strokeStyle = "white";
 		context.stroke();	
 		}
+	}
 	//targetchart(shipsinrange,64,16,canvas.width-200,700);
 	//maybe causeing the graphical problems?
 	
