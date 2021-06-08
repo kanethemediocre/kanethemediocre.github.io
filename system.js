@@ -185,30 +185,31 @@ class System{
 				j=j-1;
 				this.planets[i].circlecollide(this.ships[j]);
 				}
-			//k = playerbombs.length;
-			//while (k>0){ //For all bombs to each planet
-			//	k=k-1;
-			//	planets[i].circlecollide(playerbombs[k]); 
-			//	}
 			k = this.botbombs.length;
 			while (k>0){ //For all bombs to each planet
 				k=k-1; 
 				this.planets[i].circlecollide(this.botbombs[k]);
 				}
 			}
-		
 			k = this.botbombs.length;
 			while (k>0){
 				k=k-1;
 				if (this.ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
 					this.botbombs[k].bombcollide(this.ships[j]);
-					if (this.ships[j].hp<0){
-						var getcash = Math.floor(Math.random()*21+10); //no payout if bot kills bot
-						//money = money + getcash;//disabled bot kill payouts for now
-						//gotmoney = [30,getcash];
-						}//Doesn't handle death, just cash.
 					}
 				}	
+			var i = 0;//For each ship,
+			var j = 0; //to each other ship
+			while (i<this.ships.length-1){
+				j = i+1; //avoids duplicate executions 
+				while ((j<this.ships.length)&&(notskip)){
+					this.ships[i].circlecollide2(this.ships[j]);
+					j = j+1;
+					}
+				i = i+1;
+				}
+			
+			
 			}	
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
 		var  i = externalplanets.length;//unfinished... 		

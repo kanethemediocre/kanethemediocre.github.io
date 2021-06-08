@@ -269,7 +269,27 @@ class Shop{
 		context.font='24px Arial';
 		context.fillStyle = systems[playersystem].outposts[this.home].c;
 		context.fillText("Work",x,y-24);
+		context.font='12px Arial';
+		context.fillStyle = "white";	
+		context.fillText(this.missions[item].message,x,y+256);
+		context.fillText('X',x-16,y+32+item*16);
+		var i=0;
+		while (i<this.missions.length){
+			if (this.missions[i].taken){context.fillStyle = "red";}else{context.fillStyle = "white";}
+			context.fillText(this.missions[i].type.slice(0,16),x,y+32+16*i);
+			context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
+			context.fillText(this.missions[i].reward,x+160,y+32+16*i);
+			context.fillText(systems[playersystem].planets[this.missions[i].target].name,x+240,y+32+16*i);
+			i=i+1;
+			}
 		}
+	addmissions(theships,theplanets){
+		var missiontarget = 1+Math.floor(Math.random()*(theplanets.length-1));
+		var missiondistance = theships[0].distance(theplanets[missiontarget]);
+		var missionpay = Math.floor(1000 + missiondistance/20);
+		var missionmessage = "Go to "+theplanets[missiontarget].name + "."
+		this.missions.push(new Mission("Cargo",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
+	}
 	
 	
 	}
@@ -287,6 +307,7 @@ let buycargo2 = new Shopitem("cargo",2,"buy",1);
 let buyw0item = new Shopitem("blaster",0,"buy",0); //probe
 let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0x0d5,buycargo1,buycargo2,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
+
 
 //let billshopitem1 = new Shopitem("upgrade",0,"repair",0);
 //let billshopitem2 = new Shopitem("blaster",2,"buy",0); //Mine weapon

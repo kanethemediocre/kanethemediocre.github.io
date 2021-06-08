@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b61 by KaneTheMediocre</title>
+    <title>Umo Space 167b63 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -206,7 +206,11 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].shield=0;  
 	}
 var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
-
+var i = 0;
+while (i<4){
+	systems[1].shops[1].addmissions(systems[1].ships,systems[1].planets);
+	i=i+1
+	}
 let waldo = new Umo(0,0,1000,"purple");
 waldo.name = "Waldo";
 waldo.setorbit(home.planets[0], 320000, Math.PI, -1);
@@ -237,14 +241,24 @@ function update() {
 //Outpost stuff all handled here.....
 	//home.dockcheck(dockstate); //abstracting docking code seems to keep player stuck docked
 	var i=0;
-	while (i<systems[playersystem].outposts.length){
+	while (i<systems[playersystem].outposts.length){ //for all outposts
 		if (systems[playersystem].ships[0].distance(systems[playersystem].outposts[i])<160){
 			systems[playersystem].outposts[i].dock(systems[playersystem].ships[0]);
 			dockstate = i;
-			}		
+			}
+		var j= 0;
+		while (j<systems[playersystem].shops[i].missions.length){//for all missions (j) from shop at outpost (i)
+			var mischeck = systems[playersystem].shops[i].missions[j].check(systems[playersystem].planets,systems[playersystem].ships,playerradio);//theships,theplanets,theradio
+			if (mischeck[0]>0){
+				systems[playersystem].ships[0].hp = 100;
+				money = money + mischeck;
+				//if (mischeck[1]>0){storystate = mischeck[1];}
+				}
+			j=j+1;
+			}
 		i=i+1;
 		}
-		
+	
 	//waldo stuff, special planet/maybe wormhole
 	if (systems[playersystem].ships[0].distance(waldo)>10000){
 		waldo.s = 100000000000000000 / (home.ships[0].distance(waldo)*home.ships[0].distance(waldo)*home.ships[0].distance(waldo));// hz * hz / dist * dist
@@ -367,6 +381,21 @@ function update() {
 				}
 			}	
 		}
+		/////Below is intership collisions, disabled because they don't really work.
+			//all ships to each other ship
+			var i = 0;//For each ship,
+			var j = 0; //to each other ship
+			while (i<systems[playersystem].ships.length-1){
+				j = i+1; //avoids duplicate executions 
+				while (j<systems[playersystem].ships.length){
+					systems[playersystem].ships[i].circlecollide2(systems[playersystem].ships[j]);
+					j = j+1;
+					}
+				i = i+1;
+				}
+					
+		
+		
 ////////////AI behavior section///////////////////////////////////////////////
 	var j = systems[playersystem].ships.length; 
 	while (j>1){ //Does not act on ship[0], which is player1.  This means botbomb length is 1 less than ships.  Index must be adjusted accordingly

@@ -113,15 +113,17 @@ window.addEventListener("keydown", function (event) {
 		shopitem = shopitem - 1;
 		if ((shopitem<0)&&(shopmode == 0)){shopitem = systems[playersystem].shops[dockstate].inv.length-1;}
 		if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-1;}
+		if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[playersystem].shops[dockstate].missions.length-1;}
       break;
     case "ArrowDown":
 		shopitem = shopitem + 1;
 		if ((shopitem>systems[playersystem].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
 		if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
-      break;   //handled in detail elsewhere
+		if ((shopitem>systems[playersystem].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
+      break;   
     case "End":
 		money = money +10000;
-      break;   //handled in detail elsewhere
+      break;  
 
     case "x":
 		var clustercolor = "red";
@@ -159,8 +161,12 @@ window.addEventListener("keydown", function (event) {
 				playerinventory.cargo[shopitem]=playerinventory.cargo[shopitem]-1;
 				money = money + Math.floor(allcargos[shopitem].baseprice*systems[playersystem].shops[dockstate].cargoprices[shopitem]);
 			}
+		}else if (shopmode == 2){
+			systems[playersystem].shops[dockstate].missions[shopitem].taken = true;
+				
+			}
 		}
-	 }
+	 
       break;
 	 case "Backspace": //The enter key purchases the currently selected shop item
 		shopmode = shopmode +1;

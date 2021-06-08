@@ -130,7 +130,7 @@
 				that.damage(this.hurt); 
 				}
 			}
-		circlecollide2(that){//Circular bouncing where both objects are affected, very untested
+		circlecollide3(that){//Circular bouncing where both objects are affected, very untested, old
 			var dv = this.deltav2(that);
 			var dir = this.directionof(that);//also transform angle
 			var dvta = [dv[0],dv[1]-dir]; //maybe backwards?  Mag and direction
@@ -147,6 +147,16 @@
 			var avta2 = [avx2,0]; //Magnitude, direction again
 			var av2 = [avx2,dir]; //also maybe backwards?
 			}
+		circlecollide2(that){//Circular bouncing where both objects are affected, very untested
+		//let this be ship a, and let that be ship b.
+		//Must move to reference frame where ship a is stationary at (0,0), and ship b contacts it at direction 0. 
+			if (this.distance(that)<(this.s+that.s)){
+				var cdir = this.directionof(that);//Not real elastic collisions, but these at least keep ships from overlapping long.  Mass is not considered.
+				this.push(1,cdir+Math.PI);//In some circumstances this does act as a reasonable approximation of an elastic collision.
+				that.push(1,cdir);//Objects are pushed away from each other along the contact axis by a constant amount, but it gets applied every frame the objects overlap.
+				}
+			}	
+			
 		bombcollide(that){ //explodes on contact, damages every frame in explosion
 			if (this.distance(that) < (this.s + that.s)) {
 				that.damage(this.hurt); //Automatically proportional based on time spent inside 
