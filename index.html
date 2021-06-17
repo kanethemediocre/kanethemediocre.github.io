@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b67 by KaneTheMediocre</title>
+    <title>Umo Space 167b69 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -15,8 +15,7 @@
 <script type="text/javascript" src="shop.js"></script>			
 <script type="text/javascript" src="texthandling.js"></script>
 <script type="text/javascript" src="graphics.js"></script>
-<script type="text/javascript" src="system.js"></script>
-<script type="text/javascript" src="playerbombs.js"></script>	
+<script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
 <script type="text/javascript" src="homesystem.js"></script>		
 <script type="text/javascript" src="storytext.js"></script>	
@@ -128,7 +127,6 @@ var ships = [player1];
 ///////Special Station Umos//////////////////////////////////////////////////////////////////////////////
 let outposts= loadhomeoutposts();
 ////////Player Bombs//////////////////////////////////////////////////////////////////////////////////////////       
-let playerbombs = loadplayerbombs();
 let botbombs=[];
 let home = new System(1,"Sool",0,0);
 home.planets = planets;//these are from loadhomesystem function output, which defines the starter system.
@@ -205,10 +203,15 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].maxhp = 1; //with planets 
 	systems[1].botbombs[i].shield=0;  
 	}
+//systems[1].planets[5].sungradient(systems[1].planets[0]);
 var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
 var i = 0;
 while (i<4){
-	systems[1].shops[1].addmissions(systems[1].ships,systems[1].planets);
+	var j = 0;
+	while (j<systems[1].shops.length){
+		systems[1].shops[j].addmissions(systems[1].ships,systems[1].planets);
+		j=j+1;
+		}
 	i=i+1
 	}
 let waldo = new Umo(0,0,1000,"purple");

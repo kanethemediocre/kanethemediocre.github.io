@@ -327,8 +327,12 @@ class System{
 				randshopitems3.push(new Shopitem("cargo",randcargo,"buy",1));
 				j=j+1;
 				}
-			
 			this.shops.push(new Shop("XXXXXXXXXX",i, "whaaaaaaaaaaaaaat", randshopitems3));
+			var k = 0;
+			while (k<4){
+				this.shops[i].addmissions(this.ships,this.planets);
+				k=k+1;
+				}
 			i=i+1;
 			}
 		}
