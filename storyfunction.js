@@ -52,7 +52,7 @@ switch(storystate){//Tutorial missions so far.
 	//	if (dstory==5){
 	//		playerradio.newmsg("Tutorial Dude",storymessages[5],time);//newmsg(sndr, msg, thetime)
 	//		}
-		if ((dstory>5)&&(systems[playersystem].ships[0].distance(systems[playersystem].planets[5])<512)){
+		if ((dstory>5)&&(systems[ps].ships[0].distance(systems[ps].planets[5])<512)){
 			playerradio.newmsg("Tutorial Dude",storymessages[6],time);//newmsg(sndr, msg, thetime)
 			task = "Dock at the Merry Merzian";
 			storystate=7;
@@ -134,9 +134,9 @@ switch(storystate){//Tutorial missions so far.
 	break;			
 	case 16:
 		if (dstory>playerradio.msgtime){
-			playerradio.newmsg("Tutorial Dude",storymessages[16]+systems[playersystem].ships[9].name,time);//newmsg(sndr, msg, thetime)
-			task = "Destroy ship "+systems[playersystem].ships[9].name+" near Merz";
-			ships[9].respawn(systems[playersystem].planets[ships[9].parentid]);
+			playerradio.newmsg("Tutorial Dude",storymessages[16]+systems[ps].ships[9].name,time);//newmsg(sndr, msg, thetime)
+			task = "Destroy ship "+systems[ps].ships[9].name+" near Merz";
+			ships[9].respawn(systems[ps].planets[ships[9].parentid]);
 			storystate = 17;
 			storytime = time;
 			}

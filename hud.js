@@ -5,9 +5,9 @@ function hud(){
 	var closestdistance = 999999;//needs to be larger than radarrange 
 	var closestindex = 0; //defaults to self-targeting if no ships in range
 	var i=0;//Excludes player ship
-	while (i<systems[playersystem].ships.length-1){ //this loop makes the short list
+	while (i<systems[ps].ships.length-1){ //this loop makes the short list
 		i=i+1;
-		var tdistance = Math.floor(systems[playersystem].ships[0].distance(systems[playersystem].ships[i]));
+		var tdistance = Math.floor(systems[ps].ships[0].distance(systems[ps].ships[i]));
 		if (tdistance<radarrange){
 			shipsinrange.push(i);
 			}
@@ -20,10 +20,10 @@ function hud(){
 			while(i<shipsinrange.length){
 				var cellposx = canvas.width-300;
 				var cellposy = 16+i*16;
-				context.fillStyle = systems[playersystem].ships[shipsinrange[i]].c
-				context.fillText(systems[playersystem].ships[shipsinrange[i]].name,cellposx,cellposy);
+				context.fillStyle = systems[ps].ships[shipsinrange[i]].c
+				context.fillText(systems[ps].ships[shipsinrange[i]].name,cellposx,cellposy);
 				var cellposx = canvas.width-300+64;
-				var shipdistance = systems[playersystem].ships[0].distance(systems[playersystem].ships[shipsinrange[i]]);
+				var shipdistance = systems[ps].ships[0].distance(systems[ps].ships[shipsinrange[i]]);
 				context.fillText(shipdistance,cellposx,cellposy);
 				i=i+1;
 				}
@@ -38,9 +38,9 @@ function hud(){
 	else if (shiptarget<0){shiptarget = 0;}
 	if (shipsinrange.length>0){
 		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
-		systems[playersystem].ships[0].drawcompass2(systems[playersystem].ships[shipsinrange[shiptarget]],canvas.width-64, 96, 64); //Targeting computer compass
-		systems[playersystem].ships[shipsinrange[shiptarget]].drawreticle(systems[playersystem].ships[0].x,systems[playersystem].ships[0].y); //Targeting reticle
-		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen"],[systems[playersystem].ships[shipsinrange[shiptarget]].name, systems[playersystem].ships[shipsinrange[shiptarget]].level, systems[playersystem].ships[shipsinrange[shiptarget]].hp,  systems[playersystem].ships[shipsinrange[shiptarget]].shield,  systems[playersystem].botbombs[shipsinrange[shiptarget]-1].hurt, systems[playersystem].botbombs[shipsinrange[shiptarget]-1].boombuff,systems[playersystem].ships[shipsinrange[shiptarget]].shieldregen]];
+		systems[ps].ships[0].drawcompass2(systems[ps].ships[shipsinrange[shiptarget]],canvas.width-64, 96, 64); //Targeting computer compass
+		systems[ps].ships[shipsinrange[shiptarget]].drawreticle(systems[ps].ships[0].x,systems[ps].ships[0].y); //Targeting reticle
+		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen"],[systems[ps].ships[shipsinrange[shiptarget]].name, systems[ps].ships[shipsinrange[shiptarget]].level, systems[ps].ships[shipsinrange[shiptarget]].hp,  systems[ps].ships[shipsinrange[shiptarget]].shield,  systems[ps].botbombs[shipsinrange[shiptarget]-1].hurt, systems[ps].botbombs[shipsinrange[shiptarget]-1].boombuff,systems[ps].ships[shipsinrange[shiptarget]].shieldregen]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 
 		context.rect(canvas.width-304,4+16*shiptarget, 160, 16); //This is the item selection indicator
@@ -49,8 +49,6 @@ function hud(){
 		context.stroke();	
 		}
 	}
-	//targetchart(shipsinrange,64,16,canvas.width-200,700);
-	//maybe causeing the graphical problems?
 	
 	drawaskey(32,149,"B","white");
 	drawaskey(32,176,"G","white");
@@ -70,17 +68,17 @@ function hud(){
 	if (navactive > 0){
 		var thenavtarget=0;
 		if (navactive==1){
-			thenavtarget=systems[playersystem].planets[navtarget];
+			thenavtarget=systems[ps].planets[navtarget];
 			}
 		if (navactive==2){
 			if (navtarget < 0) {navtarget =0;}//maybe not necessary?
-			else if (navtarget>systems[playersystem].outposts.length-1){navtarget = 0;			}
-			thenavtarget=systems[playersystem].outposts[navtarget];
+			else if (navtarget>systems[ps].outposts.length-1){navtarget = 0;			}
+			thenavtarget=systems[ps].outposts[navtarget];
 			}
-		thenavtarget.drawcompass(systems[playersystem].ships[0],canvas.width-64,canvas.height-96, 64); //Nav computer compass for planets
-		var solardistance = systems[playersystem].planets[0].distance(systems[playersystem].ships[0]); //distance to sun
-		var solargravity = (.0003*systems[playersystem].planets[0].m)/(solardistance*solardistance); //Gravitational influence of sun, pixels per frame per frame.
-		var distance = thenavtarget.distance(systems[playersystem].ships[0]); //distance to target planet
+		thenavtarget.drawcompass(systems[ps].ships[0],canvas.width-64,canvas.height-96, 64); //Nav computer compass for planets
+		var solardistance = systems[ps].planets[0].distance(systems[ps].ships[0]); //distance to sun
+		var solargravity = (.0003*systems[ps].planets[0].m)/(solardistance*solardistance); //Gravitational influence of sun, pixels per frame per frame.
+		var distance = thenavtarget.distance(systems[ps].ships[0]); //distance to target planet
 		var planetarygravity = (.0003*thenavtarget.m)/(distance*distance); //gravity from target planet
 		var name = thenavtarget.name;
 		var pclass = "Moon"; //Defaults to Moon,
@@ -88,19 +86,19 @@ function hud(){
 		else if (thenavtarget.parentid == 0){pclass = "Planet";}//Objects orbiting sun are planets
 		var size = String(Math.floor(thenavtarget.s));
 		var mass = String(Math.floor(thenavtarget.m/1000));
-		var parent = systems[playersystem].planets[thenavtarget.parentid].name;	
-		var orbitradius = thenavtarget.distance(systems[playersystem].planets[thenavtarget.parentid]);
-		var orbitspeed = thenavtarget.deltav(systems[playersystem].planets[thenavtarget.parentid]);
-		var orbitpos = systems[playersystem].planets[thenavtarget.parentid].directionof(thenavtarget);
+		var parent = systems[ps].planets[thenavtarget.parentid].name;	
+		var orbitradius = thenavtarget.distance(systems[ps].planets[thenavtarget.parentid]);
+		var orbitspeed = thenavtarget.deltav(systems[ps].planets[thenavtarget.parentid]);
+		var orbitpos = systems[ps].planets[thenavtarget.parentid].directionof(thenavtarget);
 		while (orbitpos > Math.PI){orbitpos=orbitpos - 2*Math.PI;} //This reduces the angle difference to within +- Math.PI
 		while (orbitpos < -1*Math.PI){orbitpos = orbitpos + 2*Math.PI;}
-		var distance = thenavtarget.distance(systems[playersystem].ships[0]); //distance to target planet
+		var distance = thenavtarget.distance(systems[ps].ships[0]); //distance to target planet
 		//var planetarygravity = (.0003*planets[navtarget].m)/(distance*distance); //gravity from target planet
 		var gravity = ((.0003*thenavtarget.m*900)/(distance*distance)).toFixed(3);
-		var dv = thenavtarget.deltav2(systems[playersystem].ships[0]);
+		var dv = thenavtarget.deltav2(systems[ps].ships[0]);
 		var deltav = (dv[0]).toFixed(3).padStart(8,"0");
-		var cosdv =  Math.cos(dv[1]-systems[playersystem].ships[0].directionof(thenavtarget))*dv[0];
-		var sindv =  Math.sin(dv[1]-systems[playersystem].ships[0].directionof(thenavtarget))*dv[0];
+		var cosdv =  Math.cos(dv[1]-systems[ps].ships[0].directionof(thenavtarget))*dv[0];
+		var sindv =  Math.sin(dv[1]-systems[ps].ships[0].directionof(thenavtarget))*dv[0];
 		var escape = Math.sqrt(thenavtarget.m*2*.0003/ships[0].distance(thenavtarget));
 		var navchart2 = [ ["Name","Class", "Size", "Mass", "Parent", "Orbit Radius", "Orbit speed", "Orbit Position"], [name, pclass, size, mass, parent, Math.floor(orbitradius), Math.floor(orbitspeed), orbitpos.toFixed(3)],  ["Distance","DeltaV", "Cos DV", "Sin DV", "Gravity", "Escape","X","Y"], [Math.floor(distance),deltav, cosdv.toFixed(3), sindv.toFixed(3), gravity, escape.toFixed(3),Math.floor(planets[navtarget].x), Math.floor(planets[navtarget].y)]  ];
 		showchart(navchart2, 80, 16, canvas.width-480,canvas.height-160);	
@@ -116,9 +114,9 @@ function hud(){
 	context.fillStyle = "red"; //weapons energy bar
     context.fillRect(4, 44,Math.floor(0.64*energy), 16);
 	context.fillStyle = "blue"; //shield bar
-    context.fillRect(4, 24,Math.floor(64*systems[playersystem].ships[0].shield/systems[playersystem].ships[0].maxshield), 16);
+    context.fillRect(4, 24,Math.floor(64*systems[ps].ships[0].shield/systems[ps].ships[0].maxshield), 16);
 	context.fillStyle = "green"; //health bar
-    context.fillRect(4, 4,Math.floor(64*systems[playersystem].ships[0].hp/systems[playersystem].ships[0].maxhp), 16);
+    context.fillRect(4, 4,Math.floor(64*systems[ps].ships[0].hp/systems[ps].ships[0].maxhp), 16);
 	context.fillStyle = "white";
 	var statuschart1 = [ ["Health","Shields", "Weapons", "Thrusters"]  ];
 	showchart(statuschart1, 80, 20, 8,16);	
@@ -147,10 +145,10 @@ function hud(){
 	context.fillText("Task: "+task,8,200);
 	context.fillText("Dockstate: "+dockstate,8,250);
 	
-	if (systems[playersystem].ships[0].hp==-1000){
+	if (systems[ps].ships[0].hp==-1000){
 		context.fillStyle = "red";
 		context.font='24px Arial';
-		context.fillText("u ded bruh."+systems[playersystem].ships[0].deadtime,canvas.width/2,canvas.height/2);
+		context.fillText("u ded bruh."+systems[ps].ships[0].deadtime,canvas.width/2,canvas.height/2);
 		context.fillStyle = "white";
 		context.font='12px Arial';
 	}
@@ -163,14 +161,14 @@ function hud(){
 		playerradio.showlog(0);
 		}
 ////Shopping!//////////////////////////////////////////////////////
-	if ((dockstate>=0)&&(dockstate<systems[playersystem].shops.length)){
+	if ((dockstate>=0)&&(dockstate<systems[ps].shops.length)){
 		if (shopmode == 0){
-			if (shopitem >= systems[playersystem].shops[dockstate].inv.length){shopitem=0;}
-			systems[playersystem].shops[dockstate].drawbuymenu(400,400,shopitem);
+			if (shopitem >= systems[ps].shops[dockstate].inv.length){shopitem=0;}
+			systems[ps].shops[dockstate].drawbuymenu(400,400,shopitem);
 		}else if (shopmode == 1){
-			systems[playersystem].shops[dockstate].drawsellmenu(400,400,shopitem);
+			systems[ps].shops[dockstate].drawsellmenu(400,400,shopitem);
 		}else if (shopmode == 2){
-			systems[playersystem].shops[dockstate].drawworkmenu(400,400,shopitem);
+			systems[ps].shops[dockstate].drawworkmenu(400,400,shopitem);
 		}
 	}
 	//draw cargo stuff

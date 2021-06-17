@@ -5,7 +5,7 @@ window.addEventListener("keydown", function (event) {
   }
   switch (event.key) {  //events for all the keyboard keys
     case "q":
-	 qblaster.fire(systems[playersystem].ships[0],time);
+	 qblaster.fire(systems[ps].ships[0],time);
 	 money = money +1;
 	 //qblaster.draw(ships[0].x,ships[0].y);
       break;   
@@ -21,7 +21,7 @@ window.addEventListener("keydown", function (event) {
 	case "g": //Booster activation
 		if (boosters[boosters[0]]>0){//if selected booster is in stock
 			boosters[boosters[0]]=boosters[boosters[0]]-1; //remove 1 from stock of selected booster
-			systems[playersystem].ships[0].thrust = 64*2^(boosters[0]); //boost hard
+			systems[ps].ships[0].thrust = 64*2^(boosters[0]); //boost hard
 			}
       break;	  	  
 	case "1":    //This is how weapon switching is handled.
@@ -57,10 +57,10 @@ window.addEventListener("keydown", function (event) {
 	case "n": 
 		if (navactive == 0){
 			navactive = 1;
-			if (navtarget>systems[playersystem].planets.length-2){navtarget=0;}
+			if (navtarget>systems[ps].planets.length-2){navtarget=0;}
 		} else if (navactive == 1) {
 			navactive = 2;
-			if (navtarget > systems[playersystem].outposts.length-2){navtarget=0;}
+			if (navtarget > systems[ps].outposts.length-2){navtarget=0;}
 		} else if (navactive == 2){navactive = 0;}
     	  break;
 	case "m": 
@@ -80,23 +80,23 @@ window.addEventListener("keydown", function (event) {
 	case ".": 
 			if (navactive == 1){
 				navtarget = navtarget+1;
-				if (navtarget == systems[playersystem].planets.length-1){ navtarget = 0; }
+				if (navtarget == systems[ps].planets.length-1){ navtarget = 0; }
 			}else if (navactive == 2){
 				navtarget = navtarget+1;
-				if (navtarget > systems[playersystem].outposts.length-1){navtarget = 0; }
+				if (navtarget > systems[ps].outposts.length-1){navtarget = 0; }
 				}
     	  break;
 	case ",": 
 		if (navactive == 1){
 			navtarget = navtarget-1;
-			if (navtarget == -1){ navtarget = systems[playersystem].planets.length-1; }
+			if (navtarget == -1){ navtarget = systems[ps].planets.length-1; }
 		}else if (navactive == 2){
 			navtarget = navtarget-1;
-			if (navtarget == -1){ navtarget = systems[playersystem].outposts.length-1; }
+			if (navtarget == -1){ navtarget = systems[ps].outposts.length-1; }
 			}
 		break;		  
 	case "w": 
-		systems[playersystem].ships[0].respawn(systems[playersystem].planets[navtarget]);
+		systems[ps].ships[0].respawn(systems[ps].planets[navtarget]);
      	 break;
 	case "]": 
 		if (shiptarget == shipsinrange.length-1){ shiptarget = 0; }
@@ -111,15 +111,15 @@ window.addEventListener("keydown", function (event) {
       break;
     case "ArrowUp":
 		shopitem = shopitem - 1;
-		if ((shopitem<0)&&(shopmode == 0)){shopitem = systems[playersystem].shops[dockstate].inv.length-1;}
+		if ((shopitem<0)&&(shopmode == 0)){shopitem = systems[ps].shops[dockstate].inv.length-1;}
 		if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-1;}
-		if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[playersystem].shops[dockstate].missions.length-1;}
+		if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[ps].shops[dockstate].missions.length-1;}
       break;
     case "ArrowDown":
 		shopitem = shopitem + 1;
-		if ((shopitem>systems[playersystem].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
+		if ((shopitem>systems[ps].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
 		if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
-		if ((shopitem>systems[playersystem].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
+		if ((shopitem>systems[ps].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
       break;   
     case "End":
 		money = money +10000;
@@ -141,17 +141,17 @@ window.addEventListener("keydown", function (event) {
 
       break;
 	 case "v":
-		if (playersystem <15){playersystem = playersystem + 1;}
-		else  {playersystem = 1;}
+		if (ps <15){ps = ps + 1;}
+		else  {ps = 1;}
       break;
 	 case "Enter": //The enter key purchases the currently selected shop item
-	 if ((dockstate >= 0)&&(dockstate<systems[playersystem].shops.length)){//check if docked and shop exists
+	 if ((dockstate >= 0)&&(dockstate<systems[ps].shops.length)){//check if docked and shop exists
 		if (shopmode == 0){
-			 if (shopitem<systems[playersystem].shops[dockstate].inv.length){//check for shopitem exists
-				if (systems[playersystem].shops[dockstate].inv[shopitem].itemprice()<=money){ //check if player has enough money
-					if (systems[playersystem].shops[dockstate].inv[shopitem].available(systems[playersystem].ships[0],playerinventory)){ //check if player has prerequisites / doesn't already own item
-						money = money - systems[playersystem].shops[dockstate].inv[shopitem].itemprice();
-						systems[playersystem].shops[dockstate].inv[shopitem].buy(money,systems[playersystem].ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+			 if (shopitem<systems[ps].shops[dockstate].inv.length){//check for shopitem exists
+				if (systems[ps].shops[dockstate].inv[shopitem].itemprice()<=money){ //check if player has enough money
+					if (systems[ps].shops[dockstate].inv[shopitem].available(systems[ps].ships[0],playerinventory)){ //check if player has prerequisites / doesn't already own item
+						money = money - systems[ps].shops[dockstate].inv[shopitem].itemprice();
+						systems[ps].shops[dockstate].inv[shopitem].buy(money,systems[ps].ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 					}
 				}
 			}		 
@@ -159,10 +159,10 @@ window.addEventListener("keydown", function (event) {
 			//if (playerinventory.cargo.length <= shopitem){shopitem = 0;}
 			if (playerinventory.cargo[shopitem]>0){
 				playerinventory.cargo[shopitem]=playerinventory.cargo[shopitem]-1;
-				money = money + Math.floor(allcargos[shopitem].baseprice*systems[playersystem].shops[dockstate].cargoprices[shopitem]);
+				money = money + Math.floor(allcargos[shopitem].baseprice*systems[ps].shops[dockstate].cargoprices[shopitem]);
 			}
 		}else if (shopmode == 2){
-			systems[playersystem].shops[dockstate].missions[shopitem].taken = true;
+			systems[ps].shops[dockstate].missions[shopitem].taken = true;
 				
 			}
 		}
@@ -171,6 +171,7 @@ window.addEventListener("keydown", function (event) {
 	 case "Backspace": //The enter key purchases the currently selected shop item
 		shopmode = shopmode +1;
 		if (shopmode > 2) { shopmode = 0; }
+		shopitem = 0;
 	  break;
 	 case "p": 
 		probemode = probemode + 1;

@@ -147,9 +147,7 @@
 			var avta2 = [avx2,0]; //Magnitude, direction again
 			var av2 = [avx2,dir]; //also maybe backwards?
 			}
-		circlecollide2(that){//Circular bouncing where both objects are affected, very untested
-		//let this be ship a, and let that be ship b.
-		//Must move to reference frame where ship a is stationary at (0,0), and ship b contacts it at direction 0. 
+		circlecollide2(that){//Circular bouncing where both objects are affected.  
 			if (this.distance(that)<(this.s+that.s)){
 				var cdir = this.directionof(that);//Not real elastic collisions, but these at least keep ships from overlapping long.  Mass is not considered.
 				this.push(1,cdir+Math.PI);//In some circumstances this does act as a reasonable approximation of an elastic collision.

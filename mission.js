@@ -12,7 +12,7 @@ class Mission{
 	check(theships,theplanets,theradio){ //Determines if mission is complete
 		var complete = 0;
 		if (this.taken==true){ //This evaluates to false when this.taken == true.  Not sure why, but I need to fix it.
-			systems[playersystem].ships[0].hp = 100;
+			//systems[ps].ships[0].hp = 100;
 			if (this.type == "destroy"){ //If the mission is to kill a guy
 				if (theships[this.target].hp < 0){complete = 1;} //If the ship is dead, the mission is complete.  Doesnt work yet
 				}

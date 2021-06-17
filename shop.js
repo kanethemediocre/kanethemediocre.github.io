@@ -97,7 +97,7 @@ class Shopitem{
 			if (this.utype == "boom"){
 				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()&&(allblasters[this.i].btier<allblasters[this.i].maxboom)) ){ //verify player doesnt already have blaster, and has enough money
 					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
-					allblasters[this.i].plustimer();
+					allblasters[this.i].plusboom();
 					}
 				}
 		}else if (this.type == "upgrade"){ //don't like the way utype is being used instead of referencing the upgrade and index.
@@ -202,7 +202,7 @@ class Shop{
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
 		context.font='24px Arial';
-		context.fillStyle = systems[playersystem].outposts[this.home].c;
+		context.fillStyle = systems[ps].outposts[this.home].c;
 		context.fillText("Buy",x,y-24);
 		context.fillStyle = "white";
 		var names = [];
@@ -244,11 +244,12 @@ class Shop{
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
 		context.font='24px Arial';
-		context.fillStyle = systems[playersystem].outposts[this.home].c;
+		context.fillStyle = systems[ps].outposts[this.home].c;
 		context.fillText("Sell",x,y-24);
 		context.fillStyle = "white";
 		context.font='12px Arial';
-		context.fillText(allcargos[item].description,x,y+256);
+		
+		if (allcargos.length>0){context.fillText(allcargos[item].description,x,y+256);}
 		context.fillText('X',x-16,y+32+item*16);
 		//replace showchart function
 		var i=0;
@@ -267,11 +268,11 @@ class Shop{
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
 		context.font='24px Arial';
-		context.fillStyle = systems[playersystem].outposts[this.home].c;
+		context.fillStyle = systems[ps].outposts[this.home].c;
 		context.fillText("Work",x,y-24);
 		context.font='12px Arial';
 		context.fillStyle = "white";	
-		context.fillText(this.missions[item].message,x,y+256);
+		if (this.missions.length>0){context.fillText(this.missions[item].message,x,y+256);}
 		context.fillText('X',x-16,y+32+item*16);
 		var i=0;
 		while (i<this.missions.length){
@@ -279,16 +280,16 @@ class Shop{
 			context.fillText(this.missions[i].type.slice(0,16),x,y+32+16*i);
 			context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
 			context.fillText(this.missions[i].reward,x+160,y+32+16*i);
-			context.fillText(systems[playersystem].planets[this.missions[i].target].name,x+240,y+32+16*i);
+			context.fillText(systems[ps].planets[this.missions[i].target].name,x+240,y+32+16*i);
 			i=i+1;
 			}
 		}
 	addmissions(theships,theplanets){
 		var missiontarget = 1+Math.floor(Math.random()*(theplanets.length-1));
 		var missiondistance = theships[0].distance(theplanets[missiontarget]);
-		var missionpay = Math.floor(1000 + missiondistance/20);
+		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Go to "+theplanets[missiontarget].name + "."
-		this.missions.push(new Mission("Cargo",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
+		this.missions.push(new Mission("cargo",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
 	}
 	
 	

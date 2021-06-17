@@ -50,7 +50,7 @@
 			"Also, Try not to tangle with the local 'bots around Jupe and moons, they're more dangerous than the 'bots around Merz by far.  The station is far enough away that you shouldn't need to engage them.",
 			"Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or just take time to explore or seek your own fortune.",
 			"Welcome to Earf!  I'm Bill.  Dudeman tells me you're learning to fly, and I'm looking for cheap labor.",		
-			"Yo Yo this is the last message2.",
+			"The bots around the inner planets aren't as dangerous as those around outer planets like Jupe and Tern, but they're bad enough that we can't ignore them completely.  ",
 			"Yo Yo this is the last message1."
 			]
 			return storymessages
