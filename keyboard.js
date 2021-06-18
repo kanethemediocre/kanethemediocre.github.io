@@ -139,6 +139,9 @@ window.addEventListener("keydown", function (event) {
 		else  {ps = 1;}
 		}
       break;
+	  case "s":
+	  if (starmode == 0){starmode = 1;}else{starmode = 0;}
+      break;
 	 case "Enter": //The enter key purchases the currently selected shop item
 	 if ((dockstate >= 0)&&(dockstate<systems[ps].shops.length)){//check if docked and shop exists
 		if (shopmode == 0){

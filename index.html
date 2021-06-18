@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b69 by KaneTheMediocre</title>
+    <title>Umo Space 167b72 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -25,7 +25,7 @@
 <script type="text/javascript" src="keyboard.js"></script>
 <script type="text/javascript" src="storyfunction.js"></script>
 <script type="text/javascript" src="hud.js"></script>
-	
+<script type="text/javascript" src="starfield.js"></script>
 	
 <script>
 // declare global variables/////////////////////////////////////////////////
@@ -75,6 +75,8 @@ var shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
 var cheatmode = 0; //0 = not a cheater
 var ps = 1; //Waldo is special.
 var probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
+var starmode = 1; //0 for no starfield.
+let testfield = new Starfield(30000,20000,64,1000,4000,32);
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -141,43 +143,43 @@ systems[2].randomplanets();
 systems[2].enemypopulate(5,4,16);
 systems[3].ships.push(systems[1].ships[0]);
 systems[3].randomplanets();
-systems[3].enemypopulate(5,4,16);
+systems[3].enemypopulate(5,4,17);
 systems[4].ships.push(systems[1].ships[0]);
 systems[4].randomplanets();
-systems[4].enemypopulate(5,4,16);
+systems[4].enemypopulate(5,5,18);
 systems[5].ships.push(systems[1].ships[0]);
 systems[5].randomplanets();
-systems[5].enemypopulate(5,4,16);
+systems[5].enemypopulate(5,5,19);
 systems[6].ships.push(systems[1].ships[0]);
 systems[6].randomplanets();
-systems[6].enemypopulate(5,4,16);
+systems[6].enemypopulate(5,6,20);
 systems[7].ships.push(systems[1].ships[0]);
 systems[7].randomplanets();
-systems[7].enemypopulate(5,4,16);
+systems[7].enemypopulate(5,6,21);
 systems[8].ships.push(systems[1].ships[0]);
 systems[8].randomplanets();
-systems[8].enemypopulate(5,4,16);
+systems[8].enemypopulate(5,7,22);
 systems[9].ships.push(systems[1].ships[0]);
 systems[9].randomplanets();
-systems[9].enemypopulate(5,4,16);
+systems[9].enemypopulate(5,7,23);
 systems[10].ships.push(systems[1].ships[0]);
 systems[10].randomplanets();
-systems[10].enemypopulate(5,4,16);			
+systems[10].enemypopulate(5,8,24);			
 systems[11].ships.push(systems[1].ships[0]);
 systems[11].randomplanets();
-systems[11].enemypopulate(5,4,16);			
+systems[11].enemypopulate(5,8,25);			
 systems[12].ships.push(systems[1].ships[0]);
 systems[12].randomplanets();
-systems[12].enemypopulate(5,4,16);
+systems[12].enemypopulate(5,9,26);
 systems[13].ships.push(systems[1].ships[0]);
 systems[13].randomplanets();
-systems[13].enemypopulate(5,4,16);			
+systems[13].enemypopulate(5,9,27);			
 systems[14].ships.push(systems[1].ships[0]);
 systems[14].randomplanets();
-systems[14].enemypopulate(5,4,16);			
+systems[14].enemypopulate(5,10,28);			
 systems[15].ships.push(systems[1].ships[0]);
 systems[15].randomplanets();
-systems[15].enemypopulate(5,4,16);			
+systems[15].enemypopulate(5,10,29);			
 			
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
 systems[1].addrandomgang(1,2,24);
@@ -219,6 +221,11 @@ let waldo = new Umo(0,0,1000,"purple");
 waldo.name = "Waldo";
 waldo.setorbit(home.planets[0], 320000, Math.PI, -1);
 systems[1].planets.push(waldo);
+var i = 2;
+while (i<systems.length){
+	systems[i].planets.push(waldo);
+	i=i+1;
+	}
 //player1.setorbit(home.planets[0], 28000, 0.05, 1);
 //size adjust for collision at 10,000
 //waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
@@ -241,6 +248,10 @@ function update() {
 		context.lineWidth = 4; 
 		context.strokeStyle = "blue";
 		context.stroke();	
+		}
+	if (starmode == 1){	
+		var pz = (ps-1)*8+(waldo.s/4000);
+		testfield.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,pz,testfield.zmax);
 		}
 //Outpost stuff all handled here.....
 	//home.dockcheck(dockstate); //abstracting docking code seems to keep player stuck docked
@@ -278,7 +289,8 @@ function update() {
 		if (ps > systems.length-1){
 			ps = 1;
 			}
-		systems[ps].ships[0].x = -0.75*systems[ps].ships[0].x;
+		waldo.setorbit(systems[ps].planets[0], 320000, Math.random()*2*Math.PI, -1);
+		systems[ps].ships[0].x = -0.75*systems[ps].ships[0].x;//no particular reason
 		systems[ps].ships[0].y = -0.75*systems[ps].ships[0].y;
 		systems[ps].ships[0].vx = 0; //Otherwise players inherit the momentum acquired in descent.
 		systems[ps].ships[0].vy = 0;

@@ -1,5 +1,4 @@
-		function loadstorymessages(){
-		var storymessages = ["Right click for thrust, left click to shoot, and point the mouse in whatever direction you want to face, and don't forget that you have to slow down at the other end.  Going anywhere in particular is more complicated, and if you wander around without a destination, you'll find what space is really made made of:  Nothing.",
+		function loadstorymessages(){var storymessages = ["Right click for thrust, left click to shoot, and point the mouse in whatever direction you want to face, and don't forget that you have to slow down at the other end.  Going anywhere in particular is more complicated, and if you wander around without a destination, you'll find what space is really made made of:  Nothing.",
 		"You can cycle navigation modes between targeting planets, targeting stations, and off with the N key.  < and > will cycle through available nav targets.  The bottom right compass will point towards your nav target, and indicates name and distance.  The chart to the left gives more information if you're interested.  Try selecting planet Merz.",
 			//first check after 2 messages, navtarget==5 and navactive == 1
 			"Great!  That's where you'll be going next.  But to help you know your place in the universe, your HUD also has a map.  The M key cycles between a full-screen display, a corner display, and off.  I recommend the corner.  You can zoom in and out with the + and - keys.",
@@ -49,8 +48,10 @@
 			"Make sure you're pointing the right way before you fire the booster, and make sure you packed an extra for braking.  You might also need another pair to get back ",
 			"Also, Try not to tangle with the local 'bots around Jupe and moons, they're more dangerous than the 'bots around Merz by far.  The station is far enough away that you shouldn't need to engage them.",
 			"Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or just take time to explore or seek your own fortune.",
-			"Welcome to Earf!  I'm Bill.  Dudeman tells me you're learning to fly, and I'm looking for cheap labor.",		
+			"Welcome to Earf!  My name is Bill Maker.  Dudeman tells me you're learning to fly, and I'm looking for cheap labor.",		
 			"The bots around the inner planets aren't as dangerous as those around outer planets like Jupe and Tern, but they're bad enough that we can't ignore them completely.  ",
+			"There's been an initiative to build a moon base with blasters to thin their numbers, but its a costly endeavor and no one wants to see it blown up by bots before it's finished.",
+			"I've been hoarding resources for a while now, and I'm close to having what I need, but I still need to somehow build the thing without taking any hits until the shield generator comes up. ",
 			"Yo Yo this is the last message1."
 			]
 			return storymessages
