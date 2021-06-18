@@ -181,4 +181,13 @@ function hud(){
 		var values = [ships[0].hp,ships[0].maxhp, ships[0].shield,ships[0].maxshield,ships[0].shieldregen,radarrange,   playerinventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
+if (cheatmode == 1){
+	context.font = "32px Ariel";
+	context.fillStyle = "red";
+	context.fillText("YOU'RE A CHEATER",canvas.width/2-100,24);	
+	context.font = "12px Ariel";
+	context.fillText("End key gives money, Q key fires scrt blaster, W key warps to planet, V warps to next solar system, X summons rainbow monster",canvas.width/2-300,48);	
+	}
+
+
 }

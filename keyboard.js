@@ -5,12 +5,10 @@ window.addEventListener("keydown", function (event) {
   }
   switch (event.key) {  //events for all the keyboard keys
     case "q":
-	 qblaster.fire(systems[ps].ships[0],time);
-	 money = money +1;
-	 //qblaster.draw(ships[0].x,ships[0].y);
+	if (cheatmode == 1){ qblaster.fire(systems[ps].ships[0],time); }
       break;   
-	 case "f":
-     qblaster.plusn();
+	 case "c":
+	 if (cheatmode == 0){cheatmode = 1;}
       break;    
     case " ":
       playerradio.msgtime = 1;
@@ -96,7 +94,7 @@ window.addEventListener("keydown", function (event) {
 			}
 		break;		  
 	case "w": 
-		systems[ps].ships[0].respawn(systems[ps].planets[navtarget]);
+	if (cheatmode ==1){	systems[ps].ships[0].respawn(systems[ps].planets[navtarget]); }
      	 break;
 	case "]": 
 		if (shiptarget == shipsinrange.length-1){ shiptarget = 0; }
@@ -122,27 +120,24 @@ window.addEventListener("keydown", function (event) {
 		if ((shopitem>systems[ps].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
       break;   
     case "End":
-		money = money +10000;
+		if (cheatmode == 1){money = money +10000;}
       break;  
 
     case "x":
-		var clustercolor = "red";
-		//if (time%6==0){clustercolor="red";}
-		////if (time%6==1){clustercolor="orange";}
-		//if (time%6==2){clustercolor="yellow";}
-		//if (time%6==3){clustercolor="green";}
-		//if (time%6==4){clustercolor="blue";}
-		//if (time%6==5){clustercolor="purple";}
-
-		testcluster = new Clusterbomb(time,ships[0].x+mdx,ships[0].y+mdy,ships[0].vx,ships[0].vy,12,6,32,0.9,clustercolor,233,0.3);
+		if (cheatmode == 1){
+			var clustercolor = "red";
+			testcluster = new Clusterbomb(time,ships[0].x+mdx,ships[0].y+mdy,ships[0].vx,ships[0].vy,12,6,32,0.9,clustercolor,233,0.3);
+			}
       break;   //handled in detail elsewhere
 	case "z":
 		if (diagnostic == 3){diagnostic=0;}else {diagnostic=diagnostic+1;}
 
       break;
 	 case "v":
+	 if (cheatmode == 1){
 		if (ps <15){ps = ps + 1;}
 		else  {ps = 1;}
+		}
       break;
 	 case "Enter": //The enter key purchases the currently selected shop item
 	 if ((dockstate >= 0)&&(dockstate<systems[ps].shops.length)){//check if docked and shop exists
