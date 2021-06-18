@@ -29,6 +29,7 @@
 			this.active = 1; //Flag indicating if ship (or planet's ships) needs to be considered by the game engine 
 			this.shopchart = [];//["Item Name","Item type",price,tier]
 			this.target = 0; //For ai use
+			this.ai = "none";
 			}
 		update1(){ //Pure motion update.
 			this.x = this.x + this.vx;
@@ -182,6 +183,7 @@
 			var x = this.x - viewx + canvas.width/2; //normally camera center being the player ship.
 			var y = this.y - viewy + canvas.height/2;
 			drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, this.c, this.d);//ship polyon
+			drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-8, this.c2, this.d);//ship polyon
 			var shieldthick = Math.floor(this.shield*4/this.maxshield); //shield
 			if (shieldthick>0){ //Needs to not render at all sometimes because linewidth of 0 is ignored instead of invisible.
 				context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
@@ -208,9 +210,29 @@
 			if ((this.c2!==0)&&(this.s>16)){
 				context.beginPath();
 				context.strokeStyle = this.c2; //sets planet color
-				context.arc(x, y, this.s-8, 0, 2 * Math.PI, false); //draws the circle
+				context.arc(x, y, this.s-8, 0, 2 * Math.PI, false); //draws the 2nd outermost circle
 				context.lineWidth = 8; //circle is thicc
 				context.stroke();	//ok now actually draw it.
+				context.beginPath();
+				context.fillStyle = this.c; //sets planet color
+				context.arc(x, y, this.s-12, 0, 2 * Math.PI, false); //draws the innermost circle
+				context.lineWidth = 8; //circle is thicc
+				context.fill();	//ok now actually FILL it.
+
+				context.beginPath();
+				context.fillStyle = this.c2; //sets color of secondary blobs
+				var i=0;
+				while(i<this.polytheta.length){
+					context.beginPath();
+					var blobsize = this.s*0.5*this.polyradius[i]
+					var blobdistance = this.s - blobsize-4;
+					var blobx = x+Math.cos(this.polytheta[i])*blobdistance;
+					var bloby = y+Math.sin(this.polytheta[i])*blobdistance;
+					context.arc(blobx, bloby, blobsize, 0, 2 * Math.PI, false); //draws the innermost circle
+					context.lineWidth = 8; //circle is thicc
+					context.fill();	//ok now actually FILL it.
+					i=i+1;
+					}
 				}
 			context.fillStyle = "white"; 
 			context.font='20px Arial';
@@ -240,6 +262,7 @@
 			var x = this.x - viewx + canvas.width/2;//stations are squares for now
 			var y = this.y - viewy + canvas.height/2;
 			drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, this.c, this.d);//ship polyon
+			drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-8, this.c2, this.d);//ship polyon
 			context.fillStyle = "white";
 			context.font='20px Arial';
 			context.fillText(this.name,x,y);		

@@ -11,7 +11,7 @@ class Star {
 		while (dz < 0) {
 			dz = dz + zmax;//wraps around in the z axis
 		}
-		var xyscale = 256*dz; //no idea what i did there but ok
+		var xyscale = 128*dz; //no idea what i did there but ok
 		var dx = (this.x-(viewx / xyscale))/dz;
 		var dy = (this.y-(viewy / xyscale))/dz;
 		//var x = this.x - viewx + canvas.width/2;

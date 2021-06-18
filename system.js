@@ -247,6 +247,18 @@ class System{
 			this.randommoons(i); 
 			i=i+1;
 			}
+		var i = 0;
+		while (i<this.planets.length){
+			var j=0;
+			while (j<this.planets[i].polytheta.length){
+				this.planets[i].polyradius[j] = Math.random()+0.125;
+				this.planets[i].polytheta[j] = Math.random()*2*Math.PI;
+				j=j+1;
+				}
+			i=i+1;
+			}
+			
+			
 		this.randomoutposts(3);
 		
 		}
@@ -330,7 +342,12 @@ class System{
 			this.shops.push(new Shop("XXXXXXXXXX",i, "whaaaaaaaaaaaaaat", randshopitems3));
 			var k = 0;
 			while (k<4){
-				this.shops[i].addmissions(this.ships,this.planets);
+				this.shops[i].addcargomission(this.ships,this.planets);
+				k=k+1;
+				}
+			var k = 0;
+			while (k<4){
+				this.shops[i].addkillmission(this.ships,this.planets);
 				k=k+1;
 				}
 			i=i+1;
@@ -365,18 +382,19 @@ class System{
 	addrandomgang(planetindex, num,level){ //Adds a gang of enemy ships, level describes difficulty (not used yet)
 		var gangsize = num;
 		var gangcolor = randcolor();
+		var gangcolor2 = randcolor();
 		var gangparent = planetindex;
 		var randomsides = Math.floor(Math.random()*8)*2+8; //randomized side number
 		var randomplayerverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
 		normalizepoly(randomplayerverts);
 		var gangpolytheta = randomplayerverts[0];
 		var gangpolyradius = randomplayerverts[1];
-		
 		var i = gangsize;
 		while (i>0){
 			i=i-1;
 			this.ships.push(new Umo(-600,32000,32,gangcolor));
 			var botindex = this.ships.length-1;
+			this.ships[botindex].c2 = gangcolor2;
 			this.ships[botindex].parentid = gangparent; 
 			this.ships[botindex].respawn(this.planets[this.ships[botindex].parentid]);
 			this.ships[botindex].name = randname(5);
@@ -384,6 +402,7 @@ class System{
 			this.ships[botindex].maxhp = 150;
 			this.ships[botindex].polytheta = gangpolytheta;
 			this.ships[botindex].polyradius = gangpolyradius;
+			this.ships[botindex].ai = "enemy";
 			this.botbombs.push( new Umo(0,0,0,"red"));
 			this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
 			this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
