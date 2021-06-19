@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b74 by KaneTheMediocre</title>
+    <title>Umo Space 167b76 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -115,6 +115,7 @@ let planets = loadhomesystem(); //homesystem.
 ////////Initialize Player//////////////////////////////////////////////////////////
 let testship = new Umo (0,0,32,"black");//Used for calculations
 let player1 = new Umo(400,32400,32,randcolor());//player ship
+player1.c2 = randcolor();
 player1.hp = 1000; //1000 health,
 player1.maxhp = 1000;//1000 maximum health
 player1.parentid = 3; //Spawn relative to planet index 3.
@@ -217,6 +218,18 @@ while (i<4){
 		}
 	i=i+1
 	}
+	
+var i = 0;
+while (i<4){
+	var j = 0;
+	while (j<systems[1].shops.length){
+		systems[1].shops[j].addkillmission(systems[1].ships,systems[1].planets);
+		j=j+1;
+		}
+	i=i+1
+	}
+
+
 let waldo = new Umo(0,0,1000,"purple");
 waldo.name = "Waldo";
 waldo.setorbit(home.planets[0], 320000, Math.PI, -1);
@@ -380,7 +393,8 @@ function update() {
 			systems[ps].planets[i].circlecollide(systems[ps].botbombs[k]);
 			}
 		}
-	j = systems[ps].ships.length;
+	//j = systems[ps].ships.length;
+	j = 1; //only checks against player, stops bot suicide
 	while (j>0){ //for all ships (and botbombs)
 		j=j-1;
 		k = systems[ps].botbombs.length;

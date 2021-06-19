@@ -137,6 +137,7 @@ window.addEventListener("keydown", function (event) {
 	 if (cheatmode == 1){
 		if (ps <15){ps = ps + 1;}
 		else  {ps = 1;}
+		navtarget = 0;
 		}
       break;
 	  case "s":

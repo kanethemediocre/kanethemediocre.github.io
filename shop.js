@@ -280,7 +280,7 @@ class Shop{
 			context.fillText(this.missions[i].type.slice(0,16),x,y+32+16*i);
 			context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
 			context.fillText(this.missions[i].reward,x+160,y+32+16*i);
-			context.fillText(systems[ps].planets[this.missions[i].target].name,x+240,y+32+16*i);
+			context.fillText(systems[ps].ships[this.missions[i].target].name,x+240,y+32+16*i);
 			i=i+1;
 			}
 		}
@@ -295,7 +295,7 @@ class Shop{
 		var missiontarget = 1+Math.floor(Math.random()*(theships.length-2));
 		var missiondistance = theships[0].distance(theships[missiontarget]);
 		var missionpay = Math.floor(500 + missiondistance/40);
-		var missionmessage = "Go to "+theships[missiontarget].name + ".";
+		var missionmessage = "Destroy "+theships[missiontarget].name + ".";
 		this.missions.push(new Mission("destroy",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
 	}
 	
@@ -389,3 +389,4 @@ let upshopitem1 = ("upgrade",0,"repair",0);
 let upshopitem2 = ("upgrade",1,"armor",0);
 let randoshop2 = new Shop("Rando Calrissian's Randomized Upgrades",4, "Randomized items", randshopitems2);
 let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,randoshop2];
+
