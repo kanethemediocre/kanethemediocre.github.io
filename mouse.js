@@ -14,6 +14,9 @@ if (mousestate==1){ //if it's the left button
 		if (energy>allblasters[wep].ecost){
 			allblasters[wep].fire(systems[ps].ships[0],time);
 			energy = energy - allblasters[wep].ecost;
+			if (wep == 1){blastersound1.play();}
+			else if (wep == 2){blastersound2.play();}
+			else if (wep == 3){blastersound3.play();}
 			}
 		}
 	}	
@@ -35,6 +38,7 @@ else if (mousestate==2){//if its the right button
 		context.fill();
 		context.lineWidth = 2;
 		context.stroke();	
+		enginesound1.play();
 		}
 	} 
 }

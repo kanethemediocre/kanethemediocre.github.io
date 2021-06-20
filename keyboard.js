@@ -108,12 +108,14 @@ window.addEventListener("keydown", function (event) {
 		shiptarget = closestindex;                                         
       break;
     case "ArrowUp":
+		if (dockstate>=0){menuclick1.play();}
 		shopitem = shopitem - 1;
 		if ((shopitem<0)&&(shopmode == 0)){shopitem = systems[ps].shops[dockstate].inv.length-1;}
 		if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-1;}
 		if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[ps].shops[dockstate].missions.length-1;}
       break;
     case "ArrowDown":
+		if (dockstate>=0){menuclick1.play();}
 		shopitem = shopitem + 1;
 		if ((shopitem>systems[ps].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
 		if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
@@ -150,6 +152,7 @@ window.addEventListener("keydown", function (event) {
 				if (systems[ps].shops[dockstate].inv[shopitem].itemprice()<=money){ //check if player has enough money
 					if (systems[ps].shops[dockstate].inv[shopitem].available(systems[ps].ships[0],playerinventory)){ //check if player has prerequisites / doesn't already own item
 						money = money - systems[ps].shops[dockstate].inv[shopitem].itemprice();
+						menubuy1.play();
 						systems[ps].shops[dockstate].inv[shopitem].buy(money,systems[ps].ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 					}
 				}
@@ -159,10 +162,11 @@ window.addEventListener("keydown", function (event) {
 			if (playerinventory.cargo[shopitem]>0){
 				playerinventory.cargo[shopitem]=playerinventory.cargo[shopitem]-1;
 				money = money + Math.floor(allcargos[shopitem].baseprice*systems[ps].shops[dockstate].cargoprices[shopitem]);
+				menubuy1.play();
 			}
 		}else if (shopmode == 2){
 			systems[ps].shops[dockstate].missions[shopitem].taken = true;
-				
+			job = systems[ps].shops[dockstate].missions[shopitem].message;
 			}
 		}
 	 

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b76 by KaneTheMediocre</title>
+    <title>Umo Space 167b80 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -26,7 +26,6 @@
 <script type="text/javascript" src="storyfunction.js"></script>
 <script type="text/javascript" src="hud.js"></script>
 <script type="text/javascript" src="starfield.js"></script>
-	
 <script>
 // declare global variables/////////////////////////////////////////////////
 const FPS = 30;
@@ -68,7 +67,8 @@ var closestdistance = 999999;//needs to be larger than radarrange
 var closestindex = 0; //defaults to self-targeting if no ships in range
 var storytime = 0;//timestamp of last story event
 var storymessages =  loadstorymessages();//storytext.js
-var task = "Read the tutorial";
+var task = "Read the tutorial"; //main story mission line
+var job = "None"; //latest task from a station.
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
 var shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
@@ -77,6 +77,17 @@ var ps = 1; //Waldo is special.
 var probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
 var starmode = 1; //0 for no starfield.
 let testfield = new Starfield(30000,20000,64,1000,4000,32);
+var pz = 0;
+
+
+var blastersound1 = new Audio("bubble4_short2.mp3");
+var blastersound2 = new Audio("close_door_12.mp3");
+var blastersound3 = new Audio("Bubble5_trunc.mp3");
+var enginesound1 = new Audio("engine3.mp3");
+var damagesound1 = new Audio("engine2.mp3");
+var cashsound1 = new Audio("cash_register_2.mp3");
+var menuclick1 = new Audio("menuclick1.mp3");
+var menubuy1 = new Audio("buyitem1.mp3");
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -263,7 +274,7 @@ function update() {
 		context.stroke();	
 		}
 	if (starmode == 1){	
-		var pz = (ps-1)*8+(waldo.s/4000);
+		pz = (ps-1)*4+(waldo.s/8000);
 		testfield.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,pz,testfield.zmax);
 		}
 //Outpost stuff all handled here.....
@@ -299,12 +310,13 @@ function update() {
 	waldo.drawplanet(systems[ps].ships[0].x,systems[ps].ships[0].y);
 	if (waldo.collide(systems[ps].ships[0])){
 		ps = ps+1;
+		pz = 0;
 		if (ps > systems.length-1){
 			ps = 1;
 			}
 		waldo.setorbit(systems[ps].planets[0], 320000, Math.random()*2*Math.PI, -1);
-		systems[ps].ships[0].x = -0.75*systems[ps].ships[0].x;//no particular reason
-		systems[ps].ships[0].y = -0.75*systems[ps].ships[0].y;
+		//systems[ps].ships[0].x = -0.75*systems[ps].ships[0].x;//no particular reason
+		//systems[ps].ships[0].y = -0.75*systems[ps].ships[0].y;
 		systems[ps].ships[0].vx = 0; //Otherwise players inherit the momentum acquired in descent.
 		systems[ps].ships[0].vy = 0;
 		navtarget = 0;
@@ -361,6 +373,7 @@ function update() {
 					var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[j].level;
 					money = money + getcash;
 					gotmoney = [30,getcash];
+					cashsound1.play();
 					}//Doesn't handle death, just cash.
 				}
 			}
@@ -394,16 +407,18 @@ function update() {
 			}
 		}
 	//j = systems[ps].ships.length;
-	j = 1; //only checks against player, stops bot suicide
+	j = 1; //only checks against player, stops bot suicide until i have better ai
 	while (j>0){ //for all ships (and botbombs)
 		j=j-1;
 		k = systems[ps].botbombs.length;
 		while (k>0){
 			k=k-1;
 			if (systems[ps].ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
+				if (systems[ps].botbombs[k].collide(systems[ps].ships[0])){damagesound1.play();}
 				systems[ps].botbombs[k].bombcollide(systems[ps].ships[j]);
+				if (systems[ps].botbombs[k].collide(systems[ps].ships[0]))
 				if (systems[ps].ships[j].hp<0){
-					var getcash = Math.floor(Math.random()*21+10);
+					//var getcash = Math.floor(Math.random()*21+10);
 					//money = money + getcash;//disabled bot kill payouts for now
 					//gotmoney = [30,getcash];
 					}//Doesn't handle death, just cash.
@@ -474,6 +489,7 @@ function update() {
 			if (allblasters[0].bombs[0].collide(systems[ps].ships[j])){//Checks for collision only
 				if (probemode == 0){//clones color
 					systems[ps].ships[0].c = systems[ps].ships[j].c
+					systems[ps].ships[0].c2 = systems[ps].ships[j].c2
 				}else if (probemode == 1){//clones shape
 					systems[ps].ships[0].polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
 					systems[ps].ships[0].polyradius = systems[ps].ships[j].polyradius;

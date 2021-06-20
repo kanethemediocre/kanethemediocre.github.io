@@ -142,8 +142,13 @@ function hud(){
 	context.fillText(boosters[boosters[0]],8,175);
 	context.font='12px Arial';
 	context.fillStyle = "green"; 
-	context.fillText("Task: "+task,8,200);
-	context.fillText("Dockstate: "+dockstate,8,250);
+	context.fillText("task: "+task,8,200);
+	context.fillStyle = "yellow";
+	context.fillText("job: "+job,8,216);
+	context.fillStyle = "white";
+	context.fillText("dockstate: "+dockstate,8,250);
+	context.fillText("storystate: "+storystate,8,266);
+	context.fillText("probemode: "+probemode,8,282);
 	
 	if (systems[ps].ships[0].hp==-1000){
 		context.fillStyle = "red";

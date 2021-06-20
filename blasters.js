@@ -61,60 +61,45 @@ class Blaster{
 		return this.price*(2**this.level); //Cost doubles every upgrade level
 		}
 	plusdamage(){ //upgrades damage
-		if (this.dtier<this.maxhurt){
-			this.dtier = this.dtier+1;
-			this.levelcalc();
-			this.hurt=this.bhurt+this.uphurt*this.dtier; //Upgrades are linear
-			}
+		this.dtier = this.dtier+1;
+		this.levelcalc();
+		this.hurt=this.bhurt+this.uphurt*this.dtier; //Upgrades are linear
 		}
 	plusremote(){ //activates remote detonator
-		if (this.rtier==0){
-			this.rtier = 1;
-			this.levelcalc();
-			}
+		this.rtier = 1;
+		this.levelcalc();
 		}
 	plusbounce(){ //Makes weapon projectiles have HP, and thus bounce of planets.
-		if (this.etier==0){
-			this.etier = 1;
-			this.levelcalc();
-			//actually do the thing here
-			}
+		this.etier = 1;
+		this.levelcalc();
 		}
 	plusspeed(){ //upgrades projectile speed
-		if (this.stier<this.maxspeed){
-			this.stier = this.stier+1;
-			this.levelcalc();
-			this.speed=this.bspeed+this.upspeed*this.stier;
-			}
+		this.stier = this.stier+1;
+		this.levelcalc();
+		this.speed=this.bspeed+this.upspeed*this.stier;
 		}
 	plusboom(){ //upgrades blast radius
-		if (this.btier<this.maxboom){
-			this.btier = this.btier+1;
-			this.levelcalc();
-			this.boom=this.bboom+this.upboom*this.btier; 
-			}
+		this.btier = this.btier+1;
+		this.levelcalc();
+		this.boom=this.bboom+this.upboom*this.btier; 
 		}
 	plusn(){
-		if (this.ntier<this.maxn){
-			this.ntier = this.ntier+1;
-			this.levelcalc();
-			var i = 0;
-			while(i<this.upn){ //adds elements to bombs array.  Their properties will be set at firing.
-				this.bombs.push(new Umo(0,0,0,this.c));
-				this.bombs[i].timer = 0;
-				i=i+1;
-				}
-			this.n=this.bn+this.upn*this.ntier; 
+		this.ntier = this.ntier+1;
+		this.levelcalc();
+		var i = 0;
+		while(i<this.upn){ //adds elements to bombs array.  Their properties will be set at firing.
+			this.bombs.push(new Umo(0,0,0,this.c));
+			this.bombs[i].timer = 0;
+			i=i+1;
 			}
+		this.n=this.bn+this.upn*this.ntier; 
 		}		
 	plustimer(){
-		if (this.ttier<this.maxtimer){
-			this.ttier = this.ttier+1;
-			this.levelcalc();
-			this.timer=this.btimer+this.uptimer*this.ttier; 
-			}
+		this.ttier = this.ttier+1;
+		this.levelcalc();
+		this.timer=this.btimer+this.uptimer*this.ttier; 
 		}
-	plusx(){
+	plusx(){ //auxilliary upgrade variable for special cases
 		this.xtier = this.xtier+1;
 		this.levelcalc();
 		}
