@@ -79,7 +79,7 @@ window.addEventListener("keydown", function (event) {
 	case ".": 
 			if (navactive == 1){
 				navtarget = navtarget+1;
-				if (navtarget == systems[ps].planets.length-1){ navtarget = 0; }
+				if (navtarget > systems[ps].planets.length-1){ navtarget = 0; }//This freaks out when you have waldo selected
 			}else if (navactive == 2){
 				navtarget = navtarget+1;
 				if (navtarget > systems[ps].outposts.length-1){navtarget = 0; }
