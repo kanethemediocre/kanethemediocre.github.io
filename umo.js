@@ -352,6 +352,9 @@
 			if (this.shield > this.maxshield){ this.shield = this.maxshield; }			
 			if ((this.deadtime < 0) && (this.hp == -1000)){
 				this.respawn(theplanets[this.parentid]); //maybe change how I handle this
+				if (this.name == "Cactus Fantastico"){//default/player umo name
+					respawn1.play();
+					}
 				}
 			}
 		updatebomb(){ //Handles timer and explosions

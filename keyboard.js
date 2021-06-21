@@ -7,7 +7,7 @@ window.addEventListener("keydown", function (event) {
     case "q":
 	if (cheatmode == 1){ qblaster.fire(systems[ps].ships[0],time); }
       break;   
-	 case "c":
+	 case "Delete":
 	 if (cheatmode == 0){cheatmode = 1;}
       break;    
     case " ":
@@ -20,6 +20,7 @@ window.addEventListener("keydown", function (event) {
 		if (boosters[boosters[0]]>0){//if selected booster is in stock
 			boosters[boosters[0]]=boosters[boosters[0]]-1; //remove 1 from stock of selected booster
 			systems[ps].ships[0].thrust = 64*2^(boosters[0]); //boost hard
+			boost1.play();
 			}
       break;	  	  
 	case "1":    //This is how weapon switching is handled.
@@ -165,13 +166,17 @@ window.addEventListener("keydown", function (event) {
 				menubuy1.play();
 			}
 		}else if (shopmode == 2){
-			systems[ps].shops[dockstate].missions[shopitem].taken = true;
-			job = systems[ps].shops[dockstate].missions[shopitem].message;
+			//if (systems[ps].shops[dockstate].missions[shopitem].taken == false){
+				systems[ps].shops[dockstate].missions[shopitem].taken = true;
+				job = systems[ps].shops[dockstate].missions[shopitem].message;
+				menuclick3.play();
+				//}
 			}
 		}
 	 
       break;
 	 case "Backspace": //The enter key purchases the currently selected shop item
+		menuclick2.play();
 		shopmode = shopmode +1;
 		if (shopmode > 2) { shopmode = 0; }
 		shopitem = 0;

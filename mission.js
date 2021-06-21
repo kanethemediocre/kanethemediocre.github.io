@@ -37,6 +37,7 @@ class Mission{
 				this.message = "No mission";
 				this.reward = 0;
 				this.storypath = 0;
+				missioncomplete1.play();
 				this.taken=false;
 				return [givenreward,givenstory];//Storypath will be 0 for non-story missions, nonzero values will set the story state of the player in main loop
 				}
