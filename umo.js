@@ -87,6 +87,84 @@
 			else if (dd < -0.04){ this.vd = -.03; }
 			else {	this.vd = 0; }
 			}
+		fasttrack(target) { //Basic tracking algorithm.  Can be used to track any object compatible 
+				this.d = this.directionof(target);
+			}
+		trackdv(target) { //Points in direction thrust is needed in order to match velocity.
+			var td = this.deltav2(target)[1]; //with directionof, which just needs a .x and .y to work with
+			var dd = this.deltav2(target)[1]-this.d;
+			while (dd > Math.PI){dd = dd - 2*Math.PI;} //This reduces the angle difference to within +- Math.PI
+			while (dd < -1*Math.PI){dd = dd + 2*Math.PI;} //which 
+			if (dd > .04){ this.vd =+.03; }
+			else if (dd < -0.04){ this.vd = -.03; }
+			else {	this.vd = 0; }
+			}
+		fasttrackdv(target) { //Points in direction thrust is needed in order to match velocity.
+			this.d = this.deltav2(target)[1]; //with directionof, which just needs a .x and .y to work with
+			}
+		hold(target,closingvelocity,period,gametime){
+			var dv = this.deltav2(target); 
+			this.d = dv[1];
+			if (gametime%period == 0){
+				this.thrust = 2;
+				}
+			}
+		seekdumb(target,closingvelocity,period,gametime){//Points to target, accelerates towards target
+			var dv = this.deltav2(target); //[mag,dir]
+			var d = this.directionof(target);
+			var dd = dv[1]-d;
+			if (gametime%period == 0){
+				this.thrust = 2;
+				}
+			}
+		seek(target,closingvelocity,period,gametime){//Points to target, accelerates towards target
+			var dv = this.deltav2(target); //[mag,dir]
+			var d = this.directionof(target);
+			//var cosdv = Math.cos(dv[1]-this.directionof(target))*dv[0];
+			//var sindv = Math.sin(dv[1]-this.directionof(target))*dv[0];
+			//if (Math.cos(dv[1])>0.5){}
+			
+			var sindv = Math.sin(dv[1]-d)*dv[0];
+			var cosdv = Math.cos(dv[1]-d)*dv[0];
+			var cv = closingvelocity;
+			var approachdistance = 1000+4*period*closingvelocity+target.s*4;
+			if (this.distance(target)<approachdistance){
+				this.hold(target,closingvelocity,period,gametime);
+			}else if (sindv>2){
+				this.d = d+Math.PI/2;
+				if (gametime%period == 0){this.thrust = 2;}
+			}else if (sindv<-2){
+				this.d = d-Math.PI/2;
+				if (gametime%period == 0){this.thrust = 2;}
+			}else if (dv[0]<closingvelocity){
+				this.d = d;
+				if (gametime%period == 0){this.thrust = 2;}
+				}
+			}
+		seek2(target,closingvelocity,period,gametime){//Points to target, accelerates towards target
+			var dv = this.deltav2(target); //[mag,dir]
+			var d = this.directionof(target);
+			//var cosdv = Math.cos(dv[1]-this.directionof(target))*dv[0];
+			//var sindv = Math.sin(dv[1]-this.directionof(target))*dv[0];
+			//if (Math.cos(dv[1])>0.5){}
+			
+			var sindv = Math.sin(dv[1]-d)*dv[0];
+			var cosdv = Math.cos(dv[1]-d)*dv[0];
+			var cv = closingvelocity;
+			var approachdistance = 1000+4*period*closingvelocity+target.s*4;
+			if (this.distance(target)<approachdistance){
+				this.hold(target,closingvelocity,period,gametime);
+			}else if (sindv>2){
+				this.d = d+Math.PI/2;
+				if (gametime%period == 0){this.thrust = 2;}
+			}else if (sindv<-2){
+				this.d = d-Math.PI/2;
+				if (gametime%period == 0){this.thrust = 2;}
+			}else if (dv[0]<closingvelocity){
+				this.d = d;
+				if (gametime%period == 0){this.thrust = 2;}
+				}
+			}
 		gravitate(pulled){ //For planets.
 			var dx = this.x - pulled.x; 
 			var dy = this.y - pulled.y;

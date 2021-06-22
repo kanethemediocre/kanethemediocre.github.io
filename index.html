@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b84 by KaneTheMediocre</title>
+    <title>Umo Space 167b87 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -78,6 +78,7 @@ var probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in
 var starmode = 1; //0 for no starfield.
 let testfield = new Starfield(30000,20000,64,1000,4000,32);
 var pz = 0;
+var autopilot = 0; //0 is off, higher numbers are other modes
 
 
 var blastersound1 = new Audio("bubble4_short2.mp3");
@@ -290,7 +291,6 @@ function update() {
 		testfield.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,pz,testfield.zmax);
 		}
 //Outpost stuff all handled here.....
-	//home.dockcheck(dockstate); //abstracting docking code seems to keep player stuck docked
 	var i=0;
 	while (i<systems[ps].outposts.length){ //for all outposts
 		if (systems[ps].ships[0].distance(systems[ps].outposts[i])<160){
@@ -302,7 +302,7 @@ function update() {
 			var mischeck = systems[ps].shops[i].missions[j].check(systems[ps].ships,systems[ps].planets,playerradio);//theships,theplanets,theradio
 			if (mischeck[0]>0){
 				money = money + mischeck[0];
-				//if (mischeck[1]>0){storystate = mischeck[1];}//disabled story impact handling
+				if (mischeck[1]>0){storystate = mischeck[1];}
 				}
 			j=j+1;
 			}
@@ -456,21 +456,31 @@ function update() {
 	var j = systems[ps].ships.length; 
 	while (j>1){ //Does not act on ship[0], which is player1.  This means botbomb length is 1 less than ships.  Index must be adjusted accordingly
 		j=j-1; 
-		if ( (  systems[ps].ships[j].distance(systems[ps].planets[systems[ps].ships[j].parentid]) > 10000  )&&(systems[ps].ships[j].hp>0) ){//If this bot got lost....
-			var savedhp = systems[ps].ships[j].hp; //remember it's hitpoints... 
-			systems[ps].ships[j].respawn(systems[ps].planets[systems[ps].ships[j].parentid]); //Respawn...
-			systems[ps].ships[j].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
-			}
-		if (systems[ps].ships[0].distance(systems[ps].ships[j]) < 5000){ //Don't do anything if player is far
-			systems[ps].ships[j].track(systems[ps].ships[0]); //Bots point towards player
-			if ((Math.random()>0.96) && (systems[ps].botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-				//var howclose = systems[ps].ships[j].distance(systems[ps].planets[systems[ps].ships[j].parentid])-(systems[ps].ships[j].s+systems[ps].planets[systems[ps].ships[j].parentid].s); //check if close
-				//var lookat =  pointingat(ships[j].directionof(planets[ships[j].parentid]),ships[j].d,ships[j].distance(planets[ships[j].parentid]),ships[j].parentid.s);//check if pointing at parent planet
-				//		function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
-				//if ((howclose>1500)||(lookat==0)){ships[j].launchbomb(botbombs[j-1], 12, 80); } //doesnt work how i want.
-				systems[ps].ships[j].launchbomb(systems[ps].botbombs[j-1], 12, 80); 					
+		if (systems[ps].ships[j].ai == "enemy"){
+			if ( (  systems[ps].ships[j].distance(systems[ps].planets[systems[ps].ships[j].parentid]) > 10000  )&&(systems[ps].ships[j].hp>0) ){//If this bot got lost....
+				var savedhp = systems[ps].ships[j].hp; //remember it's hitpoints... 
+				systems[ps].ships[j].respawn(systems[ps].planets[systems[ps].ships[j].parentid]); //Respawn...
+				systems[ps].ships[j].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
+				}
+			if (systems[ps].ships[0].distance(systems[ps].ships[j]) < 5000){ //Don't do anything if player is far
+				systems[ps].ships[j].fasttrack(systems[ps].ships[0]); //Bots point towards player
+				if ((Math.random()>0.96) && (systems[ps].botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+					systems[ps].ships[j].launchbomb(systems[ps].botbombs[j-1], 12, 80); 					
+					}
 				}
 			}
+		if (autopilot == 1){
+			systems[ps].ships[0].seek(systems[ps].planets[navtarget],20,30,time);
+			}
+		if (autopilot == 2){
+			systems[ps].ships[0].hold(systems[ps].planets[navtarget],20,30,time);
+			}
+		if (autopilot == 3){
+			systems[ps].ships[0].seekdumb(systems[ps].planets[navtarget],20,30,time);
+			}
+		
+		
+		
 		}
 ///////Respawn handling////////////////////////////////////////////////////////////////////////////////////////////
 	j = systems[ps].ships.length;
@@ -481,7 +491,7 @@ function update() {
 			}
 		}
 //////////Mouse turning/////////////////////////////////
-	systems[ps].ships[0].d = moused+Math.PI; //Instant turning because its easy for now
+	if (autopilot == 0){systems[ps].ships[0].d = moused+Math.PI;} //Instant turning because its easy for now
 //HUD information/////////////////////////////////////////////////////////////////////////////////////
 //pointingat test///pointingat(objdir,dir,distance,size)
 	//var pointingtest = pointingat(systems[ps].ships[0].directionof(systems[ps].planets[3]), systems[ps].ships[0].d, systems[ps].ships[0].distance(systems[ps].planets[3]),systems[ps].planets[3].s)

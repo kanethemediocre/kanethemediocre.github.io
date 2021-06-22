@@ -185,6 +185,10 @@ window.addEventListener("keydown", function (event) {
 		probemode = probemode + 1;
 		if (probemode > 2) { probemode = 0;}
       break;
+	   case "a": 
+		autopilot = autopilot + 1;
+		if (autopilot > 3) { autopilot = 0;}
+      break;
     default:
       return; // Quit when this doesn't handle the key event.
   } //end event key handling switch

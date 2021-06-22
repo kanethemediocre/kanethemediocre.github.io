@@ -146,9 +146,10 @@ function hud(){
 	context.fillStyle = "yellow";
 	context.fillText("job: "+job,8,216);
 	context.fillStyle = "white";
-	context.fillText("dockstate: "+dockstate,8,250);
+	context.fillText("dockstate: "+dockstate,8,250);//Debugging stuff
 	context.fillText("storystate: "+storystate,8,266);
 	context.fillText("probemode: "+probemode,8,282);
+	context.fillText("autopilot: "+autopilot,8,298);
 	
 	if (systems[ps].ships[0].hp==-1000){
 		context.fillStyle = "red";
