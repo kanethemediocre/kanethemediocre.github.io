@@ -12,18 +12,20 @@ mousestate = e.buttons;
 if (mousestate==1){ //if it's the left button
 	if (wep < 10){
 		if (energy>allblasters[wep].ecost){
-			allblasters[wep].fire(systems[ps].ships[0],time);
-			energy = energy - allblasters[wep].ecost;
-			if (wep == 1){blastersound1.play();}
-			else if (wep == 2){blastersound2.play();}
-			else if (wep == 3){blastersound3.play();}
-			else if (wep == 4){blastersound4.play();}
-			else if (wep == 5){blastersound5.play();}
-			else if (wep == 6){blastersound6.play();}
-			else if (wep == 7){blastersound7.play();}
-			else if (wep == 8){blastersound8.play();}
-			else if (wep == 9){blastersound9.play();}
-			else if (wep == 0){blastersound0.play();}
+			if (allblasters[wep].type!=="beam"){
+				allblasters[wep].fire(systems[ps].ships[0],time);
+				energy = energy - allblasters[wep].ecost;
+				if (wep == 1){blastersound1.play();}
+				else if (wep == 2){blastersound2.play();}
+				else if (wep == 3){blastersound3.play();}
+				else if (wep == 4){blastersound4.play();}
+				else if (wep == 5){blastersound5.play();}
+				else if (wep == 6){blastersound6.play();}
+				else if (wep == 7){blastersound7.play();}
+				//else if (wep == 8){blastersound8.play();}
+				else if (wep == 9){blastersound9.play();}
+				else if (wep == 0){blastersound0.play();}
+				}
 			}
 		}
 	}	

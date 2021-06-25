@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b87 by KaneTheMediocre</title>
+    <title>Umo Space 167b92 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -449,9 +449,6 @@ function update() {
 					}
 				i = i+1;
 				}
-					
-		
-		
 ////////////AI behavior section///////////////////////////////////////////////
 	var j = systems[ps].ships.length; 
 	while (j>1){ //Does not act on ship[0], which is player1.  This means botbomb length is 1 less than ships.  Index must be adjusted accordingly
@@ -476,11 +473,8 @@ function update() {
 			systems[ps].ships[0].hold(systems[ps].planets[navtarget],20,30,time);
 			}
 		if (autopilot == 3){
-			systems[ps].ships[0].seekdumb(systems[ps].planets[navtarget],20,30,time);
+			systems[ps].ships[0].seek2(systems[ps].planets[navtarget],20,30,time);
 			}
-		
-		
-		
 		}
 ///////Respawn handling////////////////////////////////////////////////////////////////////////////////////////////
 	j = systems[ps].ships.length;
@@ -497,11 +491,38 @@ function update() {
 	//var pointingtest = pointingat(systems[ps].ships[0].directionof(systems[ps].planets[3]), systems[ps].ships[0].d, systems[ps].ships[0].distance(systems[ps].planets[3]),systems[ps].planets[3].s)
 //Targeting HUD code in hud.js////////////////////////////////////////////////////////////////////////////////////////////////
 	hud();
+//////////////////////////////////Weapon 6 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
+	if((mousestate==1)&&(wep == 6)&&(energy>2)){ 
+		var n = Math.floor(time)%6;
+		var beamcolor = "red"; //default / n = 0
+		if (n==1){beamcolor = "orange";}
+		if (n==2){beamcolor = "yellow";}
+		if (n==3){beamcolor = "green";}
+		if (n==4){beamcolor = "blue";}
+		if (n==5){beamcolor = "purple";}
+		context.beginPath();
+		context.moveTo(canvas.width/2+Math.cos(systems[ps].ships[0].d)*32, canvas.height/2+Math.sin(systems[ps].ships[0].d)*32);
+		context.lineTo(canvas.width/2+Math.cos(systems[ps].ships[0].d)*500,canvas.height/2+Math.sin(systems[ps].ships[0].d)*500);
+		context.strokeStyle = beamcolor;
+		context.stroke();	
+		energy = energy - 2;
+		var i = systems[ps].ships.length;
+		while (i>1){//For all ships except 0
+			i = i - 1; 
+			if (systems[ps].ships[0].distance(ships[i])<500){
+				var ptest = pointingat(systems[ps].ships[0].directionof(systems[ps].ships[i]),systems[ps].ships[0].d,systems[ps].ships[0].distance(systems[ps].ships[i]),systems[ps].ships[i].s)
+				if (ptest == 1){
+					systems[ps].ships[i].damage(5);
+					}
+				}
+			}
+		}
 //////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
 	if((mousestate==1)&&(time%4==0)&&(wep == 8)&&(energy>6)){ 
 		var n = Math.floor(time/4)%6;
 		systems[ps].ships[0].launchbomb(allblasters[wep].bombs[n],allblasters[wep].speed,allblasters[wep].timer);
 		energy = energy - 6;
+		if (time%24==0){blastersound8.play();}
 	}
 ///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
 	if (wep==0){//wep == 11 to disable, wep should ==0
@@ -510,8 +531,8 @@ function update() {
 			j=j-1;
 			if (allblasters[0].bombs[0].collide(systems[ps].ships[j])){//Checks for collision only
 				if (probemode == 0){//clones color
-					systems[ps].ships[0].c = systems[ps].ships[j].c
-					systems[ps].ships[0].c2 = systems[ps].ships[j].c2
+					systems[ps].ships[0].c = systems[ps].ships[j].c;
+					systems[ps].ships[0].c2 = systems[ps].ships[j].c2;
 				}else if (probemode == 1){//clones shape
 					systems[ps].ships[0].polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
 					systems[ps].ships[0].polyradius = systems[ps].ships[j].polyradius;

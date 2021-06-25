@@ -52,7 +52,6 @@ class Blaster{
 			this.bombs[i].shield = 1;
 			i=i+1;
 			}
-		
 		}//w signifies weapon, next 2 digits are weapon number, x signifies notjhing, next 2 digits are upgrade tier
 	levelcalc(){
 		this.level = this.etier+this.rtier+this.dtier+this.btier+this.ntier+this.stier+this.ttier+this.xtier;
@@ -104,10 +103,8 @@ class Blaster{
 		this.levelcalc();
 		}
 	fire(theship,thetime){ //thebombs would normally be an array with one member umo
-		//theship.hp = 1; //works here...
 		var i=0; 
 		while (i<this.bombs.length){//first set/verify weapon properties on bomb
-			//theship.hp = 1; //works here
 			this.bombs[i].c=this.c;
 			this.bombs[i].hurt=this.hurt;
 			this.bombs[i].boombuff = this.boom;
@@ -118,7 +115,6 @@ class Blaster{
 				this.bombs[i].shield = 1;
 			}
 			if ((this.type == "rapid")||(this.type == "spread")){
-				//theship.hp = 1; 
 				var cnum = (thetime+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
@@ -143,7 +139,7 @@ class Blaster{
 				this.bombs[i].timer=6; //Bombs begin to explode at timer==6, so moving the timer forward will trigger the explosion on update.
 				i=i+1;
 				}
-		}else if (this.bombs.length==1){ //single projectile handling is simplest
+		}else if ((this.bombs.length==1)&&((this.type=="plain")||(this.type=="probe"))){ //single projectile handling is simplest
 			theship.launchbomb(this.bombs[0],this.speed,this.timer);	
 		}else if (this.type == "rapid"){
 			this.firing = 0;//not actually used, but -1 would indicate not firing, integer bomb indices would indicate which bomb was next in sequence.

@@ -49,9 +49,12 @@
 			"Also, Try not to tangle with the local 'bots around Jupe and moons, they're more dangerous than the 'bots around Merz by far.  The station is far enough away that you shouldn't need to engage them.",
 			"Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or just take time to explore or seek your own fortune.",
 			"Welcome to Earf!  My name is Bill Maker.  Dudeman tells me you're learning to fly, and I'm looking for cheap labor.",		
+			"Now I know Dudeman tends to gloss over the finer points of flying so I'm going to fill in a few details for you.",
+			"I'm sure you've discovered that stopping at your destination is half the challenge of getting there.",
 			"The bots around the inner planets aren't as dangerous as those around outer planets like Jupe and Tern, but they're bad enough that we can't ignore them completely.  ",
 			"There's been an initiative to build a moon base with blasters to thin their numbers, but its a costly endeavor and no one wants to see it blown up by bots before it's finished.",
 			"I've been hoarding resources for a while now, and I'm close to having what I need, but I still need to somehow build the thing without taking any hits until the shield generator comes up. ",
+			"",
 			"Yo Yo this is the last message1."
 			]
 			return storymessages

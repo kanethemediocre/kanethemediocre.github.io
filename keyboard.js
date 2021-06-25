@@ -125,6 +125,15 @@ window.addEventListener("keydown", function (event) {
     case "End":
 		if (cheatmode == 1){money = money +10000;}
       break;  
+    case "Insert":
+		if (cheatmode == 1){
+			var i=0;
+			while (i<allblasters.length){
+				allblasters[i].phas = true;
+				i=i+1;
+				}
+			}
+      break;  
 
     case "x":
 		if (cheatmode == 1){
@@ -152,9 +161,11 @@ window.addEventListener("keydown", function (event) {
 			 if (shopitem<systems[ps].shops[dockstate].inv.length){//check for shopitem exists
 				if (systems[ps].shops[dockstate].inv[shopitem].itemprice()<=money){ //check if player has enough money
 					if (systems[ps].shops[dockstate].inv[shopitem].available(systems[ps].ships[0],playerinventory)){ //check if player has prerequisites / doesn't already own item
-						money = money - systems[ps].shops[dockstate].inv[shopitem].itemprice();
-						menubuy1.play();
-						systems[ps].shops[dockstate].inv[shopitem].buy(money,systems[ps].ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+						if (money > systems[ps].shops[dockstate].inv[shopitem].itemprice()){
+							money = money - systems[ps].shops[dockstate].inv[shopitem].itemprice();
+							menubuy1.play();
+							systems[ps].shops[dockstate].inv[shopitem].buy(money,systems[ps].ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+						}
 					}
 				}
 			}		 
@@ -176,10 +187,12 @@ window.addEventListener("keydown", function (event) {
 	 
       break;
 	 case "Backspace": //The enter key purchases the currently selected shop item
-		menuclick2.play();
-		shopmode = shopmode +1;
-		if (shopmode > 2) { shopmode = 0; }
-		shopitem = 0;
+		if (dockstate>=0){
+			menuclick2.play();
+			shopmode = shopmode +1;
+			if (shopmode > 2) { shopmode = 0; }
+			shopitem = 0;
+			}
 	  break;
 	 case "p": 
 		probemode = probemode + 1;

@@ -50,92 +50,71 @@ class Shopitem{
 		return thisprice;		
 	}
 	buy(playermoney, playership, inventory){ //this function is for the player purchasing a shopitem object.  
-		if (this.type == "blaster"){
-			//stuff to buy the blaster/blaster upgrade
-			if (this.utype == "buy"){
-				if ( (allblasters[this.i].phas==false) && (playermoney>allblasters[this.i].price) ){ //verify player doesnt already have blaster, and has enough money
-					playermoney = playermoney - allblasters[this.i].price;
-					allblasters[this.i].phas = true;
+		if (this.available(playership,inventory)){
+			if (this.type == "blaster"){
+				//stuff to buy the blaster/blaster upgrade
+				if (this.utype == "buy"){
+						allblasters[this.i].phas = true;
 					}
-				}
-			if (this.utype == "damage"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost() && (allblasters[this.i].dtier<allblasters[this.i].maxhurt)) ){ //verify player doesnt already have blaster, and has enough money, and hasn't maxed out the damage upgrade
-					playermoney = playermoney - allblasters[this.i].nextupcost();
-					allblasters[this.i].plusdamage();
+				if (this.utype == "damage"){
+						allblasters[this.i].plusdamage();
 					}
-				}
-			if (this.utype == "remote"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost())&&(allblasters[this.i].rtier==0) ){ //verify player already has blaster, and has enough money, and doesnt already have upgrade
-					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for remote already having been purchased
-					allblasters[this.i].plusremote();
+				if (this.utype == "remote"){
+						allblasters[this.i].plusremote();
 					}
-				}
-			if (this.utype == "speed"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost() && (allblasters[this.i].stier<allblasters[this.i].maxspeed)) ){ //verify player doesnt already have blaster, and has enough money, and hasn't maxed out the speed upgrade
-					playermoney = playermoney - allblasters[this.i].nextupcost(); 
-					allblasters[this.i].plusspeed();
+				if (this.utype == "speed"){
+						allblasters[this.i].plusspeed();
 					}
-				}
-			if (this.utype == "bounce"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()&&(allblasters[this.i].btier == 0) ) ){ //verify player doesnt already have blaster, and has enough money, and doesn't already have the upgrade
-					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
-					allblasters[this.i].plusbounce();
+				if (this.utype == "bounce"){
+						allblasters[this.i].plusbounce();
 					}
-				}
-			if (this.utype == "n"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()) && (allblasters[this.i].etier==0) )  { //verify player doesnt already have blaster, and doesn't already have the upgrade
-					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
-					allblasters[this.i].plusn();
+				if (this.utype == "n"){
+						allblasters[this.i].plusn();
 					}
-				}
-			if (this.utype == "timer"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost() && (allblasters[this.i].ttier<allblasters[this.i].maxtimer)) ){ //verify player doesnt already have blaster, and has enough money, and hasn't maxed out the timer upgrade
-					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
-					allblasters[this.i].plustimer();
+				if (this.utype == "timer"){
+						allblasters[this.i].plustimer();
 					}
-				}
-			if (this.utype == "boom"){
-				if ( (allblasters[this.i].phas==true) && (playermoney>allblasters[this.i].nextupcost()&&(allblasters[this.i].btier<allblasters[this.i].maxboom)) ){ //verify player doesnt already have blaster, and has enough money
-					playermoney = playermoney - allblasters[this.i].nextupcost();//need to add check for bounce already having been purchased
-					allblasters[this.i].plusboom();
+				if (this.utype == "boom"){
+						allblasters[this.i].plusboom();
 					}
+					
+			}else if (this.type == "upgrade"){ 
+				if (this.i==1){
+					playership.maxhp = playership.maxhp + 200; 
+					playership.hp = playership.maxhp; 
+					upgrades[this.i].tier = upgrades[this.i].tier + 1;
+					//this.utier = this.utier+1;
+				} else if (this.i==0){
+					playership.hp = playership.maxhp; 
+					//upgrades[this.i].tier = upgrades[this.i].tier + 1;
+				} else if (this.i==2){
+					playership.maxshield = playership.maxshield + 50; 
+					upgrades[this.i].tier = upgrades[this.i].tier + 1;
+					//this.utier = this.utier+1;
+				} else if (this.i==3){
+					playership.shieldregen = playership.shieldregen + 0.25;
+					upgrades[this.i].tier = upgrades[this.i].tier + 1;
+					//this.utier = this.utier+1;
+				} else if (this.i==4){
+					radarrange = radarrange + 1000;
+					upgrades[this.i].tier = upgrades[this.i].tier + 1;
+					//this.utier = this.utier+1;
+				} else if (this.i==5){
+					playerinventory.maxcargo = playerinventory.maxcargo + 5; //refers to global, not passed variable.
+					upgrades[this.i].tier = upgrades[this.i].tier + 1;
+				} else if (this.i==6){
+					thrustmultiplier = thrustmultiplier + 0.5; //refers to global, not passed variable.
+					upgrades[this.i].tier = upgrades[this.i].tier + 1;
+					}
+					
+					
+			}else if (this.type == "booster"){
+				boosters[this.utier] = boosters[this.utier]+2;
+			}else if (this.type == "cargo"){
+				inventory.takecargo(this.i, 1);
 				}
-		}else if (this.type == "upgrade"){ //don't like the way utype is being used instead of referencing the upgrade and index.
-			if (this.i==1){
-				playership.maxhp = playership.maxhp + 200; 
-				playership.hp = playership.maxhp; 
-				upgrades[this.i].tier = upgrades[this.i].tier + 1;
-				//this.utier = this.utier+1;
-			} else if (this.i==0){
-				playership.hp = playership.maxhp; 
-				//upgrades[this.i].tier = upgrades[this.i].tier + 1;
-			} else if (this.i==2){
-				playership.maxshield = playership.maxshield + 50; 
-				upgrades[this.i].tier = upgrades[this.i].tier + 1;
-				//this.utier = this.utier+1;
-			} else if (this.i==3){
-				playership.shieldregen = playership.shieldregen + 0.25;
-				upgrades[this.i].tier = upgrades[this.i].tier + 1;
-				//this.utier = this.utier+1;
-			} else if (this.i==4){
-				radarrange = radarrange + 1000;
-				upgrades[this.i].tier = upgrades[this.i].tier + 1;
-				//this.utier = this.utier+1;
-			} else if (this.i==5){
-				playerinventory.maxcargo = playerinventory.maxcargo + 5; //refers to global, not passed variable.
-				upgrades[this.i].tier = upgrades[this.i].tier + 1;
-			} else if (this.i==6){
-				thrustmultiplier = thrustmultiplier + 0.5; //refers to global, not passed variable.
-				upgrades[this.i].tier = upgrades[this.i].tier + 1;
-				}
-				
-				
-		}else if (this.type == "booster"){
-			boosters[this.utier] = boosters[this.utier]+2;
-		}else if (this.type == "cargo"){
-			inventory.takecargo(this.i, 1);
 			}
-	}
+		}
 	available(playership, pinv){
 		var buyable = false;
 		if (this.type == "blaster"){
@@ -309,71 +288,123 @@ class Shop{
 	
 	}
 let repairshopitem = new Shopitem("upgrade",0,"repair",0);
-let buyw2item = new Shopitem("blaster",2,"buy",0); //Mine weapon
+// w1 excluded because player starts with it
+let buyw0item = new Shopitem("blaster",0,"buy",0);//Probe weapon
+let buyw2item = new Shopitem("blaster",2,"buy",0); //Mine weapon w1 excluded because player starts with it
 let buyw3item = new Shopitem("blaster",3,"buy",0); //Flakker weapon
 let buyw4item = new Shopitem("blaster",4,"buy",0);//Railgun weapon
+let buyw5item = new Shopitem("blaster",5,"buy",0);//Scatter cannon weapon
+let buyw6item = new Shopitem("blaster",6,"buy",0);//Beam weapon
+let buyw7item = new Shopitem("blaster",7,"buy",0);//Double rainbow
+let buyw8item = new Shopitem("blaster",8,"buy",0);//Disintegrator
+let buyw9item = new Shopitem("blaster",9,"buy",0);//Beepadoop
+let blasterbuyitems = [buyw0item,buyw2item,buyw3item,buyw4item,buyw5item,buyw6item,buyw7item,buyw8item,buyw9item];
+
+//No remote detonator for w0, w3,w4,w6,w7,w8 (probe, flakker, railgun, beam, double rainbow, disintigrator)
 let remotew1item = new Shopitem("blaster",1,"remote",1);//blaster remote upgrade
+let remotew2item = new Shopitem("blaster",2,"remote",1); //Mine remote detonator upgrade
+let remotew5item = new Shopitem("blaster",2,"remote",1); //Scatter cannon remote detonator upgrade
+let remotew9item = new Shopitem("blaster",2,"remote",1); //Beepadoop remote detonator upgrade
+//No damage upgrade for w0 (probe)
+let upw1damage = new Shopitem("blaster",1,"damage",1); //Damage upgrades
+let upw2damage = new Shopitem("blaster",2,"damage",1); 
+let upw3damage = new Shopitem("blaster",3,"damage",1); 
+let upw4damage = new Shopitem("blaster",4,"damage",1); 
+let upw5damage = new Shopitem("blaster",5,"damage",1); 
+let upw6damage = new Shopitem("blaster",6,"damage",1); 
+let upw7damage = new Shopitem("blaster",7,"damage",1); 
+let upw8damage = new Shopitem("blaster",8,"damage",1); 
+let upw9damage = new Shopitem("blaster",9,"damage",1); 
+//speed upgrade available to all blasters -- might exclude mine later, maybe also double rainbow
+let upw0speed = new Shopitem("blaster",0,"speed",1); //speed  upgrades increase projectile speed
+let upw1speed = new Shopitem("blaster",1,"speed",1); 
+let upw2speed = new Shopitem("blaster",2,"speed",1); 
+let upw3speed = new Shopitem("blaster",3,"speed",1); 
+let upw4speed = new Shopitem("blaster",4,"speed",1); 
+let upw5speed = new Shopitem("blaster",5,"speed",1); 
+let upw6speed = new Shopitem("blaster",6,"speed",1); 
+let upw7speed = new Shopitem("blaster",7,"speed",1); 
+let upw8speed = new Shopitem("blaster",8,"speed",1); 
+let upw9speed = new Shopitem("blaster",9,"speed",1); 
+//No bounce upgrade for w0, w3, w6, or w7 (probe, flakker, beam double rainbow)
+let upw1bounce = new Shopitem("blaster",1,"bounce",1); //bounce upgrades make projectiles bounce of planets--in theory anyways.
+let upw2bounce = new Shopitem("blaster",2,"bounce",1); 
+let upw4bounce = new Shopitem("blaster",4,"bounce",1); 
+let upw5bounce = new Shopitem("blaster",5,"bounce",1); 
+let upw8bounce = new Shopitem("blaster",8,"bounce",1); 
+let upw9bounce = new Shopitem("blaster",9,"bounce",1); 
+//No timer upgrade for w6 (beam)
+let upw0timer = new Shopitem("blaster",0,"timer",1); //timer upgrades increase projectile lifespan
+let upw1timer = new Shopitem("blaster",1,"timer",1); 
+let upw2timer = new Shopitem("blaster",2,"timer",1); 
+let upw3timer = new Shopitem("blaster",3,"timer",1); 
+let upw4timer = new Shopitem("blaster",4,"timer",1); 
+let upw5timer = new Shopitem("blaster",5,"timer",1); 
+let upw6timer = new Shopitem("blaster",6,"timer",1); 
+let upw7timer = new Shopitem("blaster",7,"timer",1); 
+let upw8timer = new Shopitem("blaster",8,"timer",1); 
+let upw9timer = new Shopitem("blaster",9,"timer",1); 
+//No boom upgrade for w0, w4, w6,w7 (probe, railgun, beam, double rainbow)
+let upw1boom = new Shopitem("blaster",1,"boom",1);//boom upgrades increase blast radius
+let upw2boom = new Shopitem("blaster",2,"boom",1);
+let upw3boom = new Shopitem("blaster",3,"boom",1);
+let upw5boom = new Shopitem("blaster",5,"boom",1);
+let upw8boom = new Shopitem("blaster",8,"boom",1);
+let upw9boom = new Shopitem("blaster",9,"boom",1);
+//Only w5 and w8 get n upgrades (more projectiles). 
+let upw5n = new Shopitem("blaster",5,"n",1);
+let upw8n = new Shopitem("blaster",8,"n",1);
+
+let blasterupgradeitems = [ //broken up into lines for readability, this is all a single 1 dimensional array.
+remotew1item,remotew2item,remotew5item,remotew9item,
+upw1damage,upw2damage,upw3damage,upw4damage,upw5damage,upw6damage,upw7damage,upw8damage,upw9damage,
+upw0speed,upw1speed,upw2speed,upw3speed,upw4speed,upw5speed,upw6speed,upw7speed,upw8speed,upw9speed,
+upw1bounce,upw2bounce,upw4bounce,upw5bounce,upw8bounce,upw9bounce,
+upw0timer,upw1timer,upw2timer,upw3timer,upw4timer,upw5timer,upw7timer,upw8timer,upw9timer,
+upw1boom,upw2boom,upw3boom,upw5boom,upw8boom,upw9boom
+];
 let booster1 = new Shopitem("booster",0,"buy",1); //Tier 0 booster
+
 let buycargo0 = new Shopitem("cargo",0,"buy",1);//The upgrade tier variable will used as a price multiplier for cargo
 let buycargo0x0d5 = new Shopitem("cargo",0,"buy",0.5);//The upgrade tier variable will used as a price multiplier for cargo
 let buycargo0x2 = new Shopitem("cargo",0,"buy",2);//The upgrade tier variable will used as a price multiplier for cargo
 let buycargo1 = new Shopitem("cargo",1,"buy",1); 
 let buycargo2 = new Shopitem("cargo",2,"buy",1); 
-let buyw0item = new Shopitem("blaster",0,"buy",0); //probe
-let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0x0d5,buycargo1,buycargo2,buyw0item];
+let buycargo3 = new Shopitem("cargo",3,"buy",1); 
+let buycargo4 = new Shopitem("cargo",4,"buy",1);
+let buycargo5 = new Shopitem("cargo",5,"buy",1);
+let buycargo6 = new Shopitem("cargo",6,"buy",1);
+
+let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0,buycargo1,buycargo2,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
 
 
-//let billshopitem1 = new Shopitem("upgrade",0,"repair",0);
-//let billshopitem2 = new Shopitem("blaster",2,"buy",0); //Mine weapon
-//let billshopitem3 = new Shopitem("blaster",3,"buy",0); //Flakker weapon
-let upw1damage = new Shopitem("blaster",1,"damage",1); //Blaster damage upgrade
-let upw3damage = new Shopitem("blaster",3,"damage",1); //Flakker damage upgrade
 let armorupitem = new Shopitem("upgrade",1,"armor",1); //Armor upgrade
-//let billshopitem7 = new Shopitem("cargo",2,"buy",1); 
-let buycargo3 = new Shopitem("cargo",3,"buy",1); 
+
+//let buycargo3 = new Shopitem("cargo",3,"buy",1); 
 let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,armorupitem,buycargo2,buycargo3]
 let billbits = new Shop("Bills Billion Bits", 0, "Welcome to Earf", billshopitems);
 
-//let jojoshopitem1 = new Shopitem("upgrade",0,"repair",0);
-let buyw5item = new Shopitem("blaster",5,"buy",0); //Scatter cannon
-let buyw6item = new Shopitem("blaster",6,"buy",0); //Flazor 
-let buyw9item = new Shopitem("blaster",9,"buy",0); //Beepadoop (big bomb)
-let remotew2item = new Shopitem("blaster",2,"remote",1); //Mine remote detonator upgrade
+
 let jojoshopitem7 = new Shopitem("upgrade",2,"shield",1); //Flakker damage upgrade
 let jojoshopitem8 = new Shopitem("upgrade",4,"radar",1); //Armor upgrade
 //let jojoshopitem9 = new Shopitem("cargo",2,"buy",1); 
-let buycargo5 = new Shopitem("cargo",5,"buy",1); 
+//let buycargo5 = new Shopitem("cargo",5,"buy",1); 
 let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,armorupitem,jojoshopitem7,jojoshopitem8,buycargo2,buycargo5];
 let jojocheese = new Shop("JoJo's House of Cheese", 2, "Jupe Fantastico", jojoshopitems);
 
-//let dangshopitem1 = new Shopitem("upgrade",0,"repair",0);
-//let dangshopitem2 = new Shopitem("blaster",4,"buy",0);
-let dangshopitem3 = new Shopitem("blaster",7,"buy",0);
-let dangshopitem4 = new Shopitem("blaster",8,"buy",0);
-let dangshopitem5 = new Shopitem("blaster",4,"speed",1);
-let dangshopitem6 = new Shopitem("blaster",5,"bounce",1);
-let dangshopitem7 = new Shopitem("blaster",1,"damage",1);
+
 let dangshopitem8 = new Shopitem("upgrade",3,"shieldregen",1);
-let dangshopitem9 = new Shopitem("cargo",1,"buy",0);
-let dangshopitem10 = new Shopitem("cargo",6,"buy",0);
-let dangshopitems = [repairshopitem,buyw4item,dangshopitem3,dangshopitem4,dangshopitem5,dangshopitem6,dangshopitem7,dangshopitem8,dangshopitem9,dangshopitem10,buycargo0x2];
+//let dangshopitem9 = new Shopitem("cargo",1,"buy",0);
+//let dangshopitem10 = new Shopitem("cargo",6,"buy",0);
+let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5bounce,upw1damage,dangshopitem8,buycargo1,buycargo6,buycargo0];
 let dangustown = new Shop("Dangustown", 3, "It's YOUR Anus!", dangshopitems);
 
 let randshopitems1 = [];
 var i = 0;
 while (i<12){
-	var randblaster = Math.floor(Math.random()*10);
-	var randblasterfxseed = Math.floor(Math.random()*8);
-	var randblastfx = "buy";
-	if (randblasterfxseed == 1){randblastfx = "damage";}
-	else if (randblasterfxseed == 2){randblastfx = "speed";}
-	else if (randblasterfxseed == 3){randblastfx = "bounce";}
-	else if (randblasterfxseed == 4){randblastfx = "remote";}	
-	else if (randblasterfxseed == 5){randblastfx = "n";}
-	else if (randblasterfxseed == 6){randblastfx = "boom";}
-	else if (randblasterfxseed == 7){randblastfx = "timer";}
-	randshopitems1.push(new Shopitem("blaster",randblaster,randblastfx,0));
+	var randomblasterupgrade = Math.floor(Math.random()*blasterupgradeitems.length)
+	randshopitems1.push(blasterupgradeitems[randomblasterupgrade]);
 	i=i+1;
 }
 let randoshop1 = new Shop("Marlon Rando's Randomized Blasters",4, "Randomized items", randshopitems1);
@@ -382,14 +413,8 @@ let randshopitems2 = [];
 
 var i = 0;
 while (i<12){
-	var randupgrade = Math.floor(Math.random()*6);
-	var randupgradetype = "repair";
-	if (randupgrade == 1){randupgradetype = "armor";}
-	else if (randupgrade == 2){randupgradetype = "shield";}
-	else if (randupgrade == 3){randupgradetype = "shieldregen";}
-	else if (randupgrade == 4){randupgradetype = "radar";}	
-	else if (randupgrade == 5){randupgradetype = "cargo";}
-	randshopitems2.push(new Shopitem("upgrade",randupgrade,randupgradetype,0));
+	var randupgrade = Math.floor(Math.random()*allupgrades.length);
+	randshopitems2.push(allupgrades[randupgrade]);
 	i=i+1;
 }
 let upshopitem1 = ("upgrade",0,"repair",0);

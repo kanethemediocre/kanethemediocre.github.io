@@ -144,14 +144,16 @@
 		seek2(target,closingvelocity,period,gametime){//Points to target, accelerates towards target
 			var dv = this.deltav2(target); //[mag,dir]
 			var d = this.directionof(target);
+			var distance = this.distance(target);
 			//var cosdv = Math.cos(dv[1]-this.directionof(target))*dv[0];
 			//var sindv = Math.sin(dv[1]-this.directionof(target))*dv[0];
 			//if (Math.cos(dv[1])>0.5){}
 			
 			var sindv = Math.sin(dv[1]-d)*dv[0];
 			var cosdv = Math.cos(dv[1]-d)*dv[0];
-			var cv = closingvelocity;
-			var approachdistance = 1000+4*period*closingvelocity+target.s*4;
+			//var cv = closingvelocity;
+			var cv = distance/2000;
+			var approachdistance = 1000+4*period*cv+target.s*4;
 			if (this.distance(target)<approachdistance){
 				this.hold(target,closingvelocity,period,gametime);
 			}else if (sindv>2){
@@ -160,7 +162,7 @@
 			}else if (sindv<-2){
 				this.d = d-Math.PI/2;
 				if (gametime%period == 0){this.thrust = 2;}
-			}else if (dv[0]<closingvelocity){
+			}else if (dv[0]<cv){
 				this.d = d;
 				if (gametime%period == 0){this.thrust = 2;}
 				}
@@ -416,6 +418,18 @@
 				this.vx = this.vx + this.thrust*Math.cos(this.d);
 				this.vy = this.vy + this.thrust*Math.sin(this.d);
 				thruster = thruster - 24;//this.thrust*12; //this.thrust*12 is good for adjustible thrust, which I abandoned, but bad for boosters, which I added.
+				var td = 48;
+				var tr = 24;
+				var x = Math.cos(this.d+Math.PI)*td + canvas.width/2;
+				var y = Math.sin(this.d+Math.PI)*td + canvas.height/2;
+				context.beginPath();
+				context.strokeStyle = "orange";
+				context.arc(x, y, tr, 0, 2 * Math.PI, false);
+				context.fillStyle = "orange";
+				context.fill();
+				context.lineWidth = 2;
+				context.stroke();	
+				enginesound1.play();
 				}
 			this.thrust = 0; //keeps thrusters momentary
 			this.x = this.x + this.vx;
