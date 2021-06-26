@@ -6,6 +6,34 @@ class Upgrade{
 		this.type = type;//"armor","shield","shieldregen","radar","thruster"
 		this.tier = tier;
 		}
+	apply(playership){
+		console.log("apply function was executed");//not executed--why?
+		if (this.type == "armor"){
+			//console.log("apply function executed, this.type == 'armor'");//not executed--why?
+			playership.maxhp = playership.maxhp + 200; 
+			playership.hp = playership.maxhp; 
+			this.tier = this.tier + 1;
+		} else if (this.type == "repair"){
+			//console.log("apply function executed, this.type == 'repair'");//not executed--why?
+			playership.hp = playership.maxhp; 
+		} else if (this.type == "shield"){
+			//console.log("apply function executed, this.type == 'shield'");//not executed--why?
+			playership.maxshield = playership.maxshield + 50; 
+			this.tier = this.tier + 1;
+		} else if (this.type=="shieldregen"){
+			playership.shieldregen = playership.shieldregen + 0.25;
+			this.tier = this.tier + 1;
+		} else if (this.type=="radar"){
+			radarrange = radarrange + 1000;//use of global variable here only OK because JS is weird
+			this.tier = this.tier + 1;
+		} else if (this.type=="cargo"){
+			playerinventory.maxcargo = playerinventory.maxcargo + 5; //same
+			this.tier = this.tier + 1;
+		} else if (this.type=="thrust"){
+			thrustmultiplier = thrustmultiplier + 0.5; //same
+			this.tier = this.tier + 1;
+			}
+		}
 	}
 allupgrades = [];
 allupgrades.push(new Upgrade("Repair","Repairs any damage to your ship.",20,"repair",0));

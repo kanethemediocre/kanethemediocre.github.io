@@ -77,37 +77,9 @@ class Shopitem{
 				if (this.utype == "boom"){
 						allblasters[this.i].plusboom();
 					}
-					
 			}else if (this.type == "upgrade"){ 
-				if (this.i==1){
-					playership.maxhp = playership.maxhp + 200; 
-					playership.hp = playership.maxhp; 
-					upgrades[this.i].tier = upgrades[this.i].tier + 1;
-					//this.utier = this.utier+1;
-				} else if (this.i==0){
-					playership.hp = playership.maxhp; 
-					//upgrades[this.i].tier = upgrades[this.i].tier + 1;
-				} else if (this.i==2){
-					playership.maxshield = playership.maxshield + 50; 
-					upgrades[this.i].tier = upgrades[this.i].tier + 1;
-					//this.utier = this.utier+1;
-				} else if (this.i==3){
-					playership.shieldregen = playership.shieldregen + 0.25;
-					upgrades[this.i].tier = upgrades[this.i].tier + 1;
-					//this.utier = this.utier+1;
-				} else if (this.i==4){
-					radarrange = radarrange + 1000;
-					upgrades[this.i].tier = upgrades[this.i].tier + 1;
-					//this.utier = this.utier+1;
-				} else if (this.i==5){
-					playerinventory.maxcargo = playerinventory.maxcargo + 5; //refers to global, not passed variable.
-					upgrades[this.i].tier = upgrades[this.i].tier + 1;
-				} else if (this.i==6){
-					thrustmultiplier = thrustmultiplier + 0.5; //refers to global, not passed variable.
-					upgrades[this.i].tier = upgrades[this.i].tier + 1;
-					}
-					
-					
+				allupgrades[this.i].apply(playership);//code in apply function is ignored for some reason
+				//console.log("buy function worked, this.type == 'upgrade'");
 			}else if (this.type == "booster"){
 				boosters[this.utier] = boosters[this.utier]+2;
 			}else if (this.type == "cargo"){
@@ -407,18 +379,18 @@ while (i<12){
 	randshopitems1.push(blasterupgradeitems[randomblasterupgrade]);
 	i=i+1;
 }
-let randoshop1 = new Shop("Marlon Rando's Randomized Blasters",4, "Randomized items", randshopitems1);
+let randoshop1 = new Shop("Rando Calrissian's Blaster Upgrades",4, "Randomized items", randshopitems1);
 
-let randshopitems2 = [];
+let upshopitem0 = new Shopitem("upgrade",0,"repair",0);
+let upshopitem1 = new Shopitem("upgrade",1,"armor",0);
+let upshopitem2 = new Shopitem("upgrade",2,"shield",0);
+let upshopitem3 = new Shopitem("upgrade",3,"shieldregen",0);
+let upshopitem4 = new Shopitem("upgrade",4,"radar",0);
+let upshopitem5 = new Shopitem("upgrade",5,"cargo",0);
+let upshopitem6 = new Shopitem("upgrade",6,"thrust",0);
 
-var i = 0;
-while (i<12){
-	var randupgrade = Math.floor(Math.random()*allupgrades.length);
-	randshopitems2.push(allupgrades[randupgrade]);
-	i=i+1;
-}
-let upshopitem1 = ("upgrade",0,"repair",0);
-let upshopitem2 = ("upgrade",1,"armor",0);
-let randoshop2 = new Shop("Rando Calrissian's Randomized Upgrades",4, "Randomized items", randshopitems2);
-let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,randoshop2];
+var upgradeshopitems = [upshopitem0,upshopitem1,upshopitem2,upshopitem3,upshopitem4,upshopitem5,upshopitem6];
+
+let upgradeshop = new Shop("All Upgrades Testing Shop",4, "Randomized items", upgradeshopitems);
+let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,upgradeshop];
 

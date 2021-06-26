@@ -134,7 +134,6 @@ window.addEventListener("keydown", function (event) {
 				}
 			}
       break;  
-
     case "x":
 		if (cheatmode == 1){
 			var clustercolor = "red";

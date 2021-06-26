@@ -193,7 +193,7 @@ if (cheatmode == 1){
 	context.fillStyle = "red";
 	context.fillText("YOU'RE A CHEATER",canvas.width/2-100,24);	
 	context.font = "12px Ariel";
-	context.fillText("End key gives money, Insert key gives all weapons, Q key fires scrt blaster, W key warps to planet, V warps to next solar system, X summons rainbow monster",canvas.width/2-300,48);	
+	context.fillText("End key gives money, Q key fires scrt blaster, W key warps to planet, V warps to next solar system, X summons rainbow monster",canvas.width/2-300,48);	
 	}
 
 

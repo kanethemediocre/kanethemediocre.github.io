@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b92 by KaneTheMediocre</title>
+    <title>Umo Space 167b94 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -275,7 +275,7 @@ function update() {
 	time = time + 1;
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
-	if (mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,mapscale,canvas.width/2,canvas.height/2, systems[ps].ships[0].x, systems[ps].y,radarrange,systems[ps].ships);}//centered map
+	if (mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,mapscale,canvas.width/2,canvas.height/2, systems[ps].ships[0].x, systems[ps].ships[0].y,radarrange,systems[ps].ships);}//centered map
 	if (mapactive == 2){drawmap(systems[ps].planets,systems[ps].outposts,mapscale,200,canvas.height-150,systems[ps].ships[0].x, systems[ps].ships[0].y,radarrange,systems[ps].ships);
 		context.fillStyle = "black";//Background is black
 		context.fillRect(0, 0, canvas.width, canvas.height-300); //erase non-corner map area
@@ -493,23 +493,20 @@ function update() {
 	hud();
 //////////////////////////////////Weapon 6 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
 	if((mousestate==1)&&(wep == 6)&&(energy>2)){ 
-		var n = Math.floor(time)%6;
-		var beamcolor = "red"; //default / n = 0
-		if (n==1){beamcolor = "orange";}
-		if (n==2){beamcolor = "yellow";}
-		if (n==3){beamcolor = "green";}
-		if (n==4){beamcolor = "blue";}
-		if (n==5){beamcolor = "purple";}
+		var n = Math.floor(time/2)%6;
+		var beamcolor = rainbow(n);
+		var range = allblasters[6].timer+32
 		context.beginPath();
+		context.lineWidth = 4; 
 		context.moveTo(canvas.width/2+Math.cos(systems[ps].ships[0].d)*32, canvas.height/2+Math.sin(systems[ps].ships[0].d)*32);
-		context.lineTo(canvas.width/2+Math.cos(systems[ps].ships[0].d)*500,canvas.height/2+Math.sin(systems[ps].ships[0].d)*500);
+		context.lineTo(canvas.width/2+Math.cos(systems[ps].ships[0].d)*range,canvas.height/2+Math.sin(systems[ps].ships[0].d)*range);
 		context.strokeStyle = beamcolor;
 		context.stroke();	
 		energy = energy - 2;
 		var i = systems[ps].ships.length;
 		while (i>1){//For all ships except 0
 			i = i - 1; 
-			if (systems[ps].ships[0].distance(ships[i])<500){
+			if (systems[ps].ships[0].distance(ships[i])<range){
 				var ptest = pointingat(systems[ps].ships[0].directionof(systems[ps].ships[i]),systems[ps].ships[0].d,systems[ps].ships[0].distance(systems[ps].ships[i]),systems[ps].ships[i].s)
 				if (ptest == 1){
 					systems[ps].ships[i].damage(5);

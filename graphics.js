@@ -1,3 +1,13 @@
+		function rainbow(n){ //Returns a color of the rainbow corresponding to the integer n
+			var color = "red";//default
+			if (n==1){color = "orange";}
+			if (n==2){color = "yellow";}
+			if (n==3){color = "green";}
+			if (n==4){color = "blue";}
+			if (n==5){color = "purple";}
+			return color;
+		}
+		
 		function drawaskey(xpos,ypos,keystring,keycolor){//seems to cause graphical glitches after a few minutes runtime
 			if (keystring==" "){
 				context.fillStyle = keycolor;  
