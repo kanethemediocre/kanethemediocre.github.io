@@ -109,18 +109,30 @@ window.addEventListener("keydown", function (event) {
 		shiptarget = closestindex;                                         
       break;
     case "ArrowUp":
-		if (dockstate>=0){menuclick1.play();}
-		shopitem = shopitem - 1;
-		if ((shopitem<0)&&(shopmode == 0)){shopitem = systems[ps].shops[dockstate].inv.length-1;}
-		if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-1;}
-		if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[ps].shops[dockstate].missions.length-1;}
+		if (dockstate>=0){
+			menuclick1.play();
+			shopitem = shopitem - 1;
+			if ((shopitem<0)&&(shopmode == 0)){shopitem = systems[ps].shops[dockstate].inv.length-1;}
+			if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-1;}
+			if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[ps].shops[dockstate].missions.length-1;}
+			}
+		if (journalactive){
+			shopitem = shopitem - 1;
+			if (shopitem<0){shopitem = playerradio.log.length-1;}
+			}
       break;
     case "ArrowDown":
-		if (dockstate>=0){menuclick1.play();}
-		shopitem = shopitem + 1;
-		if ((shopitem>systems[ps].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
-		if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
-		if ((shopitem>systems[ps].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
+		if (dockstate>=0){
+			menuclick1.play();
+			shopitem = shopitem + 1;
+			if ((shopitem>systems[ps].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
+			if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
+			if ((shopitem>systems[ps].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
+			}
+		if (journalactive){
+			shopitem = shopitem + 1;
+			if (shopitem>playerradio.log.length-1){shopitem = 0;}
+			}
       break;   
     case "End":
 		if (cheatmode == 1){money = money +10000;}
@@ -176,14 +188,13 @@ window.addEventListener("keydown", function (event) {
 				menubuy1.play();
 			}
 		}else if (shopmode == 2){
-			//if (systems[ps].shops[dockstate].missions[shopitem].taken == false){
-				systems[ps].shops[dockstate].missions[shopitem].taken = true;
+			//if (systems[ps].shops[dockstate].missions[shopitem].taken == false){//I shouldn't have to comment this if condition.  Side effect is that players can re-take a mission in progress, respawning the bot if it's a destroy mission.  Maybe useful if a bot gets lost just inside the return radius.
+				systems[ps].shops[dockstate].missions[shopitem].take(systems[ps].ships,systems[ps].planets);
 				job = systems[ps].shops[dockstate].missions[shopitem].message;
 				menuclick3.play();
 				//}
 			}
 		}
-	 
       break;
 	 case "Backspace": //The enter key purchases the currently selected shop item
 		if (dockstate>=0){

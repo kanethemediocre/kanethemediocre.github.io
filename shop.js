@@ -242,16 +242,16 @@ class Shop{
 			i=i+1;
 			}
 		}
-	addcargomission(theships,theplanets){
+	addcargomission(theships,theplanets,theoutposts){
 		var missiontarget = 1+Math.floor(Math.random()*(theplanets.length-1));
-		var missiondistance = theships[0].distance(theplanets[missiontarget]);
+		var missiondistance = theoutposts[this.home].distance(theplanets[missiontarget]);
 		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Go to "+theplanets[missiontarget].name + "."
 		this.missions.push(new Mission("cargo",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
 		}
-	addkillmission(theships,theplanets){
+	addkillmission(theships,theplanets,theoutposts){
 		var missiontarget = 1+Math.floor(Math.random()*(theships.length-2));
-		var missiondistance = theships[0].distance(theships[missiontarget]);
+		var missiondistance = theoutposts[this.home].distance(theships[missiontarget]);
 		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Destroy "+theships[missiontarget].name + ".  It can be found near "+theplanets[theships[missiontarget].parentid].name;
 		this.missions.push(new Mission("destroy",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory

@@ -1,3 +1,22 @@
+		function fillwrappedtext(text,textlength,textheight,x,y){ //textlength in characters, textheight in pixels 
+			var line = 0;
+			var alreadydisplayedchars = 0;
+			var thechar = "";
+			var thelength = 0;
+			var i = textlength-1;
+			while (i>0){
+				thechar = text[i]
+				if (thechar == " "){
+					thelength = i;
+					line = line + 1;
+					i = -2;
+					}
+				i=i-1;
+				}
+			context.fillText(text.slice(0,thelength),x,(y + line*textheight));	
+			line = line + 1;
+			context.fillText(text.slice(thelength+1, thelength+textlength),x,(y + line*textheight));
+			}
 		function showchart(chartdataxy, xspace, yspace, x,y){ //displays chart with specified cell dimensions and position
 			 var i = 0 //assumes each column is same length, otherwise error
 			 var j = 0;
@@ -12,8 +31,20 @@
 				i=i+1;
 				}
 			 }
-		//var cxytest = [ ["first", "column", "of", "words"], ["2nd", "column", "of", "words"]       ];
-		//showchart(cxytest, 64, 16, 300,300);
+		function showchartabbrev(chartdataxy, xspace, yspace, x,y,maxlength){ //displays chart with specified cell dimensions and position
+			 var i = 0 //assumes each column is same length, otherwise error
+			 var j = 0;
+			 while (i<chartdataxy.length){
+				var cellposx = x+i*xspace;
+				j = 0;
+				while (j<chartdataxy[0].length){
+					var cellposy = y+j*yspace;
+					context.fillText(chartdataxy[i][j].slice(0,maxlength),cellposx,cellposy);
+					j=j+1;
+					}
+				i=i+1;
+				}
+			 }
 		function showmessage(message){ //Displays a message, breaking it up into multiple lines as needed.  No word continuity or overflow handling yet.
 			var maxlength = (canvas.width-820)/11; //estimating font width to 10 px, allotting 150 px margins
 			var maxlines = canvas.height/(24*6); //estimating font height to 24 px, allotting 1/6 of screen, only used for overflow handling (eventually)
@@ -43,8 +74,6 @@
 				}
 			context.fillStyle = "white";  
 			}
-		
-		
 		function randvowel(){
 			var vowels = "aeyuio";
 			var vindex = Math.floor(Math.random()*vowels.length);
@@ -83,7 +112,7 @@
 			this.sendery = Math.floor(canvas.height*5/6 - 50);
 			this.msgnow = intromessage; //Text of message
 			this.msgtime = Math.floor(this.msgnow.length*1.5) + 120; //message duration
-			this.log = [this.msgnow];
+			this.log = [];
 			}
 		newmsg(sndr, msg, thetime){//used to put a new message into the object
 			this.msgstart = thetime;
@@ -101,9 +130,28 @@
 				showmessage(this.msgnow.slice(0, (thetime-this.msgstart)*1 ));
 				}
 			}
-		showlog(index){
+		showlog(index,xpos,ypos){
 			var logchart = [ this.log  ];
-			context.font = "11px Verdana";
-			showchart(logchart, 64, 16, 16,300);	
-		}
+			var chartstart = 0;
+			var chartend = this.log.length-1;
+			if (this.log.length>8){
+				chartstart = index - 4;
+				chartend = index + 4;
+				if (chartend < 8){chartend = 8;}
+				if (chartstart<0){chartstart=0;}
+				if (chartend>this.log.length-1){chartend=this.log.length-1;}
+				}
+			var logchart = [ this.log.slice(chartstart,chartend+1) ];
+			context.font = "12px Verdana";
+			//if (index>4){showchartabbrev(logchart, 64, 16, xpos,ypos, 80);}
+			//else {showchartabbrev(logchart, 64, 16, xpos,ypos+, 80);}
+			showchartabbrev(logchart, 64, 16, xpos,ypos, 80);
+			context.fillText(this.log.length+" entries",xpos,ypos-20);
+			fillwrappedtext(this.log[index],200,16,xpos,ypos+300);
+			if ((this.log.length<8)||(index < 4)){
+				context.fillText('X',xpos-16,ypos+index*16);
+			}else{
+				context.fillText('X',xpos-16,ypos+4*16);
+				}
+			}
 		}////end class radio

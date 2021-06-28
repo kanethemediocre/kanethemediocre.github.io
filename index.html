@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b94 by KaneTheMediocre</title>
+    <title>Umo Space 167b97 by KaneTheMediocre</title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -237,7 +237,7 @@ var i = 0;
 while (i<4){
 	var j = 0;
 	while (j<systems[1].shops.length){
-		systems[1].shops[j].addcargomission(systems[1].ships,systems[1].planets);
+		systems[1].shops[j].addcargomission(systems[1].ships,systems[1].planets,systems[1].outposts);
 		j=j+1;
 		}
 	i=i+1
@@ -247,7 +247,7 @@ var i = 0;
 while (i<4){
 	var j = 0;
 	while (j<systems[1].shops.length){
-		systems[1].shops[j].addkillmission(systems[1].ships,systems[1].planets);
+		systems[1].shops[j].addkillmission(systems[1].ships,systems[1].planets,systems[1].outposts);
 		j=j+1;
 		}
 	i=i+1

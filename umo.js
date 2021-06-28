@@ -342,7 +342,7 @@
 			var x = this.x - viewx + canvas.width/2;//stations are squares for now
 			var y = this.y - viewy + canvas.height/2;
 			drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, this.c, this.d);//ship polyon
-			drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-8, this.c2, this.d);//ship polyon
+			drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-16, this.c2, this.d);//ship polyon
 			context.fillStyle = "white";
 			context.font='20px Arial';
 			context.fillText(this.name,x,y);		
@@ -404,6 +404,7 @@
 			var rl = [1,0.85,0.8,0.8,0.85];
 			drawpolarpoly(compassx,compassy,tl, rl, compasssize, "yellow", de);//function drawpolarpoly(px,py,thetalist, radiuslist, size, color, dir){
 			drawpolarpoly(compassx,compassy,targetship.polytheta, targetship.polyradius, compasssize*0.5, targetship.c, targetship.d);//function drawpolarpoly(px,py,thetalist, radiuslist, size, color, dir){
+			drawpolarpoly(compassx,compassy,targetship.polytheta, targetship.polyradius, compasssize*0.5-8, targetship.c2, targetship.d);//function drawpolarpoly(px,py,thetalist, radiuslist, size, color, dir){
 			context.font='12px Arial';
 			context.fillStyle = "white";
 			//context.fillText(this.name,compassx-8,compassy - 48);

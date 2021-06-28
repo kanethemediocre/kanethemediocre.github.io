@@ -9,6 +9,12 @@ class Mission{
 		this.storypath = mstory; //What storystate the mission leads to, 0 for no affect on storystate
 		this.taken == false;
 		}
+	take(theships,theplanets){
+		if (this.type=="destroy"){
+			theships[this.target].respawn(theplanets[theships[this.target].parentid]);
+			}
+		this.taken = true;
+		}
 	check(theships,theplanets,theradio){ //Determines if mission is complete
 		var complete = 0;
 		if (this.taken==true){ //This evaluates to false when this.taken == true.  Not sure why, but I need to fix it.

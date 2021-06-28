@@ -287,6 +287,7 @@ class System{
 		while (i<num){//
 			this.outposts.push( new Umo(0,0,128, randcolor()));
 			var lastindex = this.outposts.length-1;
+			this.outposts[lastindex].c2 = randcolor();
 			this.outposts[lastindex].parentid = 0;
 			this.outposts[lastindex].name = randname(8)+"'s "+randname(7)+" "+randname(5);
 			var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
@@ -301,9 +302,6 @@ class System{
 			var orbitposition = this.planets[0].directionof(this.planets[pickedplanet]);
 			this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, orbitposition+0.2+Math.random()*0.3, 1);//This properly sets orbital distance, maybe properly sets orbit position.
 			//Now add the shop...
-			
-			
-			
 			var randshopitems3 = [];
 			randshopitems3.push(repairshopitem);
 			randshopitems3.push(booster1);//Scope issues here?
@@ -342,12 +340,12 @@ class System{
 			this.shops.push(new Shop("XXXXXXXXXX",i, "whaaaaaaaaaaaaaat", randshopitems3));
 			var k = 0;
 			while (k<4){
-				this.shops[i].addcargomission(this.ships,this.planets);
+				this.shops[i].addcargomission(this.ships,this.planets,this.outposts);
 				k=k+1;
 				}
 			var k = 0;
 			while (k<4){
-				this.shops[i].addkillmission(this.ships,this.planets);
+				this.shops[i].addkillmission(this.ships,this.planets,this.outposts);
 				k=k+1;
 				}
 			i=i+1;
@@ -417,5 +415,8 @@ class System{
 			this.addrandomgang(i,num,templevel);
 			i=i+1;
 			}
+		}
+	missioncheck(){
+		
 		}
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////

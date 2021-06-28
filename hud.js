@@ -165,7 +165,7 @@ function hud(){
 //Journal display if active
 	if (journalactive){
 		context.fillStyle = "teal";
-		playerradio.showlog(0);
+		playerradio.showlog(shopitem, 200,50);
 		}
 ////Shopping!//////////////////////////////////////////////////////
 	if ((dockstate>=0)&&(dockstate<systems[ps].shops.length)){
