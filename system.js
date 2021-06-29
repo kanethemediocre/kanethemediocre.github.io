@@ -416,7 +416,21 @@ class System{
 			i=i+1;
 			}
 		}
-	missioncheck(){
-		
+	nextjob(){
+		var numjobs = 0;
+		var thejob = "none";
+		var i=0;
+		while (i<this.shops.length){
+			var j=0;
+			while (j<this.shops[i].missions.length){
+				if (this.shops[i].missions[j].taken){
+					numjobs = numjobs + 1;
+					thejob = this.shops[i].missions[j].message;
+					}
+				j=j+1;
+				}
+			i=i+1;
+			}
+		return [thejob, numjobs];
 		}
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////

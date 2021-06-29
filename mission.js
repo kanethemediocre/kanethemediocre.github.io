@@ -1,4 +1,4 @@
-
+ 
 class Mission{
 	constructor(missiontype, morigin, mtarget,mmessage,mreward,mstory){
 		this.type = missiontype; //string indicating type of mission, such as "Assassinate", "Defend" or "Cargo"
@@ -45,6 +45,7 @@ class Mission{
 				this.storypath = 0;
 				missioncomplete1.play();
 				this.taken=false;
+				job = "completed";
 				return [givenreward,givenstory];//Storypath will be 0 for non-story missions, nonzero values will set the story state of the player in main loop
 				}
 				else {return [0,0];}

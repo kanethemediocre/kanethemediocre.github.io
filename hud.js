@@ -145,7 +145,7 @@ function hud(){
 	context.fillStyle = "green"; 
 	context.fillText("task: "+task,8,200);
 	context.fillStyle = "yellow";
-	context.fillText("job: "+job,8,216);
+	context.fillText("job: ("+jobs+" jobs) "+job,8,216);
 	context.fillStyle = "white";
 	context.fillText("dockstate: "+dockstate,8,250);//Debugging stuff
 	context.fillText("storystate: "+storystate,8,266);

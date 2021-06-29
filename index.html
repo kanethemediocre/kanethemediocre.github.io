@@ -71,6 +71,7 @@ var storytime = 0;//timestamp of last story event
 var storymessages =  loadstorymessages();//storytext.js
 var task = "Read the tutorial"; //main story mission line
 var job = "None"; //latest task from a station.
+var jobs = 0;
 var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
 var shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
@@ -310,6 +311,9 @@ function update() {
 			}
 		i=i+1;
 		}
+	var tempthing = systems[ps].nextjob();
+	job = tempthing[0];
+	jobs = tempthing[1];
 	
 	//waldo stuff, special planet/maybe wormhole
 	if (systems[ps].ships[0].distance(waldo)>10000){
