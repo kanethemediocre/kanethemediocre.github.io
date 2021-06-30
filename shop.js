@@ -152,7 +152,7 @@ class Shop{
 		context.font='16px Arial';
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
-		context.font='24px Arial';
+		context.font='32px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
 		context.fillText("Buy",x,y-24);
 		context.fillStyle = "white";
@@ -172,7 +172,8 @@ class Shop{
 		context.font='12px Arial';
 		//showchart(shopchart, 128, 16, x,y+24);
 		context.fillText(this.inv[item].describestring(),x,y+256);
-		context.fillText('X',x-16,y+32+item*16);
+		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
+		context.fillText('X',x-12,y+32+item*16);
 		//replace showchart function
 		var i=0;
 		while (i<this.inv.length){
@@ -186,6 +187,13 @@ class Shop{
 			context.fillText(this.inv[i].utype.slice(0,16),x+300,y+32+16*i);
 			i=i+1;
 			}
+		context.beginPath();
+		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.rect(xpos-16,ypos-56,512,336);
+		context.rect(xpos-16,ypos+12,512,224);
+		context.stroke();
+		drawpolarpoly(x+464,y-16,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		
 		}	
 	
 	drawsellmenu(xpos,ypos,item){//screen coords of top corner, item index
@@ -194,14 +202,15 @@ class Shop{
 		context.font='16px Arial';
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
-		context.font='24px Arial';
+		context.font='32px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
 		context.fillText("Sell",x,y-24);
 		context.fillStyle = "white";
 		context.font='12px Arial';
 		
 		if (allcargos.length>0){context.fillText(allcargos[item].description,x,y+256);}
-		context.fillText('X',x-16,y+32+item*16);
+		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
+		context.fillText('X',x-12,y+32+item*16);
 		//replace showchart function
 		var i=0;
 		while (i<allcargos.length){
@@ -211,6 +220,12 @@ class Shop{
 			context.fillText(Math.floor(allcargos[i].baseprice*allshops[dockstate].cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
 			i=i+1;
 			}
+		context.beginPath();
+		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.rect(xpos-16,ypos-56,512,336);
+		context.rect(xpos-16,ypos+12,512,224);
+		context.stroke();
+		drawpolarpoly(x+464,y-16,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}		
 	drawworkmenu(xpos, ypos, item){
 		var x = xpos;
@@ -218,13 +233,14 @@ class Shop{
 		context.font='16px Arial';
 		context.fillStyle = "white";
 		context.fillText("Welcome to "+this.name,x,y);
-		context.font='24px Arial';
+		context.font='32px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
 		context.fillText("Work",x,y-24);
 		context.font='12px Arial';
 		context.fillStyle = "white";	
 		if (this.missions.length>0){context.fillText(this.missions[item].message,x,y+256);}
-		context.fillText('X',x-16,y+32+item*16);
+		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
+		context.fillText('X',x-12,y+32+item*16);
 		var i=0;
 		while (i<this.missions.length){
 			if (this.missions[i].taken){context.fillStyle = "red";}else{context.fillStyle = "white";}
@@ -241,6 +257,12 @@ class Shop{
 			context.fillText(missionlocation,x+240,y+32+16*i);
 			i=i+1;
 			}
+		context.beginPath();
+		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.rect(xpos-16,ypos-56,512,336);
+		context.rect(xpos-16,ypos+12,512,224);
+		context.stroke();
+		drawpolarpoly(x+464,y-16,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}
 	addcargomission(theships,theplanets,theoutposts){
 		var missiontarget = 1+Math.floor(Math.random()*(theplanets.length-1));
@@ -255,7 +277,7 @@ class Shop{
 		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Destroy "+theships[missiontarget].name + ".  It can be found near "+theplanets[theships[missiontarget].parentid].name;
 		this.missions.push(new Mission("destroy",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
-	}
+		}
 	
 	
 	}

@@ -61,5 +61,14 @@ randoutpost2.setorbit(planets[0], 32000, 0.32, 1);//set in orbit around sun trai
 
 
 var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost, randoutpost1,randoutpost2];
+
+var i=0;
+while (i<outposts.length){
+	var numberofsides = Math.floor(Math.random()*6+7)*2;
+	outposts[i].makeemblem(numberofsides,0.1);
+	i=i+1;
+	}
+
+
 return outposts;
 }

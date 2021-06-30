@@ -171,11 +171,11 @@ function hud(){
 	if ((dockstate>=0)&&(dockstate<systems[ps].shops.length)){
 		if (shopmode == 0){
 			if (shopitem >= systems[ps].shops[dockstate].inv.length){shopitem=0;}
-			systems[ps].shops[dockstate].drawbuymenu(400,400,shopitem);
+			systems[ps].shops[dockstate].drawbuymenu(400,64,shopitem);
 		}else if (shopmode == 1){
-			systems[ps].shops[dockstate].drawsellmenu(400,400,shopitem);
+			systems[ps].shops[dockstate].drawsellmenu(400,64,shopitem);
 		}else if (shopmode == 2){
-			systems[ps].shops[dockstate].drawworkmenu(400,400,shopitem);
+			systems[ps].shops[dockstate].drawworkmenu(400,64,shopitem);
 		}
 	}
 	//draw cargo stuff

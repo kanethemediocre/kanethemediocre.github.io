@@ -301,11 +301,15 @@ class System{
 			var orbitdistance = this.planets[0].distance(this.planets[pickedplanet]);
 			var orbitposition = this.planets[0].directionof(this.planets[pickedplanet]);
 			this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, orbitposition+0.2+Math.random()*0.3, 1);//This properly sets orbital distance, maybe properly sets orbit position.
+			
+			var numberofsides = Math.floor(Math.random()*6+7)*2;
+			this.outposts[i].makeemblem(numberofsides,0.1); //randomly generates a shop logo
+			
+			
 			//Now add the shop...
 			var randshopitems3 = [];
 			randshopitems3.push(repairshopitem);
 			randshopitems3.push(booster1);//Scope issues here?
-			
 			var j = 2;
 			while (j<6){
 				var randblaster = Math.floor(Math.random()*10);

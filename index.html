@@ -33,8 +33,8 @@ setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
 canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
 context = canvas.getContext("2d");
-  context.canvas.width  = window.innerWidth-24;
-  context.canvas.height = window.innerHeight-24;
+context.canvas.width  = window.innerWidth-24;
+context.canvas.height = window.innerHeight-24;
 var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
 var system = 1; //0 is menu, 1 is home system.  Higher numbers eventually refer to procedurally generated systems.
 var thrustmultiplier = 1; //Adjusts thruster sensitivity
@@ -315,7 +315,7 @@ function update() {
 	job = tempthing[0];
 	jobs = tempthing[1];
 	
-	//waldo stuff, special planet/maybe wormhole
+////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
 	if (systems[ps].ships[0].distance(waldo)>10000){
 		waldo.s = 100000000000000000 / (home.ships[0].distance(waldo)*home.ships[0].distance(waldo)*home.ships[0].distance(waldo));// hz * hz / dist * dist
 		}
@@ -333,8 +333,6 @@ function update() {
 			ps = 1;
 			}
 		waldo.setorbit(systems[ps].planets[0], 320000, Math.random()*2*Math.PI, -1);
-		//systems[ps].ships[0].x = -0.75*systems[ps].ships[0].x;//no particular reason
-		//systems[ps].ships[0].y = -0.75*systems[ps].ships[0].y;
 		systems[ps].ships[0].vx = 0; //Otherwise players inherit the momentum acquired in descent.
 		systems[ps].ships[0].vy = 0;
 		navtarget = 0;
@@ -352,7 +350,6 @@ function update() {
 			}	
 		}
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
-
 	var i=0;//New weapon handling stuff
 	while (i<allblasters.length){//Draw any active bombs from allblasters.
 		allblasters[i].draw(systems[ps].ships[0].x,systems[ps].ships[0].y);
