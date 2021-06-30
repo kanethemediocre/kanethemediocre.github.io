@@ -33,7 +33,7 @@ switch(storystate){//Tutorial missions so far.
 			}
 		break;
 	case 4:
-		if ((dstory>playerradio.msgtime)&&(mapscale>1024)&&(mapactive>0)){
+		if ((dstory>5)&&(mapscale>1024)&&(mapactive>0)){
 			playerradio.newmsg("Tutorial Dude",storymessages[4],time);
 			task = "Zoom in on the map so only the nearby inner planets are shown ( + )";
 			storystate=5;
@@ -178,18 +178,18 @@ switch(storystate){//Tutorial missions so far.
 	case 21:
 		if ((wep==2) && (allblasters[2].timer > 7)){//If w2 has fired 
 			//allblasters[2].timer = 7;
-			wep=1;
-			allblasters[2].phas = false;
+			//wep=1;
+			//allblasters[2].phas = false;
 			storystate = 22;
 			playerradio.newmsg("Tutorial Dude",storymessages[21],time);//newmsg(sndr, msg, thetime)
-			task = "Return to the Merzian for service";
+			task = "Read the tutorial";
 			storytime = time;
 			}
 	break;	
 	case 22:
 		if (dockstate==1){//if player has retuirned to the merry merz
 			playerradio.newmsg("Tutorial Dude",storymessages[22],time);//newmsg(sndr, msg, thetime)
-			allblasters[2].phas = true;
+			//allblasters[2].phas = true;
 			storystate = 23;
 			task = "Read the tutorial";
 			storytime = time;

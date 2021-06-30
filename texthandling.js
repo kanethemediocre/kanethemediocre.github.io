@@ -1,4 +1,4 @@
-		function fillwrappedtext(text,textlength,textheight,x,y){ //textlength in characters, textheight in pixels 
+		function fillwrappedtextold(text,textlength,textheight,x,y){ //textlength in characters, textheight in pixels 
 			var line = 0;
 			var alreadydisplayedchars = 0;
 			var thechar = "";
@@ -17,6 +17,31 @@
 			line = line + 1;
 			context.fillText(text.slice(thelength+1, thelength+textlength),x,(y + line*textheight));
 			}
+		
+		function fillwrappedtext(text,textlength,textheight,x,y){ //textlength in characters, textheight in pixels 
+			var line = 0;
+			var alreadydisplayedchars = 0;
+			var thechar = "";
+			var thelength = 0;
+			var i = textlength-1;
+			while (alreadydisplayedchars+textlength<text.length){
+				var thelength = 0;
+				var i = alreadydisplayedchars+textlength-1;
+				while (i>0){
+					thechar = text[i]
+					if (thechar == " "){
+						thelength = i;
+						i = -2;
+						}
+					i=i-1;
+					}
+				context.fillText(text.slice(alreadydisplayedchars,thelength),x,(y + line*textheight));	
+				line = line + 1;
+				alreadydisplayedchars = thelength+1;
+				}
+			context.fillText(text.slice(alreadydisplayedchars, alreadydisplayedchars+textlength),x,(y + line*textheight));
+			}
+		
 		function showchart(chartdataxy, xspace, yspace, x,y){ //displays chart with specified cell dimensions and position
 			 var i = 0 //assumes each column is same length, otherwise error
 			 var j = 0;
@@ -147,7 +172,7 @@
 			//else {showchartabbrev(logchart, 64, 16, xpos,ypos+, 80);}
 			showchartabbrev(logchart, 64, 16, xpos,ypos, 80);
 			context.fillText(this.log.length+" entries",xpos,ypos-20);
-			fillwrappedtext(this.log[index],200,16,xpos,ypos+300);
+			fillwrappedtext(this.log[index],100,16,xpos,ypos+300);
 			if ((this.log.length<8)||(index < 4)){
 				context.fillText('X',xpos-16,ypos+index*16);
 			}else{

@@ -171,7 +171,8 @@ class Shop{
 		var shopchart = [names,descriptions,prices,utypes];
 		context.font='12px Arial';
 		//showchart(shopchart, 128, 16, x,y+24);
-		context.fillText(this.inv[item].describestring(),x,y+256);
+		//context.fillText(this.inv[item].describestring(),x,y+256);
+		fillwrappedtext(this.inv[item].describestring(),86,16,x,y+236);
 		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
 		context.fillText('X',x-12,y+32+item*16);
 		//replace showchart function
@@ -190,9 +191,9 @@ class Shop{
 		context.beginPath();
 		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
-		context.rect(xpos-16,ypos+12,512,224);
+		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-16,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		
 		}	
 	
@@ -208,7 +209,7 @@ class Shop{
 		context.fillStyle = "white";
 		context.font='12px Arial';
 		
-		if (allcargos.length>0){context.fillText(allcargos[item].description,x,y+256);}
+		if (allcargos.length>0){fillwrappedtext(allcargos[item].description,86,16,x,y+236);}
 		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
 		context.fillText('X',x-12,y+32+item*16);
 		//replace showchart function
@@ -223,9 +224,9 @@ class Shop{
 		context.beginPath();
 		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
-		context.rect(xpos-16,ypos+12,512,224);
+		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-16,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}		
 	drawworkmenu(xpos, ypos, item){
 		var x = xpos;
@@ -238,7 +239,7 @@ class Shop{
 		context.fillText("Work",x,y-24);
 		context.font='12px Arial';
 		context.fillStyle = "white";	
-		if (this.missions.length>0){context.fillText(this.missions[item].message,x,y+256);}
+		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,y+236);}
 		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
 		context.fillText('X',x-12,y+32+item*16);
 		var i=0;
@@ -260,9 +261,9 @@ class Shop{
 		context.beginPath();
 		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
-		context.rect(xpos-16,ypos+12,512,224);
+		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-16,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}
 	addcargomission(theships,theplanets,theoutposts){
 		var missiontarget = 1+Math.floor(Math.random()*(theplanets.length-1));
