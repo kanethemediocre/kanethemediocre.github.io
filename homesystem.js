@@ -126,12 +126,12 @@ function loadhomesystem(){
 	tron.setorbit(tune,1500,0,1);
 	tron.parentid = 24;
 	tron.c2 = "lightslategrey";
-	let xxxx = new Umo(0,0,550,"black");//26
-	xxxx.name = "Xxxx";
-	xxxx.setorbit(sun,320000,0,-1);
-	xxxx.parentid = 0;
+//	let xxxx = new Umo(0,0,550,"black");//26
+	//xxxx.name = "Xxxx";
+	//xxxx.setorbit(sun,320000,0,-1);
+	//xxxx.parentid = 0;
 	
 	
-	let homeplanets = [sun,murc,vnus,earf,moon,merz,fobz,deem,jupe,heyo,erpa,mede,isto,tern,thys,dion,raya,itan,peet,anus,aril,umbi,titi,bron,tune,tron,xxxx];
+	let homeplanets = [sun,murc,vnus,earf,moon,merz,fobz,deem,jupe,heyo,erpa,mede,isto,tern,thys,dion,raya,itan,peet,anus,aril,umbi,titi,bron,tune,tron];
 	return homeplanets;
 	}

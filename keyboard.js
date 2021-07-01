@@ -161,6 +161,12 @@ window.addEventListener("keydown", function (event) {
 		if (ps <15){ps = ps + 1;}
 		else  {ps = 1;}
 		navtarget = 0;
+		pz = 0;
+		var randdir = Math.random()*2*Math.PI;
+		xxxx.setorbit(systems[ps].planets[0], 320000, randdir+Math.PI, -1);
+		waldo.setorbit(systems[ps].planets[0], 320000, randdir, -1);
+		systems[ps].ships[0].vx = 0; //Otherwise players inherit the momentum acquired in descent.
+		systems[ps].ships[0].vy = 0;
 		}
       break;
 	  case "s":

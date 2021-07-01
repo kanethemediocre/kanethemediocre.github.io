@@ -114,7 +114,7 @@ class Blaster{
 				this.bombs[i].hp = 100;
 				this.bombs[i].shield = 1;
 			}
-			if ((this.type == "rapid")||(this.type == "spread")){
+			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")){
 				var cnum = (thetime+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
@@ -144,7 +144,9 @@ class Blaster{
 		}else if (this.type == "rapid"){
 			this.firing = 0;//not actually used, but -1 would indicate not firing, integer bomb indices would indicate which bomb was next in sequence.
 		}else if (this.type == "spread"){
-			var spread = 0.5; //arbitrary angle in radians.
+			//var spread = 0.5; //arbitrary angle in radians.
+			var spread = 0.0625 + 128/mousedistance; //Used global variable mousedistance here, shame....
+			if (spread>Math.PI){spread = Math.PI;}
 			var n = this.bombs.length;
 			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
 			var shipd = theship.d;
@@ -156,7 +158,20 @@ class Blaster{
 				i=i+1;
 				}
 			theship.d = shipd;
-			}
+		}else if (this.type == "fixedspread"){
+			var spread = Math.PI/2; //arbitrary angle in radians.
+			var n = this.bombs.length;
+			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
+			var shipd = theship.d;
+			theship.d=theship.d+spread/2; //for above, theship.d=theship.d+0.25;
+			var i=0;
+			while (i<n){
+				theship.launchbomb(this.bombs[i],this.speed,this.timer);	
+				theship.d = theship.d-interspread;
+				i=i+1;
+				}
+			theship.d = shipd;
+		}
 		}
 	draw(viewx,viewy){
 		var i = 0;
@@ -229,7 +244,7 @@ class Blaster{
 	 10,5,10,8,1,10,0.75,0.25,3,4,2,2,80,16,10,30,"white","ID not implemented");
 	 let weapon6 = new Blaster("Blazor","Unique beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,384,64,10,11,"white","ID not implemented");
-	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"spread",          
+	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          
 	 8,5,10,8,1,10,0.2,0.1,10,12,2,2,80,16,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster with good damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",                         
 	 12,6,10,12,2,10,0.2,0.1,10,6,0,0,16,2,10,11,"white","ID not implemented");
