@@ -223,19 +223,19 @@ class Blaster{
 	 40,10,10,1,0,0,2,0.2,10,1,0,0,1800,300,10,40,"purple","ID not implemented");
 	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"plain",
 	 8,4,10,12,2,10,1.4,0.2,10,1,0,0,16,8,10,25,"green","ID not implemented");
-	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect",1000,"plain",      
+	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
 	 40,10,10,20,2,10,0.2,0,0,1,0,0,80,8,10,80,"blue","ID not implemented");
-	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments.",2000,"spread",               
+	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               
 	 10,5,10,8,1,10,0.75,0.25,3,4,2,2,80,16,10,30,"white","ID not implemented");
-	 let weapon6 = new Blaster("joe","Unique beam weapon, that isn't properly implemented yet.",1000,"beam",                                                   
+	 let weapon6 = new Blaster("Blazor","Unique beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,384,64,10,11,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"spread",          
 	 8,5,10,8,1,10,0.2,0.1,10,12,2,2,80,16,10,50,"white","ID not implemented");
-	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster with good damage output.",3000,"rapid",                         
+	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster with good damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",                         
 	 12,6,10,12,2,10,0.2,0.1,10,6,0,0,16,2,10,11,"white","ID not implemented");
-	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.",20000,"plain",                                           
+	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.  Beepapop boowopendongle, prodoopsenboboompo bopopob.",20000,"plain",                                           
 	 64,8,10,12,2,10,3,0.25,10,1,0,0,40,8,10,99,"white","ID not implemented");
-	 let weapon0 = new Blaster("Probe","Provides detailed info about Umos on contact.  Upgradeable to provide many other functions.",1000,"probe",                      
+	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"probe",                      
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 let boss1weapon = new Blaster("joe","Simple, but energy efficient blaster",1000,"type variable not used yet",       
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");

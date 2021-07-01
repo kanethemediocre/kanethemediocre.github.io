@@ -2,7 +2,7 @@ function storycheck(){
 var dstory = time - storytime;
 switch(storystate){//Tutorial missions so far.
 	case 0:
-		if (dstory==1){
+		if (dstory>1){
 			playerradio.newmsg("Tutorial Dude",storymessages[0],time);//newmsg(sndr, msg, thetime)
 			storystate = 1;
 			storytime = time;

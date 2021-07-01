@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b102 by Andrew Kane </title>
+    <title>Umo Space 167b104 by Andrew Kane </title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -17,7 +17,8 @@
 <script type="text/javascript" src="graphics.js"></script>
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
-<script type="text/javascript" src="homesystem.js"></script>		
+<script type="text/javascript" src="homesystem.js"></script>
+<script type="text/javascript" src="menusystem.js"></script>		
 <script type="text/javascript" src="storytext.js"></script>	
 <script type="text/javascript" src="mission.js"></script>	
 <script type="text/javascript" src="homeoutposts.js"></script>
@@ -26,6 +27,8 @@
 <script type="text/javascript" src="storyfunction.js"></script>
 <script type="text/javascript" src="hud.js"></script>
 <script type="text/javascript" src="starfield.js"></script>
+<script type="text/javascript" src="about.js"></script>
+<script type="text/javascript" src="controls.js"></script>
 <script>
 // declare global variables/////////////////////////////////////////////////
 const FPS = 30;
@@ -61,7 +64,7 @@ var mousedistance = 0; // Distance to mouse cursor
 var mousestate = 0; //describes state of mouse buttons
 var shop = 0; //O indicates not shopping, 1 indicates a shop, 2 might indicate a different shop....
 var shopitem = 0; //Indicates item selected in the shop.
-var storystate = 0;//Player progress in story missions
+var storystate = -1;//Player progress in story missions
 var dockstate = -1; //Player dock status, 0 is undocked, 1 is docked at station 1, etc...
 var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
 var radarrange = 4000;//Defines distance a ship can be from the player and still be targetable
@@ -82,6 +85,8 @@ var starmode = 1; //0 for no starfield.
 let testfield = new Starfield(30000,20000,64,1000,4000,32);
 var pz = 0;
 var autopilot = 0; //0 is off, higher numbers are other modes
+var menuabout = false;
+var menucontrols = false;
 
 
 var blastersound1 = new Audio("bubble4_short2.mp3");
@@ -138,6 +143,7 @@ let playerradio = new Radio(" ");
 ////////Player stuff///////////////////////////////////////////////////////////
 ////////Planets////////////////////////////////////////////////////////////////////////////////////////
 let planets = loadhomesystem(); //homesystem.
+let menuplanets = loadmenusystem();
 	//let planets = testsystem.planets; //basically works, but not ready.
 ////////Initialize Player//////////////////////////////////////////////////////////
 let testship = new Umo (0,0,32,"black");//Used for calculations
@@ -165,7 +171,9 @@ home.ships = ships;
 home.botbombs = botbombs;
 home.outposts = outposts;
 home.shops = allshops;
-let systems = [0,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
+let menu = new System(0,"Main Menu",0,0);
+menu.planets = menuplanets;
+let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
 systems[2].ships.push(systems[1].ships[0]);
 systems[2].randomplanets();
 systems[2].enemypopulate(5,4,16);
@@ -235,7 +243,7 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].shield=0;  
 	}
 //systems[1].planets[5].sungradient(systems[1].planets[0]);
-var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
+//var testAbranch1 = new Abranch(time,ships[0].x,ships[0].y,ships[0].vx,ships[0].vy,0,64,"red",16,0.3,0.9,0.2);
 var i = 0;
 while (i<4){
 	var j = 0;
@@ -274,6 +282,13 @@ while (i<systems.length){
 ////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ps = 0;
+systems[ps].ships.push(player1);
+//player1.x = 0;
+//player1.y = 0;
+//player1.vx = 0;
+//player1.vy = 0;
+
 function update() {
 	time = time + 1;
 	context.fillStyle = "black";//Background is black
@@ -293,7 +308,51 @@ function update() {
 		pz = (ps-1)*4+(waldo.s/8000);
 		testfield.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,pz,testfield.zmax);
 		}
+	//Menu system handling	
+	if (ps==0){
+		systems[ps].ships[0].x = 0;
+		systems[ps].ships[0].y = 0;
+		systems[ps].ships[0].vx = 0;
+		systems[ps].ships[0].vy = 0;
+		if (allblasters[1].bombs[0].collide(systems[ps].planets[0])){
+			menuabout = true;
+			menucontrols = false;
+			}
+		if (allblasters[1].bombs[0].collide(systems[ps].planets[1])){
+			ps = 1;
+			systems[ps].ships[0].setorbit(planets[0], 32000, 0.212, 1);
+			storystate = 0;
+			}
+		if (allblasters[1].bombs[0].collide(systems[ps].planets[2])){
+			ps = 1;
+			systems[ps].ships[0].setorbit(planets[0], 32000, 0.212, 1);
+			storystate = 999;
+			money = 2000;
+			}
+		if (allblasters[1].bombs[0].collide(systems[ps].planets[3])){
+			ps = 2;
+			systems[ps].ships[0].setorbit(systems[ps].planets[3], systems[ps].planets[3].s+200 , 0, 1);
+			storystate = 999;
+			money = 2000;
+			}
+		if (allblasters[1].bombs[0].collide(systems[ps].planets[4])){
+			menucontrols = true;
+			menuabout = false;
+			}
+		if (menuabout){
+			context.fillStyle = "white";
+			context.font = "12px Verdana";
+			fillwrappedtext(abouttext,160,16, 420,720);}//display stuff here.
+		if (menucontrols){
+			context.fillStyle = "white";
+			context.font = "12px Verdana";
+			fillwrappedtext(controltext,160,16, 420,720);
+			}
+		}//done with menu system handling
+		
+		
 //Outpost stuff all handled here.....
+
 	var i=0;
 	while (i<systems[ps].outposts.length){ //for all outposts
 		if (systems[ps].ships[0].distance(systems[ps].outposts[i])<160){
@@ -543,8 +602,8 @@ function update() {
 			}
 		}
 //////crapware bomb testing goes here
-	testcluster.update1();	
-	testcluster.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,time);
+	//testcluster.update1();	
+	//testcluster.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,time);
 //////////////////////Story and Time Triggered Events//////////////////////////////////////////////////////////////////////
 	storycheck();
 }//end update function
