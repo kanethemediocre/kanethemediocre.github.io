@@ -26,10 +26,11 @@ class Umo { //Universal Moving Object
 		this.polytheta = [0,0.8*Math.PI,1.2*Math.PI];	//used for ship drawing
 		this.level = 1; //Describes difficulty of a given ship
 		this.parentid = 0;
-		this.active = 1; //Flag indicating if ship (or planet's ships) needs to be considered by the game engine 
+		this.active = true; //Flag indicating if ship (or planet's ships) needs to be considered by the game engine 
 		this.shopchart = [];//["Item Name","Item type",price,tier]
 		this.target = 0; //For ai use
 		this.ai = "none";
+		this.damagestate = 0;
 		}
 	update1(){ //Pure motion update.
 		this.x = this.x + this.vx;
@@ -67,6 +68,7 @@ class Umo { //Universal Moving Object
 			this.hp = this.hp - Math.floor(dmg) + this.shield;
 			this.shield = 0;
 			}
+		this.damagestate = 3; //Displays as damaged for 3 frames after being hit
 		}
 	collide(that){ //circular collision function
 		if (this.distance(that) < (this.s + that.s)) {return true; }else{return false;} 
@@ -262,8 +264,14 @@ class Umo { //Universal Moving Object
 	drawship(viewx, viewy){ //Ships are drawn as polar polygons, a triangle is the default.  Viewx/viewy are camera center
 		var x = this.x - viewx + canvas.width/2; //normally camera center being the player ship.
 		var y = this.y - viewy + canvas.height/2;
-		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, this.c, this.d);//ship polyon
-		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-8, this.c2, this.d);//ship polyon
+		var color1 = this.c;
+		var color2 = this.c2;
+		if (this.damagestate>0){
+			color1 = randcolor();
+			color2 = randcolor();
+			}
+		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, color1, this.d);//ship polyon
+		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-8, color2, this.d);//ship polyon
 		var shieldthick = Math.floor(this.shield*4/this.maxshield); //shield
 		if (shieldthick>0){ //Needs to not render at all sometimes because linewidth of 0 is ignored instead of invisible.
 			context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
@@ -433,6 +441,7 @@ class Umo { //Universal Moving Object
 			context.stroke();	
 			enginesound1.play();
 			}
+		if (this.damagestate>0){this.damagestate = this.damagestate-1;}
 		this.thrust = 0; //keeps thrusters momentary
 		this.x = this.x + this.vx;
 		this.y = this.y + this.vy;

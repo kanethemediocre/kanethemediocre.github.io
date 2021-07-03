@@ -3,13 +3,17 @@ function hud(){
 	context.fillStyle = "white"; 
 	var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
 	var closestdistance = 999999;//needs to be larger than radarrange 
-	var closestindex = 0; //defaults to self-targeting if no ships in range
+	//var closestindex = 0; //defaults to self-targeting if no ships in range
 	var i=0;//Excludes player ship
 	while (i<systems[ps].ships.length-1){ //this loop makes the short list
 		i=i+1;
 		var tdistance = Math.floor(systems[ps].ships[0].distance(systems[ps].ships[i]));
 		if (tdistance<radarrange){
 			shipsinrange.push(i);
+			if (tdistance<closestdistance){
+				closestdistance = tdistance;
+				closestindex = shipsinrange.length-1;
+				}
 			}
 		}
 	var i=0;
@@ -151,6 +155,8 @@ function hud(){
 	context.fillText("storystate: "+storystate,8,266);
 	context.fillText("probemode: "+probemode,8,282);
 	context.fillText("autopilot: "+autopilot,8,298);
+	context.fillText("nav target active "+systems[ps].planets[navtarget].active,8,314);
+	context.fillText("ship target active "+systems[ps].ships[shiptarget].active,8,330);
 	
 	if (systems[ps].ships[0].hp==-1000){
 		context.fillStyle = "red";
