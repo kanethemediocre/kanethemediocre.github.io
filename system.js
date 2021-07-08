@@ -247,6 +247,12 @@ class System{
 			this.randommoons(i); 
 			i=i+1;
 			}
+		var extradots = Math.floor(Math.random()*3);
+		while(extradots>0){
+			this.planets[i].polyradius.push(0);
+			this.planets[i].polytheta.push(0);
+			extradots = extradots - 1;
+			}
 		var i = 0;
 		while (i<this.planets.length){
 			var j=0;

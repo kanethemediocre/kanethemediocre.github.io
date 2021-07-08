@@ -31,6 +31,7 @@ class Umo { //Universal Moving Object
 		this.target = 0; //For ai use
 		this.ai = "none";
 		this.damagestate = 0;
+		this.shielddamagestate = 0;
 		}
 	update1(){ //Pure motion update.
 		this.x = this.x + this.vx;
@@ -62,13 +63,14 @@ class Umo { //Universal Moving Object
 		this.d = that.d; //same direction
 	}
 	damage(dmg){ //Automatically applies damage to shield and hitpoints as appropriate
+		this.shielddamagestate = 3;
 		if (this.shield > dmg){
 			this.shield = this.shield - Math.floor(dmg);
 		}else{
 			this.hp = this.hp - Math.floor(dmg) + this.shield;
 			this.shield = 0;
+			this.damagestate = 3;//Displays as damaged for 3 frames after being hit
 			}
-		this.damagestate = 3; //Displays as damaged for 3 frames after being hit
 		}
 	collide(that){ //circular collision function
 		if (this.distance(that) < (this.s + that.s)) {return true; }else{return false;} 
@@ -266,10 +268,12 @@ class Umo { //Universal Moving Object
 		var y = this.y - viewy + canvas.height/2;
 		var color1 = this.c;
 		var color2 = this.c2;
+		var shieldcolor = "blue";
 		if (this.damagestate>0){
 			color1 = randcolor();
 			color2 = randcolor();
 			}
+		if (this.shielddamagestate>0){shieldcolor = randcolor(); }
 		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, color1, this.d);//ship polyon
 		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-8, color2, this.d);//ship polyon
 		var shieldthick = Math.floor(this.shield*4/this.maxshield); //shield
@@ -277,7 +281,7 @@ class Umo { //Universal Moving Object
 			context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
 			context.arc(x, y, this.s+2, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.
 			context.lineWidth = shieldthick;
-			context.strokeStyle = "blue";
+			context.strokeStyle = shieldcolor;
 			context.stroke();	
 		}//Now a health bar/////////////////////////////////////////
 		var prop = this.hp / this.maxhp;
@@ -442,6 +446,7 @@ class Umo { //Universal Moving Object
 			enginesound1.play();
 			}
 		if (this.damagestate>0){this.damagestate = this.damagestate-1;}
+		if (this.shielddamagestate>0){this.shielddamagestate = this.shielddamagestate-1;}
 		this.thrust = 0; //keeps thrusters momentary
 		this.x = this.x + this.vx;
 		this.y = this.y + this.vy;
