@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b111 by Andrew Kane </title>
+    <title>Umo Space 167b113 by Andrew Kane </title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -577,13 +577,16 @@ function update() {
 				}
 			}
 		if (autopilot == 1){
-			systems[ps].ships[0].seek(systems[ps].planets[navtarget],20,30,time);
+			systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time, 1500);
 			}
 		if (autopilot == 2){
 			systems[ps].ships[0].hold(systems[ps].planets[navtarget],20,30,time);
 			}
 		if (autopilot == 3){
 			systems[ps].ships[0].seek2(systems[ps].planets[navtarget],20,30,time);
+			}
+		if (autopilot == 4){
+			systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time,1500);
 			}
 		}
 ///////Respawn handling////////////////////////////////////////////////////////////////////////////////////////////

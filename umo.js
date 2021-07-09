@@ -153,20 +153,60 @@ class Umo { //Universal Moving Object
 		//var sindv = Math.sin(dv[1]-this.directionof(target))*dv[0];
 		//if (Math.cos(dv[1])>0.5){}
 		
-		var sindv = Math.sin(dv[1]-d)*dv[0];
-		var cosdv = Math.cos(dv[1]-d)*dv[0];
+		var sindv = -1*Math.sin(dv[1]-d)*dv[0];
+		var cosdv = -1*Math.cos(dv[1]-d)*dv[0];// -1 shouldn't be here, but it is off by -1 otherwise.
+
 		//var cv = closingvelocity;
-		var cv = distance/2000;
-		var approachdistance = 1000+4*period*cv+target.s*4;
+		var cv = distance/1024;
+		var approachdistance = 1.25*period*dv[0]*dv[0]/2+target.s*2;//period*dv[0] is time to stop from speed dv[0].  dv[0]/2 is average velocity during stopping.   == 120cv
+		
+		context.fillText(sindv, 500, 500);
+		context.fillText(cosdv,500,600);
+		context.fillText(cv,500,700);
+		context.fillText(approachdistance,500,800);
+		
 		if (this.distance(target)<approachdistance){
 			this.hold(target,closingvelocity,period,gametime);
 		}else if (sindv>2){
-			this.d = d+Math.PI/2;
-			if (gametime%period == 0){this.thrust = 2;}
-		}else if (sindv<-2){
 			this.d = d-Math.PI/2;
 			if (gametime%period == 0){this.thrust = 2;}
-		}else if (dv[0]<cv){
+		}else if (sindv<-2){
+			this.d = d+Math.PI/2;
+			if (gametime%period == 0){this.thrust = 2;}
+		}else if (cosdv<cv){
+			this.d = d;
+			if (gametime%period == 0){this.thrust = 2;}
+			}
+		}
+	seek3(target,closingvelocity,period,gametime,stopradius){//Points to target, accelerates towards target
+		var dv = this.deltav2(target); //[mag,dir]
+		var d = this.directionof(target);
+		var distance = this.distance(target);
+		//var cosdv = Math.cos(dv[1]-this.directionof(target))*dv[0];
+		//var sindv = Math.sin(dv[1]-this.directionof(target))*dv[0];
+		//if (Math.cos(dv[1])>0.5){}
+		
+		var sindv = -1*Math.sin(dv[1]-d)*dv[0];
+		var cosdv = -1*Math.cos(dv[1]-d)*dv[0];// -1 shouldn't be here, but it is off by -1 otherwise.
+
+		//var cv = closingvelocity;
+		var cv = distance/1024;
+		var approachdistance = 1.25*period*dv[0]*dv[0]/2+target.s+stopradius;//period*dv[0] is time to stop from speed dv[0].  dv[0]/2 is average velocity during stopping.   == 120cv
+		
+		context.fillText(sindv, 500, 500);
+		context.fillText(cosdv,500,600);
+		context.fillText(cv,500,700);
+		context.fillText(approachdistance,500,800);
+		
+		if (this.distance(target)<approachdistance){
+			this.hold(target,closingvelocity,period,gametime);
+		}else if (sindv>2){
+			this.d = d-Math.PI/2;
+			if (gametime%period == 0){this.thrust = 2;}
+		}else if (sindv<-2){
+			this.d = d+Math.PI/2;
+			if (gametime%period == 0){this.thrust = 2;}
+		}else if (cosdv<cv){
 			this.d = d;
 			if (gametime%period == 0){this.thrust = 2;}
 			}
