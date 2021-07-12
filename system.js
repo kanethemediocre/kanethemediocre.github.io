@@ -418,6 +418,39 @@ class System{
 			this.levelup(botindex,level);
 			}
 		}
+	addrandomtraders(destinations, num, level){
+		var fleetsize = num;
+		var fleetcolor = randcolor();
+		var fleetcolor2 = randcolor();
+		var fleetparent = destinations[0];
+		var randomsides = Math.floor(Math.random()*8)*2+8; //randomized side number
+		var randomshipverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
+		normalizepoly(randomshipverts);
+		var fleetpolytheta = randomshipverts[0];
+		var fleetpolyradius = randomshipverts[1];
+		var i = fleetsize;
+		while (i>0){
+			i=i-1;
+			this.ships.push(new Umo(-600,32000,32,fleetcolor));
+			var botindex = this.ships.length-1;
+			this.ships[botindex].c2 = fleetcolor2;
+			this.ships[botindex].parentid = fleetparent; 
+			this.ships[botindex].respawn(this.planets[fleetparent]);
+			this.ships[botindex].name = randname(5);
+			this.ships[botindex].hp = 150;
+			this.ships[botindex].maxhp = 150;
+			this.ships[botindex].polytheta = fleetpolytheta;
+			this.ships[botindex].polyradius = fleetpolyradius;
+			this.ships[botindex].ai = "trader";
+			this.ships[botindex].aistate = 0;
+			this.ships[botindex].aitargets = destinations;
+			this.botbombs.push( new Umo(0,0,0,"red"));
+			this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
+			this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
+			this.botbombs[this.botbombs.length-1].shield=0;  
+			this.levelup(botindex,level);
+			}
+		}
 	enemypopulate(num,minlevel,maxlevel){ //Adds gangs of enemy ships, level describes difficulty, num is size of each gang.
 		var i=1;
 		while (i<this.planets.length-1){

@@ -44,7 +44,7 @@ function hud(){
 		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
 		systems[ps].ships[0].drawcompass2(systems[ps].ships[shipsinrange[shiptarget]],canvas.width-64, 96, 64); //Targeting computer compass
 		systems[ps].ships[shipsinrange[shiptarget]].drawreticle(systems[ps].ships[0].x,systems[ps].ships[0].y); //Targeting reticle
-		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen"],[systems[ps].ships[shipsinrange[shiptarget]].name, systems[ps].ships[shipsinrange[shiptarget]].level, systems[ps].ships[shipsinrange[shiptarget]].hp,  systems[ps].ships[shipsinrange[shiptarget]].shield,  systems[ps].botbombs[shipsinrange[shiptarget]-1].hurt, systems[ps].botbombs[shipsinrange[shiptarget]-1].boombuff,systems[ps].ships[shipsinrange[shiptarget]].shieldregen]];
+		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].ships[shipsinrange[shiptarget]].name, systems[ps].ships[shipsinrange[shiptarget]].level, systems[ps].ships[shipsinrange[shiptarget]].hp,  systems[ps].ships[shipsinrange[shiptarget]].shield,  systems[ps].botbombs[shipsinrange[shiptarget]-1].hurt, systems[ps].botbombs[shipsinrange[shiptarget]-1].boombuff,systems[ps].ships[shipsinrange[shiptarget]].shieldregen,systems[ps].ships[shipsinrange[shiptarget]].ai]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 
 		context.rect(canvas.width-304,4+16*shiptarget, 160, 16); //This is the item selection indicator

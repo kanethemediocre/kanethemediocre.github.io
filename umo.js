@@ -30,6 +30,8 @@ class Umo { //Universal Moving Object
 		this.shopchart = [];//["Item Name","Item type",price,tier]
 		this.target = 0; //For ai use
 		this.ai = "none";
+		this.aistate = "none";
+		this.aitargets = [];
 		this.damagestate = 0;
 		this.shielddamagestate = 0;
 		}
@@ -106,76 +108,11 @@ class Umo { //Universal Moving Object
 	fasttrackdv(target) { //Points in direction thrust is needed in order to match velocity.
 		this.d = this.deltav2(target)[1]; //with directionof, which just needs a .x and .y to work with
 		}
-	hold(target,closingvelocity,period,gametime){
+	hold(target,period,gametime){
 		var dv = this.deltav2(target); 
 		this.d = dv[1];
 		if (gametime%period == 0){
 			this.thrust = 2;
-			}
-		}
-	seekdumb(target,closingvelocity,period,gametime){//Points to target, accelerates towards target
-		var dv = this.deltav2(target); //[mag,dir]
-		var d = this.directionof(target);
-		var dd = dv[1]-d;
-		if (gametime%period == 0){
-			this.thrust = 2;
-			}
-		}
-	seek(target,closingvelocity,period,gametime){//Points to target, accelerates towards target
-		var dv = this.deltav2(target); //[mag,dir]
-		var d = this.directionof(target);
-		//var cosdv = Math.cos(dv[1]-this.directionof(target))*dv[0];
-		//var sindv = Math.sin(dv[1]-this.directionof(target))*dv[0];
-		//if (Math.cos(dv[1])>0.5){}
-		
-		var sindv = Math.sin(dv[1]-d)*dv[0];
-		var cosdv = Math.cos(dv[1]-d)*dv[0];
-		var cv = closingvelocity;
-		var approachdistance = 1000+4*period*closingvelocity+target.s*4;
-		if (this.distance(target)<approachdistance){
-			this.hold(target,closingvelocity,period,gametime);
-		}else if (sindv>2){
-			this.d = d+Math.PI/2;
-			if (gametime%period == 0){this.thrust = 2;}
-		}else if (sindv<-2){
-			this.d = d-Math.PI/2;
-			if (gametime%period == 0){this.thrust = 2;}
-		}else if (dv[0]<closingvelocity){
-			this.d = d;
-			if (gametime%period == 0){this.thrust = 2;}
-			}
-		}
-	seek2(target,closingvelocity,period,gametime){//Points to target, accelerates towards target
-		var dv = this.deltav2(target); //[mag,dir]
-		var d = this.directionof(target);
-		var distance = this.distance(target);
-		//var cosdv = Math.cos(dv[1]-this.directionof(target))*dv[0];
-		//var sindv = Math.sin(dv[1]-this.directionof(target))*dv[0];
-		//if (Math.cos(dv[1])>0.5){}
-		
-		var sindv = -1*Math.sin(dv[1]-d)*dv[0];
-		var cosdv = -1*Math.cos(dv[1]-d)*dv[0];// -1 shouldn't be here, but it is off by -1 otherwise.
-
-		//var cv = closingvelocity;
-		var cv = distance/1024;
-		var approachdistance = 1.25*period*dv[0]*dv[0]/2+target.s*2;//period*dv[0] is time to stop from speed dv[0].  dv[0]/2 is average velocity during stopping.   == 120cv
-		
-		context.fillText(sindv, 500, 500);
-		context.fillText(cosdv,500,600);
-		context.fillText(cv,500,700);
-		context.fillText(approachdistance,500,800);
-		
-		if (this.distance(target)<approachdistance){
-			this.hold(target,closingvelocity,period,gametime);
-		}else if (sindv>2){
-			this.d = d-Math.PI/2;
-			if (gametime%period == 0){this.thrust = 2;}
-		}else if (sindv<-2){
-			this.d = d+Math.PI/2;
-			if (gametime%period == 0){this.thrust = 2;}
-		}else if (cosdv<cv){
-			this.d = d;
-			if (gametime%period == 0){this.thrust = 2;}
 			}
 		}
 	seek3(target,closingvelocity,period,gametime,stopradius){//Points to target, accelerates towards target
@@ -193,13 +130,13 @@ class Umo { //Universal Moving Object
 		var cv = distance/1024;
 		var approachdistance = 1.25*period*dv[0]*dv[0]/2+target.s+stopradius;//period*dv[0] is time to stop from speed dv[0].  dv[0]/2 is average velocity during stopping.   == 120cv
 		
-		context.fillText(sindv, 500, 500);
-		context.fillText(cosdv,500,600);
-		context.fillText(cv,500,700);
-		context.fillText(approachdistance,500,800);
+		//context.fillText(sindv, 500, 500);
+		//context.fillText(cosdv,500,600);
+		//context.fillText(cv,500,700);
+		//context.fillText(approachdistance,500,800);
 		
 		if (this.distance(target)<approachdistance){
-			this.hold(target,closingvelocity,period,gametime);
+			this.hold(target,period,gametime);
 		}else if (sindv>2){
 			this.d = d-Math.PI/2;
 			if (gametime%period == 0){this.thrust = 2;}
@@ -209,6 +146,40 @@ class Umo { //Universal Moving Object
 		}else if (cosdv<cv){
 			this.d = d;
 			if (gametime%period == 0){this.thrust = 2;}
+			}
+		}
+	seek4(target,period,gametime,stopradius,stoporbit){//Points to target, accelerates towards target
+		if (gametime%period == 0){
+			var dv = this.deltav2(target); //[mag,dir]
+			var d = this.directionof(target);
+			var distance = this.distance(target);
+			var sindv = -1*Math.sin(dv[1]-d)*dv[0];
+			var cosdv = -1*Math.cos(dv[1]-d)*dv[0];// -1 shouldn't be here, but it is off by -1 otherwise.
+			var cv = distance/1024;
+			var approachdistance = 1.25*period*dv[0]*dv[0]/2+target.s+stopradius;//period*dv[0] is time to stop from speed dv[0].  dv[0]/2 is average velocity during stopping.   == 120cv
+			
+			context.fillText(sindv, 500, 500);
+			context.fillText(cosdv,500,600);
+			context.fillText(cv,500,700);
+			context.fillText(approachdistance,500,800);
+			
+			 if (this.distance(target)<stopradius*1.5){
+				if (sindv>2+stoporbit){this.d = d-Math.PI/2;}
+				else if (sindv<-2+stoporbit){this.d = d+Math.PI/2;}
+				else if (this.distance(target)<stopradius){this.d = d + Math.PI;}
+				this.thrust = 2;
+			}else if (this.distance(target)<approachdistance){
+				this.hold(target,period,gametime);
+			}else if (sindv>2){
+				this.d = d-Math.PI/2;
+				this.thrust = 2;
+			}else if (sindv<-2){
+				this.d = d+Math.PI/2;
+				this.thrust = 2;
+			}else if (cosdv<cv){
+				this.d = d;
+				this.thrust = 2;
+				}
 			}
 		}
 	gravitate(pulled){ //For planets.
@@ -471,19 +442,21 @@ class Umo { //Universal Moving Object
 		if ((thruster > 0)&&(this.thrust > 0)){ //skips these calculations if no thrust
 			this.vx = this.vx + this.thrust*Math.cos(this.d);
 			this.vy = this.vy + this.thrust*Math.sin(this.d);
-			thruster = thruster - 24;//this.thrust*12; //this.thrust*12 is good for adjustible thrust, which I abandoned, but bad for boosters, which I added.
-			var td = 48;
-			var tr = 24;
-			var x = Math.cos(this.d+Math.PI)*td + canvas.width/2;
-			var y = Math.sin(this.d+Math.PI)*td + canvas.height/2;
-			context.beginPath();
-			context.strokeStyle = "orange";
-			context.arc(x, y, tr, 0, 2 * Math.PI, false);
-			context.fillStyle = "orange";
-			context.fill();
-			context.lineWidth = 2;
-			context.stroke();	
-			enginesound1.play();
+			if (this.ai == "player"){//quick hack to prevent other ships movements affecting player thruster energy and stuff.
+				thruster = thruster - 24;//thruster is a global variable, shame.
+				var td = 48;
+				var tr = 24;
+				var x = Math.cos(this.d+Math.PI)*td + canvas.width/2;
+				var y = Math.sin(this.d+Math.PI)*td + canvas.height/2;
+				context.beginPath();
+				context.strokeStyle = "orange";
+				context.arc(x, y, tr, 0, 2 * Math.PI, false);
+				context.fillStyle = "orange";
+				context.fill();
+				context.lineWidth = 2;
+				context.stroke();	
+				enginesound1.play();
+				}
 			}
 		if (this.damagestate>0){this.damagestate = this.damagestate-1;}
 		if (this.shielddamagestate>0){this.shielddamagestate = this.shielddamagestate-1;}
@@ -502,6 +475,28 @@ class Umo { //Universal Moving Object
 			this.respawn(theplanets[this.parentid]); //maybe change how I handle this
 			if (this.name == "Cactus Fantastico"){//default/player umo name
 				respawn1.play();
+				}
+			}
+		//AI section
+		if (this.ai == "enemy"){
+			if ( (  this.distance(systems[ps].planets[this.parentid]) > 10000  )&&(this.hp>0) ){//If this bot got lost....
+				var savedhp = this.hp; //remember it's hitpoints... 
+				this.respawn(systems[ps].planets[this.parentid]); //Respawn...
+				this.hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
+				}
+			if (systems[ps].ships[0].distance(this) < 5000){ //Don't do anything if player is far
+				this.fasttrack(systems[ps].ships[0]); //Bots point towards player
+				if ((Math.random()>0.96) && (systems[ps].botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+					this.launchbomb(systems[ps].botbombs[j-1], 12, 80); 					
+					}
+				}
+			}
+		if (this.ai == "trader"){
+			this.seek3(systems[ps].planets[this.aitargets[this.aistate]],20,30,time,1000);
+			//money = money + 1;//test
+			if (this.distance(systems[ps].planets[this.aitargets[this.aistate]])<1500){ 
+				this.aistate = this.aistate+1;
+				if (this.aistate>this.aitargets.length-1){ this.aistate = 0;}
 				}
 			}
 		}

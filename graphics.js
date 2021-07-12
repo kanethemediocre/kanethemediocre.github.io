@@ -154,7 +154,9 @@
 							y = yy + mships[i].y/scale - py/scale;
 							size = 1+ Math.floor(mships[i].s/scale);
 							//context.fillStyle = mships[i].c; 
-							context.fillStyle = "red"; 
+							if (mships[i].ai == "enemy"){context.fillStyle = "red";} 
+							else if (mships[i].ai == "trader"){context.fillStyle = "blue";} 
+							else {context.fillStyle = "white";} 
 							context.fillRect(x, y, 3, 3); 
 							context.fill();
 							}

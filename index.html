@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b113 by Andrew Kane </title>
+    <title>Umo Space 167b118 by Andrew Kane </title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -44,7 +44,8 @@ var thrustmultiplier = 1; //Adjusts thruster sensitivity
 var launchmultiplier = 1; //not really used
 var navtarget = 0; // Compass points to planets[navtarget]
 var navactive = 1; //nav computer starts off, 1 is planetary, 2 is for stations
-var shiptarget = 1; // Targets ships[1]
+var shiptarget = 1; // Targets ships[1] 
+var shiptargeti = 0;
 var nmeactive = 1; //targeting computer starts off
 var mapactive = 2; //2 is corner map, 1 is full map, 0 is no map
 var mapscale = 128; //Map zoom
@@ -71,7 +72,7 @@ var radarrange = 4000;//Defines distance a ship can be from the player and still
 var closestdistance = 999999;//needs to be larger than radarrange 
 var closestindex = 0; //defaults to self-targeting if no ships in range
 var storytime = 0;//timestamp of last story event
-var storymessages =  loadstorymessages();//storytext.js
+var storymessages = loadstorymessages();//storytext.js
 var task = "Read the tutorial"; //main story mission line
 var job = "None"; //latest task from a station.
 var jobs = 0;
@@ -121,6 +122,11 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 		return 1;
 		}else {return 0;}
 	}
+//let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
+////constructor(missiontype, morigin, mtarget,mmessage,mreward)
+////////Declarations//////////////////////////////////////////////////////////////////////////////////
+////////This is basically the game world/////////////////////////////////////////////////////////////////
+
 let testsystem = new System(2,randname(4),0,0);
 let testsystem2 = new System(3,randname(4),0,0);
 let testsystem3 = new System(4,randname(4),0,0);
@@ -136,12 +142,10 @@ let testsystem12 = new System(13,randname(4),0,0);
 let testsystem13 = new System(14,randname(4),0,0);
 let testsystem14 = new System(15,randname(4),0,0);
 let playerradio = new Radio(" ");
-//let mission1 =  new Mission("cargo", 0, 11, "Deliver this cheesy burrito to a client on Mede.",500, 1);
-////constructor(missiontype, morigin, mtarget,mmessage,mreward)
-////////Declarations//////////////////////////////////////////////////////////////////////////////////
-////////This is basically the game world/////////////////////////////////////////////////////////////////
-////////Player stuff///////////////////////////////////////////////////////////
-////////Planets////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 let planets = loadhomesystem(); //homesystem.
 let menuplanets = loadmenusystem();
 	//let planets = testsystem.planets; //basically works, but not ready.
@@ -160,6 +164,7 @@ normalizepoly(randomplayerverts); //Makes the ship have at least 2 vertices at m
 player1.polytheta = randomplayerverts[0];//Assigns randomized polygon
 player1.polyradius = randomplayerverts[1]; //to player1 ship
 player1.setorbit(planets[0], 32000, 0.212, 1); 
+player1.ai = "player";
 var ships = [player1];
 ///////Special Station Umos//////////////////////////////////////////////////////////////////////////////
 let outposts= loadhomeoutposts();
@@ -314,21 +319,12 @@ while (i<systems.length){
 	systems[i].planets.push(waldo);
 	i=i+1;
 	}
-//player1.setorbit(home.planets[0], 28000, 0.05, 1);
-//size adjust for collision at 10,000
-//waldo.s = 10000 / (home.ships[0].distance(waldo) - 10000);
-//Size should be inversely related to the distance from event horizon
-//Size at 1
+ps = 0;
+systems[ps].ships.push(player1);
+systems[1].addrandomtraders([5,12,16],5,10);
 ////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ps = 0;
-systems[ps].ships.push(player1);
-//player1.x = 0;
-//player1.y = 0;
-//player1.vx = 0;
-//player1.vy = 0;
-
 function update() {
 	time = time + 1;
 	context.fillStyle = "black";//Background is black
@@ -492,10 +488,17 @@ function update() {
 			if (systems[ps].ships[j].hp>=0){//do not execute on dead ships.  Maybe check player distance too.
 				allblasters[k].scollide(systems[ps].ships[j]);
 				if (systems[ps].ships[j].hp<0){
-					var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[j].level;
-					money = money + getcash;
-					gotmoney = [30,getcash];
-					cashsound1.play();
+					if (systems[ps].ships[j].ai=="enemy"){
+						var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[j].level;
+						money = money + getcash;
+						gotmoney = [30,getcash];
+						cashsound1.play();
+					}else if (systems[ps].ships[j].ai=="trader"){
+						money = money - 1000;
+						gotmoney = [30, -1000];
+						//somesound.play();
+						}
+					
 					}//Doesn't handle death, just cash.
 				}
 			}
@@ -547,48 +550,30 @@ function update() {
 				}
 			}	
 		}
-		/////Below is intership collisions, disabled because they don't really work.
-			//all ships to each other ship
-			var i = 0;//For each ship,
-			var j = 0; //to each other ship
-			while (i<systems[ps].ships.length-1){
-				j = i+1; //avoids duplicate executions 
-				while (j<systems[ps].ships.length){
-					systems[ps].ships[i].circlecollide2(systems[ps].ships[j]);
-					j = j+1;
-					}
-				i = i+1;
+		var i = 0;//For each ship,
+		var j = 0; //to each other ship
+		while (i<systems[ps].ships.length-1){
+			j = i+1; //avoids duplicate executions 
+			while (j<systems[ps].ships.length){
+				systems[ps].ships[i].circlecollide2(systems[ps].ships[j]);
+				j = j+1;
 				}
+			i = i+1;
+			}
 ////////////AI behavior section///////////////////////////////////////////////
-	var j = systems[ps].ships.length; 
-	while (j>1){ //Does not act on ship[0], which is player1.  This means botbomb length is 1 less than ships.  Index must be adjusted accordingly
-		j=j-1; 
-		if (systems[ps].ships[j].ai == "enemy"){
-			if ( (  systems[ps].ships[j].distance(systems[ps].planets[systems[ps].ships[j].parentid]) > 10000  )&&(systems[ps].ships[j].hp>0) ){//If this bot got lost....
-				var savedhp = systems[ps].ships[j].hp; //remember it's hitpoints... 
-				systems[ps].ships[j].respawn(systems[ps].planets[systems[ps].ships[j].parentid]); //Respawn...
-				systems[ps].ships[j].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
-				}
-			if (systems[ps].ships[0].distance(systems[ps].ships[j]) < 5000){ //Don't do anything if player is far
-				systems[ps].ships[j].fasttrack(systems[ps].ships[0]); //Bots point towards player
-				if ((Math.random()>0.96) && (systems[ps].botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-					systems[ps].ships[j].launchbomb(systems[ps].botbombs[j-1], 12, 80); 					
-					}
-				}
-			}
-		if (autopilot == 1){
-			systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time, 1500);
-			}
-		if (autopilot == 2){
-			systems[ps].ships[0].hold(systems[ps].planets[navtarget],20,30,time);
-			}
-		if (autopilot == 3){
-			systems[ps].ships[0].seek2(systems[ps].planets[navtarget],20,30,time);
-			}
-		if (autopilot == 4){
-			systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time,1500);
-			}
+	if (autopilot == 1){
+		systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time, 1500);
 		}
+	if (autopilot == 2){
+		systems[ps].ships[0].hold(systems[ps].planets[navtarget],20,time);
+		}
+	if (autopilot == 3){
+		var orbitr = 1000;
+		var gravy = systems[ps].planets[navtarget].m*.0003 / (orbitr*orbitr);  //gMm/r^2, where m is 1;
+		var orbitspeed = Math.sqrt(gravy*orbitr);  //a = v^2/r, a* r = v^2, v = sqrt(a*r)
+		systems[ps].ships[0].seek4(systems[ps].planets[navtarget],20,time,orbitr,orbitspeed);
+		}
+	
 ///////Respawn handling////////////////////////////////////////////////////////////////////////////////////////////
 	j = systems[ps].ships.length;
 	while (j>0){
@@ -658,34 +643,6 @@ function update() {
 //////////////////////Story and Time Triggered Events//////////////////////////////////////////////////////////////////////
 	storycheck();
 }//end update function
-
-//Notes//////////////////////////////////////////////////////
-
-//Bounce blaster upgrade doesn't work, and IDK why
-//Random upgrade shop doesn't even make sense, let alone work
-//Mine quest is broken, just ditch it.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </script>
 </body>
