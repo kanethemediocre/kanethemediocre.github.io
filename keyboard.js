@@ -183,7 +183,7 @@ window.addEventListener("keydown", function (event) {
 							menubuy1.play();
 							systems[ps].shops[dockstate].inv[shopitem].buy(money,systems[ps].ships[0],playerinventory);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 						}
-					}
+					} 
 				}
 			}		 
 		}else if (shopmode == 1){
@@ -216,8 +216,8 @@ window.addEventListener("keydown", function (event) {
       break;
 	   case "a": 
 		autopilot = autopilot + 1;
-		//if (autopilot > 1) { autopilot = 0;}//disables experimental modes for playability
-		if (autopilot > 4) { autopilot = 0;}
+		if (autopilot > 1) { autopilot = 0;}//disables experimental modes for playability
+		//if (autopilot > 4) { autopilot = 0;}
       break;
     default:
       return; // Quit when this doesn't handle the key event.
