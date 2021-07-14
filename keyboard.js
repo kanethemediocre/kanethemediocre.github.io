@@ -216,8 +216,8 @@ window.addEventListener("keydown", function (event) {
       break;
 	   case "a": 
 		autopilot = autopilot + 1;
-		if (autopilot > 1) { autopilot = 0;}//disables experimental modes for playability
-		//if (autopilot > 4) { autopilot = 0;} //Enables experimental modes for testing
+		//if (autopilot > 1) { autopilot = 0;}//disables experimental modes for playability
+		if (autopilot > 4) { autopilot = 0;}
       break;
     default:
       return; // Quit when this doesn't handle the key event.

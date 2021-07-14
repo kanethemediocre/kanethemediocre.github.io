@@ -170,12 +170,11 @@ class Shop{
 			}
 		var shopchart = [names,descriptions,prices,utypes];
 		context.font='12px Arial';
-		//showchart(shopchart, 128, 16, x,y+24);
-		//context.fillText(this.inv[item].describestring(),x,y+256);
 		fillwrappedtext(this.inv[item].describestring(),86,16,x,y+236);
-		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
-		context.fillText('X',x-12,y+32+item*16);
-		//replace showchart function
+		context.beginPath(); //This colored rectangle will show which item is selected.
+		context.strokeStyle = systems[ps].outposts[dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.rect(x-12,y+20+item*16,400,16);
+		context.stroke();
 		var i=0;
 		while (i<this.inv.length){
 			context.fillStyle = "grey";
@@ -210,9 +209,10 @@ class Shop{
 		context.font='12px Arial';
 		
 		if (allcargos.length>0){fillwrappedtext(allcargos[item].description,86,16,x,y+236);}
-		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
-		context.fillText('X',x-12,y+32+item*16);
-		//replace showchart function
+		context.beginPath(); //This colored rectangle will show which item is selected.
+		context.strokeStyle = systems[ps].outposts[dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.rect(x-12,y+20+item*16,400,16);
+		context.stroke();
 		var i=0;
 		while (i<allcargos.length){
 			if (playerinventory.cargo[i]>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}//Used global variable instead of reference
@@ -240,8 +240,10 @@ class Shop{
 		context.font='12px Arial';
 		context.fillStyle = "white";	
 		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,y+236);}
-		context.fillStyle = systems[ps].outposts[this.home].c; //oof more global scope
-		context.fillText('X',x-12,y+32+item*16);
+		context.beginPath(); //This colored rectangle will show which item is selected.
+		context.strokeStyle = systems[ps].outposts[dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.rect(x-12,y+20+item*16,400,16);
+		context.stroke();
 		var i=0;
 		while (i<this.missions.length){
 			if (this.missions[i].taken){context.fillStyle = "red";}else{context.fillStyle = "white";}

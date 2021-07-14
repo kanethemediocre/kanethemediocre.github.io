@@ -477,28 +477,6 @@ class Umo { //Universal Moving Object
 				respawn1.play();
 				}
 			}
-		//AI section
-		if (this.ai == "enemy"){
-			if ( (  this.distance(systems[ps].planets[this.parentid]) > 10000  )&&(this.hp>0) ){//If this bot got lost....
-				var savedhp = this.hp; //remember it's hitpoints... 
-				this.respawn(systems[ps].planets[this.parentid]); //Respawn...
-				this.hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
-				}
-			if (systems[ps].ships[0].distance(this) < 5000){ //Don't do anything if player is far
-				this.fasttrack(systems[ps].ships[0]); //Bots point towards player
-				if ((Math.random()>0.96) && (systems[ps].botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-					this.launchbomb(systems[ps].botbombs[j-1], 12, 80); 					
-					}
-				}
-			}
-		if (this.ai == "trader"){
-			this.seek3(systems[ps].planets[this.aitargets[this.aistate]],20,30,time,1000);
-			//money = money + 1;//test
-			if (this.distance(systems[ps].planets[this.aitargets[this.aistate]])<1500){ 
-				this.aistate = this.aistate+1;
-				if (this.aistate>this.aitargets.length-1){ this.aistate = 0;}
-				}
-			}
 		}
 	updatebomb(){ //Handles timer and explosions
 		this.timer= this.timer -1;

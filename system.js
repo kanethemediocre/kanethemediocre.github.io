@@ -105,7 +105,31 @@ class System{
 		var i = this.ships.length; //update section////////////////////////////////////////////////////////////
 		while (i>0){ //update ships
 			i=i-1;
-			this.ships[i].updateship(this.planets);
+			this.ships[i].updateship(this.planets); //basic ship updates
+////////////////////////////AI section///////////////////////////////////////////////////////////
+			if (this.ships[i].ai == "enemy"){
+				if ( (  this.ships[i].distance(this.planets[this.ships[i].parentid]) > 10000  )&&(this.hp>0) ){//If this bot got lost....
+					var savedhp = this.ships[i].hp; //remember it's hitpoints... 
+					this.ships[i].respawn(this.planets[this.ships[i].parentid]); //Respawn...
+					this.ships[i].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
+					}
+				if (this.ships[0].distance(this.ships[i]) < 5000){ //Don't do anything if player is far
+					this.ships[i].fasttrack(this.ships[0]); //Bots point towards player
+					if ((Math.random()>0.95) && (this.botbombs[i-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+						this.ships[i].launchbomb(this.botbombs[i-1], 12, 80); 					
+						}
+					}
+				}
+			if (this.ships[i].ai == "trader"){
+				var targetplanet = this.ships[i].aitargets[this.ships[i].aistate];
+				this.ships[i].seek3(this.planets[targetplanet],20,30,time,1000);
+				//money = money + 1;//test
+				if (this.ships[i].distance(this.planets[targetplanet])<1500){ 
+					this.ships[i].aistate = this.ships[i].aistate+1;
+					if (this.ships[i].aistate>this.ships[i].aitargets.length-1){ this.ships[i].aistate = 0;}
+					}
+				}
+/////////////////////end AI section ////////////////////////////////////////
 			}
 		var i = this.planets.length; //update planets
 		while (i>0){
@@ -125,7 +149,31 @@ class System{
 			this.outposts[i].update1();
 			this.outposts[i].d = this.outposts[i].directionof(planets[0]);
 			}	
-		}
+//////////////////////AI section/////////////////////////////////////////////////////////////////
+	
+		if (this.ai == "enemy"){
+			if ( (  this.distance(systems[ps].planets[this.parentid]) > 10000  )&&(this.hp>0) ){//If this bot got lost....
+				var savedhp = this.hp; //remember it's hitpoints... 
+				this.respawn(systems[ps].planets[this.parentid]); //Respawn...
+				this.hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
+				}
+			if (systems[ps].ships[0].distance(this) < 5000){ //Don't do anything if player is far
+				this.fasttrack(systems[ps].ships[0]); //Bots point towards player
+				if ((Math.random()>0.5) && (systems[ps].botbombs[j-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+					this.launchbomb(systems[ps].botbombs[j-1], 12, 80); 					
+					}
+				}
+			}
+		if (this.ai == "trader"){
+			this.seek3(systems[ps].planets[this.aitargets[this.aistate]],20,30,time,1000);
+			//money = money + 1;//test
+			if (this.distance(systems[ps].planets[this.aitargets[this.aistate]])<1500){ 
+				this.aistate = this.aistate+1;
+				if (this.aistate>this.aitargets.length-1){ this.aistate = 0;}
+				}
+			}
+///////////////////////End AI section //////////////////////////////////////////////////////////////////////		
+		}//end updateall()/////
 	gravitateall(){
 		var i = this.planets.length;
 		while (i>0){ //Planet on ships and bombs
@@ -208,8 +256,6 @@ class System{
 					}
 				i = i+1;
 				}
-			
-			
 			}	
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
 		var  i = externalplanets.length;//unfinished... 		
@@ -265,8 +311,16 @@ class System{
 			}
 			
 			
-		this.randomoutposts(3);
-		
+		this.randomoutposts(3); 
+		var traderstops = Math.floor(Math.random()*3)+2;
+		var destinations = [];
+		var i=0;
+		while (i<traderstops){
+			var thisstop = Math.floor(Math.random()*(this.planets.length-1))+1;
+			destinations.push(thisstop);
+			i=i+1;
+			}
+		this.addrandomtraders(destinations, 4, 15)
 		}
 		
 	randommoons(index){//index is of planet
@@ -353,11 +407,11 @@ class System{
 				this.shops[i].addcargomission(this.ships,this.planets,this.outposts);
 				k=k+1;
 				}
-			var k = 0;
-			while (k<4){
-				this.shops[i].addkillmission(this.ships,this.planets,this.outposts);
-				k=k+1;
-				}
+			//var k = 0;
+			//while (k<4){
+			//	this.shops[i].addkillmission(this.ships,this.planets,this.outposts);
+			//	k=k+1;
+			//	}
 			i=i+1;
 			}
 		}
@@ -456,6 +510,15 @@ class System{
 		while (i<this.planets.length-1){
 			var templevel = Math.floor(minlevel + Math.random()*(maxlevel+1 - minlevel));
 			this.addrandomgang(i,num,templevel);
+			i=i+1;
+			}
+		var i = 0;
+		while (i<this.shops.length){
+			var k = 0;
+			while (k<4){
+				this.shops[i].addkillmission(this.ships,this.planets,this.outposts);
+				k=k+1;
+				}
 			i=i+1;
 			}
 		}
