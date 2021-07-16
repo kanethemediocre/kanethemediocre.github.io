@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b121 by Andrew Kane </title>
+    <title>Umo Space 167b124 by Andrew Kane </title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -303,7 +303,6 @@ while (i<4){
 		}
 	i=i+1
 	}
-	
 let xxxx = new Umo(0,0,550,"black");//26
 xxxx.name = "Xxxx";
 xxxx.setorbit(systems[1].planets[0],320000,0,-1);
@@ -324,7 +323,12 @@ ps = 0;
 systems[ps].ships.push(player1);
 systems[1].addrandomtraders([5,12,16],5,10);
 
-var testturret = new Turret("friendly",systems[1].planets[4],0,100);
+var testturret = new Turret("friendly",systems[1].planets[4],0,150);
+var murcturret1 = new Turret("enemy",systems[1].planets[1],0,192);
+var murcturret2 = new Turret("enemy",systems[1].planets[1],Math.PI,192);
+var murcturret3 = new Turret("enemy",systems[1].planets[1],Math.PI/2,192);
+var murcturret4 = new Turret("enemy",systems[1].planets[1],3*Math.PI/2,192);
+var turrets = [testturret,murcturret1,murcturret2,murcturret3,murcturret4];
 ////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -417,10 +421,6 @@ function update() {
 	var tempthing = systems[ps].nextjob();
 	job = tempthing[0];
 	jobs = tempthing[1];
-//turret stuff
-		testturret.update1();
-		testturret.draw(systems[ps].ships[0].x,systems[ps].ships[0].y);
-		context.fillText(testturret.pivot.distance(systems[ps].ships[0]),500,500);
 ////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
 	if (systems[ps].ships[0].distance(waldo)>10000){
 		waldo.s = 100000000000000000 / (home.ships[0].distance(waldo)*home.ships[0].distance(waldo)*home.ships[0].distance(waldo));// hz * hz / dist * dist
@@ -582,7 +582,26 @@ function update() {
 		var orbitspeed = Math.sqrt(gravy*orbitr);  //a = v^2/r, a* r = v^2, v = sqrt(a*r)
 		systems[ps].ships[0].seek4(systems[ps].planets[navtarget],20,time,orbitr,orbitspeed);
 		}
-	
+//Turret AI handled here for now//////////////////////////////////////
+		var i=0;
+		while (i<turrets.length){
+			if (turrets[i].pivot.ai == "enemy"){
+				if (systems[ps].ships[0].distance(turrets[i].pivot) < 5000){ //Don't do anything if player is far
+					turrets[i].pivot.fasttrack(systems[ps].ships[0]); //Bots point towards player
+					if ((Math.random()>0.95) && (turrets[i].bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+						turrets[i].pivot.launchbomb(turrets[i].bombs[0], 12, 80); 					
+						}
+					}
+				}
+			i=i+1;
+			}
+///Other turret stuff
+		var i = 0;
+		while (i<turrets.length){
+			turrets[i].update1();
+			turrets[i].draw(systems[ps].ships[0].x,systems[ps].ships[0].y);
+			i=i+1;
+			}
 ///////Respawn handling////////////////////////////////////////////////////////////////////////////////////////////
 	j = systems[ps].ships.length;
 	while (j>0){

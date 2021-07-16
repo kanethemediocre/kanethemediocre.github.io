@@ -10,7 +10,6 @@ function loadhomesystem(){
 	vnus.name = "Vnus";
 	vnus.setorbit(sun, 14000, 0, 1);
 	vnus.parentid = 0;
-	vnus.c2 = "tan";
 	let earf = new Umo(0, 20000, 320, "blue"); //3
 	earf.setorbit(sun, 20000, 0, 1);
 	earf.name = "Earf";
