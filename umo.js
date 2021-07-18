@@ -535,6 +535,18 @@ class Umo { //Universal Moving Object
 		thebomb.hp = 1;
 		thebomb.push(mag,this.d);
 		}
+	ispointingat(thetarget){
+		var dx = thetarget.s;
+		var dy = this.distance(thetarget);
+		var dtheta = Math.atan(dx/dy);
+		var dd = this.d-this.directionof(thetarget);
+		if (dd> Math.PI){dd=dd-2*Math.PI;}
+		var answer = false;
+		if (dtheta*dtheta > dd*dd){
+			answer = true;
+			}
+		return answer; //wrong for testing
+		}
 	drawbeam(viewx, viewy, beamlength, beamwidth, beamcolor){  //Draws the lazor
 		var x = this.x - viewx + canvas.width/2; //normally camera center being the player ship.
 		var y = this.y - viewy + canvas.height/2;
