@@ -406,6 +406,7 @@ class System{
 		}
 	
 	randomoutposts(num){//num is number of outposts
+		var alreadypickedplanets = [];
 		var i=0;
 		while (i<num){//
 			this.outposts.push( new Umo(0,0,128, randcolor()));
@@ -418,7 +419,7 @@ class System{
 			this.outposts[lastindex].polytheta = totheta;
 			this.outposts[lastindex].polyradius = toradii;
 			var pickedplanet = Math.floor(Math.random()*(this.planets.length-2))+1;//station will be in a solar following orbit to the chosen planet
-			while (this.planets[pickedplanet].parentid !== 0){//No outpost generated if planet is actually a moon.
+			while ((this.planets[pickedplanet].parentid !== 0)&&(alreadypickedplanets.includes(pickedplanet))){//No outpost generated if planet is actually a moon or already picked
 				pickedplanet = Math.floor(Math.random()*(this.planets.length-2))+1;//tries again to find a not-moon
 				}
 			var orbitdistance = this.planets[0].distance(this.planets[pickedplanet]);

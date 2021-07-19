@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b136 by Andrew Kane </title>
+    <title>Umo Space 167b137 by Andrew Kane </title>
     <style></style>
 </head>
 <body class="myElement" oncontextmenu="return false;">
@@ -355,7 +355,7 @@ function update() {
 	//Menu system handling///////////////////////////////////////////////	
 	if (ps==0){
 		systems[ps].ships[0].x = 0;
-		systems[ps].ships[0].y = 100;//temp to avoid spawning on inactive bombs
+		systems[ps].ships[0].y = -100;//temp to avoid spawning on inactive bombs
 		systems[ps].ships[0].vx = 0;
 		systems[ps].ships[0].vy = 0;
 		if (allblasters[1].bombs[0].collide(systems[ps].planets[0])){
