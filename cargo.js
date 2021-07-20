@@ -19,7 +19,8 @@ let weet = new Cargo("Weet","Weet is a genetically engineered grain optimized to
 let dankcheese = new Cargo("Dank Cheese","Cheese is already a valuable commodity in deep space, but the dankest of cheeses can fetch even higher prices with the right buyer",1000);
 let szyrup = new Cargo("Sweet Juice","Ubiquitous beverage of choice in deep space settlements.  It's pretty good if you don't ask too many questions about it.",150);
 let tinywizards = new Cargo("Tiny Wizards","Widely used for tabletop gaming, these figurines are inexplicably valuable in some markets",80);
-let allcargos = [iron,water,phosphorus,oxygen,cheese,weet,dankcheese,szyrup,tinywizards];
+let missioncargo = new Cargo("Mission cargo","They don't tell you what's in the crates.  They just tell you where to take them.",0);
+let allcargos = [iron,water,phosphorus,oxygen,cheese,weet,dankcheese,szyrup,tinywizards,missioncargo];
 class Inventory{
 	constructor(cargospace){// let bob = new Inventory(10)
 		this.maxcargo = cargospace;

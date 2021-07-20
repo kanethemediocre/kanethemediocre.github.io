@@ -12,8 +12,13 @@ class Mission{
 	take(theships,theplanets){
 		if (this.type=="destroy"){
 			theships[this.target].respawn(theplanets[theships[this.target].parentid]);
+			this.taken = true;
 			}
-		this.taken = true;
+		if ((this.type=="cargo")&&(playerinventory.maxcargo-playerinventory.totalcargo()>=10)){
+			playerinventory.takecargo(allcargos.length-1,10); //global scope
+			this.taken = true;
+			}
+		
 		}
 	check(theships,theplanets,theradio){ //Determines if mission is complete
 		var complete = 0;
@@ -24,7 +29,8 @@ class Mission{
 				}
 				
 			else if (this.type == "cargo"){ //If the mission is to take cargo to a planet.  Works on last test.
-				if ((theplanets[this.target].distance(theships[0])<1500) && (theplanets[this.target].deltav(theships[0])<10)){
+				if ((theplanets[this.target].distance(theships[0])<theplanets[this.target].s*2+200) && (theplanets[this.target].deltav(theships[0])<10)){
+					playerinventory.givecargo(allcargos.length-1,10);//global scope
 					complete = 1; //Requires that you get close, and get slow relative to target planet.
 					}
 				}

@@ -113,7 +113,7 @@ window.addEventListener("keydown", function (event) {
 			menuclick1.play();
 			shopitem = shopitem - 1;
 			if ((shopitem<0)&&(shopmode == 0)){shopitem = systems[ps].shops[dockstate].inv.length-1;}
-			if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-1;}
+			if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-2;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
 			if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[ps].shops[dockstate].missions.length-1;}
 			}
 		if (journalactive){
@@ -126,7 +126,7 @@ window.addEventListener("keydown", function (event) {
 			menuclick1.play();
 			shopitem = shopitem + 1;
 			if ((shopitem>systems[ps].shops[dockstate].inv.length-1)&&(shopmode == 0)){shopitem = 0;}
-			if ((shopitem>allcargos.length-1)&&(shopmode == 1)){shopitem = 0;}
+			if ((shopitem>allcargos.length-2)&&(shopmode == 1)){shopitem = 0;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
 			if ((shopitem>systems[ps].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
 			}
 		if (journalactive){

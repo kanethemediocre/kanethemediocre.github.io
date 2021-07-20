@@ -214,7 +214,7 @@ class Shop{
 		context.rect(x-12,y+20+item*16,400,16);
 		context.stroke();
 		var i=0;
-		while (i<allcargos.length){
+		while (i<allcargos.length-1){//Don't want to render the last cargo item as an option, because it's reserved for mission cargo
 			if (playerinventory.cargo[i]>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}//Used global variable instead of reference
 			context.fillText(allcargos[i].name.slice(0,16),x,y+32+16*i);
 			context.fillText(allcargos[i].description.slice(0,16),x+80,y+32+16*i);
