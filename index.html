@@ -3,8 +3,10 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b139 by Andrew Kane </title>
+    <title>Umo Space 167b146 by Andrew Kane </title>
     <style></style>
+	   <link rel="shortcut icon" href="favicon.ico" >
+   <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
 </head>
 <body class="myElement" oncontextmenu="return false;">
 <canvas id="gameCanvas" width="1600" height="900"></canvas>
@@ -365,13 +367,14 @@ function update() {
 		if (allblasters[1].bombs[0].collide(systems[ps].planets[1])){
 			ps = 1;
 			systems[ps].ships[0].setorbit(planets[0], 32000, 0.212, 1);
-			storystate = 0;
+			storystate = 40;//adjust for testing of stuff, should be 0 on major releases.
 			}
 		if (allblasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;
 			systems[ps].ships[0].setorbit(planets[0], 32000, 0.212, 1);
 			storystate = 999;
 			money = 2000;
+			task = "Profit";
 			}
 		if (allblasters[1].bombs[0].collide(systems[ps].planets[3])){
 			ps = 2;
@@ -538,6 +541,20 @@ function update() {
 				var ptest = pointingat(systems[ps].ships[0].directionof(systems[ps].ships[i]),systems[ps].ships[0].d,systems[ps].ships[0].distance(systems[ps].ships[i]),systems[ps].ships[i].s)
 				if (ptest == 1){
 					systems[ps].ships[i].damage(5);
+					if (systems[ps].ships[i].hp<0){
+						//duplicated code from system object level collision check
+						if (systems[ps].ships[i].ai=="enemy"){
+							var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
+							money = money + getcash;
+							gotmoney = [30,getcash];
+							cashsound1.play();
+						}else if (systems[ps].ships[i].ai=="trader"){
+							money = money - 1000;
+							gotmoney = [30, -1000];
+							//somebadsound.play();
+							}
+						}
+					//end duplicated code////////////////////////////////
 					}
 				}
 			}

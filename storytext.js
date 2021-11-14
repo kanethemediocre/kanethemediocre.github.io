@@ -24,7 +24,7 @@
 			"Although not usually used for picking off faraway targets, the mine technically has the longest range (by far) of any weapon due to its long timer, provided the pilot provides a bit of speed for the mine.",
 			"Many weapons, including the mine, have an upgrade that allows you to detonate the mine with a second click.  For the mine this is highly recommended.",
 			"In space, money is everything.  At stations like the Merry Merzian you can spend it on repairs or upgrades.  You get paid by the Institute for destroying umo bots, and of course the institute pays more for more advanced, more dangerous 'bots.",
-			"You can also buy cargo at some stations, and sell it somewhere else at a different (hopefully higher) price.  Often the most profitable routes are the most dangerous, and involve delivery at a planet surrounded by 'bots.",
+			"Stations have Buy, Sell, and Work menus, which you can cycle through with the Backspace key.  Aside from missions at the Work menu, you can buy and sell commodities for profit.",
 			"If you don't mind being told what to do, missions usually offer more pay for your time than a comparable activity would earn without taking a mission.  You may have noticed an extra $200 after the delivery, and $400 after destroying the bot for me.",
 			"Mission payments are paid out in addition to any money you might make from standard institute bounties or other concurrent activities.  Always be on the lookout for ways to get paid twice.",
 			"Speaking of which, I've got a package for Jojo's (trailing Jupe), and I'll pay $800 for it to be delivered.  You'll probably want to use boosters.",
@@ -45,8 +45,15 @@
 			"The bots around the inner planets aren't as dangerous as those around outer planets like Jupe and Tern, but they're bad enough that we can't ignore them completely.  ",
 			"There's been an initiative to build a moon base with blasters to keep their numbers down, but its a costly endeavor and no one wants to see it blown up by bots before it's finished.",
 			"I've been hoarding resources for a while now, and I'm close to having what I need, but I still need to somehow build the thing without taking any hits until the shield generator comes up. ",
-			"Yo Yo this is the 2nd to last message.",
+			"There's a guy I know who shares my enthusiasm for this base, and he's actually collected enough parts that we could build it.  However, he and all the gear are out on the edge of the system in Dangustown",
+			"The bots are very dangerous out there, but you probably won't need to fight any to make the pickup.  It's ok to do safer work between the inner planets to upgrade your ship before you make the trip.",
+			"Welcome to Dangustown.  Make yourself at home.  We have a saying out here--It's YOUR Anus--which a lot of people blurt out whenever the planet and surrounding community are mentioned.",
+			"Bill mentioned you would be coming.  You'll need at least 10 units of cargo space to take a crate, and I've got 2 crates.",
+			"First crate is loaded.",
+			"First crate is delivered",
+			"2nd crate is loaded",
+			"Both crates are delivered.",
 			"Yo Yo this is the last message."
-			]
-			return storymessages
+			];
+			return storymessages;
 			}

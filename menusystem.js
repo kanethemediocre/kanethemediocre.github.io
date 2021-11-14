@@ -1,8 +1,8 @@
 function loadmenusystem(){
 	let about = new Umo(400, 0, 80, "orange"); //planet initialization/////////////
 	about.name = "About";
-	about.m = 0;
 	about.c2 = "red";
+	about.m = 0;
 	let playstory = new Umo(-250,-300,140,"brown");//1//initial position irrelevant
 	playstory .name = "Play story";
 	playstory .c2 = "darkgreen";

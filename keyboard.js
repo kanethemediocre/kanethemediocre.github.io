@@ -219,6 +219,23 @@ window.addEventListener("keydown", function (event) {
 		if (autopilot > 1) { autopilot = 0;}//disables experimental modes for playability
 		//if (autopilot > 4) { autopilot = 0;}
       break;
+	  
+	   case "k": 
+	   //save game
+	  localStorage.setItem('savedgame',systems);
+	  break;	
+
+	   case "l": 
+	  //load game
+	  localStorage.getItem('savedgame'); //doesn't work, crashes the game.
+	  break;	  	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
     default:
       return; // Quit when this doesn't handle the key event.
   } //end event key handling switch
