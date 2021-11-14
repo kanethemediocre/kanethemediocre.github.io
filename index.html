@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b146 by Andrew Kane </title>
+    <title>Umo Space 167b147 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -20,7 +20,8 @@
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
 <script type="text/javascript" src="homesystem.js"></script>
-<script type="text/javascript" src="menusystem.js"></script>		
+<script type="text/javascript" src="menusystem.js"></script>
+<script type="text/javascript" src="smallworldsystem.js"></script>		
 <script type="text/javascript" src="storytext.js"></script>	
 <script type="text/javascript" src="mission.js"></script>	
 <script type="text/javascript" src="homeoutposts.js"></script>
@@ -130,6 +131,7 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 ////////Declarations//////////////////////////////////////////////////////////////////////////////////
 ////////This is basically the game world/////////////////////////////////////////////////////////////////
 
+//let testsystem = loadsmallworldsystem();
 let testsystem = new System(2,randname(4),0,0);
 let testsystem2 = new System(3,randname(4),0,0);
 let testsystem3 = new System(4,randname(4),0,0);
@@ -217,6 +219,7 @@ while (i<menu.planets.length){
 
 let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
 systems[2].ships.push(systems[1].ships[0]);
+//systems[2].planets=loadsmallworldsystem();//Needs outposts too.
 systems[2].randomplanets();
 systems[2].enemypopulate(5,4,16);
 systems[3].ships.push(systems[1].ships[0]);
@@ -492,7 +495,8 @@ function update() {
 
 ////////////Autopilot behavior section//Formerly AI section, AI behavior moved to System.updateall()/////////////////////////////////////////////
 	if (autopilot == 1){
-		systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time, 1500);
+		if (navactive==1){systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time, 1500);}
+		if (navactive==2){systems[ps].ships[0].seek3(systems[ps].outposts[navtarget],20,30,time, 1500);}
 		}
 	if (autopilot == 2){
 		systems[ps].ships[0].hold(systems[ps].planets[navtarget],20,time);

@@ -10,7 +10,7 @@ class Upgrade{
 		console.log("apply function was executed");//not executed--why?
 		if (this.type == "armor"){
 			//console.log("apply function executed, this.type == 'armor'");//not executed--why?
-			playership.maxhp = playership.maxhp + 200; 
+			playership.maxhp = playership.maxhp + 250; 
 			playership.hp = playership.maxhp; 
 			this.tier = this.tier + 1;
 		} else if (this.type == "repair"){
@@ -18,7 +18,7 @@ class Upgrade{
 			playership.hp = playership.maxhp; 
 		} else if (this.type == "shield"){
 			//console.log("apply function executed, this.type == 'shield'");//not executed--why?
-			playership.maxshield = playership.maxshield + 50; 
+			playership.maxshield = playership.maxshield + 100; 
 			this.tier = this.tier + 1;
 		} else if (this.type=="shieldregen"){
 			playership.shieldregen = playership.shieldregen + 0.25;
@@ -27,7 +27,7 @@ class Upgrade{
 			radarrange = radarrange + 1000;//use of global variable here only OK because JS is weird
 			this.tier = this.tier + 1;
 		} else if (this.type=="cargo"){
-			playerinventory.maxcargo = playerinventory.maxcargo + 5; //same
+			playerinventory.maxcargo = playerinventory.maxcargo + 10; //same
 			this.tier = this.tier + 1;
 		} else if (this.type=="thrust"){
 			thrustmultiplier = thrustmultiplier + 0.5; //same
@@ -38,7 +38,7 @@ class Upgrade{
 allupgrades = [];
 allupgrades.push(new Upgrade("Repair","Repairs any damage to your ship.",20,"repair",0));
 allupgrades.push(new Upgrade("Armor","Improves your ship's armor.",1000,"armor",0));
-allupgrades.push(new Upgrade("Shield","Improves your ship's shield.",2000,"shield",0));
+allupgrades.push(new Upgrade("Shield","Improves your ship's shield.",4000,"shield",0));
 allupgrades.push(new Upgrade("Shield Regen","Improves your ship's shield regeneration rate.",3000,"shieldregen",0));
 allupgrades.push(new Upgrade("Radar","Improves your ship's radar range.",3000,"radar",0));
 allupgrades.push(new Upgrade("Cargo","Improves your ship's cargo capacity",3000,"cargo",0));
