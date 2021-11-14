@@ -587,4 +587,21 @@ class System{
 			}
 		return [thejob, numjobs];
 		}
+	joblist(x,y){
+		context.fillStyle = "orange";
+		context.font='12px Arial';
+		var jobnum = 0;
+		var i=0;
+		while (i<this.shops.length){
+			var j=0;
+			while (j<this.shops[i].missions.length){
+				if (this.shops[i].missions[j].taken){
+					context.fillText(this.shops[i].missions[j].message,x,y+jobnum*20);
+					jobnum++;
+					}
+				j=j+1;
+				}
+			i=i+1;
+			}
+		}
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////

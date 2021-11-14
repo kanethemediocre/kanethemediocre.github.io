@@ -169,10 +169,15 @@ function hud(){
 	context.font='12px Arial';
 	playerradio.display(time);
 //Journal display if active
-	if (journalactive){
+	if (journalactive==1){
+		if (journalitem>playerradio.log.length-1){journalitem=0;}
 		context.fillStyle = "teal";
-		playerradio.showlog(shopitem,200,50);
-		}
+		playerradio.showlog(journalitem,200,50);
+	}else if (journalactive==2){
+		systems[ps].joblist(200,50);
+		//display jobs
+	}
+	
 ////Shopping!//////////////////////////////////////////////////////
 	if ((dockstate>=0)&&(dockstate<systems[ps].shops.length)){
 		if (shopmode == 0){

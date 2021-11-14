@@ -66,7 +66,7 @@ window.addEventListener("keydown", function (event) {
 		if (mapactive == 0){mapactive = 2;} else {mapactive = mapactive-1;}
     	  break;
 	case "j": 
-		if (journalactive){journalactive = false;}else{journalactive = true;}
+		if (journalactive<2){journalactive++;}else{journalactive = 0;}
     	  break;
 	case "+": 
 		mapscale = mapscale * 0.9;
@@ -116,9 +116,9 @@ window.addEventListener("keydown", function (event) {
 			if ((shopitem<0)&&(shopmode == 1)){shopitem = allcargos.length-2;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
 			if ((shopitem<0)&&(shopmode == 2)){shopitem = systems[ps].shops[dockstate].missions.length-1;}
 			}
-		if (journalactive){
-			shopitem = shopitem - 1;
-			if (shopitem<0){shopitem = playerradio.log.length-1;}
+		else if (journalactive==1){
+			journalitem--;
+			if (journalitem<0){journalitem = playerradio.log.length-1;}
 			}
       break;
     case "ArrowDown":
@@ -129,9 +129,9 @@ window.addEventListener("keydown", function (event) {
 			if ((shopitem>allcargos.length-2)&&(shopmode == 1)){shopitem = 0;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
 			if ((shopitem>systems[ps].shops[dockstate].missions.length-1)&&(shopmode == 2)){shopitem = 0;}
 			}
-		if (journalactive){
-			shopitem = shopitem + 1;
-			if (shopitem>playerradio.log.length-1){shopitem = 0;}
+		if (journalactive==1){
+			journalitem++;
+			if (journalitem>playerradio.log.length-1){journalitem = 0;}
 			}
       break;   
     case "End":
