@@ -28,6 +28,17 @@
 				context.stroke();
 				}
 			}
+		function drawaskeyspecial(xpos,ypos,xsize,ysize,keystring,keycolor){//seems to cause graphical glitches after a few minutes runtime		
+				context.font='16px Courier New';
+				context.fillStyle = keycolor;  
+				context.fillText(keystring,xpos,ypos);
+				context.beginPath();//added after obsoleting the function due to a bug.  Maybe fixes it?
+				context.strokeStyle = keycolor; 
+				context.lineWidth = 2;
+				context.rect(xpos-8,ypos-16,xsize,ysize);
+				context.stroke();
+
+			}
 		function drawpolarpoly(px,py,thetalist, radiuslist, size, color, dir){
 		//requires, does not verify, that thetalist.length==radiuslist.length, thetalist.length>2, color be valid
 			var fx = px + Math.cos(dir+thetalist[0])*size*radiuslist[0];

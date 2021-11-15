@@ -180,6 +180,10 @@ function hud(){
 	
 ////Shopping!//////////////////////////////////////////////////////
 	if ((dockstate>=0)&&(dockstate<systems[ps].shops.length)){
+		drawaskeyspecial(480,32,128,24,"Backspace","white");
+		drawaskeyspecial(800,180,80,24,"Enter","white");
+		drawaskeyspecial(800,140,60,24,"Up","white");
+		drawaskeyspecial(800,220,60,24,"Down","white");
 		if (shopmode == 0){
 			if (shopitem >= systems[ps].shops[dockstate].inv.length){shopitem=0;}
 			systems[ps].shops[dockstate].drawbuymenu(400,64,shopitem);
