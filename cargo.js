@@ -66,5 +66,5 @@ class Inventory{
 	}
 }
 let playerinventory = new Inventory(10);
-playerinventory.takecargo(0,4);//for testing
+//playerinventory.takecargo(0,4);//for testing
 

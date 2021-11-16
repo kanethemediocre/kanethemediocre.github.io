@@ -413,26 +413,89 @@ switch(storystate){//Tutorial missions so far.
 			}
 	break;
 	case 49:
-		if (dockstate==3){
+		if (dockstate==3){//Need to add mission cargo handling to this mission code
 			playerradio.newmsg("Tutorial Dude49",storymessages[49],time);//newmsg(sndr, msg, thetime)
-			storystate = 50;
+			var freecargo = playerinventory.maxcargo-playerinventory.totalcargo();
+			if (freecargo<10){//case for no crates
+				storystate = 50;
+			}else if (freecargo>20){//both crates
+				storystate=54;
+				playerinventory.takecargo(allcargos.length-1,20); //allcargos.length-1 is the last item, which will always be mission cargo.
+			}else{
+				storystate = 51;//1 crate
+				playerinventory.takecargo(allcargos.length-1,10); //allcargos.length-1 is the last item, which will always be mission cargo.
+				}
 			storytime = time;
 			}
 	break;
-	case 50:
-		if (dockstate==3){
+	case 50://no crates taken
+		if ((dockstate==3)&&(playerinventory.maxcargo-playerinventory.totalcargo()>=10)){ //if room for crates...
 			playerradio.newmsg("Tutorial Dude50",storymessages[50],time);//newmsg(sndr, msg, thetime)
-			storystate = 51;
+			var freecargo = playerinventory.maxcargo-playerinventory.totalcargo();
+			if (freecargo<20){storystate=51;}else{storystate=54;}
 			storytime = time;
 			}
 	break;
 	case 51:
-		if (dstory>playerradio.msgtime){
+		if (dstory>playerradio.msgtime){//took 1 crate
 			playerradio.newmsg("Tutorial Dude51",storymessages[51],time);//newmsg(sndr, msg, thetime)
 			storystate = 52;
 			storytime = time;
 			}
 	break;
-
+	case 52:
+		if (dockstate==0){//if 1 crate taken to bill
+			playerradio.newmsg("Tutorial Dude52",storymessages[52],time);//newmsg(sndr, msg, thetime)
+			playerinventory.givecargo(allcargos.length-1,10);//global scope
+			storystate = 53;//cool story bro go get the other one
+			storytime = time;
+			}
+	break;
+	case 53:
+		if ((dockstate==3)&&(playerinventory.maxcargo-playerinventory.totalcargo()>=10)){//If back at dangustown with room for 2nd crate...
+			playerradio.newmsg("Tutorial Dude53",storymessages[53],time);//newmsg(sndr, msg, thetime)
+			playerinventory.takecargo(allcargos.length-1,10);
+			storystate = 54;
+			storytime = time;
+			}
+	break;
+	case 54:
+		if (dockstate==0){
+			playerradio.newmsg("Tutorial Dude54",storymessages[54],time);//good job you did it.
+			playerinventory.givecargo(allcargos.length-1,10);//global scope
+			//need to check if the player took both crates and take away the other 10 units of mission cargo.
+			money = money + 5000;
+			storystate = 55;
+			storytime = time;
+			}
+	break;
+	case 55:
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude55",storymessages[55],time);//newmsg(sndr, msg, thetime)
+			storystate = 56;
+			storytime = time;
+			}
+	break;
+	case 56:
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude56",storymessages[56],time);//newmsg(sndr, msg, thetime)
+			storystate = 57;
+			storytime = time;
+			}
+	break;
+	case 57:
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude57",storymessages[57],time);//newmsg(sndr, msg, thetime)
+			storystate = 58;
+			storytime = time;
+			}
+	break;
+	case 58:
+		if (dstory>playerradio.msgtime){
+			playerradio.newmsg("Tutorial Dude58",storymessages[58],time);//newmsg(sndr, msg, thetime)
+			storystate = 59;
+			storytime = time;
+			}
+	break;
 	}
 }
