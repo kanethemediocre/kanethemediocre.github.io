@@ -464,7 +464,7 @@ class Umo { //Universal Moving Object
 		this.x = this.x + this.vx;
 		this.y = this.y + this.vy;
 		this.d = this.d + this.vd;
-		if ((this.hp < 0) && (this.hp !==-1000)){ this.killship(1800); }
+		if ((this.hp <= 0) && (this.hp !==-1000)){ this.killship(1800); }
 		this.deadtime = this.deadtime - 1;
 		if (this.thruster > 100){ this.thruster = 100; }
 		this.energy = this.energy + 1;

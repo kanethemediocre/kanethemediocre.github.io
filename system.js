@@ -11,6 +11,7 @@ class System{
 		this.outposts = []; //list of outposts in system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.shops = []; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.turrets = []; //list of bare turrets in the system.
+		this.explosions = [];
 		this.difficulty = 1; //Scales ship generation attributes
 		this.x = x;
 		this.y = y;
@@ -106,7 +107,15 @@ class System{
 					this.outposts[i].drawstation(viewx,viewy);	
 					}		
 				}		
-			}				
+			}
+			////explosion drawing
+		var i=0;
+		while(i<this.explosions.length){
+			this.explosions[i].draw(viewx,viewy);
+			i++;
+		}
+			
+
 		}
 	updateall(){
 		var i = this.ships.length; //update section////////////////////////////////////////////////////////////
@@ -180,9 +189,25 @@ class System{
 		while (i>0){
 			i=i-1;
 			this.turrets[i].update1();
-			}				
-			
-		}//end updateall()/////
+			}					
+///update explosions///////////////////////////////////////////////////
+		var i=0;
+		while(i<this.explosions.length){
+			this.explosions[i].update1();
+			i++;
+		}
+		//also check for expired explosions and remove them from this.explosions
+		var index = -1;
+		var i=0;
+		while (i<this.explosions.length){
+			if (this.explosions.timer<=0){
+				this.explosions.splice(i, 1);
+				i=this.explosions.length;
+				}
+			i++;
+			}
+
+		}//end updateall()////////////////////////////////////////////////////////////////////////
 	gravitateall(){
 		var i = this.planets.length;
 		while (i>0){ //Planet on ships and bombs
@@ -289,6 +314,9 @@ class System{
 					this.botbombs[g].bombcollide(this.ships[j]);
 					g=g+1;
 					}
+				if (this.ships[j].hp<=0){
+					this.explosions.push(new Bubblesplosion(7,0.375,"red",this.ships[i]));
+					}
 				}
 			j=j+1;
 			}
@@ -305,8 +333,12 @@ class System{
 								var getcash = Math.floor(Math.random()*21+10)*this.ships[i].level;
 								money = money + getcash;
 								gotmoney = [30,getcash];
+//////////////////////////////////explosion stuff///////////////
+								var boomstages = 7;//Math.floor(2+this.ships[i].level/2);
+								this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ships[i]));
 								cashsound1.play();
 							}else if (this.ships[i].ai=="trader"){
+								this.explosions.push(new Bubblesplosion(4,0.375,"red",this.ships[i]));
 								money = money - 1000;
 								gotmoney = [30, -1000];
 								//somebadsound.play();

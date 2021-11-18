@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b150 by Andrew Kane </title>
+    <title>Umo Space 167b157 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -17,6 +17,7 @@
 <script type="text/javascript" src="shop.js"></script>			
 <script type="text/javascript" src="texthandling.js"></script>
 <script type="text/javascript" src="graphics.js"></script>
+<script type="text/javascript" src="bubblesplosion.js"></script>
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
 <script type="text/javascript" src="homesystem.js"></script>
@@ -93,6 +94,8 @@ var pz = 0;
 var autopilot = 0; //0 is off, higher numbers are other modes
 var menuabout = false;
 var menucontrols = false;
+
+
 
 
 var blastersound1 = new Audio("bubble4_short2.mp3");
@@ -329,6 +332,11 @@ ps = 0;
 systems[ps].ships.push(player1);
 systems[1].addrandomtraders([5,12,16],5,10);
 
+
+var boomtesting = false;
+var testboom = new Bubblesplosion(3,30,"red",systems[ps].ships[0]);
+
+
 var testturret = new Turret("friendly",systems[1].planets[4],0,150);
 var murcturret1 = new Turret("enemy",systems[1].planets[1],0,192);
 var murcturret2 = new Turret("enemy",systems[1].planets[1],Math.PI,192);
@@ -371,7 +379,7 @@ function update() {
 		if (allblasters[1].bombs[0].collide(systems[ps].planets[1])){
 			ps = 1;
 			systems[ps].ships[0].setorbit(planets[0], 32000, 0.212, 1);
-			storystate = 48;//adjust for testing of stuff, should be 0 on major releases.
+			storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
 			}
 		if (allblasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;
@@ -467,6 +475,12 @@ function update() {
 		i=i-1;
 		systems[ps].ships[i].active = systems[ps].planets[systems[ps].ships[i].parentid].active;
 		}
+
+		////explosion testing////////////////////////////////
+	if (boomtesting){
+		testboom.update1();
+		testboom.draw(systems[ps].ships[0].x,systems[ps].ships[0].y);
+	}
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
 	var i=0;//New weapon handling stuff
 	while (i<allblasters.length){//Draw any active bombs from allblasters.
