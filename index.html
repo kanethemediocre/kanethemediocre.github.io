@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b157 by Andrew Kane </title>
+    <title>Umo Space 167b164 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -18,6 +18,7 @@
 <script type="text/javascript" src="texthandling.js"></script>
 <script type="text/javascript" src="graphics.js"></script>
 <script type="text/javascript" src="bubblesplosion.js"></script>
+<script type="text/javascript" src="bling.js"></script>
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
 <script type="text/javascript" src="homesystem.js"></script>
@@ -43,6 +44,7 @@ canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
 context = canvas.getContext("2d");
 context.canvas.width  = window.innerWidth-24;
 context.canvas.height = window.innerHeight-24;
+var gamespeed = 30;
 var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
 var system = 1; //0 is menu, 1 is home system.  Higher numbers eventually refer to procedurally generated systems.
 var thrustmultiplier = 1; //Adjusts thruster sensitivity
@@ -226,45 +228,59 @@ systems[2].ships.push(systems[1].ships[0]);
 //systems[2].planets=loadsmallworldsystem();//Needs outposts too.
 systems[2].randomplanets();
 systems[2].enemypopulate(5,4,16);
+systems[2].addrandombling(50);
 systems[3].ships.push(systems[1].ships[0]);
 systems[3].randomplanets();
 systems[3].enemypopulate(5,4,17);
+systems[3].addrandombling(50);
 systems[4].ships.push(systems[1].ships[0]);
 systems[4].randomplanets();
 systems[4].enemypopulate(5,5,18);
+systems[4].addrandombling(50);
 systems[5].ships.push(systems[1].ships[0]);
 systems[5].randomplanets();
 systems[5].enemypopulate(5,5,19);
+systems[5].addrandombling(50);
 systems[6].ships.push(systems[1].ships[0]);
 systems[6].randomplanets();
 systems[6].enemypopulate(5,6,20);
+systems[6].addrandombling(50);
 systems[7].ships.push(systems[1].ships[0]);
 systems[7].randomplanets();
 systems[7].enemypopulate(5,6,21);
+systems[7].addrandombling(50);
 systems[8].ships.push(systems[1].ships[0]);
 systems[8].randomplanets();
 systems[8].enemypopulate(5,7,22);
+systems[8].addrandombling(50);
 systems[9].ships.push(systems[1].ships[0]);
 systems[9].randomplanets();
 systems[9].enemypopulate(5,7,23);
+systems[9].addrandombling(50);
 systems[10].ships.push(systems[1].ships[0]);
 systems[10].randomplanets();
-systems[10].enemypopulate(5,8,24);			
+systems[10].enemypopulate(5,8,24);	
+systems[10].addrandombling(50);		
 systems[11].ships.push(systems[1].ships[0]);
 systems[11].randomplanets();
-systems[11].enemypopulate(5,8,25);			
+systems[11].enemypopulate(5,8,25);		
+systems[11].addrandombling(50);	
 systems[12].ships.push(systems[1].ships[0]);
 systems[12].randomplanets();
 systems[12].enemypopulate(5,9,26);
+systems[12].addrandombling(50);
 systems[13].ships.push(systems[1].ships[0]);
 systems[13].randomplanets();
-systems[13].enemypopulate(5,9,27);			
+systems[13].enemypopulate(5,9,27);	
+systems[13].addrandombling(50);		
 systems[14].ships.push(systems[1].ships[0]);
 systems[14].randomplanets();
-systems[14].enemypopulate(5,10,28);			
+systems[14].enemypopulate(5,10,28);	
+systems[14].addrandombling(50);		
 systems[15].ships.push(systems[1].ships[0]);
 systems[15].randomplanets();
-systems[15].enemypopulate(5,10,29);			
+systems[15].enemypopulate(5,10,29);	
+systems[15].addrandombling(50);		
 			
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
 systems[1].addrandomgang(1,2,24);
@@ -333,7 +349,7 @@ systems[ps].ships.push(player1);
 systems[1].addrandomtraders([5,12,16],5,10);
 
 
-var boomtesting = false;
+
 var testboom = new Bubblesplosion(3,30,"red",systems[ps].ships[0]);
 
 
@@ -344,6 +360,8 @@ var murcturret3 = new Turret("enemy",systems[1].planets[1],Math.PI/2,192);
 var murcturret4 = new Turret("enemy",systems[1].planets[1],3*Math.PI/2,192);
 var turrets = [testturret,murcturret1,murcturret2,murcturret3,murcturret4];
 systems[1].turrets = turrets;
+//systems[1].addbling(systems[1].planets[5],20,50,10);
+systems[1].addrandombling(50);
 ////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -477,10 +495,6 @@ function update() {
 		}
 
 		////explosion testing////////////////////////////////
-	if (boomtesting){
-		testboom.update1();
-		testboom.draw(systems[ps].ships[0].x,systems[ps].ships[0].y);
-	}
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
 	var i=0;//New weapon handling stuff
 	while (i<allblasters.length){//Draw any active bombs from allblasters.

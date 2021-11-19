@@ -18,7 +18,7 @@ function loadhomesystem(){
 	earf.c2 = "green";
 	let moon = new Umo(1000, 20000, 100, "white"); //4
 	moon.name = "Moon";
-	moon.setorbit(earf, 1000, 0, 1);
+	moon.setorbit(earf, 1000, 0, -1);
 	moon.parentid = 3;
 	moon.c2 = "grey";
 	let merz = new Umo(0, 32000, 220, "brown");//5

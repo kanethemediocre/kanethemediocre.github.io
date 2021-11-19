@@ -5,8 +5,7 @@ window.addEventListener("keydown", function (event) {
   }
   switch (event.key) {  //events for all the keyboard keys
     case "q":
-		testboom = new Bubblesplosion(7,0.5,"red",systems[ps].ships[0]);
-		boomtesting = true;
+		//unused for now
 	if (cheatmode == 1){ qblaster.fire(systems[ps].ships[0],time); }
       break;   
 	 case "Delete":

@@ -226,6 +226,19 @@ class Umo { //Universal Moving Object
 			that.damage(this.hurt); 
 			}
 		}
+	circlecollidesafe(that){			//circular bouncing where 1 object is affected
+		if (this.distance(that) < (this.s + that.s)) {
+			var dir = this.directionof(that);
+			var dvx = this.vx - that.vx;
+			var dvy = this.vy - that.vy;
+			var thedeltav = this.deltav2(that);
+			var dvmag = thedeltav[0];
+			var dvdir = thedeltav[1];
+			var pushmag = Math.cos(dir - dvdir)*dvmag;
+			that.push(-2*pushmag, (this.directionof(that)));
+			//that.damage(this.hurt); 
+			}
+		}
 	circlecollide3(that){//Circular bouncing where both objects are affected, very untested, old
 		var dv = this.deltav2(that);
 		var dir = this.directionof(that);//also transform angle

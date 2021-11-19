@@ -1,4 +1,5 @@
-	
+
+
 /////////////////////////////Begin system class///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class System{
 	constructor(index, name, x, y){
@@ -12,6 +13,7 @@ class System{
 		this.shops = []; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.turrets = []; //list of bare turrets in the system.
 		this.explosions = [];
+		this.bling = [];
 		this.difficulty = 1; //Scales ship generation attributes
 		this.x = x;
 		this.y = y;
@@ -108,14 +110,33 @@ class System{
 					}		
 				}		
 			}
-			////explosion drawing
-		var i=0;
-		while(i<this.explosions.length){
-			this.explosions[i].draw(viewx,viewy);
-			i++;
-		}
-			
-
+		var i= this.explosions.length;
+		while  (i>0){
+			i=i-1;
+			this.explosions[i].draw(viewx,viewy);//FIlter on explosions wasnt working, turned off for now
+			//var xtol = canvas.width;
+			//var xdif = this.explosions[i].x-viewx;
+			//if ((xdif < xtol)&&(xdif > -1*xtol)){
+			//	var ytol = canvas.height;
+			//	var ydif = this.explosions[i].y-viewy;
+			//	if ((ydif < ytol)&&(ydif>-1*ytol)){
+			//		//this.explosions[i].draw(viewx,viewy);
+			//		}		
+			//	}		
+			}
+		var i= this.bling.length;
+		while  (i>0){
+			i=i-1;
+			var xtol = canvas.width/2+this.bling[i].s;
+			var xdif = this.bling[i].x-viewx;
+			if ((xdif < xtol)&&(xdif > -1*xtol)){
+				var ytol = canvas.height/2+this.bling[i].s;
+				var ydif = this.bling[i].y-viewy;
+				if ((ydif < ytol)&&(ydif>-1*ytol)){
+					this.bling[i].draw(viewx,viewy);
+					}		
+				}		
+			}
 		}
 	updateall(){
 		var i = this.ships.length; //update section////////////////////////////////////////////////////////////
@@ -206,8 +227,18 @@ class System{
 				}
 			i++;
 			}
+////////Bling update///////
+		var i=0;
+		while (i<this.bling.length){
+			this.bling[i].update1();
+			if (this.bling[i].t>40000){
+				this.bling[i].t=Math.floor(Math.random()*200);
+				//this.bling[i].setorbit(this.planets[this.bling[i].parentid],) //setorbit(parentplanet, distance, direction, cw){ //cw = -1 or 1
+			}
+			i++;
+		}
 
-		}//end updateall()////////////////////////////////////////////////////////////////////////
+	}//end updateall()////////////////////////////////////////////////////////////////////////
 	gravitateall(){
 		var i = this.planets.length;
 		while (i>0){ //Planet on ships and bombs
@@ -222,6 +253,11 @@ class System{
 				j=j-1;
 				this.planets[i].gravitate(this.botbombs[j]);
 				}				
+			j = this.bling.length;
+			while (j>0){ //gravitate on each bot bomb
+				j=j-1;
+				this.planets[i].gravitate(this.bling[j]);
+				}	
 			}
 		var i = this.outposts.length;
 		while (i>0){
@@ -287,6 +323,11 @@ class System{
 					this.planets[i].circlecollide(allblasters[h].bombs[g]);
 					}
 				}
+			var g = this.bling.length;
+			while (g>0){
+				g=g-1;
+				this.planets[i].circlecollidesafe(this.bling[g]);
+			}
 			}
 		//Intership collisions///////////////////////////////////////
 		var i = 0;//For each ship,
@@ -315,7 +356,8 @@ class System{
 					g=g+1;
 					}
 				if (this.ships[j].hp<=0){
-					this.explosions.push(new Bubblesplosion(7,0.375,"red",this.ships[i]));
+					this.explosions.push(new Bubblesplosion(7,0.375,"red",this.ships[j]));
+					this.bling.push(new Bling(this.ships[j].x,this.ships[j].y,this.ships[j].vx,this.ships[j].vy,this.ships[j].level*5));
 					}
 				}
 			j=j+1;
@@ -334,8 +376,9 @@ class System{
 								money = money + getcash;
 								gotmoney = [30,getcash];
 //////////////////////////////////explosion stuff///////////////
-								var boomstages = 7;//Math.floor(2+this.ships[i].level/2);
+								var boomstages = Math.floor(4+this.ships[i].level/2);
 								this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ships[i]));
+								this.bling.push(new Bling(this.ships[i].x,this.ships[i].y,this.ships[i].vx,this.ships[i].vy,this.ships[i].level*5));
 								cashsound1.play();
 							}else if (this.ships[i].ai=="trader"){
 								this.explosions.push(new Bubblesplosion(4,0.375,"red",this.ships[i]));
@@ -351,9 +394,18 @@ class System{
 				}
 			k=k+1;
 			}
-		}	
+		var i=0;
+		while (i<this.bling.length){
+			if (this.ships[0].collide(this.bling[i])){
+				money = money + this.bling[i].value;
+				this.bling.splice(i, 1);
+				//i=this.bling.length;
+			}
+			i++;
+		}
+	}	
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
-		var  i = externalplanets.length;//unfinished... 		
+		var  i = externalplanets.length;//unfinished, unused, but a good idea. 		
 	}
 	randomplanets(){
 		var numplanets = Math.floor(Math.random()*6+6);//random number of planets, 5-11
@@ -403,9 +455,7 @@ class System{
 				j=j+1;
 				}
 			i=i+1;
-			}
-			
-			
+			}	
 		this.randomoutposts(3); 
 		var traderstops = Math.floor(Math.random()*3)+2;
 		var destinations = [];
@@ -415,9 +465,17 @@ class System{
 			destinations.push(thisstop);
 			i=i+1;
 			}
-		this.addrandomtraders(destinations, 4, 15)
+		this.addrandomtraders(destinations, 4, 15); 
+		var traderstops = Math.floor(Math.random()*3)+2;
+		var destinations = [];
+		var i=0;
+		while (i<traderstops){
+			var thisstop = Math.floor(Math.random()*(this.planets.length-1))+1;
+			destinations.push(thisstop);
+			i=i+1;
+			}
+		this.addrandomtraders(destinations, 4, 15)//Duplicate for two groups.
 		}
-		
 	randommoons(index){//index is of planet
 		var nummoons = Math.floor(Math.random()*this.planets[index].s/100 )//Planets < 120 in size have 0 chance of a moon, planet 240 in size has 50% chance of 1 moon, etc.
 		var moonsize = 0; //randomized in loop
@@ -602,6 +660,32 @@ class System{
 			i=i+1;
 			}
 		}
+	addbling(parent,basevalue,bonusvalue,num){//adds bling to 1 planet
+		var i=0;
+		while(i<num){
+			var tempvalue = Math.floor(basevalue+Math.random()*bonusvalue);
+			var tempdistance = parent.s+32+2*Math.floor(Math.random()*parent.s);
+			this.bling.push(new Bling(0,0,0,0,tempvalue));
+			this.bling[this.bling.length-1].setorbit(parent,tempdistance,Math.random()*2*Math.PI,1);
+			this.bling[this.bling.length-1].t = this.bling[this.bling.length-1].t +i*600;
+			i++;
+		}
+	}
+	addrandombling(spread){
+		var i=0;
+		while (i<this.planets.length){
+			var blingonplanet = Math.floor(this.planets[i].s/spread);
+			var j=0;
+			while(j<blingonplanet){
+				this.addbling(this.planets[i],16,32,1);
+				this.bling[this.bling.length-1].parentid = i;
+				this.bling[this.bling.length-1].t = Math.floor(Math.random()*1000);//Timer counts up to an expiration, this helps stagger the expiration times
+				j++
+			}
+			i++;
+		}
+	
+	}
 	nextjob(){
 		var numjobs = 0;
 		var thejob = "none";

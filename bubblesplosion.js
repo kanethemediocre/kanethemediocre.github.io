@@ -18,7 +18,7 @@ class Bubblesplosion{
             var nextstage = [];
             bubblesize = bubblesize*0.8;
             bubbleradius = bubbleradius+this.s/2;
-            var bubblecolor = rainbow(i-1);
+            var bubblecolor = rainbow((i-1)%6);
             var numbubbles = Math.floor(Math.random()*(2+i))+3;
             var interangle = Math.PI*2 / numbubbles;
             var j=0;

@@ -42,7 +42,7 @@ anusoutpost.setorbit(planets[0], 170000, 0.05, 1);//set in orbit around sun behi
 let randoutpost1 = new Umo(0,0,128, randcolor());
 randoutpost1.c2 = randcolor();
 randoutpost1.parentid = 0;
-randoutpost1.name = "Marlon Rando's Randomized Blasters";
+randoutpost1.name = "Randomized Blasters";
 var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
 var toradii = [1,1,1,1]; //rectangle
 randoutpost1.polytheta = totheta;
@@ -52,7 +52,7 @@ randoutpost1.setorbit(planets[0], 32000, 0.3, 1);//set in orbit around sun trail
 let randoutpost2 = new Umo(0,0,128, randcolor());
 randoutpost2.c2 = randcolor();
 randoutpost2.parentid = 0;
-randoutpost2.name = "Rando Calrissian's Randomized Upgrades";
+randoutpost2.name = "Ship Upgrades";
 var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
 var toradii = [1,1,1,1]; //rectangle
 randoutpost2.polytheta = totheta;
