@@ -185,9 +185,34 @@ class System{
 					}
 				}
 			}
-///////////////////////////////////////////////////////////////////////////////
+		var i=this.turrets.length;
+		while(i>0){
+			i=i-1;
+			if (this.turrets[i].pivot.ai == "friendly"){
+				var j=this.ships.length;
+				var closest = j;
+				var closestdistance = 1000000;
+				while(j>0){
+					j--;
+					if (this.ships[j].ai == "enemy"){
+						var tempdistance = this.ships[j].distance(this.turrets[i].pivot);
+						if (tempdistance < closestdistance){
+							closest=j;
+							closestdistance = tempdistance;
+						}
+					}	
+					if (closestdistance < 3000){ //Don't do anything if closest enemy is far
+						this.turrets[i].pivot.fasttrack(this.ships[closest]); //friendly turrets point towards closest enemy	
+						if ((Math.random()>0.95) && (this.turrets[i].bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+							this.turrets[i].pivot.launchbomb(this.turrets[i].bombs[0], 12, 80); 					
+							}
+						}
+					}
+				}
+			}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////			
-/////////////////////end AI section ////////////////////////////////////////
+/////////////////////end AI section ///////////////////////////////////////////////////////////////////////////////////////
 		var i = this.planets.length; //update planets
 		while (i>0){
 			i=i-1;
@@ -344,7 +369,11 @@ class System{
 //////////////////bombs hitting ships///////////////////////////////////////////////
 		var i=0;
 		while (i<this.turrets.length){
-			this.turrets[i].bombs[0].bombcollide(this.ships[0]); //Only collides with player ship for now
+			var j=0;
+			while(j<this.ships.length){
+				this.turrets[i].bombs[0].bombcollide(this.ships[j]); //Turrets to ships.
+				j++;
+				}
 			i=i+1; 
 			}
 		var j=0;

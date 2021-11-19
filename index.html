@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b164 by Andrew Kane </title>
+    <title>Umo Space 167b166 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -42,7 +42,7 @@ setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
 canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
 context = canvas.getContext("2d");
-context.canvas.width  = window.innerWidth-24;
+context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 established in html.
 context.canvas.height = window.innerHeight-24;
 var gamespeed = 30;
 var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
@@ -575,19 +575,21 @@ function update() {
 				if (ptest == 1){
 					systems[ps].ships[i].damage(5);
 					if (systems[ps].ships[i].hp<0){
-						//duplicated code from system object level collision check
 						if (systems[ps].ships[i].ai=="enemy"){
 							var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
 							money = money + getcash;
 							gotmoney = [30,getcash];
 							cashsound1.play();
+							var boomstages = Math.floor(4+systems[ps].ships[i].level/2);
+							systems[ps].explosions.push(new Bubblesplosion(boomstages,0.375,"red",systems[ps].ships[i]));
+							systems[ps].bling.push(new Bling(systems[ps].ships[i].x,systems[ps].ships[i].y,systems[ps].ships[i].vx,systems[ps].ships[i].vy,systems[ps].ships[i].level*5));
 						}else if (systems[ps].ships[i].ai=="trader"){
+							systems[ps].explosions.push(new Bubblesplosion(4,0.375,"red",systems[ps].ships[i]));
 							money = money - 1000;
 							gotmoney = [30, -1000];
 							//somebadsound.play();
 							}
 						}
-					//end duplicated code////////////////////////////////
 					}
 				}
 			}
