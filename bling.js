@@ -47,5 +47,28 @@ class Bling{
 		context.lineWidth = 2; //circle is thicc
 		context.stroke();	//ok now actually draw it.
 		}
-        
+    reset(theplanets){//Intended to replace long-lost bling
+		var totalsize = 0;
+		var sizeindexes = [];
+		var i=1;//Dont care about sun, not putting bling there.  Will compensate with
+		while (i<theplanets.length){
+			totalsize = totalsize + theplanets[i].s;
+			sizeindexes.push(totalsize);
+			i++;
+			}
+		var spot = Math.floor(Math.random()*totalsize);
+		var spoti = 0;
+		var i=0;
+		while(i<sizeindexes.length){
+			if (sizeindexes[i]>spot){
+				spoti = i;
+				i= sizeindexes.length;
+				}
+			i++;
+			}
+		this.t=Math.floor(Math.random()*1000); //A randomized offset to keep bling from getting synchronized and disappearing in sync.
+		var tempdist = Math.floor(theplanets[spoti+1].s*(1.25+Math.random()*1.75));
+		this.setorbit(theplanets[spoti+1],tempdist,Math.PI*2*Math.random(),1);
+		this.parentid = spoti+1;
+		}
     }

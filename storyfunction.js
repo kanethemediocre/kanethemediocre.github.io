@@ -387,6 +387,7 @@ switch(storystate){//Tutorial missions so far.
 	case 45:
 		if (dstory>playerradio.msgtime){
 			playerradio.newmsg("Tutorial Dude45",storymessages[45],time);//newmsg(sndr, msg, thetime)
+			task = "Get supplies from Dangustown";
 			storystate = 46;
 			storytime = time;
 			}

@@ -35,5 +35,15 @@ class Turret{
 		this.pivot.drawship(viewx,viewy);
 		this.bombs[0].drawbomb(viewx,viewy);
 	}
-	
-}
+	fire(){
+		this.pivot.launchbomb(this.bombs[0],12,60);//	launchbomb(thebomb, mag, time){ 
+	}
+	ai1(target){//Track target, shoot as appropriate
+		if (this.pivot.distance(target) < 2000){ //Don't do anything if closest enemy is far
+			this.pivot.fasttrack(target); //friendly turrets point towards closest enemy	
+			if ((Math.random()>0.95) && (this.bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't in use
+				this.fire();//pivot.launchbomb(this.turrets[i].bombs[0], 15, 60); 					
+				}
+			}
+		}
+	}

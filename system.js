@@ -177,13 +177,19 @@ class System{
 		while(i>0){
 			i=i-1;
 			if (this.turrets[i].pivot.ai == "enemy"){
-				if (this.ships[0].distance(this.turrets[i].pivot) < 5000){ //Don't do anything if player is far
-					this.turrets[i].pivot.fasttrack(this.ships[0]); //Bots point towards player
-					if ((Math.random()>0.95) && (this.turrets[i].bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-						this.turrets[i].pivot.launchbomb(this.turrets[i].bombs[0], 12, 80); 					
-						}
-					}
+				this.turrets[i].ai1(this.ships[0]);
 				}
+
+				//if (this.ships[0].distance(this.turrets[i].pivot) < 5000){ //Don't do anything if player is far
+				//	this.turrets[i].pivot.fasttrack(this.ships[0]); //Bots point towards player
+				//	if ((Math.random()>0.95) && (this.turrets[i].bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+				//		this.turrets[i].fire();//pivot.launchbomb(this.turrets[i].bombs[0], 12, 60); 					
+				//		}
+				//	}
+				//}
+
+
+
 			}
 		var i=this.turrets.length;
 		while(i>0){
@@ -204,7 +210,7 @@ class System{
 					if (closestdistance < 3000){ //Don't do anything if closest enemy is far
 						this.turrets[i].pivot.fasttrack(this.ships[closest]); //friendly turrets point towards closest enemy	
 						if ((Math.random()>0.95) && (this.turrets[i].bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-							this.turrets[i].pivot.launchbomb(this.turrets[i].bombs[0], 12, 80); 					
+							this.turrets[i].fire();//pivot.launchbomb(this.turrets[i].bombs[0], 15, 60); 					
 							}
 						}
 					}
@@ -224,7 +230,6 @@ class System{
 			this.botbombs[i].update1();
 			this.botbombs[i].updatebomb();
 			}
-
 		var i = this.outposts.length; 
 		while (i>0){
 			i=i-1;
@@ -262,7 +267,6 @@ class System{
 			}
 			i++;
 		}
-
 	}//end updateall()////////////////////////////////////////////////////////////////////////
 	gravitateall(){
 		var i = this.planets.length;
@@ -353,7 +357,7 @@ class System{
 				g=g-1;
 				this.planets[i].circlecollidesafe(this.bling[g]);
 			}
-			}
+		}
 		//Intership collisions///////////////////////////////////////
 		var i = 0;//For each ship,
 		var j = 0; //to each other ship
@@ -365,7 +369,6 @@ class System{
 				}
 			i = i+1;
 			}
-			
 //////////////////bombs hitting ships///////////////////////////////////////////////
 		var i=0;
 		while (i<this.turrets.length){
@@ -523,7 +526,6 @@ class System{
 			this.planets[moonindex].setorbit(this.planets[index],moonorbitr,Math.random()*6.28, 1);//orbit direction is 1, not random
 			}
 		}
-	
 	randomoutposts(num){//num is number of outposts
 		var alreadypickedplanets = [];
 		var i=0;

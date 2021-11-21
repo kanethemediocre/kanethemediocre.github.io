@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Umo Space 167b166 by Andrew Kane </title>
+    <title>Bling Hustle v174 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -22,6 +22,7 @@
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
 <script type="text/javascript" src="homesystem.js"></script>
+<script type="text/javascript" src="trinidadsystem.js"></script>
 <script type="text/javascript" src="menusystem.js"></script>
 <script type="text/javascript" src="smallworldsystem.js"></script>		
 <script type="text/javascript" src="storytext.js"></script>	
@@ -37,7 +38,7 @@
 <script type="text/javascript" src="turrets.js"></script>
 <script>
 // declare global variables/////////////////////////////////////////////////
-const FPS = 30;
+const FPS = 60;
 setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
 canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
@@ -60,7 +61,7 @@ var journalactive = 0; //0 is inactive, 1 is story journal, 2 displays active jo
 var journalitem = 0; //Used to use shopitem, now it has it's own variable.
 var energy = 50;
 var thruster = 50;
-var money = 100;
+var money = 100;//"Bling"
 var gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
 var drawdistance = Math.sqrt(canvas.width*canvas.width/4+canvas.height*canvas.height/4)+200;
 var mdx = 0; //I think these were for the mouse?  Not sure if used.
@@ -84,11 +85,11 @@ var storymessages = loadstorymessages();//storytext.js
 var task = "Read the tutorial"; //main story mission line
 var job = "None"; //latest task from a station.
 var jobs = 0;
-var boosters = [0,8,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
+var boosters = [0,16,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
 var shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
 var cheatmode = 0; //0 = not a cheater
-var ps = 1; //Waldo is special.
+var ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
 var probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
 var starmode = 1; //0 for no starfield.
 let testfield = new Starfield(30000,20000,64,1000,4000,32);
@@ -154,11 +155,9 @@ let testsystem13 = new System(14,randname(4),0,0);
 let testsystem14 = new System(15,randname(4),0,0);
 let playerradio = new Radio(" ");
 
-
-
-
 let planets = loadhomesystem(); //homesystem.
 let menuplanets = loadmenusystem();
+let trinidadplanets = loadtrinidadsystem();
 	//let planets = testsystem.planets; //basically works, but not ready.
 ////////Initialize Player//////////////////////////////////////////////////////////
 let testship = new Umo (0,0,32,"black");//Used for calculations
@@ -227,6 +226,7 @@ let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsyst
 systems[2].ships.push(systems[1].ships[0]);
 //systems[2].planets=loadsmallworldsystem();//Needs outposts too.
 systems[2].randomplanets();
+//systems[2].planets = trinidadplanets;//Needs outposts too.
 systems[2].enemypopulate(5,4,16);
 systems[2].addrandombling(50);
 systems[3].ships.push(systems[1].ships[0]);
@@ -283,9 +283,9 @@ systems[15].enemypopulate(5,10,29);
 systems[15].addrandombling(50);		
 			
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
-systems[1].addrandomgang(1,2,24);
+systems[1].addrandomgang(1,2,16);
 systems[1].addrandomgang(2,3,3);
-systems[1].addrandomgang(3,3,2);//no moon bots
+systems[1].addrandomgang(3,4,2);//no moon bots
 systems[1].addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
 systems[1].addrandomgang(10,3,4);
 systems[1].addrandomgang(11,4,6);
@@ -318,7 +318,6 @@ while (i<4){
 		}
 	i=i+1
 	}
-	
 var i = 0;
 while (i<4){
 	var j = 0;
@@ -347,12 +346,8 @@ while (i<systems.length){
 ps = 0;
 systems[ps].ships.push(player1);
 systems[1].addrandomtraders([5,12,16],5,10);
-
-
-
+systems[1].addrandomtraders([11,16,23],5,10);
 var testboom = new Bubblesplosion(3,30,"red",systems[ps].ships[0]);
-
-
 var testturret = new Turret("friendly",systems[1].planets[4],0,150);
 var murcturret1 = new Turret("enemy",systems[1].planets[1],0,192);
 var murcturret2 = new Turret("enemy",systems[1].planets[1],Math.PI,192);
@@ -493,7 +488,6 @@ function update() {
 		i=i-1;
 		systems[ps].ships[i].active = systems[ps].planets[systems[ps].ships[i].parentid].active;
 		}
-
 		////explosion testing////////////////////////////////
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
 	var i=0;//New weapon handling stuff
@@ -570,7 +564,7 @@ function update() {
 		var i = systems[ps].ships.length;
 		while (i>1){//For all ships except 0
 			i = i - 1; 
-			if (systems[ps].ships[0].distance(ships[i])<range){
+			if (systems[ps].ships[0].distance(systems[ps].ships[i])<range){
 				var ptest = pointingat(systems[ps].ships[0].directionof(systems[ps].ships[i]),systems[ps].ships[0].d,systems[ps].ships[0].distance(systems[ps].ships[i]),systems[ps].ships[i].s)
 				if (ptest == 1){
 					systems[ps].ships[i].damage(5);
@@ -619,6 +613,18 @@ function update() {
 				}
 			}
 		}
+
+//////////////////////////Bling regeneration stuff goes here///////////////////////
+console.log(systems[ps].bling.length)
+if ((systems[ps].bling.length<256)&&(time%16==0)){
+	systems[ps].bling.push(new Bling(0,0,0,0,Math.floor(Math.random()*64)));
+	systems[ps].bling[systems[ps].bling.length-1].reset(systems[ps].planets);
+	}
+var i=0;
+while(i<systems[ps].bling.length){
+	if(systems[ps].bling[i].t>10000){systems[ps].bling[i].reset(systems[ps].planets);}
+	i++;
+}
 //////crapware bomb testing goes here
 	//testcluster.update1();	
 	//testcluster.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,time);

@@ -20,7 +20,7 @@ window.addEventListener("keydown", function (event) {
 	case "g": //Booster activation
 		if (boosters[boosters[0]]>0){//if selected booster is in stock
 			boosters[boosters[0]]=boosters[boosters[0]]-1; //remove 1 from stock of selected booster
-			systems[ps].ships[0].thrust = 64*2^(boosters[0]); //boost hard
+			systems[ps].ships[0].thrust = 32*2^(boosters[0]); //boost hard
 			boost1.play();
 			}
       break;	  	  
@@ -80,7 +80,7 @@ window.addEventListener("keydown", function (event) {
 	case ".": 
 			if (navactive == 1){
 				navtarget = navtarget+1;
-				if (navtarget > systems[ps].planets.length-1){ navtarget = 0; }//This freaks out when you have waldo selected
+				if (navtarget > systems[ps].planets.length-2){ navtarget = 0; }//Waldo is now excluded
 			}else if (navactive == 2){
 				navtarget = navtarget+1;
 				if (navtarget > systems[ps].outposts.length-1){navtarget = 0; }
@@ -89,7 +89,7 @@ window.addEventListener("keydown", function (event) {
 	case ",": 
 		if (navactive == 1){
 			navtarget = navtarget-1;
-			if (navtarget == -1){ navtarget = systems[ps].planets.length-1; }
+			if (navtarget == -1){ navtarget = systems[ps].planets.length-2; }
 		}else if (navactive == 2){
 			navtarget = navtarget-1;
 			if (navtarget == -1){ navtarget = systems[ps].outposts.length-1; }
