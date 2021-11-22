@@ -6,12 +6,12 @@ function loadnapasystem(){
 	vers.setorbit(napa, 5000, 0, 1);
 	vers.parentid = 0;
 	vers.c2 = "darkred";
-	let aris = new Umo(0,8000,300,"green");//2
+	let aris = new Umo(0,8000,260,"green");//2
 	aris.name = "aris";
 	aris.setorbit(napa, 8000, 0, 1);
 	aris.parentid = 0;
 	aris.c2 = "lime";	
-	let luxe = new Umo(0, 12000, 270, "purple"); //3
+	let luxe = new Umo(0, 12000, 230, "purple"); //3
 	luxe.setorbit(napa, 12000, 0, 1);
 	luxe.name = "luxe";
 	luxe.parentid = 0;

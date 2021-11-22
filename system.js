@@ -52,10 +52,10 @@ class System{
 		var i= this.turrets.length;
 		while  (i>0){
 			i=i-1;
-			var xtol = canvas.width/2+this.turrets[i].pivot.s*4;//*4 is arbitrary safety factor, the pivot is normally smaller than the total turret size including base.  If it's slightly too far it won't render anyways, just waste a tiny bit of calculations.
-			var xdif = this.turrets[i].pivot.x-viewx;
+			var xtol = canvas.width/2+this.turrets[i].pivot.s*4+2000;//*4 is arbitrary safety factor, the pivot is normally smaller than the total turret size including base.  If it's slightly too far it won't render anyways, just waste a tiny bit of calculations.
+			var xdif = this.turrets[i].pivot.x-viewx; //+2000 is fudge factor because this affects drawing of the bomb as well.
 			if ((xdif < xtol)&&(xdif > -1*xtol)){
-				var ytol = canvas.height/2+this.turrets[i].pivot.s*4; //same arbitrary *4 reasoning.
+				var ytol = canvas.height/2+this.turrets[i].pivot.s*4+2000; //same arbitrary *4 reasoning.
 				var ydif = this.turrets[i].pivot.y-viewy;
 				if ((ydif < ytol)&&(ydif>-1*ytol)){
 					this.turrets[i].draw(viewx,viewy);	
@@ -67,7 +67,7 @@ class System{
 				var ytol2 = canvas.height/2+this.turrets[i].bombs[0].s*4; //same arbitrary *4 reasoning.
 				var ydif2 = this.turrets[i].bombs[0].y-viewy;
 				if ((ydif2 < ytol2)&&(ydif2>-1*ytol2)){
-					this.turrets[i].bombs[0].drawbomb(viewx,viewy);	
+					//this.turrets[i].bombs[0].drawbomb(viewx,viewy);	
 					}		
 				}	
 			}	
@@ -177,18 +177,8 @@ class System{
 		while(i>0){
 			i=i-1;
 			if (this.turrets[i].pivot.ai == "enemy"){
-				this.turrets[i].ai1(this.ships[0]);
+				this.turrets[i].ai2(this.ships[0],[this.turrets[i].a]);
 				}
-
-				//if (this.ships[0].distance(this.turrets[i].pivot) < 5000){ //Don't do anything if player is far
-				//	this.turrets[i].pivot.fasttrack(this.ships[0]); //Bots point towards player
-				//	if ((Math.random()>0.95) && (this.turrets[i].bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-				//		this.turrets[i].fire();//pivot.launchbomb(this.turrets[i].bombs[0], 12, 60); 					
-				//		}
-				//	}
-				//}
-
-
 
 			}
 		var i=this.turrets.length;
@@ -208,10 +198,7 @@ class System{
 						}
 					}	
 					if (closestdistance < 3000){ //Don't do anything if closest enemy is far
-						this.turrets[i].pivot.fasttrack(this.ships[closest]); //friendly turrets point towards closest enemy	
-						if ((Math.random()>0.95) && (this.turrets[i].bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-							this.turrets[i].fire();//pivot.launchbomb(this.turrets[i].bombs[0], 15, 60); 					
-							}
+					this.turrets[i].ai2(this.ships[closest],[this.turrets[i].a]); //friendly turrets point towards closest enemy	
 						}
 					}
 				}
@@ -338,10 +325,14 @@ class System{
 				k=k-1; 
 				this.planets[i].circlecollide(this.botbombs[k]);
 				}
-			var u= this.turrets.length;
+			var u = this.turrets.length;
 			while(u>0){
-				u=u-1;
-				this.planets[i].circlecollide(this.turrets[u].bombs[0]); //Only checks 1 bomb, currently they only have 1 bomb.
+				u = u-1;
+				var p=0;
+				while(p<this.turrets[u].bombs.length){
+					this.planets[i].circlecollide(this.turrets[u].bombs[p]); //Only checks 1 bomb, currently they only have 1 bomb.
+					p++;
+					}
 				}
 			var h = allblasters.length; //global scope is bad, shame
 			while (h>0){
@@ -374,7 +365,11 @@ class System{
 		while (i<this.turrets.length){
 			var j=0;
 			while(j<this.ships.length){
-				this.turrets[i].bombs[0].bombcollide(this.ships[j]); //Turrets to ships.
+				var k=0;
+				while(k<this.turrets[i].bombs.length){
+					this.turrets[i].bombs[k].bombcollide(this.ships[j])
+					k++;
+				}
 				j++;
 				}
 			i=i+1; 

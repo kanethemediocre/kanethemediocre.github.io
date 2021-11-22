@@ -512,7 +512,7 @@ class Umo { //Universal Moving Object
 		this.vy = 0;
 		this.vd = 0;
 		this.d = 0;
-		this.deadtime = deathtime; //deadtime counts down to trigger respawn
+		this.deadtime = deathtime+Math.floor(Math.random()*600); //deadtime counts down to trigger respawn
 		this.hp = -1000;
 		}
 	killbomb(){ 
