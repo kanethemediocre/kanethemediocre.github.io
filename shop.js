@@ -123,6 +123,12 @@ class Shopitem{
 					buyable = true;
 					}
 				}
+			if (this.utype == "n"){//can only upgrade bounce once.
+				//console.log(allblasters[this.i].ntier+" "+allblasters[this.i].maxn)
+				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].ntier<allblasters[this.i].maxn) ){ //verify player already has blaster, and doesn't have bounce upgrade
+					buyable = true;
+					}
+				}
 		}else if (this.type == "cargo"){
 			if (pinv.maxcargo > pinv.totalcargo()){
 				buyable = true;
@@ -319,13 +325,13 @@ let upw2speed = new Shopitem("blaster",2,"speed",1);
 let upw3speed = new Shopitem("blaster",3,"speed",1); 
 let upw4speed = new Shopitem("blaster",4,"speed",1); 
 let upw5speed = new Shopitem("blaster",5,"speed",1); 
-let upw6speed = new Shopitem("blaster",6,"speed",1); 
+//let upw6speed = new Shopitem("blaster",6,"speed",1); 
 let upw7speed = new Shopitem("blaster",7,"speed",1); 
 let upw8speed = new Shopitem("blaster",8,"speed",1); 
 let upw9speed = new Shopitem("blaster",9,"speed",1); 
 //No bounce upgrade for w0, w3, w6, or w7 (probe, flakker, beam double rainbow)
 let upw1bounce = new Shopitem("blaster",1,"bounce",1); //bounce upgrades make projectiles bounce of planets--in theory anyways.
-let upw2bounce = new Shopitem("blaster",2,"bounce",1); 
+let upw2bounce = new Shopitem("blaster",2,"bounce",1); //these are now unused because they dont work, would be nice if they did.
 let upw4bounce = new Shopitem("blaster",4,"bounce",1); 
 let upw5bounce = new Shopitem("blaster",5,"bounce",1); 
 let upw8bounce = new Shopitem("blaster",8,"bounce",1); 
@@ -355,9 +361,9 @@ let upw8n = new Shopitem("blaster",8,"n",1);
 let blasterupgradeitems = [ //broken up into lines for readability, this is all a single 1 dimensional array.
 remotew1item,remotew2item,remotew5item,remotew9item,
 upw1damage,upw2damage,upw3damage,upw4damage,upw5damage,upw6damage,upw7damage,upw8damage,upw9damage,
-upw0speed,upw1speed,upw2speed,upw3speed,upw4speed,upw5speed,upw6speed,upw7speed,upw8speed,upw9speed,
-upw1bounce,upw2bounce,upw4bounce,upw5bounce,upw8bounce,upw9bounce,
-upw0timer,upw1timer,upw2timer,upw3timer,upw4timer,upw5timer,upw7timer,upw8timer,upw9timer,
+upw0speed,upw1speed,upw2speed,upw3speed,upw4speed,upw5speed,upw7speed,upw8speed,upw9speed,
+//upw1bounce,upw2bounce,upw4bounce,upw5bounce,upw8bounce,upw9bounce,//bounce upgrades nonfunctional, removed
+upw0timer,upw1timer,upw2timer,upw3timer,upw4timer,upw5timer,upw6timer,upw7timer,upw8timer,upw9timer,
 upw1boom,upw2boom,upw3boom,upw5boom,upw8boom,upw9boom
 ];
 let booster1 = new Shopitem("booster",0,"buy",1); //Tier 0 booster
@@ -371,6 +377,9 @@ let buycargo3 = new Shopitem("cargo",3,"buy",1);
 let buycargo4 = new Shopitem("cargo",4,"buy",1);
 let buycargo5 = new Shopitem("cargo",5,"buy",1);
 let buycargo6 = new Shopitem("cargo",6,"buy",1);
+let buycargo7 = new Shopitem("cargo",7,"buy",1);
+let buycargo8 = new Shopitem("cargo",8,"buy",1);
+
 
 let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0,buycargo1,buycargo2,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
@@ -416,6 +425,20 @@ let upshopitem6 = new Shopitem("upgrade",6,"thrust",0);
 
 var upgradeshopitems = [upshopitem0,upshopitem1,upshopitem2,upshopitem3,upshopitem4,upshopitem5,upshopitem6];
 
-let upgradeshop = new Shop("All Upgrades Testing Shop",4, "Randomized items", upgradeshopitems);
+let upgradeshop = new Shop("All Upgrades Testing Shop",5, "Randomized items", upgradeshopitems);
 let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,upgradeshop];
+
+let dadashopitems = [upshopitem0,buyw2item,buyw3item,buyw4item,upw1damage,upw4damage,upshopitem1,buycargo0,buycargo6,buycargo5];
+let dadashop = new Shop("Ye Olde Space Shoppe",0,"The Gentleman's Outfitter",dadashopitems);
+
+let hijoshopitems = [upshopitem0,buyw5item,buyw6item,buyw8item,remotew2item,upw3damage,upw5n,buycargo1,buycargo2,buycargo4];
+let hijoshop = new Shop("Not Your Dada's Spaceport",1,"Welcome to our new location",hijoshopitems);
+
+let fantshopitems = [upshopitem0,buyw2item,buyw7item,buyw0item,upw2boom,upw5damage,upw8damage,buycargo3,buycargo7,buycargo8];
+let fantshop = new Shop("Want-Fant",2,"You want it, Fant has it.",fantshopitems);
+
+let stanshopitems = [upshopitem0,buyw3item,buyw6item,buyw9item,upw6timer,upw8boom,buycargo6,buycargo7,buycargo8];
+let stanshop = new Shop("Shifty Steve's Questionable Commodities",3,"Stuff and things (and stuff)",stanshopitems);
+
+let trinidadshops = [dadashop,hijoshop,fantshop,stanshop];
 

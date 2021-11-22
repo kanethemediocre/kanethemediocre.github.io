@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v174 by Andrew Kane </title>
+    <title>Bling Hustle v179 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -28,6 +28,7 @@
 <script type="text/javascript" src="storytext.js"></script>	
 <script type="text/javascript" src="mission.js"></script>	
 <script type="text/javascript" src="homeoutposts.js"></script>
+<script type="text/javascript" src="trinidadoutposts.js"></script>
 <script type="text/javascript" src="mouse.js"></script>
 <script type="text/javascript" src="keyboard.js"></script>
 <script type="text/javascript" src="storyfunction.js"></script>
@@ -223,15 +224,16 @@ while (i<menu.planets.length){
 	}	
 
 let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
+
 systems[2].ships.push(systems[1].ships[0]);
-//systems[2].planets=loadsmallworldsystem();//Needs outposts too.
 systems[2].randomplanets();
-//systems[2].planets = trinidadplanets;//Needs outposts too.
-systems[2].enemypopulate(5,4,16);
+systems[2].enemypopulate(5,4,17);
 systems[2].addrandombling(50);
 systems[3].ships.push(systems[1].ships[0]);
-systems[3].randomplanets();
-systems[3].enemypopulate(5,4,17);
+systems[3].planets = loadtrinidadsystem(); //from trinidadsystem.js
+systems[3].outposts = loadtrinidadoutposts(); //from trinidadoutposts.js
+systems[3].shops = trinidadshops;//trinidadshops is defined in shop.js
+systems[3].enemypopulate(5,4,16);
 systems[3].addrandombling(50);
 systems[4].ships.push(systems[1].ships[0]);
 systems[4].randomplanets();
@@ -318,6 +320,19 @@ while (i<4){
 		}
 	i=i+1
 	}
+
+var i = 0;//Duplicated for trinidad system.  Need to automate this for curated systems.
+while (i<4){
+	var j = 0;
+	while (j<systems[2].shops.length){
+		systems[2].shops[j].addcargomission(systems[2].ships,systems[2].planets,systems[2].outposts);
+		j=j+1;
+		}
+	i=i+1
+	}	
+
+
+
 var i = 0;
 while (i<4){
 	var j = 0;
@@ -617,12 +632,12 @@ function update() {
 //////////////////////////Bling regeneration stuff goes here///////////////////////
 console.log(systems[ps].bling.length)
 if ((systems[ps].bling.length<256)&&(time%16==0)){
-	systems[ps].bling.push(new Bling(0,0,0,0,Math.floor(Math.random()*64)));
+	systems[ps].bling.push(new Bling(0,0,0,0,Math.floor(Math.random()*128)));
 	systems[ps].bling[systems[ps].bling.length-1].reset(systems[ps].planets);
 	}
 var i=0;
 while(i<systems[ps].bling.length){
-	if(systems[ps].bling[i].t>10000){systems[ps].bling[i].reset(systems[ps].planets);}
+	if(systems[ps].bling[i].t>20000){systems[ps].bling[i].reset(systems[ps].planets);}
 	i++;
 }
 //////crapware bomb testing goes here
