@@ -438,7 +438,14 @@ let fantshopitems = [upshopitem0,buyw2item,buyw7item,buyw0item,upw2boom,upw5dama
 let fantshop = new Shop("Want-Fant",2,"You want it, Fant has it.",fantshopitems);
 
 let stanshopitems = [upshopitem0,buyw3item,buyw6item,buyw9item,upw6timer,upw8boom,buycargo6,buycargo7,buycargo8];
-let stanshop = new Shop("Shifty Steve's Questionable Commodities",3,"Stuff and things (and stuff)",stanshopitems);
+let stanshop = new Shop("Shifty Steve's Questionable Commodities",3,"Everything your legitimate business needs.",stanshopitems);
 
 let trinidadshops = [dadashop,hijoshop,fantshop,stanshop];
 
+let arisshopitems = [upshopitem0,buyw4item,buyw6item,buyw7item,upw4speed,upw4timer,upw6damage,upw5n,buycargo1,buycargo2,buycargo4];
+let arisshop = new Shop("The Foob",0,"yaaaaa",arisshopitems);
+
+let luxeshopitems = [upshopitem0,buyw2item,buyw5item,buyw8item,upw5damage,upw5boom,upw5n,buycargo1,buycargo2,buycargo4];
+let luxeshop = new Shop("The Luxemburger",1,"mmmmmm",luxeshopitems);
+
+let napashops = [arisshop,luxeshop];

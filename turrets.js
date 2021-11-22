@@ -17,6 +17,12 @@ class Turret{
 		this.pivot.polyradius = shape[1];
 		this.basecolor = randcolor();
 		this.bombs = [new Umo(0,0,8,"purple")];
+		var i=0;
+		while(i<this.bombs.length){
+			this.bombs[i].hurt = 20;
+			//this.bombs[i].boombuff = 1;
+			i++;
+		}
 		//this.pivot.vd = 0.1;
 	}
 	update1(){
@@ -36,10 +42,10 @@ class Turret{
 		this.bombs[0].drawbomb(viewx,viewy);
 	}
 	fire(){
-		this.pivot.launchbomb(this.bombs[0],12,60);//	launchbomb(thebomb, mag, time){ 
+		this.pivot.launchbomb(this.bombs[0],20,40);//	launchbomb(thebomb, mag, time){ 
 	}
 	ai1(target){//Track target, shoot as appropriate
-		if (this.pivot.distance(target) < 2000){ //Don't do anything if closest enemy is far
+		if (this.pivot.distance(target) < 1200){ //Don't do anything if closest enemy is far
 			this.pivot.fasttrack(target); //friendly turrets point towards closest enemy	
 			if ((Math.random()>0.95) && (this.bombs[0].timer < 1)){  //Bots fire occasionally, if bomb isn't in use
 				this.fire();//pivot.launchbomb(this.turrets[i].bombs[0], 15, 60); 					

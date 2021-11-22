@@ -3,7 +3,7 @@ function loadtrinidadoutposts(){
 let dadaoutpost = new Umo (0,0,128, randcolor());
 dadaoutpost.c2 = randcolor();
 dadaoutpost.parentid = 0;
-dadaoutpost.name = "Not Your Dada's Outfitter";
+dadaoutpost.name = "Ye Olde Spaceship Supply Shoppe";
 var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
 var toradii = [1,1,1,1]; //rectangle
 dadaoutpost.polytheta = totheta;
@@ -13,7 +13,7 @@ dadaoutpost.setorbit(planets[0], 32000, 0.4, 1);
 let hijooutpost = new Umo(0,0,128, randcolor());
 hijooutpost.c2 = randcolor();
 hijooutpost.parentid = 0;
-hijooutpost.name = "Ye Olde Spaceship Supply Shoppe";
+hijooutpost.name = "Not Your Dada's Outfitter";
 var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
 var toradii = [1,1,1,1]; //rectangle
 hijooutpost.polytheta = totheta;
@@ -23,7 +23,7 @@ hijooutpost.setorbit(planets[0], 40000, Math.PI+0.35, 1);
 let fantoutpost = new Umo(0,0,128, randcolor());
 fantoutpost.c2 = randcolor();
 fantoutpost.parentid = 0;
-fantoutpost.name = "Want-A-Fant";
+fantoutpost.name = "Want-Fant";
 var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
 var toradii = [1,1,1,1]; //rectangle
 fantoutpost.polytheta = totheta;
