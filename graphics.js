@@ -104,7 +104,7 @@
 			var thecolors = ["hotpink","deeppink","fuchsia","darkviolet","purple","indigo","salmon","crimson","red","darkred","orange","orangered","gold","yellow","khaki","lime","mediumspringgreen","seagreen","green","darkgreen","olive","teal","aqua","steelblue","lightskyblue","deepskyblue","blue","navy","tan","chocolate","sienna","maroon","silver","darkgrey","dimgrey"];
 			return thecolors[Math.floor(Math.random()*thecolors.length)];
 			}
-		function drawmap(mplanets, mstations,scale,xx,yy, px, py, radar, mships){//scale of -1 indicates autozoom?  xx,yy are screen coords
+		function drawmap(mplanets, mstations,scale,xx,yy, px, py, radar, mships,theplayer){//scale of -1 indicates autozoom?  xx,yy are screen coords
 					var i = mplanets.length; //px, py are perspective x and y
 					var x = 0;
 					var y = 0;
@@ -160,7 +160,7 @@
 					var size = 1;
 					while (i>0){
 						i = i-1;
-						if (mships[i].distance(mships[0])<radar){
+						if (mships[i].distance(theplayer.ship)<radar){
 							x = xx + mships[i].x/scale - px/scale ;
 							y = yy + mships[i].y/scale - py/scale;
 							size = 1+ Math.floor(mships[i].s/scale);

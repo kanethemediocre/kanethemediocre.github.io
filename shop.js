@@ -41,7 +41,7 @@ class Shopitem{
 		if (this.type == "blaster"){
 			thisprice = allblasters[this.i].nextupcost();
 		}else if (this.type == "cargo"){
-			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[dockstate].cargoprices[this.i]);
+			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[this.i]);//fix use of allshops here, so prices are proper random in random systems
 		}else if (this.type == "upgrade"){
 			thisprice = allupgrades[this.i].price*2**(allupgrades[this.i].tier);
 		}else if (this.type == "booster"){
@@ -49,88 +49,88 @@ class Shopitem{
 		}
 		return thisprice;		
 	}
-	buy(playermoney, playership, inventory){ //this function is for the player purchasing a shopitem object.  
-		if (this.available(playership,inventory)){
+	buy(theplayer){ //this function is for the player purchasing a shopitem object.  
+		if (this.available(theplayer)){
 			if (this.type == "blaster"){
 				//stuff to buy the blaster/blaster upgrade
 				if (this.utype == "buy"){
-						allblasters[this.i].phas = true;
+					theplayer.blasters[this.i].phas = true;
 					}
 				if (this.utype == "damage"){
-						allblasters[this.i].plusdamage();
+					theplayer.blasters[this.i].plusdamage();
 					}
 				if (this.utype == "remote"){
-						allblasters[this.i].plusremote();
+					theplayer.blasters[this.i].plusremote();
 					}
 				if (this.utype == "speed"){
-						allblasters[this.i].plusspeed();
+					theplayer.blasters[this.i].plusspeed();
 					}
 				if (this.utype == "bounce"){
-						allblasters[this.i].plusbounce();
+					theplayer.blasters[this.i].plusbounce();
 					}
 				if (this.utype == "n"){
-						allblasters[this.i].plusn();
+					theplayer.blasters[this.i].plusn();
 					}
 				if (this.utype == "timer"){
-						allblasters[this.i].plustimer();
+					theplayer.blasters[this.i].plustimer();
 					}
 				if (this.utype == "boom"){
-						allblasters[this.i].plusboom();
+					theplayer.blasters[this.i].plusboom();
 					}
 			}else if (this.type == "upgrade"){ 
-				allupgrades[this.i].apply(playership);//code in apply function is ignored for some reason
+				allupgrades[this.i].apply(theplayer);//code in apply function is ignored for some reason
 				//console.log("buy function worked, this.type == 'upgrade'");
 			}else if (this.type == "booster"){
-				boosters[this.utier] = boosters[this.utier]+2;
+				theplayer.boosters[this.utier] = theplayer.boosters[this.utier]+2;
 			}else if (this.type == "cargo"){
-				inventory.takecargo(this.i, 1);
+				theplayer.inventory.takecargo(this.i, 1);
 				}
 			}
 		}
-	available(playership, pinv){
+	available(theplayer){
 		var buyable = false;
 		if (this.type == "blaster"){
 			if (this.utype == "buy"){
-				if (allblasters[this.i].phas==false){ //verify player doesnt already have blaster
+				if (theplayer.blasters[this.i].phas==false){ //verify player doesnt already have blaster
 					buyable = true;
 					}
 				}
-			if ((this.utype == "damage")&&(allblasters[this.i].phas)&&(allblasters[this.i].dtier<allblasters[this.i].maxhurt)){//can always upgrade damage (for now)
+			if ((this.utype == "damage")&&(theplayer.blasters[this.i].phas)&&(theplayer.blasters[this.i].dtier<theplayer.blasters[this.i].maxhurt)){//can always upgrade damage (for now)
 				buyable = true;
 				}
 			if (this.utype == "remote"){ //can only upgrade remote detonator once.
-				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].rtier==0) ){ //verify player already has blaster, and doesnt already have upgrade
+				if ( (theplayer.blasters[this.i].phas==true) && (theplayer.blasters[this.i].rtier==0) ){ //verify player already has blaster, and doesnt already have upgrade
 					buyable = true;
 					}
 				}
 			if (this.utype == "speed"){ //can always upgrade speed
-				if ((allblasters[this.i].phas==true)&&(allblasters[this.i].stier<allblasters[this.i].maxspeed)){ //verify player already has blaster.
+				if ((theplayer.blasters[this.i].phas==true)&&(theplayer.blasters[this.i].stier<theplayer.blasters[this.i].maxspeed)){ //verify player already has blaster.
 					buyable = true;
 					}
 				}
 			if (this.utype == "bounce"){//can only upgrade bounce once.
-				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].etier == 0) ){ //verify player already has blaster, and doesn't have bounce upgrade
+				if ( (theplayer.blasters[this.i].phas==true) && (theplayer.blasters[this.i].etier == 0) ){ //verify player already has blaster, and doesn't have bounce upgrade
 					buyable = true;
 					}
 				}
 			if (this.utype == "timer"){//can only upgrade bounce once.
-				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].ttier<allblasters[this.i].maxtimer) ){ //verify player already has blaster, and doesn't have bounce upgrade
+				if ( (theplayer.blasters[this.i].phas==true) && (theplayer.blasters[this.i].ttier<theplayer.blasters[this.i].maxtimer) ){ //verify player already has blaster, and doesn't have bounce upgrade
 					buyable = true;
 					}
 				}
 			if (this.utype == "boom"){//can only upgrade bounce once.
-				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].btier<allblasters[this.i].maxboom) ){ //verify player already has blaster, and doesn't have bounce upgrade
+				if ( (theplayer.blasters[this.i].phas==true) && (theplayer.blasters[this.i].btier<theplayer.blasters[this.i].maxboom) ){ //verify player already has blaster, and doesn't have bounce upgrade
 					buyable = true;
 					}
 				}
 			if (this.utype == "n"){//can only upgrade bounce once.
 				//console.log(allblasters[this.i].ntier+" "+allblasters[this.i].maxn)
-				if ( (allblasters[this.i].phas==true) && (allblasters[this.i].ntier<allblasters[this.i].maxn) ){ //verify player already has blaster, and doesn't have bounce upgrade
+				if ( (theplayer.blasters[this.i].phas==true) && (theplayer.blasters[this.i].ntier<theplayer.blasters[this.i].maxn) ){ //verify player already has blaster, and doesn't have bounce upgrade
 					buyable = true;
 					}
 				}
 		}else if (this.type == "cargo"){
-			if (pinv.maxcargo > pinv.totalcargo()){
+			if (theplayer.inventory.maxcargo > theplayer.inventory.totalcargo()){
 				buyable = true;
 				}
 			}else{buyable = true;}
@@ -178,13 +178,13 @@ class Shop{
 		context.font='12px Arial';
 		fillwrappedtext(this.inv[item].describestring(),86,16,x,y+236);
 		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(x-12,y+20+item*16,400,16);
 		context.stroke();
 		var i=0;
 		while (i<this.inv.length){
 			context.fillStyle = "grey";
-			if (this.inv[i].available(ships[0],playerinventory)){//Used global variable instead of reference
+			if (this.inv[i].available(systems[ps].players[0])){//Used global variable instead of reference
 				context.fillStyle = "white";
 				}
 			context.fillText(this.inv[i].namestring().slice(0,16),x,y+32+16*i);
@@ -194,11 +194,11 @@ class Shop{
 			i=i+1;
 			}
 		context.beginPath();
-		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
 		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-20,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[systems[ps].players[0].dockstate].emblem[0],systems[ps].outposts[systems[ps].players[0].dockstate].emblem[1],32,systems[ps].outposts[systems[ps].players[0].dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		
 		}	
 	
@@ -216,23 +216,23 @@ class Shop{
 		
 		if (allcargos.length>0){fillwrappedtext(allcargos[item].description,86,16,x,y+236);}
 		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(x-12,y+20+item*16,400,16);
 		context.stroke();
 		var i=0;
 		while (i<allcargos.length-1){//Don't want to render the last cargo item as an option, because it's reserved for mission cargo
-			if (playerinventory.cargo[i]>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}//Used global variable instead of reference
+			if (systems[ps].players[0].inventory.cargo[i]>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}//Used global variable instead of reference
 			context.fillText(allcargos[i].name.slice(0,16),x,y+32+16*i);
 			context.fillText(allcargos[i].description.slice(0,16),x+80,y+32+16*i);
-			context.fillText(Math.floor(allcargos[i].baseprice*allshops[dockstate].cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
+			context.fillText(Math.floor(allcargos[i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
 			i=i+1;
 			}
 		context.beginPath();
-		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
 		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-20,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[systems[ps].players[0].dockstate].emblem[0],systems[ps].outposts[systems[ps].players[0].dockstate].emblem[1],32,systems[ps].outposts[systems[ps].players[0].dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}		
 	drawworkmenu(xpos, ypos, item){
 		var x = xpos;
@@ -247,7 +247,7 @@ class Shop{
 		context.fillStyle = "white";	
 		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,y+236);}
 		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(x-12,y+20+item*16,400,16);
 		context.stroke();
 		var i=0;
@@ -267,11 +267,11 @@ class Shop{
 			i=i+1;
 			}
 		context.beginPath();
-		context.strokeStyle = systems[ps].outposts[dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
 		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-20,systems[ps].outposts[dockstate].emblem[0],systems[ps].outposts[dockstate].emblem[1],32,systems[ps].outposts[dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[systems[ps].players[0].dockstate].emblem[0],systems[ps].outposts[systems[ps].players[0].dockstate].emblem[1],32,systems[ps].outposts[systems[ps].players[0].dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}
 	addcargomission(theships,theplanets,theoutposts){
 		var missiontarget = 1+Math.floor(Math.random()*(theplanets.length-1));

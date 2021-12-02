@@ -6,31 +6,31 @@ class Upgrade{
 		this.type = type;//"armor","shield","shieldregen","radar","thruster"
 		this.tier = tier;
 		}
-	apply(playership){
+	apply(theplayer){
 		console.log("apply function was executed");//not executed--why?
 		if (this.type == "armor"){
 			//console.log("apply function executed, this.type == 'armor'");//not executed--why?
-			playership.maxhp = playership.maxhp + 250; 
-			playership.hp = playership.maxhp; 
+			theplayer.ship.maxhp = theplayer.ship.maxhp + 250; 
+			theplayer.ship.hp = theplayer.ship.maxhp; 
 			this.tier = this.tier + 1;
 		} else if (this.type == "repair"){
 			//console.log("apply function executed, this.type == 'repair'");//not executed--why?
-			playership.hp = playership.maxhp; 
+			theplayer.ship.hp = theplayer.ship.maxhp; 
 		} else if (this.type == "shield"){
 			//console.log("apply function executed, this.type == 'shield'");//not executed--why?
-			playership.maxshield = playership.maxshield + 100; 
+			theplayer.ship.maxshield = theplayer.ship.maxshield + 100; 
 			this.tier = this.tier + 1;
 		} else if (this.type=="shieldregen"){
-			playership.shieldregen = playership.shieldregen + 0.25;
+			theplayer.ship.shieldregen = theplayer.ship.shieldregen + 0.25;
 			this.tier = this.tier + 1;
 		} else if (this.type=="radar"){
-			radarrange = radarrange + 1000;//use of global variable here only OK because JS is weird
+			theplayer.radarrange = theplayer.radarrange + 1000;//use of global variable here only OK because JS is weird
 			this.tier = this.tier + 1;
 		} else if (this.type=="cargo"){
-			playerinventory.maxcargo = playerinventory.maxcargo + 10; //same
+			theplayer.inventory.maxcargo = theplayer.inventory.maxcargo + 10; //same
 			this.tier = this.tier + 1;
 		} else if (this.type=="thrust"){
-			thrustmultiplier = thrustmultiplier + 0.5; //same
+			theplayer.thrustmultiplier = theplayer.thrustmultiplier + 0.5; //same
 			this.tier = this.tier + 1;
 			}
 		}

@@ -9,13 +9,13 @@ class Mission{
 		this.storypath = mstory; //What storystate the mission leads to, 0 for no affect on storystate
 		this.taken == false;
 		}
-	take(theships,theplanets){
+	take(theships,theplanets,theplayer){
 		if (this.type=="destroy"){
 			theships[this.target].respawn(theplanets[theships[this.target].parentid]);
 			this.taken = true;
 			}
-		if ((this.type=="cargo")&&(playerinventory.maxcargo-playerinventory.totalcargo()>=10)){
-			playerinventory.takecargo(allcargos.length-1,10); //global scope
+		if ((this.type=="cargo")&&(theplayer.inventory.maxcargo-theplayer.inventory.totalcargo()>=10)){
+			theplayer.inventory.takecargo(allcargos.length-1,10); //global scope
 			this.taken = true;
 			}
 		
@@ -29,8 +29,8 @@ class Mission{
 				}
 				
 			else if (this.type == "cargo"){ //If the mission is to take cargo to a planet.  Works on last test.
-				if ((theplanets[this.target].distance(theships[0])<theplanets[this.target].s*2+200) && (theplanets[this.target].deltav(theships[0])<10)){
-					playerinventory.givecargo(allcargos.length-1,10);//global scope
+				if ((theplanets[this.target].distance(systems[ps].players[0].ship)<theplanets[this.target].s*2+200) && (theplanets[this.target].deltav(theships[0])<10)){
+					systems[ps].players[0].inventory.givecargo(allcargos.length-1,10);//global scope
 					complete = 1; //Requires that you get close, and get slow relative to target planet.
 					}
 				}
@@ -51,7 +51,7 @@ class Mission{
 				this.storypath = 0;
 				missioncomplete1.play();
 				this.taken=false;
-				job = "completed";
+				systems[ps].players[0].job = "completed";
 				return [givenreward,givenstory];//Storypath will be 0 for non-story missions, nonzero values will set the story state of the player in main loop
 				}
 				else {return [0,0];}

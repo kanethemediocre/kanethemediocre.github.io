@@ -56,12 +56,14 @@ class Turret{
 			var interspread = 2*spread/(this.bombs.length-1);
 			var i=0;
 			while (i<this.bombs.length){
+				this.bombs[i].hurt = 1;//nerf damage for testing
 				this.pivot.d=realdir - spread + i*interspread;
 				this.pivot.launchbomb(this.bombs[i],12,60);
 				i++;
 			}
 		//this.pivot.d = realdir;
 		}else{
+			this.bombs[0].hurt = 1; //nerf damage for testing
 			this.pivot.launchbomb(this.bombs[0],24,40);//	launchbomb(thebomb, mag, time){ 
 		}
 
@@ -76,7 +78,7 @@ class Turret{
 		}
 
 		//function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
-	ai2(target,untargets){//Track target, shoot as appropriate
+	ai2(target,untargets){//Track target, shoot as appropriate, dont shoot untargets
 		if (this.pivot.distance(target) < 1200){ //Don't do anything if closest enemy is far
 			this.pivot.fasttrack(target); //friendly turrets point towards closest enemy
 			//function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
@@ -99,4 +101,27 @@ class Turret{
 				}
 			}
 		}
+
+	ai3(target,untargets){//Track target, shoot as appropriate, dont shoot anchor or untargets
+		if (this.pivot.distance(target) < 1200){ //Don't do anything if closest enemy is far
+			this.pivot.fasttrack(target); //friendly turrets point towards closest enemy
+			//function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
+			var clearance = true;
+			var i=0;
+			while (i<untargets.length){
+				if (pointingat(this.pivot.directionof(untargets[i]),this.pivot.d,this.pivot.distance(untargets[i]),untargets[i].s*2)==1){
+					clearance = false;
+				}
+				i++;
+			}	
+			if (pointingat(this.pivot.directionof(this.a),this.pivot.d,this.pivot.distance(this.a),this.a.s*2)==1){
+				clearance = false;
+			}
+			if ((Math.random()>0.95) && (this.bombs[0].timer < 1)&&(clearance)){  //Bots fire occasionally, if bomb isn't in use
+				this.fire();//pivot.launchbomb(this.turrets[i].bombs[0], 15, 60); 					
+				}
+			}
+		}
+
+
 	}

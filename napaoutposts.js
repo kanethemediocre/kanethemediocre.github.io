@@ -20,8 +20,6 @@ luxeoutpost.polytheta = totheta;
 luxeoutpost.polyradius = toradii;
 luxeoutpost.setorbit(systems[6].planets[0], 12000, 0.25, 1);
 
-
-
 var outposts = [arisoutpost, luxeoutpost];
 
 var i=0;

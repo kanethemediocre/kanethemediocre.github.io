@@ -452,11 +452,11 @@ class Umo { //Universal Moving Object
 		context.fillText(Math.floor(this.distance(targetship)),compassx-16,compassy + compasssize);
 		}// end compass stuff
 	updateship(theplanets){//Unfortunately I need access to the list of planets to handle ship respawning.
-		if ((thruster > 0)&&(this.thrust > 0)){ //skips these calculations if no thrust
+		if (this.thrust > 0){ //skips these calculations if no thrust
 			this.vx = this.vx + this.thrust*Math.cos(this.d);
 			this.vy = this.vy + this.thrust*Math.sin(this.d);
 			if (this.ai == "player"){//quick hack to prevent other ships movements affecting player thruster energy and stuff.
-				thruster = thruster - 24;//thruster is a global variable, shame.
+				systems[ps].players[0].thruster = systems[ps].players[0].thruster - 24;//thruster is a global variable, shame.
 				var td = 48;
 				var tr = 24;
 				var x = Math.cos(this.d+Math.PI)*td + canvas.width/2;

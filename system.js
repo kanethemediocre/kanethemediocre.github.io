@@ -1,5 +1,4 @@
 
-
 /////////////////////////////Begin system class///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class System{
 	constructor(index, name, x, y){
@@ -13,6 +12,7 @@ class System{
 		this.shops = []; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.turrets = []; //list of bare turrets in the system.
 		this.explosions = [];
+		this.players = [];//list of ship type umos
 		this.bling = [];
 		this.difficulty = 1; //Scales ship generation attributes
 		this.x = x;
@@ -34,6 +34,11 @@ class System{
 			i=i-1;
 			this.botbombs[i].drawbomb(viewx,viewy);
 			}
+		var i= this.players.length;
+		while  (i>0){
+			i=i-1;
+			this.players[i].drawship(viewx,viewy);
+			}
 		}
 	draw2(viewx,viewy){ //linear filtered instead of by distance, maybe computationally cheaper?
 		var i= this.ships.length;
@@ -48,6 +53,20 @@ class System{
 					this.ships[i].drawship(viewx,viewy);	
 					}		
 				}		
+			}
+		var i= this.players.length;
+		while  (i>0){
+			i=i-1;
+			var xtol = canvas.width/2+this.players[i].ship.s;
+			var xdif = this.players[i].ship.x-viewx;
+			if ((xdif < xtol)&&(xdif > -1*xtol)){
+				var ytol = canvas.height/2+this.players[i].ship.s;
+				var ydif = this.players[i].ship.y-viewy;
+				if ((ydif < ytol)&&(ydif>-1*ytol)){
+					this.players[i].ship.drawship(viewx,viewy);	
+					}		
+				}		
+			this.players[i].drawbombs(viewx,viewy)
 			}
 		var i= this.turrets.length;
 		while  (i>0){
@@ -152,13 +171,13 @@ class System{
 					this.ships[i].respawn(this.planets[this.ships[i].parentid]); //Respawn...
 					this.ships[i].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
 					}
-				var thetargetdistance = this.ships[0].distance(this.ships[i]);	
+				var thetargetdistance = this.players[0].ship.distance(this.ships[i]);	
 				if (thetargetdistance < 5000){ //Don't do anything if player is far
 					var theparentdistance = this.ships[i].distance(this.planets[this.ships[i].parentid]);
-					this.ships[i].fasttrack(this.ships[0]); //Bots point towards player
-					if ((Math.random()>0.95) && (this.botbombs[i-1].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+					this.ships[i].fasttrack(this.players[0].ship); //Bots point towards player
+					if ((Math.random()>0.95) && (this.botbombs[i].timer < 1)){  //Bots fire occasionally, if bomb isn't out
 					if ((!this.ships[i].ispointingat(this.planets[this.ships[i].parentid]))||(thetargetdistance<theparentdistance)){  //Don't shoot if your parent planet is between bot and player (the target)
-							this.ships[i].launchbomb(this.botbombs[i-1], 12, 80); 
+							this.ships[i].launchbomb(this.botbombs[i], 12, 80); 
 							}
 						}
 					}
@@ -177,7 +196,7 @@ class System{
 		while(i>0){
 			i=i-1;
 			if (this.turrets[i].pivot.ai == "enemy"){
-				this.turrets[i].ai2(this.ships[0],[this.turrets[i].a]);
+				this.turrets[i].ai3(this.ships[0],[]);
 				}
 
 			}
@@ -198,7 +217,7 @@ class System{
 						}
 					}	
 					if (closestdistance < 3000){ //Don't do anything if closest enemy is far
-					this.turrets[i].ai2(this.ships[closest],[this.turrets[i].a]); //friendly turrets point towards closest enemy	
+					this.turrets[i].ai3(this.ships[closest],[this.ships[0]]); //friendly turrets point towards closest enemy, shoot if clear	
 						}
 					}
 				}
@@ -227,6 +246,11 @@ class System{
 		while (i>0){
 			i=i-1;
 			this.turrets[i].update1();
+			}		
+		var i = this.players.length; 
+		while (i>0){
+			i=i-1;
+			this.players[i].update1(this.planets);
 			}					
 ///update explosions///////////////////////////////////////////////////
 		var i=0;
@@ -270,10 +294,20 @@ class System{
 				this.planets[i].gravitate(this.botbombs[j]);
 				}				
 			j = this.bling.length;
-			while (j>0){ //gravitate on each bot bomb
+			while (j>0){ //gravitate on each bling
 				j=j-1;
 				this.planets[i].gravitate(this.bling[j]);
-				}	
+				}
+			j = this.players.length;
+			while (j>0){ //gravitate on each player
+				j=j-1;
+				this.planets[i].gravitate(this.players[j].ship);
+				var k = this.players[j].blasters.length;
+				while (k>0){ //For all blasters to each planet
+					k=k-1;
+					this.players[j].blasters[k].fall(systems[ps].planets[i]);
+					}
+				}		
 			}
 		var i = this.outposts.length;
 		while (i>0){
@@ -287,7 +321,7 @@ class System{
 			if (this.planets[i].parentid>0){ this.planets[this.planets[i].parentid].gravitate(this.planets[i]); } //others only affected by parent
 			}
 		}
-	gravitateothers(umolist){//For gravitating Umos external to the system (playerbombs at the start)
+	gravitateothers(umolist){//For gravitating Umos external to the system (playerbombs at the start) not used afaik
 		var i = this.planets.length;
 		while (i>0){
 			i=i-1;
@@ -298,7 +332,7 @@ class System{
 				}
 			}	
 		}
-	dockcheck(dockstate){ //currently gets player stuck docked, not sure why
+	dockcheck(dockstate){ 
 		var i=0;
 		while (i<outposts.length){
 			if (ships[0].distance(outposts[i])<160){
@@ -310,9 +344,8 @@ class System{
 		}
 	collideself(){ //Internal system collisions, ships to planets, ships to bot bombs, planets to bot bombs, turret bombs to ships and planets....
 		var i = this.planets.length;
-		var j = this.ships.length;
-		var k = this.botbombs.length;
-		while (i>0){ //For all planets+other collisions/////////////////////////////////
+		while (i>0){
+			//For all planets+other collisions/////////////////////////////////
 			i=i-1;
 			var j = this.ships.length;
 			while (j>0){ //For all ships to each planet
@@ -320,33 +353,42 @@ class System{
 				this.planets[i].circlecollide(this.ships[j]);
 				
 				}
-			var k = this.botbombs.length;
-			while (k>0){ //For all bombs to each planet
-				k=k-1; 
-				this.planets[i].circlecollide(this.botbombs[k]);
+			var j = this.botbombs.length;
+			while (j>0){ //For all bombs to each planet
+				j=j-1; 
+				this.planets[i].circlecollide(this.botbombs[j]);
 				}
-			var u = this.turrets.length;
-			while(u>0){
-				u = u-1;
-				var p=0;
-				while(p<this.turrets[u].bombs.length){
-					this.planets[i].circlecollide(this.turrets[u].bombs[p]); //Only checks 1 bomb, currently they only have 1 bomb.
-					p++;
+			var j = this.turrets.length;
+			while(j>0){
+				j = j-1;
+				var k=0;
+				while(k<this.turrets[j].bombs.length){
+					this.planets[i].circlecollide(this.turrets[j].bombs[k]); //Only checks 1 bomb, currently they only have 1 bomb.
+					k++;
 					}
 				}
-			var h = allblasters.length; //global scope is bad, shame
-			while (h>0){
-				h=h-1;
-				var g = allblasters[h].bombs.length;
-				while (g>0){
-					g=g-1;
-					this.planets[i].circlecollide(allblasters[h].bombs[g]);
+				
+			var j = this.bling.length;
+			while (j>0){
+				j=j-1;
+				this.planets[i].circlecollidesafe(this.bling[j]);
+			}
+			var j = this.players.length;
+			while(j>0){
+				j=j-1;
+				//console.log("itried3");
+				this.planets[i].circlecollide(this.players[j].ship);
+				var k=this.players[j].blasters.length;
+				while(k>0){
+					k=k-1;
+					//console.log("itried2");
+					var h = this.players[j].blasters[k].bombs.length;//usually h=1
+					while(h>0){
+						h=h-1;
+						//console.log("itried1");
+						this.planets[i].circlecollide(this.players[j].blasters[k].bombs[h]);
 					}
 				}
-			var g = this.bling.length;
-			while (g>0){
-				g=g-1;
-				this.planets[i].circlecollidesafe(this.bling[g]);
 			}
 		}
 		//Intership collisions///////////////////////////////////////
@@ -356,9 +398,14 @@ class System{
 			j = i+1; //avoids duplicate executions 
 			while (j<this.ships.length){
 				this.ships[i].circlecollide2(this.ships[j]);
-				j = j+1;
+				j++;
 				}
-			i = i+1;
+			var j=0;
+			while(j<this.players.length){
+				this.players[j].ship.circlecollide2(this.ships[i])
+				j++;
+				}
+			i++;
 			}
 //////////////////bombs hitting ships///////////////////////////////////////////////
 		var i=0;
@@ -374,62 +421,82 @@ class System{
 				}
 			i=i+1; 
 			}
-		var j=0;
-		while (j<this.ships.length){
-			if (this.ships[j].hp>0){ //don't check dead ships
-				var g=0;
-				while (g<this.botbombs.length){  //Bots can kill each other again
-					this.botbombs[g].bombcollide(this.ships[j]);
-					g=g+1;
+		var i=0;
+		while (i<this.ships.length){
+			if (this.ships[i].hp>0){ //don't check dead ships
+				var j=0;
+				while (j<this.botbombs.length){  //Bots can kill each other again
+					this.botbombs[j].bombcollide(this.ships[i]);
+					j++;
 					}
-				if (this.ships[j].hp<=0){
-					this.explosions.push(new Bubblesplosion(7,0.375,"red",this.ships[j]));
-					this.bling.push(new Bling(this.ships[j].x,this.ships[j].y,this.ships[j].vx,this.ships[j].vy,this.ships[j].level*5));
+				if (this.ships[i].hp<=0){
+					this.explosions.push(new Bubblesplosion(7,0.375,"red",this.ships[i]));
+					this.bling.push(new Bling(this.ships[i].x,this.ships[i].y,this.ships[i].vx,this.ships[i].vy,this.ships[i].level*5));
 					}
 				}
-			j=j+1;
+			i++;
 			}
-		var k = 0;
-		while (k<allblasters.length){ //global scope, shame.  All this is about the allblasters bombs.
-			var h = 0;
-			while (h<allblasters[k].bombs.length){ //Global scope all over here.
-				var i = 0;
-				while (i<this.ships.length){
-					if (this.ships[i].hp>0){
-						allblasters[k].bombs[h].bombcollide(this.ships[i]);
-						if (this.ships[i].hp<0){ //This is getting repeated allblasters.length times, not sure how best to fix
-							if (this.ships[i].ai=="enemy"){
-								var getcash = Math.floor(Math.random()*21+10)*this.ships[i].level;
-								money = money + getcash;
-								gotmoney = [30,getcash];
-//////////////////////////////////explosion stuff///////////////
-								var boomstages = Math.floor(4+this.ships[i].level/2);
-								this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ships[i]));
-								this.bling.push(new Bling(this.ships[i].x,this.ships[i].y,this.ships[i].vx,this.ships[i].vy,this.ships[i].level*5));
-								cashsound1.play();
-							}else if (this.ships[i].ai=="trader"){
-								this.explosions.push(new Bubblesplosion(4,0.375,"red",this.ships[i]));
-								money = money - 1000;
-								gotmoney = [30, -1000];
-								//somebadsound.play();
+
+
+		var i=0;
+		while(i<this.players.length){
+			var j=0;
+			while(j<this.botbombs.length){
+				this.botbombs[j].bombcollide(this.players[i].ship);
+				j++;
+			}
+
+
+
+
+			var j = 0;
+			while (j<this.players[i].blasters.length){ //global scope, shame.  All this is about the allblasters bombs.
+				var k = 0;
+				while (k<this.players[i].blasters[j].bombs.length){ //Global scope all over here.
+					var m = 0;
+					while (m<this.ships.length){
+						if (this.ships[m].hp>0){
+							this.players[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
+							if (this.ships[m].hp<0){ //This is getting repeated allblasters.length times, not sure how best to fix
+								if (this.ships[m].ai=="enemy"){
+									var getcash = Math.floor(Math.random()*21+10)*this.ships[m].level;
+									this.players[i].money = this.players[i].money + getcash;
+									this.players[i].gotmoney = [30,getcash];
+	//////////////////////////////////explosion stuff///////////////
+									var boomstages = Math.floor(4+this.ships[m].level/2);
+									this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ships[m]));
+									this.bling.push(new Bling(this.ships[m].x,this.ships[m].y,this.ships[m].vx,this.ships[m].vy,this.ships[m].level*5));
+									cashsound1.play();
+								}else if (this.ships[m].ai=="trader"){
+									this.explosions.push(new Bubblesplosion(4,0.375,"red",this.ships[m]));
+									this.players[i].money = this.players[i].money - 1000;
+									this.players[i].gotmoney = [30, -1000];
+									//somebadsound.play();
+									}
 								}
 							}
-						}
-					i=i+1;
-					}	
-				h=h+1;
+						m++;
+						}	
+					k++;
+					}
+				j++;
 				}
-			k=k+1;
+			i++;
 			}
+
 		var i=0;
 		while (i<this.bling.length){
-			if (this.ships[0].collide(this.bling[i])){
-				money = money + this.bling[i].value;
+			if (this.players[0].ship.collide(this.bling[i])){
+				this.players[0].money = this.players[0].money + this.bling[i].value;
+				this.players[0].gotmoney = [30,this.bling[i].value];
 				this.bling.splice(i, 1);
+				cashsound1.play();
 				//i=this.bling.length;
 			}
 			i++;
 		}
+
+
 	}	
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
 		var  i = externalplanets.length;//unfinished, unused, but a good idea. 		
@@ -597,10 +664,10 @@ class System{
 				this.ships[botindex].shieldregen = this.ships[botindex].shieldregen+0.25;
 				}			
 			if (bonus==3){ //extra bomb damage
-				this.botbombs[botindex-1].hurt = this.botbombs[botindex-1].hurt+8;
+				this.botbombs[botindex].hurt = this.botbombs[botindex].hurt+8;
 				}						
 			if (bonus==4){ //extra bomb blast
-				this.botbombs[botindex-1].boombuff = this.botbombs[botindex-1].boombuff+0.25;//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
+				this.botbombs[botindex].boombuff = this.botbombs[botindex].boombuff+0.25;//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
 				}			
 			this.ships[botindex].level = this.ships[botindex].level+1;
 			}
