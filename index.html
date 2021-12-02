@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v222 by Andrew Kane </title>
+    <title>Bling Hustle v227 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -420,11 +420,15 @@ systems[1].addrandombling(50);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update() {
 	time = time + 1;
+	var vwx = systems[ps].players[0].ship.x;
+	var vwy = systems[ps].players[0].ship.y;
+	var myplayer = systems[ps].players[0];
+	var myship = systems[ps].players[0].ship; 
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
 	if (ps>0){
-		if (mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,systems[ps].players[0].mapscale,canvas.width/2,canvas.height/2, systems[ps].players[0].ship.x, systems[ps].players[0].ship.y,systems[ps].players[0].radarrange,systems[ps].ships,systems[ps].players[0]);}//centered map
-		if (mapactive == 2){drawmap(systems[ps].planets,systems[ps].outposts,systems[ps].players[0].mapscale,200,canvas.height-150,systems[ps].players[0].ship.x, systems[ps].players[0].ship.y,systems[ps].players[0].radarrange,systems[ps].ships,systems[ps].players[0]);//corner map c 
+		if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].ships,myplayer);}//centered map
+		if (myplayer.mapactive == 2){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].ships,myplayer);//corner map c 
 			context.fillStyle = "black";//Background is black
 			context.fillRect(0, 0, canvas.width, canvas.height-300); //erase non-corner map area
 			context.fillRect(400, canvas.height-300, canvas.width,canvas.height); //erase non-corner map area
@@ -437,40 +441,38 @@ function update() {
 	}
 	if (starmode == 1){	
 		pz = (ps-1)*4+(waldo.s/8000);
-		testfield.draw(systems[ps].players[0].ship.x,systems[ps].players[0].ship.y,pz,testfield.zmax);
+		testfield.draw(vwx,vwy,pz,testfield.zmax);
 		}
 	//Menu system handling///////////////////////////////////////////////	
 	if (ps==0){
-		systems[ps].players[0].ship.x = 0;
-		systems[ps].players[0].ship.y = -100;//temp to avoid spawning on inactive bombs
-		systems[ps].players[0].ship.vx = 0;
-		systems[ps].players[0].ship.vy = 0;
-
-
-		if (systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])){
+		myship.x = 0;
+		myship.y = -100;//temp to avoid spawning on inactive bombs
+		myship.vx = 0;
+		myship.vy = 0;
+		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[0])){
 			menuabout = true;
 			menucontrols = false;
 			}
-		if (systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
+		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
-			systems[ps].players[0].ship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
-			systems[ps].players[0].storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
+			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
+			myplayer.storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
 			}
-		if (systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[2])){
+		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;
-			systems[ps].players[0].ship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
-			systems[ps].players[0].storystate = 999;
-			systems[ps].players[0].money = 2000;
-			systems[ps].players[0].task = "Profit";
+			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
+			myplayer.storystate = 999;
+			myplayer.money = 2000;
+			myplayer.task = "Profit";
 			}
-		if (systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[3])){
+		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[3])){
 			ps = 2;
-			systems[ps].players[0].ship.setorbit(systems[ps].planets[3], 1000, 0.4, 1);
-			systems[ps].players[0].storystate = 999;
-			systems[ps].players[0].money = 2000;
-			systems[ps].players[0].task = "Profit";
+			myship.setorbit(systems[ps].planets[3], 1000, 0.4, 1);
+			myplayer.storystate = 999;
+			myplayer.money = 2000;
+			myplayer.task = "Profit";
 			}
-		if (systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[4])){
+		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[4])){
 			menucontrols = true;
 			menuabout = false;
 			}
@@ -492,16 +494,16 @@ function update() {
 //Outpost stuff all handled here.....
 	var i=0;
 	while (i<systems[ps].outposts.length){ //for all outposts
-		if (systems[ps].players[0].ship.distance(systems[ps].outposts[i])<160){
-			systems[ps].outposts[i].dock(systems[ps].players[0].ship);
-			systems[ps].players[0].dockstate = i;
+		if (myship.distance(systems[ps].outposts[i])<160){
+			systems[ps].outposts[i].dock(myship);
+			myplayer.dockstate = i;
 			}
 		var j= 0;
 		while (j<systems[ps].shops[i].missions.length){//for all missions (j) from shop at outpost (i)
 			var mischeck = systems[ps].shops[i].missions[j].check(systems[ps].ships,systems[ps].planets,playerradio);//theships,theplanets,theradio
 			if (mischeck[0]>0){
-				systems[ps].players[0].money = systems[ps].players[0].money + mischeck[0];
-				if (mischeck[1]>0){systems[ps].players[0].storystate = mischeck[1];}
+				myplayer.money = myplayer.money + mischeck[0];
+				if (mischeck[1]>0){myplayer.storystate = mischeck[1];}
 				}
 			j=j+1;
 			}
@@ -509,20 +511,20 @@ function update() {
 		}
 
 	var tempthing = systems[ps].nextjob();
-	systems[ps].players[0].job = tempthing[0];
-	systems[ps].players[0].jobs = tempthing[1];
+	myplayer.job = tempthing[0];
+	myplayer.jobs = tempthing[1];
 ////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
-	if (systems[ps].players[0].ship.distance(waldo)>10000){
-		waldo.s = 100000000000000000 / (systems[ps].players[0].ship.distance(waldo)*systems[ps].players[0].ship.distance(waldo)*systems[ps].players[0].ship.distance(waldo));// hz * hz / dist * dist
+	if (myship.distance(waldo)>10000){
+		waldo.s = 100000000000000000 / (myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo));// hz * hz / dist * dist
 		}
 	else {waldo.s = 10000;}
 	waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
-	waldo.gravitate(systems[ps].players[0].ship); //pull only player ship
+	waldo.gravitate(myship); //pull only player ship
 	waldo.c = randcolor(); //groovy
 	systems[ps].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
 	waldo.update1();
-	waldo.drawplanet(systems[ps].players[0].ship.x,systems[ps].players[0].ship.y);
-	if (waldo.collide(systems[ps].players[0].ship)){
+	waldo.drawplanet(vwx,vwy);
+	if (waldo.collide(myship)){
 		ps = ps+1;
 		if (ps > systems.length-1){
 			ps = 1;
@@ -531,18 +533,16 @@ function update() {
 		var randdir = Math.random()*2*Math.PI;
 		xxxx.setorbit(systems[ps].planets[0], 320000, randdir+Math.PI, -1);
 		waldo.setorbit(systems[ps].planets[0], 320000, randdir, -1);
-		systems[ps].ships[0].vx = 0; //Otherwise players inherit the momentum acquired in descent.
-		systems[ps].ships[0].vy = 0;
-		systems[ps].players[0].ship.vx = 0;
-		systems[ps].players[0].ship.vy = 0;
-		navtarget = 0;
+		myship.vx = 0;
+		myship.vy = 0;
+		myplayer.navtarget = 0;
 		}
 	//Size should be inversely related to the distance from event horizon
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships.  Not used yet.///////////////////////////////////////////////////
 	var i = systems[ps].planets.length;
 	while (i>0){//For all planets...
 		i=i-1;
-		var adist = systems[ps].players[0].ship.distance(systems[ps].planets[i]);
+		var adist = myship.distance(systems[ps].planets[i]);
 		if ((systems[ps].planets[i].active)&&(adist>30000)){//If planet is already active and far away 
 			systems[ps].planets[i].active = false; //deactivate
 		}else if ((systems[ps].planets[i].active==false)&&(adist<25000)){//else if planet is inactive and close
@@ -558,43 +558,30 @@ function update() {
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
 	var i=0;//New weapon handling stuff
 	while (i<allblasters.length){//Draw any active bombs from allblasters.
-		allblasters[i].draw(systems[ps].players[0].ship.x,systems[ps].players[0].ship.y);
+		allblasters[i].draw(myship.x,myship.y);
 		allblasters[i].update1();
 		var j=0;
 		i=i+1;
 		}
-	systems[ps].draw2(systems[ps].players[0].ship.x,systems[ps].players[0].ship.y); //draws home system planets, ships, and bot bombs if close
+	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
 	systems[ps].updateall(); //Updates everthing in system
 	systems[ps].gravitateall(); //gravitates everything in system
 	systems[ps].collideself(); //executes all collisions between objects in the system.
-	var i = systems[ps].planets.length; //gravitates bombs from allblasters
-	var k = allblasters.length;
-	while (i>0){//for all planets....
-		i=i-1;
-		var k = allblasters.length;
-		while (k>0){ //For all blasters to each planet
-			k=k-1;
-			allblasters[k].fall(systems[ps].planets[i]);
-			}
-		}
-	//home.gravitateothers(playerbombs);	
-	if (thruster<100){thruster=thruster+1;} //External variable updates
-	if (energy<100){energy = energy +1;}
 ////////////collisions/////////////////////////////////////////////////////
 
 ////////////Autopilot behavior section//Formerly AI section, AI behavior moved to System.updateall()/////////////////////////////////////////////
-	if (autopilot == 1){
-		if (navactive==1){systems[ps].ships[0].seek3(systems[ps].planets[navtarget],20,30,time, 1500);}
-		if (navactive==2){systems[ps].ships[0].seek3(systems[ps].outposts[navtarget],20,30,time, 1500);}
+	if (myplayer.autopilot == 1){
+		if (myplayer.navactive==1){myship.seek3(systems[ps].planets[myplayer.navtarget],20,30,time, 1500);}
+		if (myplayer.navactive==2){myship.seek3(systems[ps].outposts[myplayer.navtarget],20,30,time, 1500);}
 		}
-	if (autopilot == 2){
-		systems[ps].ships[0].hold(systems[ps].planets[navtarget],20,time);
+	if (myplayer.autopilot == 2){
+		myship.hold(systems[ps].planets[myplayer.navtarget],20,time);
 		}
-	if (autopilot == 3){
+	if (myplayer.autopilot == 3){
 		var orbitr = 1000;
-		var gravy = systems[ps].planets[navtarget].m*.0003 / (orbitr*orbitr);  //gMm/r^2, where m is 1;
+		var gravy = systems[ps].planets[myplayer.navtarget].m*.0003 / (orbitr*orbitr);  //gMm/r^2, where m is 1;
 		var orbitspeed = Math.sqrt(gravy*orbitr);  //a = v^2/r, a* r = v^2, v = sqrt(a*r)
-		systems[ps].ships[0].seek4(systems[ps].planets[navtarget],20,time,orbitr,orbitspeed);
+		myship.seek4(systems[ps].planets[myplayer.navtarget],20,time,orbitr,orbitspeed);
 		}
 ///////Respawn handling////////////////////////////////////////////////////////////////////////////////////////////
 	j = systems[ps].ships.length;//bot and old player respawn
@@ -614,7 +601,7 @@ function update() {
 //////////Mouse turning/////////////////////////////////
 	//if (autopilot == 0){systems[ps].ships[0].d = moused+Math.PI;} //Instant turning because its easy for now
 	if (systems[ps].players.length>0){
-		if (systems[1].players[0].autopilot == 0){systems[ps].players[0].ship.d = moused+Math.PI;} //cheap hack
+		if (myplayer.autopilot == 0){myship.d = moused+Math.PI;} //cheap hack
 	}
 //HUD information/////////////////////////////////////////////////////////////////////////////////////
 //pointingat test///pointingat(objdir,dir,distance,size)
@@ -629,45 +616,45 @@ function update() {
 		var beamcolor1 = rainbow(n1);
 		var beamcolor2 = rainbow(n2);
 		var beamcolor3 = rainbow(n3);
-		var range = systems[ps].players[0].blasters[6].timer+32;
+		var range = myplayer.blasters[6].timer+32;
 		context.beginPath();
 		context.lineWidth = 12; 
-		context.moveTo(canvas.width/2+Math.cos(systems[ps].players[0].ship.d)*32, canvas.height/2+Math.sin(systems[ps].players[0].ship.d)*32);
-		context.lineTo(canvas.width/2+Math.cos(systems[ps].players[0].ship.d)*range,canvas.height/2+Math.sin(systems[ps].players[0].ship.d)*range);
+		context.moveTo(canvas.width/2+Math.cos(myship.d)*32, canvas.height/2+Math.sin(myship.d)*32);
+		context.lineTo(canvas.width/2+Math.cos(myship.d)*range,canvas.height/2+Math.sin(myship.d)*range);
 		context.strokeStyle = beamcolor1;
 		context.stroke();	
 		context.beginPath();
 		context.lineWidth = 8; 
-		context.moveTo(canvas.width/2+Math.cos(systems[ps].players[0].ship.d)*32, canvas.height/2+Math.sin(systems[ps].players[0].ship.d)*32);
-		context.lineTo(canvas.width/2+Math.cos(systems[ps].players[0].ship.d)*range,canvas.height/2+Math.sin(systems[ps].players[0].ship.d)*range);
+		context.moveTo(canvas.width/2+Math.cos(myship.d)*32, canvas.height/2+Math.sin(myship.d)*32);
+		context.lineTo(canvas.width/2+Math.cos(myship.d)*range,canvas.height/2+Math.sin(myship.d)*range);
 		context.strokeStyle = beamcolor2;
 		context.stroke();
 		context.lineWidth = 4; 
-		context.moveTo(canvas.width/2+Math.cos(systems[ps].players[0].ship.d)*32, canvas.height/2+Math.sin(systems[ps].players[0].ship.d)*32);
-		context.lineTo(canvas.width/2+Math.cos(systems[ps].players[0].ship.d)*range,canvas.height/2+Math.sin(systems[ps].players[0].ship.d)*range);
+		context.moveTo(canvas.width/2+Math.cos(myship.d)*32, canvas.height/2+Math.sin(myship.d)*32);
+		context.lineTo(canvas.width/2+Math.cos(myship.d)*range,canvas.height/2+Math.sin(myship.d)*range);
 		context.strokeStyle = beamcolor3;
 		context.stroke();
-		systems[ps].players[0].energy = systems[ps].players[0].energy - 2;
+		myplayer.energy = myplayer.energy - 2;
 		var i = systems[ps].ships.length;
 		while (i>1){//For all ships except 0
 			i = i - 1; 
-			if (systems[ps].players[0].ship.distance(systems[ps].ships[i])<range){
-				var ptest = pointingat( systems[ps].players[0].ship.directionof(systems[ps].ships[i]), systems[ps].players[0].ship.d, systems[ps].players[0].ship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
+			if (myship.distance(systems[ps].ships[i])<range){
+				var ptest = pointingat( myship.directionof(systems[ps].ships[i]), myship.d, myship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
 				if (ptest == 1){
 					systems[ps].ships[i].damage(5);
 					if (systems[ps].ships[i].hp<0){
 						if (systems[ps].ships[i].ai=="enemy"){
 							var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
-							systems[ps].players[0].money = systems[ps].players[0].money + getcash;
-							systems[ps].players[0].gotmoney = [30,getcash];
+							myplayer.money = myplayer.money + getcash;
+							myplayer.gotmoney = [30,getcash];
 							cashsound1.play();
 							var boomstages = Math.floor(4+systems[ps].ships[i].level/2);
 							systems[ps].explosions.push(new Bubblesplosion(boomstages,0.375,"red",systems[ps].ships[i]));
 							systems[ps].bling.push(new Bling(systems[ps].ships[i].x,systems[ps].ships[i].y,systems[ps].ships[i].vx,systems[ps].ships[i].vy,systems[ps].ships[i].level*5));
 						}else if (systems[ps].ships[i].ai=="trader"){
 							systems[ps].explosions.push(new Bubblesplosion(4,0.375,"red",systems[ps].ships[i]));
-							systems[ps].players[0].money = systems[ps].players[0].money - 1000;
-							systems[ps].players[0].gotmoney = [30, -1000];
+							myplayer.money = myplayer.money - 1000;
+							myplayer.gotmoney = [30, -1000];
 							//somebadsound.play();
 							}
 						}
@@ -678,29 +665,28 @@ function update() {
 //////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
 	if((mousestate==1)&&(time%4==0)&&(systems[ps].players[0].wep == 8)&&(systems[ps].players[0].energy>6)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
 		var n = Math.floor(time/4)%6;
-		systems[ps].players[0].ship.launchbomb(systems[ps].players[0].blasters[systems[ps].players[0].wep].bombs[n],systems[ps].players[0].blasters[systems[ps].players[0].wep].speed,systems[ps].players[0].blasters[systems[ps].players[0].wep].timer);
-		systems[ps].players[0].energy = systems[ps].players[0].energy - 6;
+		myship.launchbomb(myplayer.blasters[myplayer.wep].bombs[n],myplayer.blasters[myplayer.wep].speed,myplayer.blasters[myplayer.wep].timer);
+		myplayer.energy = myplayer.energy - 6;
 		if (time%24==0){blastersound8.play();}
 	}
 ///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
-	if (systems[ps].players[0].wep==0){//wep == 11 to disable, wep should ==0
+	if (myplayer.wep==0){//wep == 11 to disable, wep should ==0
 		var j = systems[ps].ships.length;
 		while (j>1){ //for all ships...
 			j=j-1;
-			if (systems[ps].players[0].blasters[0].bombs[0].collide(systems[ps].ships[j])){//Checks for collision only
-				if (systems[ps].players[0].probemode == 0){//clones color
-					systems[ps].players[0].ship.c = systems[ps].ships[j].c;
-					systems[ps].players[0].ship.c2 = systems[ps].ships[j].c2;
-				}else if (systems[ps].players[0].probemode == 1){//clones shape
-					systems[ps].players[0].ship.polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
-					systems[ps].players[0].ship.polyradius = systems[ps].ships[j].polyradius;
-				}else if (systems[ps].players[0].probemode == 2){
+			if (myplayer.blasters[0].bombs[0].collide(systems[ps].ships[j])){//Checks for collision only
+				if (myplayer.probemode == 0){//clones color
+					myship.c = systems[ps].ships[j].c;
+					myship.c2 = systems[ps].ships[j].c2;
+				}else if (myplayer.probemode == 1){//clones shape
+					myship.polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
+					myship.polyradius = systems[ps].ships[j].polyradius;
+				}else if (myplayer.probemode == 2){
 					//do more cool stuff			
 					}
 				}
 			}
 		}
-
 //////////////////////////Bling regeneration stuff goes here///////////////////////
 //console.log(systems[ps].bling.length)
 if ((systems[ps].bling.length<256)&&(time%16==0)){
@@ -712,10 +698,6 @@ while(i<systems[ps].bling.length){
 	if(systems[ps].bling[i].t>20000){systems[ps].bling[i].reset(systems[ps].planets);}
 	i++;
 }
-//////crapware bomb testing goes here
-	//testcluster.update1();	
-	//testcluster.draw(systems[ps].ships[0].x,systems[ps].ships[0].y,time);
-//////////////////////Story and Time Triggered Events//////////////////////////////////////////////////////////////////////
 	storycheck();
 }//end update function
 

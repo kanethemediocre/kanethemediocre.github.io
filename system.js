@@ -196,7 +196,18 @@ class System{
 		while(i>0){
 			i=i-1;
 			if (this.turrets[i].pivot.ai == "enemy"){
-				this.turrets[i].ai3(this.ships[0],[]);
+				var j=0;
+				var closestdistance=9999;
+				var closestindex = 0;
+				while(j<this.players.length){
+					var pdist = this.players[j].ship.distance(this.turrets[i].pivot);
+					if (pdist<closestdistance){
+						closestindex = j;
+						closestdistance = pdist;
+					}
+					j++;
+				}
+				this.turrets[i].ai3(this.players[closestindex].ship,[]);
 				}
 
 			}
@@ -217,7 +228,7 @@ class System{
 						}
 					}	
 					if (closestdistance < 3000){ //Don't do anything if closest enemy is far
-					this.turrets[i].ai3(this.ships[closest],[this.ships[0]]); //friendly turrets point towards closest enemy, shoot if clear	
+					this.turrets[i].ai3(this.ships[closest],this.players); //friendly turrets point towards closest enemy, shoot if clear	
 						}
 					}
 				}
@@ -272,8 +283,9 @@ class System{
 		var i=0;
 		while (i<this.bling.length){
 			this.bling[i].update1();
-			if (this.bling[i].t>40000){
-				this.bling[i].t=Math.floor(Math.random()*200);
+			if (this.bling[i].t>20000){
+				this.bling[i].t=Math.floor(Math.random()*200);//Maybe redundant noise
+				this.bling[i].reset(this.planets);  //Maybe I should just remove the bling and let it get randomly repopulated by existing mechanism
 				//this.bling[i].setorbit(this.planets[this.bling[i].parentid],) //setorbit(parentplanet, distance, direction, cw){ //cw = -1 or 1
 			}
 			i++;
@@ -407,7 +419,7 @@ class System{
 				}
 			i++;
 			}
-//////////////////bombs hitting ships///////////////////////////////////////////////
+//////////////////turret bombs hitting ships and players///////////////////////////////////////////////
 		var i=0;
 		while (i<this.turrets.length){
 			var j=0;
@@ -419,6 +431,18 @@ class System{
 				}
 				j++;
 				}
+				var j=0;
+				while(j<this.players.length){
+					var k=0;
+					while(k<this.turrets[i].bombs.length){
+						this.turrets[i].bombs[k].bombcollide(this.players[j].ship);
+						k++;
+					}
+					j++;
+					}
+
+
+
 			i=i+1; 
 			}
 		var i=0;

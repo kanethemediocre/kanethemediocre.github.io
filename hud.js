@@ -38,13 +38,13 @@ function hud(){
 			context.fillText("No targets in range", canvas.width-160, 24);
 			}
 
-	if (shiptarget>shipsinrange.length-1){shiptarget = 0;}
-	else if (shiptarget<0){shiptarget = 0;}
+	if (systems[ps].players[0].shiptarget>shipsinrange.length-1){systems[ps].players[0].shiptarget = 0;}
+	else if (systems[ps].players[0].shiptarget<0){systems[ps].players[0].shiptarget = 0;}
 	if (shipsinrange.length>0){
 		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
-		systems[ps].players[0].ship.drawcompass2(systems[ps].ships[shipsinrange[shiptarget]],canvas.width-64, 96, 64); //Targeting computer compass
-		systems[ps].ships[shipsinrange[shiptarget]].drawreticle(systems[ps].players[0].ship.x,systems[ps].players[0].ship.y); //Targeting reticle
-		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].ships[shipsinrange[shiptarget]].name, systems[ps].ships[shipsinrange[shiptarget]].level, systems[ps].ships[shipsinrange[shiptarget]].hp,  systems[ps].ships[shipsinrange[shiptarget]].shield,  systems[ps].botbombs[shipsinrange[shiptarget]-1].hurt, systems[ps].botbombs[shipsinrange[shiptarget]-1].boombuff,systems[ps].ships[shipsinrange[shiptarget]].shieldregen,systems[ps].ships[shipsinrange[shiptarget]].ai]];
+		systems[ps].players[0].ship.drawcompass2(systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]],canvas.width-64, 96, 64); //Targeting computer compass
+		systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]].drawreticle(systems[ps].players[0].ship.x,systems[ps].players[0].ship.y); //Targeting reticle
+		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]].name, systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]].level, systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]].hp,  systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]].shield,  systems[ps].botbombs[shipsinrange[systems[ps].players[0].shiptarget]].hurt, systems[ps].botbombs[shipsinrange[systems[ps].players[0].shiptarget]].boombuff,systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]].shieldregen,systems[ps].ships[shipsinrange[systems[ps].players[0].shiptarget]].ai]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 
 		context.rect(canvas.width-304,4+16*shiptarget, 160, 16); //This is the item selection indicator
@@ -169,11 +169,11 @@ function hud(){
 	context.font='12px Arial';
 	playerradio.display(time);
 //Journal display if active
-	if (journalactive==1){
-		if (journalitem>playerradio.log.length-1){journalitem=0;}
+	if (systems[ps].players[0].journalactive==1){
+		if (systems[ps].players[0].journalitem>playerradio.log.length-1){systems[ps].players[0].journalitem=0;}
 		context.fillStyle = "teal";
-		playerradio.showlog(journalitem,200,50);
-	}else if (journalactive==2){
+		playerradio.showlog(systems[ps].players[0].journalitem,200,50);
+	}else if (systems[ps].players[0].journalactive==2){
 		systems[ps].joblist(200,50);
 		//display jobs
 	}

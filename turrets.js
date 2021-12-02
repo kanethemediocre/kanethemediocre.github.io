@@ -56,14 +56,14 @@ class Turret{
 			var interspread = 2*spread/(this.bombs.length-1);
 			var i=0;
 			while (i<this.bombs.length){
-				this.bombs[i].hurt = 1;//nerf damage for testing
+				this.bombs[i].hurt = 8;//nerf damage for testing
 				this.pivot.d=realdir - spread + i*interspread;
 				this.pivot.launchbomb(this.bombs[i],12,60);
 				i++;
 			}
 		//this.pivot.d = realdir;
 		}else{
-			this.bombs[0].hurt = 1; //nerf damage for testing
+			this.bombs[0].hurt = 8; //nerf damage for testing
 			this.pivot.launchbomb(this.bombs[0],24,40);//	launchbomb(thebomb, mag, time){ 
 		}
 
