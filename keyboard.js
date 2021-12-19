@@ -21,10 +21,14 @@ window.addEventListener("keydown", function (event) {
 			systems[ps].players[0].boosters[0]=systems[ps].players[0].boosters[0]+1;
 		}
       break;	
+	case "c": //supercompass toggle
+		supercompass++;
+		if (supercompass>1){supercompass = 0;}
+	  break;
 	case "g": //Booster activation
 		if (systems[ps].players[0].boosters[systems[ps].players[0].boosters[0]]>0){//if selected booster is in stock
 			systems[ps].players[0].boosters[systems[ps].players[0].boosters[0]]=systems[ps].players[0].boosters[systems[ps].players[0].boosters[0]]-1; //remove 1 from stock of selected booster
-			systems[ps].players[0].ship.thrust = 32*2^(boosters[0]); //boost hard
+			systems[ps].players[0].ship.thrust = 32*2^(systems[ps].players[0].boosters[0]); //boost hard
 			boost1.play();
 			}
       break;	  	  

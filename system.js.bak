@@ -157,113 +157,10 @@ class System{
 			i++;
 			}
 		}
-	drawplanetfinder(playerindex,radius){
-		var viewx = this.players[playerindex].ship.x;
-		var viewy = this.players[playerindex].ship.y;
-		var cx = canvas.width/2;
-		var cy = canvas.height/2;
-		var i=0;
-		while(i<this.planets.length){
-			var inddir = this.players[playerindex].ship.directionof(this.planets[i]);//indicated direction
-			var indc = this.planets[i].c;
-			var inddist = this.players[playerindex].ship.distance(this.planets[i]);
-			var indsize = (this.planets[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
-			var indx = cx + radius*Math.cos(inddir);
-			var indy = cy + radius*Math.sin(inddir);
-			var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
-			var pointery = cy + (radius+indsize*2)*Math.sin(inddir);
-			context.beginPath(); 
-			context.lineWidth = 2; 
-			context.strokeStyle = indc;
-			context.moveTo(indx,indy);
-			context.lineTo(pointerx,pointery);
-			context.stroke();	
-			context.beginPath();
-			context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
-			context.lineWidth = 2;
-			context.stroke();	
-			i++;
-			}
-		var i=0;
-		while(i<this.outposts.length){
-			var inddir = this.players[playerindex].ship.directionof(this.outposts[i]);//indicated direction
-			var indc = this.outposts[i].c;
-			var indc2 = this.outposts[i].c2;
-			var inddist = this.players[playerindex].ship.distance(this.outposts[i]);
-			var indsize = (this.outposts[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
-			var indx = cx + (radius-10)*Math.cos(inddir);
-			var indy = cy + (radius-10)*Math.sin(inddir); 
-			context.fillStyle = indc;
-			context.fillRect(indx-5,indy-5,10,10);
-			context.fillStyle = indc2;
-			context.fillRect(indx-3,indy-3,6,6);
-			i++;
-			}
-		}
-	drawshipfinder(playerindex,radius){
-		//var viewx = this.players[playerindex].ship.x;
-		//var viewy = this.players[playerindex].ship.y;
-		var cx = canvas.width/2;//center
-		var cy = canvas.height/2;
-		var i=0;
-		while(i<this.ships.length){
-			var inddist = this.players[playerindex].ship.distance(this.ships[i]);
-			if (inddist<this.players[playerindex].radarrange){
-				var inddir = this.players[playerindex].ship.directionof(this.ships[i]);//indicated direction
-				var indc = "white";
-				if (this.ships[i].ai == "enemy"){indc = "red";}
-				else if (this.ships[i].ai == "trader") {indc = "blue";}
-				//var inddist = this.players[playerindex].ship.distance(this.ships[i]);
-				var indsize = (this.ships[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
-				var indx = cx + radius*Math.cos(inddir);
-				var indy = cy + radius*Math.sin(inddir);
-				var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
-				var pointery = cy + (radius+indsize*2)*Math.sin(inddir);
-				context.beginPath(); 
-				context.lineWidth = 2; 
-				context.strokeStyle = indc;
-				context.moveTo(indx,indy);
-				context.lineTo(pointerx,pointery);
-				context.stroke();	
-				context.beginPath();
-				context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
-				context.lineWidth = 2;
-				context.stroke();
-				}
-			i++;
-			}
-		var i=0;
-		while(i<this.players.length){
-			var inddist = this.players[playerindex].ship.distance(this.players[i].ship);
-			if ((inddist<this.players[playerindex].radarrange)&&(i!=playerindex)){
-				var inddir = this.players[playerindex].ship.directionof(this.ships[i]);//indicated direction
-				var indc = this.players[playerindex].ship.c;
-				var indc2 = this.players[playerindex].ship.c;
-				//var inddist = this.players[playerindex].ship.distance(this.ships[i]);
-				var indsize = (this.ships[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
-				var indx = cx + (radius-8)*Math.cos(inddir);
-				var indy = cy + (radius-8)*Math.sin(inddir);
-				var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
-				var pointery = cy + (radius+indsize*2)*Math.sin(inddir);
-				context.beginPath(); 
-				context.lineWidth = 4; 
-				context.strokeStyle = indc;
-				context.moveTo(indx,indy);
-				context.lineTo(pointerx,pointery);
-				context.stroke();	
-				context.beginPath();
-				context.lineWidth = 2; 
-				context.strokeStyle = indc2;
-				context.moveTo(indx,indy);
-				context.lineTo(pointerx,pointery);
-				context.stroke();
-				}
-			i++;
-			}
-		}
 	updateall(){
-		var i = 0; //update section////////////////////////////////////////////////////////////
-		while (i<this.ships.length){ //update ships
+		var i = this.ships.length; //update section////////////////////////////////////////////////////////////
+		while (i>0){ //update ships
+			i=i-1;
 			this.ships[i].updateship(this.planets); //basic ship updates
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////AI section/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -294,7 +191,6 @@ class System{
 					if (this.ships[i].aistate>this.ships[i].aitargets.length-1){ this.ships[i].aistate = 0;}
 					}
 				}
-			i++;
 			}
 		var i=this.turrets.length;
 		while(i>0){

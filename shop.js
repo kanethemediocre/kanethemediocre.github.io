@@ -141,7 +141,7 @@ class Shop{
 	constructor(name, storelocation, description, inv){ //name and description are strings, location is a station umo index
 		this.name = name;
 		this.description = description; 
-		this.home = storelocation; //a station umo
+		this.home = storelocation; //a station umo index
 		this.inv = inv;//list of shopitem objects
 		this.missions = []; 
 		this.cargoprices = [];//list of price multipliers, index matching allcargos list
@@ -178,7 +178,7 @@ class Shop{
 		context.font='12px Arial';
 		fillwrappedtext(this.inv[item].describestring(),86,16,x,y+236);
 		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[this.home].c;//systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(x-12,y+20+item*16,400,16);
 		context.stroke();
 		var i=0;
@@ -194,12 +194,11 @@ class Shop{
 			i=i+1;
 			}
 		context.beginPath();
-		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[this.home].c2//systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
 		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-20,systems[ps].outposts[systems[ps].players[0].dockstate].emblem[0],systems[ps].outposts[systems[ps].players[0].dockstate].emblem[1],32,systems[ps].outposts[systems[ps].players[0].dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
-		
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[this.home].emblem[0],systems[ps].outposts[this.home].emblem[1],32,systems[ps].outposts[this.home].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}	
 	
 	drawsellmenu(xpos,ypos,item){//screen coords of top corner, item index
@@ -213,7 +212,6 @@ class Shop{
 		context.fillText("Sell",x,y-24);
 		context.fillStyle = "white";
 		context.font='12px Arial';
-		
 		if (allcargos.length>0){fillwrappedtext(allcargos[item].description,86,16,x,y+236);}
 		context.beginPath(); //This colored rectangle will show which item is selected.
 		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
@@ -224,7 +222,8 @@ class Shop{
 			if (systems[ps].players[0].inventory.cargo[i]>0){context.fillStyle = "white";}else{context.fillStyle = "grey";}//Used global variable instead of reference
 			context.fillText(allcargos[i].name.slice(0,16),x,y+32+16*i);
 			context.fillText(allcargos[i].description.slice(0,16),x+80,y+32+16*i);
-			context.fillText(Math.floor(allcargos[i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
+			//context.fillText(Math.floor(allcargos[i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
+			context.fillText(Math.floor(allcargos[i].baseprice*this.cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
 			i=i+1;
 			}
 		context.beginPath();
@@ -287,8 +286,6 @@ class Shop{
 		var missionmessage = "Destroy "+theships[missiontarget].name + ".  It can be found near "+theplanets[theships[missiontarget].parentid].name;
 		this.missions.push(new Mission("destroy",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
 		}
-	
-	
 	}
 let repairshopitem = new Shopitem("upgrade",0,"repair",0);
 // w1 excluded because player starts with it
@@ -325,7 +322,6 @@ let upw2speed = new Shopitem("blaster",2,"speed",1);
 let upw3speed = new Shopitem("blaster",3,"speed",1); 
 let upw4speed = new Shopitem("blaster",4,"speed",1); 
 let upw5speed = new Shopitem("blaster",5,"speed",1); 
-//let upw6speed = new Shopitem("blaster",6,"speed",1); 
 let upw7speed = new Shopitem("blaster",7,"speed",1); 
 let upw8speed = new Shopitem("blaster",8,"speed",1); 
 let upw9speed = new Shopitem("blaster",9,"speed",1); 
@@ -369,8 +365,6 @@ upw1boom,upw2boom,upw3boom,upw5boom,upw8boom,upw9boom
 let booster1 = new Shopitem("booster",0,"buy",1); //Tier 0 booster
 
 let buycargo0 = new Shopitem("cargo",0,"buy",1);//The upgrade tier variable will used as a price multiplier for cargo
-let buycargo0x0d5 = new Shopitem("cargo",0,"buy",0.5);//The upgrade tier variable will used as a price multiplier for cargo
-let buycargo0x2 = new Shopitem("cargo",0,"buy",2);//The upgrade tier variable will used as a price multiplier for cargo
 let buycargo1 = new Shopitem("cargo",1,"buy",1); 
 let buycargo2 = new Shopitem("cargo",2,"buy",1); 
 let buycargo3 = new Shopitem("cargo",3,"buy",1); 
@@ -380,32 +374,22 @@ let buycargo6 = new Shopitem("cargo",6,"buy",1);
 let buycargo7 = new Shopitem("cargo",7,"buy",1);
 let buycargo8 = new Shopitem("cargo",8,"buy",1);
 
+let uprepairitem = new Shopitem("upgrade",0,"repair",0);
+let uparmoritem = new Shopitem("upgrade",1,"armor",0);
+let upshielditem = new Shopitem("upgrade",2,"shield",0);
+let upshieldregenitem = new Shopitem("upgrade",3,"shieldregen",0);
+let upradaritem = new Shopitem("upgrade",4,"radar",0);
+let upcargoitem = new Shopitem("upgrade",5,"cargo",0);
+let upthrustitem = new Shopitem("upgrade",6,"thrust",0);
 
 let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0,buycargo1,buycargo2,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
-
-
-let armorupitem = new Shopitem("upgrade",1,"armor",1); //Armor upgrade
-
-//let buycargo3 = new Shopitem("cargo",3,"buy",1); 
-let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,armorupitem,buycargo2,buycargo3]
+let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,uparmoritem,buycargo2,buycargo3]
 let billbits = new Shop("Bills Billion Bits", 0, "Welcome to Earf", billshopitems);
-
-
-let jojoshopitem7 = new Shopitem("upgrade",2,"shield",1); //Flakker damage upgrade
-let jojoshopitem8 = new Shopitem("upgrade",4,"radar",1); //Armor upgrade
-//let jojoshopitem9 = new Shopitem("cargo",2,"buy",1); 
-//let buycargo5 = new Shopitem("cargo",5,"buy",1); 
-let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,armorupitem,jojoshopitem7,jojoshopitem8,buycargo2,buycargo5];
+let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,uparmoritem,upshielditem,upradaritem,buycargo2,buycargo5];
 let jojocheese = new Shop("JoJo's House of Cheese", 2, "Jupe Fantastico", jojoshopitems);
-
-
-let dangshopitem8 = new Shopitem("upgrade",3,"shieldregen",1);
-//let dangshopitem9 = new Shopitem("cargo",1,"buy",0);
-//let dangshopitem10 = new Shopitem("cargo",6,"buy",0);
-let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5bounce,upw1damage,dangshopitem8,buycargo1,buycargo6,buycargo0];
+let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5bounce,upw1damage,upshieldregenitem,buycargo1,buycargo6,buycargo0];
 let dangustown = new Shop("Dangustown", 3, "It's YOUR Anus!", dangshopitems);
-
 let randshopitems1 = [];
 var i = 0;
 while (i<12){
@@ -414,38 +398,22 @@ while (i<12){
 	i=i+1;
 }
 let randoshop1 = new Shop("Rando Calrissian's Blaster Upgrades",4, "Randomized items", randshopitems1);
+var upgradeshopitems = [uprepairitem,uparmoritem,upshielditem,upshieldregenitem,upradaritem,upcargoitem,upthrustitem];
+let upgradeshop = new Shop("All Upgrades Testing Shop",5, "Upgrades", upgradeshopitems);
+let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,upgradeshop];//"all" meaning home system
 
-let upshopitem0 = new Shopitem("upgrade",0,"repair",0);
-let upshopitem1 = new Shopitem("upgrade",1,"armor",0);
-let upshopitem2 = new Shopitem("upgrade",2,"shield",0);
-let upshopitem3 = new Shopitem("upgrade",3,"shieldregen",0);
-let upshopitem4 = new Shopitem("upgrade",4,"radar",0);
-let upshopitem5 = new Shopitem("upgrade",5,"cargo",0);
-let upshopitem6 = new Shopitem("upgrade",6,"thrust",0);
-
-var upgradeshopitems = [upshopitem0,upshopitem1,upshopitem2,upshopitem3,upshopitem4,upshopitem5,upshopitem6];
-
-let upgradeshop = new Shop("All Upgrades Testing Shop",5, "Randomized items", upgradeshopitems);
-let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,upgradeshop];
-
-let dadashopitems = [upshopitem0,buyw2item,buyw3item,buyw4item,upw1damage,upw4damage,upshopitem1,buycargo0,buycargo6,buycargo5];
+let dadashopitems = [uprepairitem,buyw2item,buyw3item,buyw4item,upw1damage,upw4damage,uparmoritem,buycargo0,buycargo6,buycargo5];
 let dadashop = new Shop("Ye Olde Space Shoppe",0,"The Gentleman's Outfitter",dadashopitems);
-
-let hijoshopitems = [upshopitem0,buyw5item,buyw6item,buyw8item,remotew2item,upw3damage,upw5n,buycargo1,buycargo2,buycargo4];
+let hijoshopitems = [uprepairitem,buyw5item,buyw6item,buyw8item,remotew2item,upw3damage,upw5n,buycargo1,buycargo2,buycargo4];
 let hijoshop = new Shop("Not Your Dada's Spaceport",1,"Welcome to our new location",hijoshopitems);
-
-let fantshopitems = [upshopitem0,buyw2item,buyw7item,buyw0item,upw2boom,upw5damage,upw8damage,buycargo3,buycargo7,buycargo8];
+let fantshopitems = [uprepairitem,buyw2item,buyw7item,buyw0item,upw2boom,upw5damage,upw8damage,buycargo3,buycargo7,buycargo8];
 let fantshop = new Shop("Want-Fant",2,"You want it, Fant has it.",fantshopitems);
-
-let stanshopitems = [upshopitem0,buyw3item,buyw6item,buyw9item,upw6timer,upw8boom,buycargo6,buycargo7,buycargo8];
+let stanshopitems = [uprepairitem,buyw3item,buyw6item,buyw9item,upw6timer,upw8boom,buycargo6,buycargo7,buycargo8];
 let stanshop = new Shop("Shifty Steve's Questionable Commodities",3,"Everything your legitimate business needs.",stanshopitems);
-
 let trinidadshops = [dadashop,hijoshop,fantshop,stanshop];
 
-let arisshopitems = [upshopitem0,buyw4item,buyw6item,buyw7item,upw4speed,upw4timer,upw6damage,upw5n,buycargo1,buycargo2,buycargo4];
+let arisshopitems = [uprepairitem,buyw4item,buyw6item,buyw7item,upw4speed,upw4timer,upw6damage,upw5n,buycargo1,buycargo2,buycargo4];
 let arisshop = new Shop("The Foob",0,"yaaaaa",arisshopitems);
-
-let luxeshopitems = [upshopitem0,buyw2item,buyw5item,buyw8item,upw5damage,upw5boom,upw5n,buycargo1,buycargo2,buycargo4];
+let luxeshopitems = [uprepairitem,buyw2item,buyw5item,buyw8item,upw5damage,upw5boom,upw5n,buycargo1,buycargo2,buycargo4];
 let luxeshop = new Shop("The Luxemburger",1,"mmmmmm",luxeshopitems);
-
 let napashops = [arisshop,luxeshop];

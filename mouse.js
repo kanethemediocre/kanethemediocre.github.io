@@ -7,47 +7,48 @@ function mouseMoveHandler(e) {
 } 
 document.addEventListener("mousedown", mouseDownHandler, false);
 function mouseDownHandler(e) {
-mousestate = e.buttons;
-systems[1].players[0].mousestate = mousestate;
+var myplayer = systems[1].players[0];
+myplayer.mousestate = e.buttons;
+//systems[1].players[0].mousestate = mousestate;
 if (systems[ps].players.length>0){
 	//console.log("itried5");
-	if (systems[ps].players[0].mousestate==1){ //if it's the left button
+	if (myplayer.mousestate==1){ //if it's the left button
 		//console.log("itried4");
-		if (systems[ps].players[0].wep < 10){
+		if (myplayer.wep < 10){
 			//console.log("itried3");
-			//console.log(systems[ps].players[0].energy+"  "+systems[ps].players[0].blasters[1].ecost);//systems[ps].players[0].blasters[systems[ps].players[0].wep].ecost);
-			if (systems[ps].players[0].energy>systems[ps].players[0].blasters[systems[ps].players[0].wep].ecost){
+			//console.log(myplayer.energy+"  "+myplayer.blasters[1].ecost);//myplayer.blasters[myplayer.wep].ecost);
+			if (myplayer.energy>myplayer.blasters[myplayer.wep].ecost){
 				//console.log("itried2");
-				if (systems[ps].players[0].blasters[systems[ps].players[0].wep].type!=="beam"){
-					systems[ps].players[0].blasters[systems[ps].players[0].wep].fire(systems[ps].players[0].ship,time);
-					systems[ps].players[0].energy = systems[ps].players[0].energy - systems[ps].players[0].blasters[systems[ps].players[0].wep].ecost;
+				if (myplayer.blasters[myplayer.wep].type!=="beam"){
+					myplayer.blasters[myplayer.wep].fire(myplayer.ship,time);
+					myplayer.energy = myplayer.energy - myplayer.blasters[myplayer.wep].ecost;
 					//console.log("itried1");
-					if (systems[ps].players[0].wep == 1){blastersound1.play();}
-					else if (systems[ps].players[0].wep == 2){blastersound2.play();}
-					else if (systems[ps].players[0].wep == 3){blastersound3.play();}
-					else if (systems[ps].players[0].wep == 4){blastersound4.play();}
-					else if (systems[ps].players[0].wep == 5){blastersound5.play();}
-					else if (systems[ps].players[0].wep == 6){blastersound6.play();}
-					else if (systems[ps].players[0].wep == 7){blastersound7.play();}
-					else if (wep == 8){blastersound8.play();}
-					else if (systems[ps].players[0].wep == 9){blastersound9.play();}
-					else if (systems[ps].players[0].wep == 0){blastersound0.play();}
+					if (myplayer.wep == 1){blastersound1.play();}
+					else if (myplayer.wep == 2){blastersound2.play();}
+					else if (myplayer.wep == 3){blastersound3.play();}
+					else if (myplayer.wep == 4){blastersound4.play();}
+					else if (myplayer.wep == 5){blastersound5.play();}
+					else if (myplayer.wep == 6){blastersound6.play();}
+					else if (myplayer.wep == 7){blastersound7.play();}
+					else if (myplayer.wep == 8){blastersound8.play();}
+					else if (myplayer.wep == 9){blastersound9.play();}
+					else if (myplayer.wep == 0){blastersound0.play();}
 					}
 				}
 			}
 		}	
-	else if (systems[ps].players[0].mousestate==2){//if its the right button
-		if (systems[ps].players[0].dockstate>=0){
-			systems[ps].outposts[systems[ps].players[0].dockstate].undock(systems[ps].players[0].ship);//undock function sets relative position and velocity.  Maybe other stuff.
-			systems[ps].players[0].dockstate = -1;
+	else if (myplayer.mousestate==2){//if its the right button
+		if (myplayer.dockstate>=0){
+			systems[ps].outposts[myplayer.dockstate].undock(myplayer.ship);//undock function sets relative position and velocity.  Maybe other stuff.
+			myplayer.dockstate = -1;
 			}
-		if (systems[ps].players[0].thruster>0){
-			systems[ps].players[0].ship.thrust = 2*systems[ps].players[0].thrustmultiplier;
-			//systems[ps].players[0].thruster = systems[ps].players[0].thruster - 24;
+		if (myplayer.thruster>0){
+			myplayer.ship.thrust = 2*myplayer.thrustmultiplier;
+			//myplayer.thruster = myplayer.thruster - 24;
 			var td = 48;
 			var tr = 24;
-			var x = Math.cos(systems[ps].players[0].ship.d+Math.PI)*td + canvas.width/2;
-			var y = Math.sin(systems[ps].players[0].ship.d+Math.PI)*td + canvas.height/2;
+			var x = Math.cos(myplayer.ship.d+Math.PI)*td + canvas.width/2;
+			var y = Math.sin(myplayer.ship.d+Math.PI)*td + canvas.height/2;
 			context.beginPath();
 			context.strokeStyle = "orange";
 			context.arc(x, y, tr, 0, 2 * Math.PI, false);
@@ -62,5 +63,6 @@ if (systems[ps].players.length>0){
 }
 document.addEventListener("mouseup", mouseUpHandler, false);
 function mouseUpHandler(e) {
-mousestate = e.buttons;
+var myplayer = systems[1].players[0];
+myplayer.mousestate = e.buttons;
 }

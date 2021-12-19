@@ -42,16 +42,16 @@ class Starfield{
 				var stary = (Math.random()*2-1)*ymax ;
 				var starsize = 1000 + Math.floor(Math.random()*3000);
 				this.stars.push(new Star(starx,stary,i,starsize));
-				j=j+1;
+				j++;
 				}
-			i=i+1;
+			i++;
 			}
 		}
 	draw(viewx,viewy,viewz,zmax){
 		var i=0;
 		while (i<this.stars.length){
 			this.stars[i].draw(viewx,viewy,viewz,zmax)
-			i=i+1;
+			i++;
 			}
 		}
 	

@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-<html>
+//<!DOCTYPE html>
+//<html>
 
-<head>
-    <meta charset="UTF-8"> 
-    <title>Bling Hustle v268 by Andrew Kane </title>
-    <style></style>
-	   <link rel="shortcut icon" href="favicon.ico" >
-   <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
-</head>
-<body class="myElement" oncontextmenu="return false;">
-<canvas id="gameCanvas" width="1600" height="900"></canvas>
+//<head>
+//    <meta charset="UTF-8"> 
+//    <title>Bling Hustle v238 by Andrew Kane </title>
+//    <style></style>
+//	   <link rel="shortcut icon" href="favicon.ico" >
+//   <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
+//</link></link></head>
+//<body class="myElement" oncontextmenu="return false;">
+//<canvas id="gameCanvas" width="1600" height="900"></canvas>
+
+
 <script type="text/javascript" src="umo.js"></script>
 <script type="text/javascript" src="upgrades.js"></script>	
 <script type="text/javascript" src="blasters.js"></script>	
@@ -67,7 +69,6 @@ let testfield = new Starfield(30000,20000,64,1000,4000,32);
 var pz = 0;
 var menuabout = false;
 var menucontrols = false;
-var supercompass = 1;//0 is deactivated, 1 is active, other numbers might get used for different modes
 
 var blastersound1 = new Audio("bubble4_short2.mp3");
 var blastersound2 = new Audio("close_door_12.mp3");
@@ -262,7 +263,6 @@ systems[1].addrandomgang(21,2,6);
 systems[1].addrandomgang(22,2,6);
 systems[1].addrandomgang(23,4,4);//no tune bots
 systems[1].addrandomgang(25,5,16);
-systems[1].addrandomtraders([5,11,16], 8, 4);
 //systems[1].addrandomgang(26,8,32);
 var i = systems[1].botbombs.length;
 while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
@@ -271,6 +271,7 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].maxhp = 1; //with planets 
 	systems[1].botbombs[i].shield = 0;  
 	}
+
 var i = 0;
 while (i<4){
 	var j = 0;
@@ -501,16 +502,11 @@ function update() {
 		}
 		////explosion testing////////////////////////////////
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
-
+	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
 	systems[ps].updateall(); //Updates everthing in system
 	systems[ps].gravitateall(); //gravitates everything in system
 	systems[ps].collideself(); //executes all collisions between objects in the system.
-	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
-	if (supercompass>0){
-		systems[ps].drawplanetfinder(0,360);
-		systems[ps].drawshipfinder(0,300);
-		}
-	hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array.
+////////////collisions/////////////////////////////////////////////////////
 
 ////////////Autopilot behavior section//Formerly AI section, AI behavior moved to System.updateall()/////////////////////////////////////////////
 	if (myplayer.autopilot == 1){
@@ -545,6 +541,9 @@ function update() {
 	if (systems[ps].players.length>0){//This prevents errors at start
 		if (myplayer.autopilot == 0){myship.d = moused+Math.PI;} //If no autopilot, use mous to turn.
 	}
+
+//Targeting HUD code in hud.js////////////////////////////////////////////////////////////////////////////////////////////////
+	hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array.
 //////////////////////////////////Weapon 6 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
 	if((myplayer.mousestate==1)&&(myplayer.wep == 6)&&(myplayer.energy>2)){ 
 		var n1 = Math.floor(time/4)%6;
