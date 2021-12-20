@@ -174,13 +174,13 @@ class System{
 			var pointery = cy + (radius+indsize*2)*Math.sin(inddir);
 			context.beginPath(); 
 			context.lineWidth = 2; 
+			if ((this.players[playerindex].navtarget == i)&&(this.players[playerindex].navactive == 1)){context.lineWidth = 5; }
 			context.strokeStyle = indc;
 			context.moveTo(indx,indy);
 			context.lineTo(pointerx,pointery);
 			context.stroke();	
 			context.beginPath();
 			context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
-			context.lineWidth = 2;
 			context.stroke();	
 			i++;
 			}
@@ -190,13 +190,14 @@ class System{
 			var indc = this.outposts[i].c;
 			var indc2 = this.outposts[i].c2;
 			var inddist = this.players[playerindex].ship.distance(this.outposts[i]);
-			var indsize = (this.outposts[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
+			var indsize = 5;//maybe a cpu saving hack vs trig?
 			var indx = cx + (radius-10)*Math.cos(inddir);
 			var indy = cy + (radius-10)*Math.sin(inddir); 
+			if ((this.players[playerindex].navtarget == i)&&(this.players[playerindex].navactive == 2)){indsize = 12; }
 			context.fillStyle = indc;
-			context.fillRect(indx-5,indy-5,10,10);
+			context.fillRect(indx-indsize,indy-indsize,indsize*2,indsize*2);
 			context.fillStyle = indc2;
-			context.fillRect(indx-3,indy-3,6,6);
+			context.fillRect(indx-indsize+2,indy-indsize+2,indsize*2-4,indsize*2-4);
 			i++;
 			}
 		}
@@ -221,13 +222,13 @@ class System{
 				var pointery = cy + (radius+indsize*2)*Math.sin(inddir);
 				context.beginPath(); 
 				context.lineWidth = 2; 
+				if (this.players[playerindex].shiptarget == i){context.lineWidth = 5; }
 				context.strokeStyle = indc;
 				context.moveTo(indx,indy);
 				context.lineTo(pointerx,pointery);
 				context.stroke();	
 				context.beginPath();
 				context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
-				context.lineWidth = 2;
 				context.stroke();
 				}
 			i++;

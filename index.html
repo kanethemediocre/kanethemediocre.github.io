@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v268 by Andrew Kane </title>
+    <title>Bling Hustle v270 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -501,15 +501,15 @@ function update() {
 		}
 		////explosion testing////////////////////////////////
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
-
-	systems[ps].updateall(); //Updates everthing in system
-	systems[ps].gravitateall(); //gravitates everything in system
-	systems[ps].collideself(); //executes all collisions between objects in the system.
 	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
 	if (supercompass>0){
 		systems[ps].drawplanetfinder(0,360);
 		systems[ps].drawshipfinder(0,300);
 		}
+	hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array.
+	systems[ps].updateall(); //Updates everthing in system
+	systems[ps].gravitateall(); //gravitates everything in system
+	systems[ps].collideself(); //executes all collisions between objects in the system.
 	hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array.
 
 ////////////Autopilot behavior section//Formerly AI section, AI behavior moved to System.updateall()/////////////////////////////////////////////

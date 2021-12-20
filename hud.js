@@ -10,6 +10,11 @@ function hud(playerindex){
 		var tdistance = Math.floor(myplayer.ship.distance(systems[ps].ships[i]));
 		if (tdistance<myplayer.radarrange){
 			shipsinrange.push(i);
+			if (myplayer.ship.pointingat(systems[ps].ships[i])){
+				myplayer.shiptarget = i;	
+				}
+
+
 			if (tdistance<closestdistance){
 				closestdistance = tdistance;
 				closestindex = shipsinrange.length-1;
@@ -39,13 +44,13 @@ function hud(playerindex){
 			context.fillText("No targets in range", canvas.width-160, 24);
 			}
 
-	if (myplayer.shiptarget>shipsinrange.length-1){myplayer.shiptarget = 0;}
-	else if (myplayer.shiptarget<0){myplayer.shiptarget = 0;}
+	//if (myplayer.shiptarget>shipsinrange.length-1){myplayer.shiptarget = 0;}
+	//else if (myplayer.shiptarget<0){myplayer.shiptarget = 0;}
 	if (shipsinrange.length>0){
 		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
-		myplayer.ship.drawcompass2(systems[ps].ships[shipsinrange[myplayer.shiptarget]],canvas.width-64, 96, 64); //Targeting computer compass
-		systems[ps].ships[shipsinrange[myplayer.shiptarget]].drawreticle(myplayer.ship.x,myplayer.ship.y); //Targeting reticle
-		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].ships[shipsinrange[myplayer.shiptarget]].name, systems[ps].ships[shipsinrange[myplayer.shiptarget]].level, systems[ps].ships[shipsinrange[myplayer.shiptarget]].hp,  systems[ps].ships[shipsinrange[myplayer.shiptarget]].shield,  systems[ps].botbombs[shipsinrange[myplayer.shiptarget]].hurt, systems[ps].botbombs[shipsinrange[myplayer.shiptarget]].boombuff,systems[ps].ships[shipsinrange[myplayer.shiptarget]].shieldregen,systems[ps].ships[shipsinrange[myplayer.shiptarget]].ai]];
+		myplayer.ship.drawcompass2(systems[ps].ships[myplayer.shiptarget],canvas.width-64, 96, 64); //Targeting computer compass
+		systems[ps].ships[myplayer.shiptarget].drawreticle(myplayer.ship.x,myplayer.ship.y); //Targeting reticle
+		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].ships[myplayer.shiptarget].name, systems[ps].ships[myplayer.shiptarget].level, systems[ps].ships[myplayer.shiptarget].hp,  systems[ps].ships[myplayer.shiptarget].shield,  systems[ps].botbombs[myplayer.shiptarget].hurt, systems[ps].botbombs[myplayer.shiptarget].boombuff,systems[ps].ships[myplayer.shiptarget].shieldregen,systems[ps].ships[myplayer.shiptarget].ai]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 
 		context.rect(canvas.width-304,4+16*myplayer.shiptarget, 160, 16); //This is the item selection indicator

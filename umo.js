@@ -57,6 +57,21 @@ class Umo { //Universal Moving Object
 		var dir =  -1*Math.atan2(dvx,dvy) - Math.PI/2;
 		return [mag,dir];
 		}
+	pointingat(that){//objdir,dir,distance,size){ //are you pointing at a thing?
+		//var objdir = this.directionof(that);
+		//var dir = this.d;
+		//var distance = this.distance(that);
+		//var size = that.s;
+		var as = Math.atan2(that.s,this.distance(that)); //how much angle does the thing occupy?
+		var dd = this.d -  this.directionof(that); //How much off the actual direction are you pointing?
+		while (dd > Math.PI){dd = dd - 2*Math.PI;} //This reduces the angle difference to within +- Math.PI
+		while (dd < -1*Math.PI){dd = dd + 2*Math.PI;}
+		while (as > Math.PI){as = as - 2*Math.PI;} //This reduces the angle difference to within +- Math.PI
+		while (as < -1*Math.PI){as = as + 2*Math.PI;}
+		if ((dd<as)&&(dd>-1*as)){//-1*anglesize < deltadir < anglesize
+			return true;
+			}else {return false;}
+		}
 	match(that){  //This basically synchronizes two moving bodies
 		this.x = that.x; //same position
 		this.y = that.y;
