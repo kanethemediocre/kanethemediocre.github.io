@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v270 by Andrew Kane </title>
+    <title>Bling Hustle v271 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -67,7 +67,7 @@ let testfield = new Starfield(30000,20000,64,1000,4000,32);
 var pz = 0;
 var menuabout = false;
 var menucontrols = false;
-var supercompass = 1;//0 is deactivated, 1 is active, other numbers might get used for different modes
+var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 
 var blastersound1 = new Audio("bubble4_short2.mp3");
 var blastersound2 = new Audio("close_door_12.mp3");
@@ -394,6 +394,9 @@ function update() {
 		myship.y = -100;//temp to avoid spawning on inactive bombs
 		myship.vx = 0;
 		myship.vy = 0;
+		context.font = "20px Ariel";
+		context.fillStyle = "red";
+		context.fillText("Try the new Omnicompass with the C key",canvas.width/2-128,32);	
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[0])){
 			menuabout = true;
 			menucontrols = false;
@@ -466,7 +469,7 @@ function update() {
 	waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
 	waldo.gravitate(myship); //pull only player ship
 	waldo.c = randcolor(); //groovy
-	systems[ps].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
+	//systems[ps].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
 	waldo.update1();
 	waldo.drawplanet(vwx,vwy);
 	if (waldo.collide(myship)){
@@ -502,15 +505,19 @@ function update() {
 		////explosion testing////////////////////////////////
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
 	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
-	if (supercompass>0){
-		systems[ps].drawplanetfinder(0,360);
-		systems[ps].drawshipfinder(0,300);
-		}
-	hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array.
+	if (ps>0){//ps==0 is the menu system.  Hud looks dumb here, and I want room for other stuff.
+		if (supercompass%2==1){
+			systems[ps].drawplanetfinder(0,400);
+			}
+		if (supercompass>1){
+			systems[ps].drawshipfinder(0,300);
+			}
+		hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array. 
+	}
 	systems[ps].updateall(); //Updates everthing in system
 	systems[ps].gravitateall(); //gravitates everything in system
 	systems[ps].collideself(); //executes all collisions between objects in the system.
-	hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array.
+
 
 ////////////Autopilot behavior section//Formerly AI section, AI behavior moved to System.updateall()/////////////////////////////////////////////
 	if (myplayer.autopilot == 1){

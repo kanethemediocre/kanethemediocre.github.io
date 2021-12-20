@@ -160,6 +160,9 @@ class System{
 	drawplanetfinder(playerindex,radius){
 		var viewx = this.players[playerindex].ship.x;
 		var viewy = this.players[playerindex].ship.y;
+		context.font = '20px Ariel';
+		context.fillStyle = "yellow";
+		context.fillText("Navigation Compass Active", canvas.width/2-80, 24);
 		var cx = canvas.width/2;
 		var cy = canvas.height/2;
 		var i=0;
@@ -172,16 +175,22 @@ class System{
 			var indy = cy + radius*Math.sin(inddir);
 			var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
 			var pointery = cy + (radius+indsize*2)*Math.sin(inddir);
+			var arcstartx = cx + radius*Math.cos(inddir-indsize/radius);
+			var arcstarty = cy + radius*Math.sin(inddir-indsize/radius);
+			var arcendx = cx + radius*Math.cos(inddir+indsize/radius);
+			var arcendy = cy + radius*Math.sin(inddir+indsize/radius);
 			context.beginPath(); 
 			context.lineWidth = 2; 
-			if ((this.players[playerindex].navtarget == i)&&(this.players[playerindex].navactive == 1)){context.lineWidth = 5; }
+			if (this.players[playerindex].navtarget == i){context.lineWidth = 5; }
 			context.strokeStyle = indc;
-			context.moveTo(indx,indy);
+			context.moveTo(arcendx,arcendy);
 			context.lineTo(pointerx,pointery);
-			context.stroke();	
-			context.beginPath();
+			context.lineTo(arcstartx,arcstarty);
 			context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
 			context.stroke();	
+			//context.beginPath();
+			//context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
+			//context.stroke();
 			i++;
 			}
 		var i=0;
@@ -204,6 +213,9 @@ class System{
 	drawshipfinder(playerindex,radius){
 		//var viewx = this.players[playerindex].ship.x;
 		//var viewy = this.players[playerindex].ship.y;
+		context.font = '20px Ariel';
+		context.fillStyle = "red";
+		context.fillText("Targeting Compass Active", canvas.width/2-80, 48);
 		var cx = canvas.width/2;//center
 		var cy = canvas.height/2;
 		var i=0;
@@ -220,16 +232,22 @@ class System{
 				var indy = cy + radius*Math.sin(inddir);
 				var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
 				var pointery = cy + (radius+indsize*2)*Math.sin(inddir);
+				var arcstartx = cx + radius*Math.cos(inddir-indsize/radius);
+				var arcstarty = cy + radius*Math.sin(inddir-indsize/radius);
+				var arcendx = cx + radius*Math.cos(inddir+indsize/radius);
+				var arcendy = cy + radius*Math.sin(inddir+indsize/radius);
 				context.beginPath(); 
 				context.lineWidth = 2; 
 				if (this.players[playerindex].shiptarget == i){context.lineWidth = 5; }
 				context.strokeStyle = indc;
-				context.moveTo(indx,indy);
+				context.moveTo(arcendx,arcendy);
 				context.lineTo(pointerx,pointery);
-				context.stroke();	
-				context.beginPath();
+				context.lineTo(arcstartx,arcstarty);
 				context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
-				context.stroke();
+				context.stroke();	
+				//context.beginPath();
+				//context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
+				//context.stroke();
 				}
 			i++;
 			}

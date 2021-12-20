@@ -62,8 +62,9 @@ function hud(playerindex){
 	
 	drawaskey(32,149,"B","white");
 	drawaskey(32,176,"G","white");
-	drawaskey(canvas.width/2-128,canvas.height-224," ","white");
-	drawaskey(canvas.width/2+128,canvas.height-224,"J","white");
+	drawaskey(canvas.width/2-104,32,"C","white");
+	drawaskey(canvas.width/2-128,canvas.height-24," ","white");
+	drawaskey(canvas.width/2+128,canvas.height-24,"J","white");
 	drawaskey(canvas.width-64,360,"Z","white");
 	
 	drawaskey(canvas.width-324,32,"[","white");
@@ -212,7 +213,7 @@ function hud(playerindex){
 if (cheatmode == 1){
 	context.font = "32px Ariel";
 	context.fillStyle = "red";
-	context.fillText("YOU'RE A CHEATER",canvas.width/2-100,24);	
+	context.fillText("YOU'RE A CHEATER",canvas.width/2-100,64);	
 	context.font = "12px Ariel";
 	context.fillText("End key gives money, Q key fires scrt blaster, W key warps to planet, V warps to next solar system, X summons rainbow monster",canvas.width/2-300,48);	
 	}

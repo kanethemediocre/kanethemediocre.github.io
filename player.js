@@ -95,5 +95,15 @@ class Player{
         }
 
     }
-}
+    savecharacter(){//returns a string with all saved character data
+        var savestring = "";
+        savestring = savestring+" name "+this.ship.name+" money "+this.money+" a1 "+this.a1+" s1 "+this.s1+" storystate "+this.storystate+" storytime "+this.storytime+" radarrange "+this.radarrange;
+        var i=0;
+        while(i<this.blasters.length){
+            //savestring=savestring+this.blasters[i].savestring();
+            i++;
+            }
+        return savestring;
+        }
+    }
 var testplayer = new Player();

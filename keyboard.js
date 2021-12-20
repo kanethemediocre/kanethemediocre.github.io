@@ -23,7 +23,7 @@ window.addEventListener("keydown", function (event) {
       break;	
 	case "c": //supercompass toggle
 		supercompass++;
-		if (supercompass>1){supercompass = 0;}
+		if (supercompass>3){supercompass = 0;}
 	  break;
 	case "g": //Booster activation
 		if (systems[ps].players[0].boosters[systems[ps].players[0].boosters[0]]>0){//if selected booster is in stock
