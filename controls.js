@@ -5,10 +5,11 @@ var controltext = ["Flying:  Right click mouse to fire thrusters, use the mouse 
 "[N] key cycles navigation modes (Planets, Stations, or None), [<] and [>] cycle navigation targets. " ,
 "[M] key cycles map modes (off, corner, fullscreen), [+] and [-] keys on keypad zoom in and out. " ,
 "[0]-[9] keys select the corresponding weapon, left-mouse-button fires the current weapon.  ",
-"[ and ] keys cycle through enemy ship targets.  [T] key (when fixed will) selects closest target. " ,
+"The [C] key controls the Omnicompass, which can display planet and station indicators, ship indicators, or both." ,
 "[Z] key cycles between information about current blaster, current cargo, current ship, and off.  ",
 "[Backspace] changes shop pages (Buy, Sell, or Work), [Enter] takes highlighted option,  [Up] and [Down] keys cycle though options on both shop and journal menus.  ",
-"[P] cycles probe modes, and [Delete] activates cheat mode.  [S] toggles starfield effect, which might help slow computers. "];
+"[P] cycles probe modes, and [Delete] activates cheat mode.  [S] toggles starfield effect, which might help slow computers. ",
+];
 
 			
 			

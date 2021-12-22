@@ -29,7 +29,7 @@ class Mission{
 				}
 				
 			else if (this.type == "cargo"){ //If the mission is to take cargo to a planet.  Works on last test.
-				if ((theplanets[this.target].distance(systems[ps].players[0].ship)<theplanets[this.target].s*2+200) && (theplanets[this.target].deltav(theships[0])<10)){
+				if ((theplanets[this.target].distance(systems[ps].players[0].ship)<theplanets[this.target].s*2+200) && (theplanets[this.target].deltav(systems[ps].players[0].ship)<10)){
 					systems[ps].players[0].inventory.givecargo(allcargos.length-1,10);//global scope
 					complete = 1; //Requires that you get close, and get slow relative to target planet.
 					}

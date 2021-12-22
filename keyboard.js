@@ -237,12 +237,21 @@ window.addEventListener("keydown", function (event) {
 	  
 	   case "k": 
 	   //save game
-	  //localStorage.setItem('savedgame',systems);
+	 console.log(systems[ps].players[0].savecharacter());
+	 console.log(systems[ps].players[0].saveblasters());
+	 var upgradestring = "";
+	 var i=0;
+	 while(i<allupgrades.length){
+		 upgradestring=upgradestring+allupgrades[i].tier+" ";
+		 i++;
+	 }
+	 console.log(upgradestring);
 	  break;	
 
 	   case "l": 
-	  //load game
-	  //localStorage.getItem('savedgame'); //doesn't work, crashes the game.
+	   systems[ps].players[0].loadcharacter("name Cactus money 41 storystate 4 storytime 2852");
+	   systems[ps].players[0].loadblastertiers("b0 0 0 0 0 0 0 0 0 0 b1 1 1 0 0 3 0 0 0 0 b2 0 0 0 0 0 0 0 0 0 b3 1 0 0 0 0 0 1 0 0 b4 1 0 0 0 0 0 0 0 0 b5 0 0 0 0 0 0 0 0 0 b6 0 0 0 0 0 0 0 0 0 b7 0 0 0 0 0 0 0 0 0 b8 0 0 0 0 0 0 0 0 0 b9 0 0 0 0 0 0 0 0 0");
+	
 	  break;	  	  
 	  
 	  

@@ -97,13 +97,64 @@ class Player{
     }
     savecharacter(){//returns a string with all saved character data
         var savestring = "";
-        savestring = savestring+" name "+this.ship.name+" money "+this.money+" a1 "+this.a1+" s1 "+this.s1+" storystate "+this.storystate+" storytime "+this.storytime+" radarrange "+this.radarrange;
+        savestring = savestring+"name "+this.ship.name+" money "+this.money+" storystate "+this.storystate+" storytime "+this.storytime;
+        return savestring;
+        }
+    saveblasters(){
+        var savestring = "";
         var i=0;
-        while(i<this.blasters.length){
-            //savestring=savestring+this.blasters[i].savestring();
+        while(i<this.blasters.length){//saves blaster data
+            savestring=savestring+" b"+i+" "+this.blasters[i].savetierstring();
             i++;
             }
         return savestring;
         }
+    loadcharacter(playerstring){
+		var i = 0;
+		var lastword = "";
+		var values = [];
+		while(i<playerstring.length){//This loop parses the string into space separated words
+			var thechar = playerstring[i];
+			if (thechar!=" "){
+				lastword=lastword+thechar;
+				}
+			else {
+				values.push(lastword)
+				lastword = "";
+				}
+			i++;
+			}
+        if (values[0]!="name"){console.log("Format error on index 0");}
+        this.ship.name = values[1];
+        if (values[2]!="money"){console.log("Format error on index 2");}
+        this.money = values[3];
+        if (values[4]!="storystate"){console.log("Format error on index 4");}
+        this.storystate = values[5];      
+        if (values[6]!="storytime"){console.log("Format error on index 6");}
+        this.storytime = values[7];      
+        }
+    loadblastertiers(blasterstring){
+        var i=0; //blaster index
+        var j = 3; //string index
+        var bstart = 0; //blaster string start index;
+        var bend = 0; //blaster string end index
+        while (i<this.blasters.length){//Normally 10.  
+            var ablaster = blasterstring.slice(j,j+18);//blasterstring slice magic goes here
+            this.blasters[i].loadtierstring(ablaster);
+            j=j+21;
+            i++;
+            }     
+        }
+
+
     }
 var testplayer = new Player();
+
+
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+console.log(animals.slice(2));
+// expected output: Array ["camel", "duck", "elephant"]
+
+console.log(animals.slice(2, 4));
+// expected output: Array ["camel", "duck"]

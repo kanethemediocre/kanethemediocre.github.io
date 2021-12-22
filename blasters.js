@@ -225,8 +225,80 @@ class Blaster{
 		var blasterchartvalues = [this.name,this.type,this.price,this.ecost,this.hurt,this.speed,this.boom,this.n,this.timer,this.level];
 		var blasterchart = [blasterchartlabels,blasterchartvalues];
 		showchart(blasterchart, 128, 16, xpos,ypos);
+		}
+	savetierstring(){//Only saves upgrade state
+		
+		var has = 0;
+		if (this.phas){has = 1;}
+		var r = this.rtier;
+		var e = this.etier;
+		var d = this.dtier;
+		var b = this.btier;
+		var n = this.ntier;
+		var s = this.stier;
+		var t = this.ttier;
+		var x = this.xtier;
+		var tierstring = has+" "+r+" "+e+" "+d+" "+b+" "+n+" "+s+" "+t+" "+x;
+		return tierstring;
+		}
+	loadtierstring(thetiers){
+		var i = 0;
+		var lastword = "";
+		var values = [];
+		while(i<thetiers.length){
+			var thechar = thetiers[i];
+			if (thechar!=" "){
+				lastword=lastword+thechar;
+				}
+			else {
+				values.push(lastword)
+				lastword = "";
+				}
+			i++;
+			}
+		if (values[0]==1){this.phas = true;}else{this.phas=false;}//Not sure if necessary to do like that.
+		var i=0;
+		while(i<values[1]){
+			this.plusremote();
+			i++;
+			}
+		var i=0;
+		while(i<values[2]){
+			this.plusbounce();
+			i++;
+			}
+		var i=0;
+		while(i<values[3]){
+			this.plusdamage();
+			i++;
+			}
+		var i=0;
+		while(i<values[4]){
+			this.plusboom();
+			i++;
+			}
+		var i=0;
+		while(i<values[5]){
+			this.plusn();
+			i++;
+			}
+		var i=0;
+		while(i<values[6]){
+			this.plusspeed();
+			i++;
+			}
+		var i=0;
+		while(i<values[7]){
+			this.plustimer();
+			i++;
+			}
+		var i=0;
+		while(i<values[8]){
+			this.plusx();
+			i++;
+			}
+		}
 	}
-}
 //constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,ID)
      let qblaster = new Blaster("joe","a dude",1000,"spread",                                                            
 	 10,4,10,12,2,10,1,0.2,10,6,2,10,40,8,10,11,"red","ID not implemented");//All energy costs set at 11 for now.
