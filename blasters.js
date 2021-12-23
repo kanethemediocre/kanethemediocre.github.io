@@ -258,42 +258,42 @@ class Blaster{
 			}
 		if (values[0]==1){this.phas = true;}else{this.phas=false;}//Not sure if necessary to do like that.
 		var i=0;
-		while(i<values[1]){
+		while(i<parseInt(values[1])){
 			this.plusremote();
 			i++;
 			}
 		var i=0;
-		while(i<values[2]){
+		while(i<parseInt(values[2])){
 			this.plusbounce();
 			i++;
 			}
 		var i=0;
-		while(i<values[3]){
+		while(i<parseInt(values[3])){
 			this.plusdamage();
 			i++;
 			}
 		var i=0;
-		while(i<values[4]){
+		while(i<parseInt(values[4])){
 			this.plusboom();
 			i++;
 			}
 		var i=0;
-		while(i<values[5]){
+		while(i<parseInt(values[5])){
 			this.plusn();
 			i++;
 			}
 		var i=0;
-		while(i<values[6]){
+		while(i<parseInt(values[6])){
 			this.plusspeed();
 			i++;
 			}
 		var i=0;
-		while(i<values[7]){
+		while(i<parseInt(values[7])){
 			this.plustimer();
 			i++;
 			}
 		var i=0;
-		while(i<values[8]){
+		while(i<parseInt(values[8])){
 			this.plusx();
 			i++;
 			}

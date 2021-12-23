@@ -127,11 +127,11 @@ class Player{
         if (values[0]!="name"){console.log("Format error on index 0");}
         this.ship.name = values[1];
         if (values[2]!="money"){console.log("Format error on index 2");}
-        this.money = values[3];
+        this.money = parseInt(values[3]);
         if (values[4]!="storystate"){console.log("Format error on index 4");}
-        this.storystate = values[5];      
+        this.storystate = parseInt(values[5]);      
         if (values[6]!="storytime"){console.log("Format error on index 6");}
-        this.storytime = values[7];      
+        this.storytime = 0;// parseInt(values[7]);      
         }
     loadblastertiers(blasterstring){
         var i=0; //blaster index

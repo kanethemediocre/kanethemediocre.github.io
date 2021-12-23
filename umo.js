@@ -1,6 +1,6 @@
 class Umo { //Universal Moving Object
 	constructor(xxx, yyy, sss, ccc) {
-		this.name = "Cactus Fantastico";
+		this.name = "CactusFantastico";
 		this.type = "unspecified"; //I might use this to identify different
 		this.x = xxx; //x
 		this.y = yyy; //y

@@ -191,10 +191,10 @@ window.addEventListener("keydown", function (event) {
 	 if ((systems[ps].players[0].dockstate >= 0)&&(systems[ps].players[0].dockstate<systems[ps].shops.length)){//check if docked and shop exists
 		if (systems[ps].players[0].shopmode == 0){
 			 if (systems[ps].players[0].shopitem < systems[ps].shops[systems[ps].players[0].dockstate].inv.length){//check for shopitem exists
-				if (systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].itemprice() <= systems[ps].players[0].money){ //check if player has enough money
+				if (systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].itemprice(systems[ps].players[0]) <= systems[ps].players[0].money){ //check if player has enough money
 					if (systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].available(systems[ps].players[0])){ //check if player has prerequisites / doesn't already own item
-						if (systems[ps].players[0].money > systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].itemprice()){
-							systems[ps].players[0].money = systems[ps].players[0].money - systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].itemprice();
+						if (systems[ps].players[0].money > systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].itemprice(systems[ps].players[0])){
+							systems[ps].players[0].money = systems[ps].players[0].money - systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].itemprice(systems[ps].players[0]);
 							menubuy1.play();
 							systems[ps].shops[systems[ps].players[0].dockstate].inv[systems[ps].players[0].shopitem].buy(systems[ps].players[0]);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 						}
@@ -237,21 +237,87 @@ window.addEventListener("keydown", function (event) {
 	  
 	   case "k": 
 	   //save game
-	 console.log(systems[ps].players[0].savecharacter());
-	 console.log(systems[ps].players[0].saveblasters());
-	 var upgradestring = "";
-	 var i=0;
-	 while(i<allupgrades.length){
-		 upgradestring=upgradestring+allupgrades[i].tier+" ";
-		 i++;
-	 }
-	 console.log(upgradestring);
+		console.log(systems[ps].players[0].savecharacter());
+		console.log(systems[ps].players[0].saveblasters());
+		var upgradestring = "";
+		var i=0;
+		while(i<allupgrades.length){
+			upgradestring=upgradestring+allupgrades[i].tier+" ";
+			i++;
+			}
+		console.log(upgradestring);
+		//upgradesavestring = upgradestring;
+
+	 function download(filename, text) {
+		var element = document.createElement('a');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+		element.setAttribute('download', filename);
+	
+		element.style.display = 'none';
+		document.body.appendChild(element);
+	
+		element.click();
+	
+		document.body.removeChild(element);
+	}
+	
+	// Start file download.
+	document.getElementById("dwn-btn").addEventListener("click", function(){
+		// Generate download of hello.txt file with some content
+		var upgradestring = "";
+		var i=0;
+		while(i<allupgrades.length){
+			upgradestring=upgradestring+allupgrades[i].tier+" ";
+			i++;
+			}
+		var text = upgradestring+"|"+systems[ps].players[0].saveblasters()+"|"+systems[ps].players[0].savecharacter()+"test junk data yo"; //document.getElementById("text-val").value;
+		var filename = "blinghustlesave.txt";
+		
+		download(filename, text);
+	}, false);
+
+
+
+
+
+
+
+
 	  break;	
 
 	   case "l": 
-	   systems[ps].players[0].loadcharacter("name Cactus money 41 storystate 4 storytime 2852");
-	   systems[ps].players[0].loadblastertiers("b0 0 0 0 0 0 0 0 0 0 b1 1 1 0 0 3 0 0 0 0 b2 0 0 0 0 0 0 0 0 0 b3 1 0 0 0 0 0 1 0 0 b4 1 0 0 0 0 0 0 0 0 b5 0 0 0 0 0 0 0 0 0 b6 0 0 0 0 0 0 0 0 0 b7 0 0 0 0 0 0 0 0 0 b8 0 0 0 0 0 0 0 0 0 b9 0 0 0 0 0 0 0 0 0");
-	
+	   systems[ps].players[0].loadcharacter("name Cactus money 725 storystate 33 storytime 29697");
+	   systems[ps].players[0].loadblastertiers("b0 0 0 0 0 0 0 0 0 0 b1 1 1 0 3 3 0 0 0 0 b2 1 0 0 0 0 0 0 0 0 b3 1 0 0 0 0 0 1 0 0 b4 1 0 0 0 0 0 0 0 0 b5 0 0 0 0 0 0 0 0 0 b6 0 0 0 0 0 0 0 0 0 b7 0 0 0 0 0 0 0 0 0 b8 0 0 0 0 0 0 0 0 0 b9 0 0 0 0 0 0 0 0 0");
+		upgradesavestring = "0 1 0 0 0 0 0";
+	   var i = 0;
+	   var lastword = "";
+	   var values = [];
+	   while(i<upgradesavestring.length){//This loop parses the string into space separated words
+		   var thechar = upgradesavestring[i];
+		   if (thechar!=" "){
+			   lastword=lastword+thechar;
+			   }
+		   else {
+			   values.push(lastword)
+			   lastword = "";
+			   }
+		   i++;
+		   }
+		var i=0;
+		while(i<values.length){
+			var j=0;
+			while(j<values[i]){
+				allupgrades[i].apply(systems[ps].players[0]);
+				j++;
+				}
+			i++;
+			}
+
+				
+
+
+
+
 	  break;	  	  
 	  
 	  

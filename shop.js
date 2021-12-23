@@ -36,10 +36,10 @@ class Shopitem{
 		}
 		return thisdescribe;
 	}
-	itemprice(){
+	itemprice(theplayer){
 		var thisprice = "Undefined Item"; //error handling by default
 		if (this.type == "blaster"){
-			thisprice = allblasters[this.i].nextupcost();
+			thisprice = theplayer.blasters[this.i].nextupcost();
 		}else if (this.type == "cargo"){
 			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[this.i]);//fix use of allshops here, so prices are proper random in random systems
 		}else if (this.type == "upgrade"){
@@ -152,7 +152,7 @@ class Shop{
 			i=i+1;
 			}
 		}
-	drawbuymenu(xpos,ypos,item){//screen coords of top corner, item index
+	drawbuymenu(xpos,ypos,item,theplayer){//screen coords of top corner, item index
 		var x = xpos;
 		var y = ypos;
 		context.font='16px Arial';
@@ -170,7 +170,7 @@ class Shop{
 		while (i<this.inv.length){	
 			names.push(this.inv[i].namestring().slice(0,20));
 			descriptions.push(this.inv[i].describestring().slice(0,20));
-			prices.push(this.inv[i].itemprice());
+			prices.push(this.inv[i].itemprice(theplayer));
 			utypes.push(this.inv[i].utype);
 			i=i+1;
 			}
@@ -189,7 +189,7 @@ class Shop{
 				}
 			context.fillText(this.inv[i].namestring().slice(0,16),x,y+32+16*i);
 			context.fillText(this.inv[i].describestring().slice(0,16),x+80,y+32+16*i);
-			context.fillText(this.inv[i].itemprice(),x+200,y+32+16*i);
+			context.fillText(this.inv[i].itemprice(theplayer),x+200,y+32+16*i);
 			context.fillText(this.inv[i].utype.slice(0,16),x+300,y+32+16*i);
 			i=i+1;
 			}
@@ -201,7 +201,7 @@ class Shop{
 		drawpolarpoly(x+464,y-20,systems[ps].outposts[this.home].emblem[0],systems[ps].outposts[this.home].emblem[1],32,systems[ps].outposts[this.home].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}	
 	
-	drawsellmenu(xpos,ypos,item){//screen coords of top corner, item index
+	drawsellmenu(xpos,ypos,item,theplayer){//screen coords of top corner, item index
 		var x = xpos;
 		var y = ypos;
 		context.font='16px Arial';
@@ -214,7 +214,7 @@ class Shop{
 		context.font='12px Arial';
 		if (allcargos.length>0){fillwrappedtext(allcargos[item].description,86,16,x,y+236);}
 		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(x-12,y+20+item*16,400,16);
 		context.stroke();
 		var i=0;
@@ -227,13 +227,13 @@ class Shop{
 			i=i+1;
 			}
 		context.beginPath();
-		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
 		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-20,systems[ps].outposts[systems[ps].players[0].dockstate].emblem[0],systems[ps].outposts[systems[ps].players[0].dockstate].emblem[1],32,systems[ps].outposts[systems[ps].players[0].dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[theplayer.dockstate].emblem[0],systems[ps].outposts[theplayer.dockstate].emblem[1],32,systems[ps].outposts[theplayer.dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}		
-	drawworkmenu(xpos, ypos, item){
+	drawworkmenu(xpos, ypos, item,theplayer){
 		var x = xpos;
 		var y = ypos;
 		context.font='16px Arial';
@@ -246,7 +246,7 @@ class Shop{
 		context.fillStyle = "white";	
 		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,y+236);}
 		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(x-12,y+20+item*16,400,16);
 		context.stroke();
 		var i=0;
@@ -266,11 +266,11 @@ class Shop{
 			i=i+1;
 			}
 		context.beginPath();
-		context.strokeStyle = systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(xpos-16,ypos-56,512,336);
 		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
-		drawpolarpoly(x+464,y-20,systems[ps].outposts[systems[ps].players[0].dockstate].emblem[0],systems[ps].outposts[systems[ps].players[0].dockstate].emblem[1],32,systems[ps].outposts[systems[ps].players[0].dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		drawpolarpoly(x+464,y-20,systems[ps].outposts[theplayer.dockstate].emblem[0],systems[ps].outposts[theplayer.dockstate].emblem[1],32,systems[ps].outposts[theplayer.dockstate].c,-1*Math.PI/2); //this.emblem is a randomized logo
 		}
 	addcargomission(theships,theplanets,theoutposts){
 		var missiontarget = 1+Math.floor(Math.random()*(theplanets.length-1));

@@ -11,6 +11,7 @@ class Mission{
 		}
 	take(theships,theplanets,theplayer){
 		if (this.type=="destroy"){
+			console.log("try to respawn bot "+this.target+" at planet "+theships[this.target].parentid);
 			theships[this.target].respawn(theplanets[theships[this.target].parentid]);
 			this.taken = true;
 			}
@@ -27,7 +28,6 @@ class Mission{
 			if (this.type == "destroy"){ //If the mission is to kill a guy
 				if (theships[this.target].hp < 0){complete = 1;} //If the ship is dead, the mission is complete.  Doesnt work yet
 				}
-				
 			else if (this.type == "cargo"){ //If the mission is to take cargo to a planet.  Works on last test.
 				if ((theplanets[this.target].distance(systems[ps].players[0].ship)<theplanets[this.target].s*2+200) && (theplanets[this.target].deltav(systems[ps].players[0].ship)<10)){
 					systems[ps].players[0].inventory.givecargo(allcargos.length-1,10);//global scope

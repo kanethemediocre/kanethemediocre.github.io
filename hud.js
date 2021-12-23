@@ -193,11 +193,11 @@ function hud(playerindex){
 		drawaskeyspecial(800,220,60,24,"Down","white");
 		if (myplayer.shopmode == 0){
 			if (myplayer.shopitem >= systems[ps].shops[myplayer.dockstate].inv.length){myplayer.shopitem=0;}
-			systems[ps].shops[myplayer.dockstate].drawbuymenu(400,64,myplayer.shopitem);//y u no work
+			systems[ps].shops[myplayer.dockstate].drawbuymenu(400,64,myplayer.shopitem,myplayer);//y u no work
 		}else if (myplayer.shopmode == 1){
-			systems[ps].shops[myplayer.dockstate].drawsellmenu(400,64,myplayer.shopitem);
+			systems[ps].shops[myplayer.dockstate].drawsellmenu(400,64,myplayer.shopitem,myplayer);
 		}else if (myplayer.shopmode == 2){
-			systems[ps].shops[myplayer.dockstate].drawworkmenu(400,64,myplayer.shopitem);
+			systems[ps].shops[myplayer.dockstate].drawworkmenu(400,64,myplayer.shopitem,myplayer);
 		}
 	}
 	//draw cargo stuff
