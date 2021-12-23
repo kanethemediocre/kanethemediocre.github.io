@@ -270,10 +270,10 @@ window.addEventListener("keydown", function (event) {
 			upgradestring=upgradestring+allupgrades[i].tier+" ";
 			i++;
 			}
-		var text = upgradestring+"|"+systems[ps].players[0].saveblasters()+"|"+systems[ps].players[0].savecharacter()+"test junk data yo"; //document.getElementById("text-val").value;
+		var savetext = upgradestring+"|"+systems[ps].players[0].saveblasters()+"|"+systems[ps].players[0].savecharacter()+"test junk data yo"; //document.getElementById("text-val").value;
 		var filename = "blinghustlesave.txt";
 		
-		download(filename, text);
+		download(filename, savetext);
 	}, false);
 
 
@@ -286,37 +286,45 @@ window.addEventListener("keydown", function (event) {
 	  break;	
 
 	   case "l": 
-	   systems[ps].players[0].loadcharacter("name Cactus money 725 storystate 33 storytime 29697");
-	   systems[ps].players[0].loadblastertiers("b0 0 0 0 0 0 0 0 0 0 b1 1 1 0 3 3 0 0 0 0 b2 1 0 0 0 0 0 0 0 0 b3 1 0 0 0 0 0 1 0 0 b4 1 0 0 0 0 0 0 0 0 b5 0 0 0 0 0 0 0 0 0 b6 0 0 0 0 0 0 0 0 0 b7 0 0 0 0 0 0 0 0 0 b8 0 0 0 0 0 0 0 0 0 b9 0 0 0 0 0 0 0 0 0");
-		upgradesavestring = "0 1 0 0 0 0 0";
-	   var i = 0;
-	   var lastword = "";
-	   var values = [];
-	   while(i<upgradesavestring.length){//This loop parses the string into space separated words
-		   var thechar = upgradesavestring[i];
-		   if (thechar!=" "){
-			   lastword=lastword+thechar;
-			   }
-		   else {
-			   values.push(lastword)
-			   lastword = "";
-			   }
-		   i++;
-		   }
 		var i=0;
-		while(i<values.length){
-			var j=0;
-			while(j<values[i]){
-				allupgrades[i].apply(systems[ps].players[0]);
-				j++;
+		var stopindexes = [];
+		while(i<loadgamestring.length){
+			if (loadgamestring[i]=="|"){
+				stopindexes.push(i);
 				}
 			i++;
 			}
-
-				
-
-
-
+		if(stopindexes.length<2){console.log("bad save file");}
+		else{
+			var savedupgrades = loadgamestring.slice(0,stopindexes[0]);
+			var savedblasters = loadgamestring.slice(stopindexes[0]+1,stopindexes[1]);
+			var savedcharacter = loadgamestring.slice(stopindexes[1],loadgamestring.length);
+			systems[ps].players[0].loadblastertiers("b0 0 0 0 0 0 0 0 0 0 b1 1 1 0 3 3 0 0 0 0 b2 1 0 0 0 0 0 0 0 0 b3 1 0 0 0 0 0 1 0 0 b4 1 0 0 0 0 0 0 0 0 b5 0 0 0 0 0 0 0 0 0 b6 0 0 0 0 0 0 0 0 0 b7 0 0 0 0 0 0 0 0 0 b8 0 0 0 0 0 0 0 0 0 b9 0 0 0 0 0 0 0 0 0");
+			systems[ps].players[0].loadcharacter(savedcharacter);
+			var i = 0;
+			var lastword = "";
+			var values = [];
+			while(i<savedupgrades.length){//This loop parses the string into space separated words
+				var thechar = savedupgrades[i];
+				if (thechar!=" "){
+					lastword=lastword+thechar;
+					}
+				else {
+					values.push(lastword)
+					lastword = "";
+					}
+				i++;
+				}
+			 var i=0;
+			 while(i<values.length){
+				 var j=0;
+				 while(j<values[i]){
+					 allupgrades[i].apply(systems[ps].players[0]);
+					 j++;
+					 }
+				 i++;
+				 }
+			}
 
 	  break;	  	  
 	  

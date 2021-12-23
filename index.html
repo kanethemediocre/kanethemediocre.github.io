@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v275 by Andrew Kane </title>
+    <title>Bling Hustle v276 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -68,6 +68,7 @@ var pz = 0;
 var menuabout = false;
 var menucontrols = false;
 var upgradesavestring="";
+var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 
 var blastersound1 = new Audio("bubble4_short2.mp3");
@@ -647,5 +648,39 @@ storycheck(0);//0 is player index
 
 </script>
 </body>
-<input type="button" id="dwn-btn" value="Download dinamically generated text file"/>
+<input type="button" id="dwn-btn" value="Download latest save"/>
+ <label for="input-file">Top button to download latest saved game (K), bottom button to upload a saved game (L) </label><br>
+ <input type="file" id="input-file">
+ <textarea id="content-target"></textarea>
+<script>
+	document.getElementById('input-file')
+  .addEventListener('change', getFile)
+
+function getFile(event) {
+	const input = event.target
+	//console.log(event.target);
+  if ('files' in input && input.files.length > 0) {
+	  placeFileContent(
+      document.getElementById('content-target'),
+      input.files[0])
+  }
+}
+
+function placeFileContent(target, file) {
+	readFileContent(file).then(content => {
+  	target.value = content
+	  loadgamestring = content;
+  }).catch(error => console.log(error))
+}
+
+function readFileContent(file) {
+	const reader = new FileReader()
+  return new Promise((resolve, reject) => {
+    reader.onload = event => resolve(event.target.result)
+    reader.onerror = error => reject(error)
+    reader.readAsText(file)
+  })
+}
+</script>
+
 </html>

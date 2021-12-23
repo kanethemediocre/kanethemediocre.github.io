@@ -9,6 +9,7 @@ var controltext = ["Flying:  Right click mouse to fire thrusters, use the mouse 
 "[Z] key cycles between information about current blaster, current cargo, current ship, and off.  ",
 "[Backspace] changes shop pages (Buy, Sell, or Work), [Enter] takes highlighted option,  [Up] and [Down] keys cycle though options on both shop and journal menus.  ",
 "[P] cycles probe modes, and [Delete] activates cheat mode.  [S] toggles starfield effect, which might help slow computers. ",
+"[K] saves current progress, [L] loads current save file.  Use the buttons below to download or upload save files. ",
 ];
 
 			
