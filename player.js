@@ -5,7 +5,7 @@ class Player{
         this.input = "";
         this.money = 100;
         this.name = "-";
-        this.upgrades = []; //also figure that out better
+        this.upgrades = freshupgrades(); //also figure that out better
         this.inventory = new Inventory(10); //for cargo?
         this.thrustmultiplier = 1; //Adjusts thruster sensitivity
         this.navtarget = 0; // Compass points to planets[navtarget]
@@ -109,6 +109,16 @@ class Player{
             }
         return savestring;
         }
+    saveupgrades(){
+        var upgradestring = "";
+		var i=0;
+		while(i<this.upgrades.length){
+			upgradestring=upgradestring+this.upgrades[i].tier+" ";
+			i++;
+			}
+		console.log(upgradestring);
+        return upgradestring;
+    }
     loadcharacter(playerstring){
 		var i = 0;
 		var lastword = "";
@@ -145,7 +155,31 @@ class Player{
             i++;
             }     
         }
-
+    loadupgrades(upgradestring){
+        var i = 0;
+        var lastword = "";
+        var values = [];
+        while(i<upgradestring.length){//This loop parses the string into space separated words
+            var thechar = upgradestring[i];
+            if (thechar!=" "){
+                lastword=lastword+thechar;
+                }
+            else {
+                values.push(lastword)
+                lastword = "";
+                }
+            i++;
+            }
+         var i=0;
+         while(i<values.length){
+             var j=0;
+             while(j<values[i]){
+                 this.upgrades[i].apply(this);
+                 j++;
+                 }
+             i++;
+             }
+        }
 
     }
 var testplayer = new Player();

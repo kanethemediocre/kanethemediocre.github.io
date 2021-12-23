@@ -43,7 +43,7 @@ class Shopitem{
 		}else if (this.type == "cargo"){
 			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[this.i]);//fix use of allshops here, so prices are proper random in random systems
 		}else if (this.type == "upgrade"){
-			thisprice = allupgrades[this.i].price*2**(allupgrades[this.i].tier);
+			thisprice = theplayer.upgrades[this.i].price*2**(theplayer.upgrades[this.i].tier);
 		}else if (this.type == "booster"){
 			thisprice = 400*(2**this.utier); //Replace with real price as it is determined
 		}
@@ -78,7 +78,7 @@ class Shopitem{
 					theplayer.blasters[this.i].plusboom();
 					}
 			}else if (this.type == "upgrade"){ 
-				allupgrades[this.i].apply(theplayer);//code in apply function is ignored for some reason
+				theplayer.upgrades[this.i].apply(theplayer);//code in apply function is ignored for some reason
 				//console.log("buy function worked, this.type == 'upgrade'");
 			}else if (this.type == "booster"){
 				theplayer.boosters[this.utier] = theplayer.boosters[this.utier]+2;

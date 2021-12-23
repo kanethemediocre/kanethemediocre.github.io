@@ -202,7 +202,7 @@ function hud(playerindex){
 	}
 	//draw cargo stuff
 	if (diagnostic == 1){myplayer.blasters[myplayer.wep].drawstats(canvas.width-200,400);}
-	if (diagnostic == 2){playerinventory.draw(canvas.width-200,400);}//Oof, add to player
+	if (diagnostic == 2){myplayer.inventory.draw(canvas.width-200,400);}//Oof, add to player
 	if (diagnostic == 3){//this should be togglable
 		context.fillStyle = "teal";
 		context.font='12px Arial';

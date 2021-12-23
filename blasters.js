@@ -242,7 +242,7 @@ class Blaster{
 		return tierstring;
 		}
 	loadtierstring(thetiers){
-		var i = 0;
+		var i = 1;//kludge
 		var lastword = "";
 		var values = [];
 		while(i<thetiers.length){
@@ -256,7 +256,9 @@ class Blaster{
 				}
 			i++;
 			}
+		console.log(values[0]);
 		if (values[0]==1){this.phas = true;}else{this.phas=false;}//Not sure if necessary to do like that.
+		console.log(this.phas);
 		var i=0;
 		while(i<parseInt(values[1])){
 			this.plusremote();
