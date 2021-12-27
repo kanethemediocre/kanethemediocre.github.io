@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v280 by Andrew Kane </title>
+    <title>Bling Hustle v285 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -53,8 +53,8 @@ var time = 0; //Count of frames elapsed in game time.  Used to track in-game tim
 var nmeactive = 1; //targeting computer starts off
 var mdx = 0; //I think these were for the mouse?  Not sure if used.
 var mdy = 0;
-var a1 = 0; //armor upgrades
-var s1 = 0; //Shield upgrades
+//var a1 = 0; //armor upgrades
+//var s1 = 0; //Shield upgrades
 var moused = 0; //Direction currently indicated by mouse
 var mousedistance = 0; // Distance to mouse cursor
 var mousestate = 0; //describes state of mouse buttons
@@ -62,6 +62,7 @@ var storymessages = loadstorymessages();//storytext.js
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
 var cheatmode = 0; //0 = not a cheater
 var ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
+var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
 var starmode = 1; //0 for no starfield.
 let testfield = new Starfield(30000,20000,64,1000,4000,32);
 var pz = 0;
@@ -367,10 +368,10 @@ systems[1].addrandombling(50);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update() {
 	time = time + 1;
-	var vwx = systems[ps].players[0].ship.x;
-	var vwy = systems[ps].players[0].ship.y;
-	var myplayer = systems[ps].players[0];
-	var myship = systems[ps].players[0].ship; 
+	var vwx = systems[ps].players[myi].ship.x;
+	var vwy = systems[ps].players[myi].ship.y;
+	var myplayer = systems[ps].players[myi];
+	var myship = systems[ps].players[myi].ship; 
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
 	if (ps>0){
@@ -552,86 +553,92 @@ function update() {
 		}
 //////////Mouse turning/////////////////////////////////
 	if (systems[ps].players.length>0){//This prevents errors at start
-		if (myplayer.autopilot == 0){myship.d = moused+Math.PI;} //If no autopilot, use mous to turn.
+		if (myplayer.autopilot == 0){myship.d = myplayer.moused+Math.PI;} //If no autopilot, use mous to turn.
 	}
 //////////////////////////////////Weapon 6 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
-	if((myplayer.mousestate==1)&&(myplayer.wep == 6)&&(myplayer.energy>2)){ 
-		var n1 = Math.floor(time/4)%6;
-		var n2 = Math.floor(time/4+1)%6;
-		var n3 = Math.floor(time/4+2)%6;
-		var beamcolor1 = rainbow(n1);
-		var beamcolor2 = rainbow(n2);
-		var beamcolor3 = rainbow(n3);
-		var range = myplayer.blasters[6].timer+32;
-		context.beginPath();
-		context.lineWidth = 12; 
-		context.moveTo(canvas.width/2+Math.cos(myship.d)*32, canvas.height/2+Math.sin(myship.d)*32);
-		context.lineTo(canvas.width/2+Math.cos(myship.d)*range,canvas.height/2+Math.sin(myship.d)*range);
-		context.strokeStyle = beamcolor1;
-		context.stroke();	
-		context.beginPath();
-		context.lineWidth = 8; 
-		context.moveTo(canvas.width/2+Math.cos(myship.d)*32, canvas.height/2+Math.sin(myship.d)*32);
-		context.lineTo(canvas.width/2+Math.cos(myship.d)*range,canvas.height/2+Math.sin(myship.d)*range);
-		context.strokeStyle = beamcolor2;
-		context.stroke();
-		context.lineWidth = 4; 
-		context.moveTo(canvas.width/2+Math.cos(myship.d)*32, canvas.height/2+Math.sin(myship.d)*32);
-		context.lineTo(canvas.width/2+Math.cos(myship.d)*range,canvas.height/2+Math.sin(myship.d)*range);
-		context.strokeStyle = beamcolor3;
-		context.stroke();
-		myplayer.energy = myplayer.energy - 2;
-		var i = systems[ps].ships.length;
-		while (i>1){//For all ships except 0
-			i = i - 1; 
-			if (myship.distance(systems[ps].ships[i])<range){
-				var ptest = pointingat( myship.directionof(systems[ps].ships[i]), myship.d, myship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
-				if (ptest == 1){
-					systems[ps].ships[i].damage(5);
-					if (systems[ps].ships[i].hp<0){
-						if (systems[ps].ships[i].ai=="enemy"){
-							var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
-							myplayer.money = myplayer.money + getcash;
-							myplayer.gotmoney = [30,getcash];
-							cashsound1.play();
-							var boomstages = Math.floor(4+systems[ps].ships[i].level/2);
-							systems[ps].explosions.push(new Bubblesplosion(boomstages,0.375,"red",systems[ps].ships[i]));
-							systems[ps].bling.push(new Bling(systems[ps].ships[i].x,systems[ps].ships[i].y,systems[ps].ships[i].vx,systems[ps].ships[i].vy,systems[ps].ships[i].level*5));
-						}else if (systems[ps].ships[i].ai=="trader"){
-							systems[ps].explosions.push(new Bubblesplosion(4,0.375,"red",systems[ps].ships[i]));
-							myplayer.money = myplayer.money - 1000;
-							myplayer.gotmoney = [30, -1000];
-							//somebadsound.play();
+	var qq = 0;
+	while(qq<systems[ps].players.length){
+		var aplayer = systems[ps].players[qq];
+		aship = systems[ps].players[qq].ship;
+		if((aplayer.mousestate==1)&&(aplayer.wep == 6)&&(aplayer.energy>2)){ 
+			var n1 = Math.floor(time/4)%6;
+			var n2 = Math.floor(time/4+1)%6;
+			var n3 = Math.floor(time/4+2)%6;
+			var beamcolor1 = rainbow(n1);
+			var beamcolor2 = rainbow(n2);
+			var beamcolor3 = rainbow(n3);
+			var range = aplayer.blasters[6].timer+32;
+			context.beginPath();
+			context.lineWidth = 12; 
+			context.moveTo(canvas.width/2+Math.cos(aship.d)*32, canvas.height/2+Math.sin(aship.d)*32);
+			context.lineTo(canvas.width/2+Math.cos(aship.d)*range,canvas.height/2+Math.sin(aship.d)*range);
+			context.strokeStyle = beamcolor1;
+			context.stroke();	
+			context.beginPath();
+			context.lineWidth = 8; 
+			context.moveTo(canvas.width/2+Math.cos(aship.d)*32, canvas.height/2+Math.sin(aship.d)*32);
+			context.lineTo(canvas.width/2+Math.cos(aship.d)*range,canvas.height/2+Math.sin(aship.d)*range);
+			context.strokeStyle = beamcolor2;
+			context.stroke();
+			context.lineWidth = 4; 
+			context.moveTo(canvas.width/2+Math.cos(aship.d)*32, canvas.height/2+Math.sin(aship.d)*32);
+			context.lineTo(canvas.width/2+Math.cos(aship.d)*range,canvas.height/2+Math.sin(aship.d)*range);
+			context.strokeStyle = beamcolor3;
+			context.stroke();
+			aplayer.energy = aplayer.energy - 2;
+			var i = systems[ps].ships.length;
+			while (i>1){//For all ships except 0
+				i = i - 1; 
+				if (aship.distance(systems[ps].ships[i])<range){
+					var ptest = pointingat( aship.directionof(systems[ps].ships[i]), aship.d, aship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
+					if (ptest == 1){
+						systems[ps].ships[i].damage(5);
+						if (systems[ps].ships[i].hp<0){
+							if (systems[ps].ships[i].ai=="enemy"){
+								var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
+								aplayer.money = aplayer.money + getcash;
+								aplayer.gotmoney = [30,getcash];
+								cashsound1.play();
+								var boomstages = Math.floor(4+systems[ps].ships[i].level/2);
+								systems[ps].explosions.push(new Bubblesplosion(boomstages,0.375,"red",systems[ps].ships[i]));
+								systems[ps].bling.push(new Bling(systems[ps].ships[i].x,systems[ps].ships[i].y,systems[ps].ships[i].vx,systems[ps].ships[i].vy,systems[ps].ships[i].level*5));
+							}else if (systems[ps].ships[i].ai=="trader"){
+								systems[ps].explosions.push(new Bubblesplosion(4,0.375,"red",systems[ps].ships[i]));
+								aplayer.money = aplayer.money - 1000;
+								aplayer.gotmoney = [30, -1000];
+								//somebadsound.play();
+								}
 							}
 						}
 					}
 				}
 			}
+	//////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
+		if((aplayer.mousestate==1)&&(time%4==0)&&(aplayer.wep == 8)&&(aplayer.energy>6)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
+			var n = Math.floor(time/4)%6;
+			aship.launchbomb(aplayer.blasters[aplayer.wep].bombs[n],aplayer.blasters[aplayer.wep].speed,aplayer.blasters[aplayer.wep].timer);
+			aplayer.energy = aplayer.energy - 6;
+			if (time%24==0){blastersound8.play();}
 		}
-//////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
-	if((myplayer.mousestate==1)&&(time%4==0)&&(myplayer.wep == 8)&&(myplayer.energy>6)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
-		var n = Math.floor(time/4)%6;
-		myship.launchbomb(myplayer.blasters[myplayer.wep].bombs[n],myplayer.blasters[myplayer.wep].speed,myplayer.blasters[myplayer.wep].timer);
-		myplayer.energy = myplayer.energy - 6;
-		if (time%24==0){blastersound8.play();}
-	}
-///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
-	if (myplayer.wep==0){//wep == 11 to disable, wep should ==0
-		var j = systems[ps].ships.length;
-		while (j>1){ //for all ships...
-			j=j-1;
-			if (myplayer.blasters[0].bombs[0].collide(systems[ps].ships[j])){//Checks for collision only
-				if (myplayer.probemode == 0){//clones color
-					myship.c = systems[ps].ships[j].c;
-					myship.c2 = systems[ps].ships[j].c2;
-				}else if (myplayer.probemode == 1){//clones shape
-					myship.polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
-					myship.polyradius = systems[ps].ships[j].polyradius;
-				}else if (myplayer.probemode == 2){
-					//do more cool stuff			
+	///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
+		if (aplayer.wep==0){//wep == 11 to disable, wep should ==0
+			var j = systems[ps].ships.length;
+			while (j>1){ //for all ships...
+				j=j-1;
+				if (aplayer.blasters[0].bombs[0].collide(systems[ps].ships[j])){//Checks for collision only
+					if (aplayer.probemode == 0){//clones color
+						aship.c = systems[ps].ships[j].c;
+						aship.c2 = systems[ps].ships[j].c2;
+					}else if (aplayer.probemode == 1){//clones shape
+						aship.polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
+						aship.polyradius = systems[ps].ships[j].polyradius;
+					}else if (aplayer.probemode == 2){
+						//do more cool stuff			
+						}
 					}
 				}
 			}
+		qq++;
 		}
 //////////////////////////Bling regeneration stuff goes here///////////////////////
 if ((systems[ps].bling.length<256)&&(time%16==0)){

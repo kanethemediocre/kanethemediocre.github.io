@@ -22,8 +22,8 @@ class Player{
         //this.drawdistance = Math.sqrt(canvas.width*canvas.width/4+canvas.height*canvas.height/4)+200;
         //this.mdx = 0; //I think these were for the mouse?  Not sure if used.
         //this.mdy = 0;
-        this.a1 = 0; //armor upgrades
-        this.s1 = 0; //Shield upgrades
+        //this.a1 = 0; //armor upgrades
+        //this.s1 = 0; //Shield upgrades
         this.wep = 1; //Currently selected weapon
         //var moused = 0; //Direction currently indicated by mouse
         //var mousedistance = 0; // Distance to mouse cursor

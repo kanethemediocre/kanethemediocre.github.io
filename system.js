@@ -647,6 +647,364 @@ class System{
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
 		var  i = externalplanets.length;//unfinished, unused, but a good idea. 		
 	}
+	playermice(){
+		var qq = 0;
+		while (qq<this.players.length){
+			var aplayer = this.players[qq];
+			if (aplayer.mousestate==1){ //if it's the left button
+				//console.log("itried4");
+				if (aplayer.wep < 10){
+					//console.log("itried3");
+					//console.log(myplayer.energy+"  "+myplayer.blasters[1].ecost);//myplayer.blasters[myplayer.wep].ecost);
+					if (aplayer.energy>aplayer.blasters[aplayer.wep].ecost){
+						//console.log("itried2");
+						if (aplayer.blasters[aplayer.wep].type!=="beam"){
+							aplayer.blasters[aplayer.wep].fire(aplayer.ship,time);
+							aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
+							//console.log("itried1");
+							if (aplayer.wep == 1){blastersound1.play();}
+							else if (aplayer.wep == 2){blastersound2.play();}
+							else if (aplayer.wep == 3){blastersound3.play();}
+							else if (aplayer.wep == 4){blastersound4.play();}
+							else if (aplayer.wep == 5){blastersound5.play();}
+							else if (aplayer.wep == 6){blastersound6.play();}
+							else if (aplayer.wep == 7){blastersound7.play();}
+							else if (aplayer.wep == 8){blastersound8.play();}
+							else if (aplayer.wep == 9){blastersound9.play();}
+							else if (aplayer.wep == 0){blastersound0.play();}
+							}
+						}
+					}
+				}	
+			else if (aplayer.mousestate==2){//if its the right button
+				if (aplayer.dockstate>=0){
+					systems[ps].outposts[aplayer.dockstate].undock(aplayer.ship);//undock function sets relative position and velocity.  Maybe other stuff.
+					aplayer.dockstate = -1;
+					}
+				if (aplayer.thruster>0){
+					aplayer.ship.thrust = 2*aplayer.thrustmultiplier;
+					//myplayer.thruster = myplayer.thruster - 24;
+					var td = 48;
+					var tr = 24;
+					var x = Math.cos(aplayer.ship.d+Math.PI)*td + canvas.width/2;
+					var y = Math.sin(aplayer.ship.d+Math.PI)*td + canvas.height/2;
+					context.beginPath();
+					context.strokeStyle = "orange";
+					context.arc(x, y, tr, 0, 2 * Math.PI, false);
+					context.fillStyle = "orange";
+					context.fill();
+					context.lineWidth = 2;
+					context.stroke();	
+					enginesound1.play();
+					}
+				} 
+			qq++;
+			}
+		}
+	playerkeys(){
+		var qq = 0;
+		while (qq<this.players.length){
+			aplayer = this.players[qq];
+			
+			switch (aplayer.input) {  //events for all the keyboard keys
+				case "q":
+					//unused for now
+				//if (cheatmode == 1){ qblaster.fire(systems[ps].ships[0],time); }
+				  break;   
+				 case "Delete":
+				 if (cheatmode == 0){cheatmode = 1;}
+				  break;    
+				case " ":
+				  playerradio.msgtime = 1;
+				  break;     
+				case "b": //Booster selection
+					if (aplayer.boosters[0]==aplayer.boosters.length-1){
+						aplayer.boosters[0]=0;
+					}else{
+						aplayer.boosters[0]=aplayer.boosters[0]+1;
+					}
+				  break;	
+				case "c": //supercompass toggle
+					supercompass++;
+					if (supercompass>3){supercompass = 0;}
+				  break;
+				case "g": //Booster activation
+					if (aplayer.boosters[aplayer.boosters[0]]>0){//if selected booster is in stock
+						aplayer.boosters[aplayer.boosters[0]]=aplayer.boosters[aplayer.boosters[0]]-1; //remove 1 from stock of selected booster
+						aplayer.ship.thrust = 32*2^(aplayer.boosters[0]); //boost hard
+						boost1.play();
+						}
+				  break;	  	  
+				case "1":    //This is how weapon switching is handled.
+					if (aplayer.blasters[1].phas){ aplayer.wep = 1; } //If weapon is present, switch to it.		
+					break; //Nothing happens on keypress otherwise.
+				case "2": 
+					if (aplayer.blasters[2].phas){ aplayer.wep = 2; }
+				  break;
+				case "3": 
+					if (aplayer.blasters[3].phas){ aplayer.wep = 3; }
+					  break;
+				case "4": 
+					if (aplayer.blasters[4].phas){ aplayer.wep = 4; }
+					break;
+				case "5": 
+					if (aplayer.blasters[5].phas){ aplayer.wep = 5; }
+				  break;
+				case "6": 
+					if (aplayer.blasters[6].phas){ aplayer.wep = 6; }
+					  break;
+				case "7": 
+					if (aplayer.blasters[7].phas){ aplayer.wep = 7; }
+				  break;
+				case "8": 
+					if (aplayer.blasters[8].phas){ aplayer.wep = 8; }
+					  break;
+				case "9": 
+					if (aplayer.blasters[9].phas){ aplayer.wep = 9; }
+				  break;
+				case "0": 
+					if (aplayer.blasters[0].phas){ aplayer.wep = 0; }
+					  break;
+				case "n": 
+					if (aplayer.navactive == 0){
+						aplayer.navactive = 1;
+						if (aplayer.navtarget>systems[ps].planets.length-2){aplayer.navtarget=0;}
+					} else if (aplayer.navactive == 1) {
+						aplayer.navactive = 2;
+						if (aplayer.navtarget > systems[ps].outposts.length-2){aplayer.navtarget=0;}
+					} else if (aplayer.navactive == 2){aplayer.navactive = 0;}
+					  break;
+				case "m": 
+					if (aplayer.mapactive == 0){aplayer.mapactive = 2;} else {aplayer.mapactive--;}
+					  break;
+				case "j": 
+					if (aplayer.journalactive<2){aplayer.journalactive++;}else{aplayer.journalactive = 0;}
+					  break;
+				case "+": 
+					aplayer.mapscale = aplayer.mapscale * 0.9;
+					if (aplayer.mapscale>64){aplayer.mapscale = Math.floor(aplayer.mapscale);}
+					  break;		  
+				case "-": 
+					aplayer.mapscale = aplayer.mapscale * 1.1;
+					if (aplayer.mapscale>64){aplayer.mapscale = Math.floor(aplayer.mapscale);}
+					  break;	  
+				case ".": 
+						if (aplayer.navactive == 1){
+							aplayer.navtarget++;
+							if (aplayer.navtarget > systems[ps].planets.length-2){ aplayer.navtarget = 0; }//Waldo is now excluded
+						}else if (aplayer.navactive == 2){
+							aplayer.navtarget++;
+							if (aplayer.navtarget > systems[ps].outposts.length-1){aplayer.navtarget = 0; }
+							}
+					  break;
+				case ",": 
+					if (aplayer.navactive == 1){
+						aplayer.navtarget--;
+						if (aplayer.navtarget == -1){ aplayer.navtarget = systems[ps].planets.length-2; }
+					}else if (aplayer.navactive == 2){
+						aplayer.navtarget--;
+						if (aplayer.navtarget == -1){ aplayer.navtarget = systems[ps].outposts.length-1; }
+						}
+					break;		  
+				case "w": 
+				if (cheatmode ==1){	aplayer.ship.respawn(systems[ps].planets[aplayer.navtarget]); }
+					  break;
+				case "]": 
+					if (aplayer.shiptarget == aplayer.shipsinrange.length-1){ aplayer.shiptarget = 0; }
+					else {aplayer.shiptarget++;}	                                          
+				  break;
+				case "[": 
+					if (aplayer.shiptarget == 0){ aplayer.shiptarget = aplayer.shipsinrange.length-1; }
+					else {aplayer.shiptarget--;}	                                          
+				  break;
+				case "t": 
+					//aplayer.shiptarget = closestindex;                                         
+				  break;
+				case "ArrowUp":
+					if (aplayer.dockstate>=0){
+						menuclick1.play();
+						aplayer.shopitem = aplayer.shopitem - 1;
+						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 0))
+							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].inv.length-1;}
+						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 1))
+							{aplayer.shopitem = allcargos.length-2;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
+						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 2))
+							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].missions.length-1;}
+						}
+					else if (aplayer.journalactive==1){
+						aplayer.journalitem--;
+						if (aplayer.journalitem<0){aplayer.journalitem = playerradio.log.length-1;}
+						}
+				  break;
+				case "ArrowDown":
+					if (aplayer.dockstate>=0){
+						menuclick1.play();
+						aplayer.shopitem++;
+						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].inv.length-1)&&(aplayer.shopmode == 0))
+							{aplayer.shopitem = 0;}
+						if ((aplayer.shopitem>allcargos.length-2)&&(aplayer.shopmode == 1))
+							{aplayer.shopitem = 0;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
+						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].missions.length-1)&&(aplayer.shopmode == 2))
+							{aplayer.shopitem = 0;}
+						}
+					if (aplayer.journalactive==1){
+						aplayer.journalitem++;
+						if (aplayer.journalitem>playerradio.log.length-1){aplayer.journalitem = 0;}
+						}
+				  break;   
+				case "End":
+					if (cheatmode == 1){aplayer.money = aplayer.money +10000;}
+				  break;  
+				case "Insert":
+					if (cheatmode == 1){
+						var i=0;
+						while (i<aplayer.blasters.length){
+							aplayer.blasters[i].phas = true;
+							i++;
+							}
+						}
+				  break;  
+				case "x":
+					//if (cheatmode == 1){
+					//	var clustercolor = "red";
+					//	testcluster = new Clusterbomb(time,ships[0].x+mdx,ships[0].y+mdy,ships[0].vx,ships[0].vy,12,6,32,0.9,clustercolor,233,0.3);
+					//	}
+				  break;   //handled in detail elsewhere
+				case "z":
+					if (diagnostic == 3){diagnostic=0;}else {diagnostic=diagnostic+1;}
+			
+				  break;
+				 case "v":
+				 if (cheatmode == 1){
+					if (ps <15){ps++;}
+					else  {ps = 1;}
+					aplayer.navtarget = 0;
+					pz = 0;
+					var randdir = Math.random()*2*Math.PI;
+					xxxx.setorbit(systems[ps].planets[0], 320000, randdir+Math.PI, -1);
+					waldo.setorbit(systems[ps].planets[0], 320000, randdir, -1);
+					aplayer.ship.vx = 0; //Otherwise players inherit the momentum acquired in descent.
+					aplayer.ship.vy = 0;
+					}
+				  break;
+				  case "s":
+				  if (starmode == 0){starmode = 1;}else{starmode = 0;}
+				  break;
+				 case "Enter": //The enter key purchases the currently selected shop item
+				 if ((aplayer.dockstate >= 0)&&(aplayer.dockstate<systems[ps].shops.length)){//check if docked and shop exists
+					if (aplayer.shopmode == 0){
+						 if (aplayer.shopitem < systems[ps].shops[aplayer.dockstate].inv.length){//check for shopitem exists
+							if (systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer) <= aplayer.money){ //check if player has enough money
+								if (systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].available(aplayer)){ //check if player has prerequisites / doesn't already own item
+									if (aplayer.money > systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer)){
+										aplayer.money = aplayer.money - systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer);
+										menubuy1.play();
+										systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].buy(aplayer);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+									}
+								} 
+							}
+						}		 
+					}else if (aplayer.shopmode == 1){
+						//if (playerinventory.cargo.length <= shopitem){shopitem = 0;}
+						if (aplayer.inventory.cargo[aplayer.shopitem]>0){
+							aplayer.inventory.cargo[aplayer.shopitem]=aplayer.inventory.cargo[aplayer.shopitem]-1;
+							aplayer.money = aplayer.money + Math.floor(allcargos[aplayer.shopitem].baseprice*systems[ps].shops[aplayer.dockstate].cargoprices[aplayer.shopitem]);
+							menubuy1.play();
+						}
+					}else if (aplayer.shopmode == 2){
+						//if (systems[ps].shops[dockstate].missions[shopitem].taken == false){//I shouldn't have to comment this if condition.  Side effect is that players can re-take a mission in progress, respawning the bot if it's a destroy mission.  Maybe useful if a bot gets lost just inside the return radius.
+							systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].take(systems[ps].ships,systems[ps].planets,aplayer);
+							aplayer.job = systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].message;
+							menuclick3.play();
+							//}
+						}
+					}
+				  break;
+				 case "Backspace": //The enter key purchases the currently selected shop item
+					if (aplayer.dockstate>=0){
+						menuclick2.play();
+						aplayer.shopmode++;
+						if (aplayer.shopmode > 2) { aplayer.shopmode = 0; }
+						aplayer.shopitem = 0;
+						}
+				  break;
+				 case "p": 
+					 aplayer.probemode = aplayer.probemode + 1;
+					if (aplayer.probemode > 2) { aplayer.probemode = 0;}
+				  break;
+				   case "a": 
+				   aplayer.autopilot++;
+					if (aplayer.autopilot > 1) { aplayer.autopilot = 0;}//disables experimental modes for playability
+					//if (autopilot > 4) { autopilot = 0;}
+				  break;
+				  
+				   case "k": 
+				   //save game
+					//console.log(aplayer.savecharacter());
+					//console.log(aplayer.saveblasters());
+			
+				 function download(filename, text) {
+					var element = document.createElement('a');
+					element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+					element.setAttribute('download', filename);
+				
+					element.style.display = 'none';
+					document.body.appendChild(element);
+				
+					element.click();
+				
+					document.body.removeChild(element);
+				}
+				
+				// Start file download.
+				document.getElementById("dwn-btn").addEventListener("click", function(){
+					// Generate download of hello.txt file with some content
+					var upgradestring = "";
+					var i=0;
+					while(i<allupgrades.length){
+						upgradestring=upgradestring+allupgrades[i].tier+" ";
+						i++;
+						}
+					var savetext = aplayer.saveupgrades()+"|"+aplayer.saveblasters()+"|"+aplayer.savecharacter()+"test junk data yo"; //document.getElementById("text-val").value;
+					var filename = "blinghustlesave.txt";
+					
+					download(filename, savetext);
+				}, false);
+				  break;	
+			
+				   case "l": 
+					var i=0;
+					var stopindexes = [];
+					while(i<loadgamestring.length){
+						if (loadgamestring[i]=="|"){
+							stopindexes.push(i);
+							}
+						i++;
+						}
+					if(stopindexes.length!=2){console.log("bad save file");}
+					else{
+						var savedupgrades = loadgamestring.slice(0,stopindexes[0]);
+						var savedblasters = loadgamestring.slice(stopindexes[0]+1,stopindexes[1]);
+						console.log(savedblasters);
+						var savedcharacter = loadgamestring.slice(stopindexes[1]+1,loadgamestring.length);
+						aplayer.loadblastertiers(savedblasters);
+						aplayer.loadcharacter(savedcharacter);
+						aplayer.loadupgrades(savedupgrades);
+						}
+			
+				  break;	  	  
+			
+				default:
+				  return; // Quit when this doesn't handle the key event.
+			  } //end event key handling switch
+
+
+
+			
+			
+			qq++;
+			}
+		}
 	randomplanets(){
 		var numplanets = Math.floor(Math.random()*6+6);//random number of planets, 5-11
 		var orbitradius = 0; //randomized in the loop
