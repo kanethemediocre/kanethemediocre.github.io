@@ -266,7 +266,6 @@ class Umo { //Universal Moving Object
 		var bv2mag = Math.sqrt(bvx2*bvx2+bvy2*bvy2);
 		var bvta2 = [bv2mag, bv2dir];//Also maybe backwards?
 		var bv2 = [bv2mag, bv2dir-dir];//Also maybe backwards?
-		
 		var avx2 = 2*that.m*bvx/this.m;
 		var avta2 = [avx2,0]; //Magnitude, direction again
 		var av2 = [avx2,dir]; //also maybe backwards?
@@ -307,7 +306,15 @@ class Umo { //Universal Moving Object
 		var y = this.y - viewy + canvas.height/2;
 		var color1 = this.c;
 		var color2 = this.c2;
-		var shieldcolor = "blue";
+		var shieldgradient = context.createRadialGradient(this.x-viewx+canvas.width/2, this.y-viewy+canvas.height/2, this.s-12, this.x-viewx+canvas.width/2, this.y-viewy+canvas.height/2, this.s+16);
+		shieldgradient.addColorStop(0, "white");
+		//shieldgradient.addColorStop(0.2, "blue");
+		shieldgradient.addColorStop(0.5, "blue");
+		//shieldgradient.addColorStop(0.5, "purple");
+		//shieldgradient.addColorStop(0.6, "blue");
+		//shieldgradient.addColorStop(0.8, "blue");
+		shieldgradient.addColorStop(1, "white");
+		var shieldcolor = shieldgradient;
 		if (this.damagestate>0){
 			color1 = randcolor();
 			color2 = randcolor();
@@ -315,7 +322,7 @@ class Umo { //Universal Moving Object
 		if (this.shielddamagestate>0){shieldcolor = randcolor(); }
 		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, color1, this.d);//ship polyon
 		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-8, color2, this.d);//ship polyon
-		var shieldthick = Math.floor(this.shield*4/this.maxshield); //shield
+		var shieldthick = Math.floor(this.shield*8/this.maxshield); //shield
 		if (shieldthick>0){ //Needs to not render at all sometimes because linewidth of 0 is ignored instead of invisible.
 			context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
 			context.arc(x, y, this.s+2, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.

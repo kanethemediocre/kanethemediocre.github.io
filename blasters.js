@@ -102,7 +102,7 @@ class Blaster{
 		this.xtier = this.xtier+1;
 		this.levelcalc();
 		}
-	fire(theship,thetime){ //thebombs would normally be an array with one member umo
+	fire(theplayer,thetime){ //thebombs would normally be an array with one member umo
 		var i=0; 
 		while (i<this.bombs.length){//first set/verify weapon properties on bomb
 			this.bombs[i].c=this.c;
@@ -140,38 +140,38 @@ class Blaster{
 				i=i+1;
 				}
 		}else if ((this.bombs.length==1)&&((this.type=="plain")||(this.type=="probe"))){ //single projectile handling is simplest
-			theship.launchbomb(this.bombs[0],this.speed,this.timer);	
+			theplayer.ship.launchbomb(this.bombs[0],this.speed,this.timer);	
 		}else if (this.type == "rapid"){
 			this.firing = 0;//not actually used, but -1 would indicate not firing, integer bomb indices would indicate which bomb was next in sequence.
 		}else if (this.type == "spread"){
 			//var spread = 0.5; //arbitrary angle in radians.
-			var spread = 0.0625 + 128/mousedistance; //Used global variable mousedistance here, shame....
+			var spread = 0.0625 + 128/theplayer.mousedistance; //Used global variable mousedistance here, shame....
 			if (spread>Math.PI){spread = Math.PI;}
 			var n = this.bombs.length;
 			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
-			var shipd = theship.d;
-			theship.d=theship.d+spread/2; //for above, theship.d=theship.d+0.25;
+			var shipd = theplayer.ship.d;
+			theplayer.ship.d=theplayer.ship.d+spread/2; //for above, theship.d=theship.d+0.25;
 			var i=0;
 			while (i<n){
-				theship.launchbomb(this.bombs[i],this.speed,this.timer);	
-				theship.d = theship.d-interspread;
+				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
+				theplayer.ship.d = theplayer.ship.d-interspread;
 				i=i+1;
 				}
-			theship.d = shipd;
+			theplayer.ship.d = shipd;
 		}else if (this.type == "fixedspread"){
 			var spread = Math.PI/2; //arbitrary angle in radians.
 			var n = this.bombs.length;
 			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
-			var shipd = theship.d;
-			theship.d=theship.d+spread/2; //for above, theship.d=theship.d+0.25;
+			var shipd = theplayer.ship.d;
+			theplayer.ship.d=theplayer.ship.d+spread/2; //for above, theship.d=theship.d+0.25;
 			var i=0;
 			while (i<n){
-				theship.launchbomb(this.bombs[i],this.speed,this.timer);	
-				theship.d = theship.d-interspread;
+				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
+				theplayer.ship.d = theplayer.ship.d-interspread;
 				i=i+1;
 				}
-			theship.d = shipd;
-		}
+			theplayer.ship.d = shipd;
+			}
 		}
 	draw(viewx,viewy){
 		var i = 0;

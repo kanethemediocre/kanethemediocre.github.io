@@ -647,6 +647,237 @@ class System{
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
 		var  i = externalplanets.length;//unfinished, unused, but a good idea. 		
 	}
+	planetsmpsummary(){//For onboarding new system
+		var pupdate = [];
+		var i=0;
+		while(i<this.planets.length){
+			var p = this.planets[i]
+			pupdate.push([Math.floor(p.x), Math.floor(p.y), p.vx, p.vy, p.name, p.c, p.c2, p.s, p.polyradius, p.polytheta, p.parentid])
+			i++;
+			}
+		return pupdate;
+		}
+	planetsmpload(pupdate){
+		var i=0;
+		this.planets = [];
+		while (i<pupdate.length){
+			this.planets.push(new Umo(pupdate[i][0],pupdate[i][1],pupdate[i][7],pupdate[i][5]));
+			//this.planets[i].x = pupdate[i][0];
+			//this.planets[i].y = pupdate[i][1];
+			this.planets[i].vx = pupdate[i][2];
+			this.planets[i].vy = pupdate[i][3];
+			this.planets[i].name = pupdate[i][4];
+			//this.planets[i].c = pupdate[i][5];
+			this.planets[i].c2 = pupdate[i][6];
+			//this.planets[i].s = pupdate[i][7];
+			this.planets[i].polyradius = pupdate[i][8];
+			this.planets[i].polytheta = pupdate[i][9];
+			this.planets[i].parentid = pupdate[i][10]
+			i++;
+			}
+		}
+	planetsmpupdate(){//For occasional corrections, maybe once per second
+		var pupdate = [];
+		var i=0;
+		while(i<this.planets.length){
+			var p = this.planets[i]
+			pupdate.push([Math.floor(p.x), Math.floor(p.y), p.vx, p.vy])
+			i++;
+			}
+		return pupdate;
+		}
+	planetsmpcorrect(pupdate){
+		var i=0;
+		while (i<this.planets.length){
+			this.planets[i].x = pupdate[i][0];
+			this.planets[i].y = pupdate[i][1];
+			this.planets[i].vx = pupdate[i][2];
+			this.planets[i].vy = pupdate[i][3];
+			i++;
+			}
+		}
+	playersmpsummary(){//For onboarding new system
+		var pupdate = [];
+		var i=0;
+		while(i<this.players.length){
+			var p = this.players[i].ship
+			console.log("p.x="+p.x);
+			pupdate.push([Math.floor(p.x), Math.floor(p.y), p.vx, p.vy, p.name, p.c, p.c2, p.s, p.polyradius, p.polytheta, p.parentid,p.maxhp,p.maxshield]);
+			i++;
+			}
+		console.log("Playersmpsummary player 0 X "+pupdate[0][0]+" Y "+pupdate[0][1])
+		return pupdate;
+		}
+	playersmpload(pupdate){
+		var i=0;
+		this.players = [];
+		while (i<pupdate.length){
+			this.players.push(new Player());
+			this.players[i].ship.x = pupdate[i][0];
+			this.players[i].ship.y = pupdate[i][1];
+			this.players[i].ship.vx = pupdate[i][2];
+			this.players[i].ship.vy = pupdate[i][3];
+			this.players[i].ship.name = pupdate[i][4];
+			this.players[i].ship.c = pupdate[i][5];
+			this.players[i].ship.c2 = pupdate[i][6];
+			this.players[i].ship.s = pupdate[i][7];
+			this.players[i].ship.polyradius = pupdate[i][8];
+			this.players[i].ship.polytheta = pupdate[i][9];
+			this.players[i].ship.parentid = pupdate[i][10]
+			this.players[i].ship.maxhp = pupdate[i][11];
+			this.players[i].ship.maxshield = pupdate[i][12]
+			i++;
+			}
+		}
+	playersmpupdate(){//For occasional corrections, maybe once per second
+		var pupdate = [];
+		var i=0;
+		while(i<this.players.length){
+			var p = this.players[i].ship
+			pupdate.push([Math.floor(p.x), Math.floor(p.y), p.vx, p.vy, p.d])
+			i++;
+			}
+		return pupdate;
+		}
+	playersmpcorrect(pupdate){
+		var i=0;
+		while (i<this.players.length){
+			this.players[i].ship.x = pupdate[i][0];
+			this.players[i].ship.y = pupdate[i][1];
+			this.players[i].ship.vx = pupdate[i][2];
+			this.players[i].ship.vy = pupdate[i][3];
+			this.players[i].ship.d = pupdate[i][4];
+			i++;
+			}
+		}
+
+
+	shipsmpsummary(){//For onboarding new system
+		var supdate = [];
+		//var i=0;
+		//while(i<this.players.length){
+		//	var p = this.players[i];
+			var j=0;
+			while(j<this.ships.length){
+				var s = this.ships[j];
+				supdate.push([Math.floor(s.x), Math.floor(s.y), s.vx, s.vy, s.name, s.c, s.c2, s.s, s.polyradius, s.polytheta, s.parentid,s.maxhp,s.maxshield]);
+				j++;
+				}
+			//i++;
+			//}
+		console.log("Shipsmpsummary ship 0 X "+supdate[0][0]+" Y "+supdate[0][1])
+		return supdate;
+		}
+	shipsmpload(supdate){
+		var i=0;
+		this.ships = [];
+		while (i<supdate.length){
+			this.ships.push(new Umo(supdate[i][0],supdate[i][1],supdate[i][7],supdate[i][5]));
+			//this.ships[i].x = supdate[i][0];
+			//this.ships[i].y = supdate[i][1];
+			this.ships[i].vx = supdate[i][2];
+			this.ships[i].vy = supdate[i][3];
+			this.ships[i].name = supdate[i][4];
+			//this.ships[i].c = supdate[i][5];
+			this.ships[i].c2 = supdate[i][6];
+			//this.ships[i].s = supdate[i][7];
+			this.ships[i].polyradius = supdate[i][8];
+			this.ships[i].polytheta = supdate[i][9];
+			this.ships[i].parentid = supdate[i][10]
+			this.ships[i].maxhp = supdate[i][11];
+			this.ships[i].maxshield = supdate[i][12]
+			i++;
+			}
+		}
+	shipsmpupdate(){//Personalized updates for ships in radar range.  Each player gets their own array of ship update arrays within the total supdate array.
+		var supdate = [];
+		var i=0;
+		while(i<this.players.length){
+			var p = this.players[i];
+			var j = 0;
+			while (j<this.ships.length){
+				var s = this.ships[j];
+				if (p.ship.distance(s)<p.radarrange){
+					supdate.push([Math.floor(s.x), Math.floor(s.y), s.vx, s.vy, s.d, s.hp, s.shield, j]);	//j needed to identify ship to update
+					}
+				j++;
+				}
+			i++;
+			}
+		return supdate;
+		}
+	shipsmpcorrect(supdate){//This supdate is one element from theshipsmp supdate, to be passed by server to each client individually.
+		var i=0; //Its used to continuously update rather than correct.
+		while (i<supdate.length){
+			var shipindex = supdate[i][7];
+			this.ships[shipindex].x = supdate[i][0];
+			this.ships[shipindex].y = supdate[i][1];
+			this.ships[shipindex].vx = supdate[i][2];
+			this.ships[shipindex].vy = supdate[i][3];
+			this.ships[shipindex].d = supdate[i][4];
+			this.ships[shipindex].hp = supdate[i][5];
+			this.ships[shipindex].shield = supdate[i][6];
+			i++;
+			}
+		}
+	botbombsmpsummary(){//For onboarding new system
+		var bupdate = [];
+		var j=0;
+		while(j<this.botbombs.length){
+			var b = this.botbombs[j];
+			console.log("b.x "+b.x);
+			bupdate.push([Math.floor(b.x), Math.floor(b.y), b.vx, b.vy, b.c, b.s, b.boombuff, b.hurt]);
+			j++;
+			}
+
+		console.log("Botbombsmpsummary botbomb 0 X "+bupdate[0][0]+" Y "+bupdate[0][1])
+		return bupdate;
+		}
+	botbombsmpload(bupdate){
+		var i=0;
+		this.botbombs = [];
+		while (i<bupdate.length){
+			this.botbombs.push(new Umo(bupdate[i][0],bupdate[i][1],bupdate[i][5],bupdate[i][4]));
+			//this.botbombs[i].x = bupdate[i][0];
+			//this.botbombs[i].y = bupdate[i][1];
+			this.botbombs[i].vx = bupdate[i][2];
+			this.botbombs[i].vy = bupdate[i][3];
+			//this.botbombs[i].c = bupdate[i][4];
+			//this.botbombs[i].s = bupdate[i][5];
+			this.botbombs[i].boombuff = bupdate[i][6];
+			this.botbombs[i].hurt = bupdate[i][7];
+			i++;
+			}
+		}
+	botbombsmpupdate(){//Personalized updates for ships in radar range.  Each player gets their own array of ship update arrays within the total supdate array.
+		var bupdate = [];
+		var i=0;
+		while(i<this.players.length){
+			var p = this.players[i];
+			var j = 0;
+			while (j<this.botbombs.length){
+				var b = this.botbombs[j];
+				if (p.ship.distance(b)<p.radarrange){
+					bupdate.push([Math.floor(b.x), Math.floor(b.y), b.vx, b.vy, b.timer, j]);	
+					}
+				j++;
+				}
+			i++;
+			}
+		return bupdate;
+		}
+	botbombsmpcorrect(bupdate){//This bupdate is one element from thebotbombsmp bupdate, to be passed by server to each client individually.
+		var i=0; //Its used to continuously update rather than correct, same with shipsmpcorrect
+		while (i<bupdate.length){
+			var bombindex = bupdate[i][5];
+			this.botbombs[bombindex].x = bupdate[i][0];
+			this.botbombs[bombindex].y = bupdate[i][1];
+			this.botbombs[bombindex].vx = bupdate[i][2];
+			this.botbombs[bombindex].vy = bupdate[i][3];
+			this.botbombs[bombindex].timer = bupdate[i][4];
+			i++;
+			}
+		}
 	playermice(){
 		var qq = 0;
 		while (qq<this.players.length){
@@ -659,7 +890,7 @@ class System{
 					if (aplayer.energy>aplayer.blasters[aplayer.wep].ecost){
 						//console.log("itried2");
 						if (aplayer.blasters[aplayer.wep].type!=="beam"){
-							aplayer.blasters[aplayer.wep].fire(aplayer.ship,time);
+							aplayer.blasters[aplayer.wep].fire(aplayer,time);
 							aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
 							//console.log("itried1");
 							if (aplayer.wep == 1){blastersound1.play();}
