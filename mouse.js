@@ -12,6 +12,8 @@ document.addEventListener("mousedown", mouseDownHandler, false);
 function mouseDownHandler(e) {
 var myplayer = systems[1].players[myi];
 myplayer.mousestate = e.buttons;
+myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
+myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
 systems[ps].playermice();
 }
 document.addEventListener("mouseup", mouseUpHandler, false);

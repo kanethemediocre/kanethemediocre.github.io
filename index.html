@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v285 by Andrew Kane </title>
+    <title>Bling Hustle v290 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -71,6 +71,7 @@ var menucontrols = false;
 var upgradesavestring="";
 var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
+var playerselect = 0;
 
 var blastersound1 = new Audio("bubble4_short2.mp3");
 var blastersound2 = new Audio("close_door_12.mp3");
@@ -515,7 +516,7 @@ function update() {
 		if (supercompass>1){
 			systems[ps].drawshipfinder(0,300);
 			}
-		hud(0);//0 is the player index.  Since this is the single player code it's 0, the only player in the array. 
+		hud(myi);//myi is the player index.  
 	}
 	systems[ps].updateall(); //Updates everthing in system
 	systems[ps].gravitateall(); //gravitates everything in system

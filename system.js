@@ -392,12 +392,12 @@ class System{
 			i++;
 		}
 		//also check for expired explosions and remove them from this.explosions
-		var index = -1;
+		//var index = -1;
 		var i=0;
 		while (i<this.explosions.length){
 			if (this.explosions.timer<=0){
 				this.explosions.splice(i, 1);
-				i=this.explosions.length;
+				i=this.explosions.length;//Exits loop.  Maybe don't do this?  
 				}
 			i++;
 			}
@@ -497,7 +497,7 @@ class System{
 				j = j-1;
 				var k=0;
 				while(k<this.turrets[j].bombs.length){
-					this.planets[i].circlecollide(this.turrets[j].bombs[k]); //Only checks 1 bomb, currently they only have 1 bomb.
+					this.planets[i].circlecollide(this.turrets[j].bombs[k]); 
 					k++;
 					}
 				}
@@ -537,6 +537,16 @@ class System{
 			var j=0;
 			while(j<this.players.length){
 				this.players[j].ship.circlecollide2(this.ships[i])
+				j++;
+				}
+			i++;
+			}
+		var i = 0; //for each player (.ship)
+		var j = 0;
+		while (i<this.players.length){
+			j=i+1;
+			while(j<this.players.length){
+				this.players[j].ship.circlecollide2(this.players[i].ship);	
 				j++;
 				}
 			i++;
@@ -596,14 +606,14 @@ class System{
 
 
 			var j = 0;
-			while (j<this.players[i].blasters.length){ //global scope, shame.  All this is about the allblasters bombs.
+			while (j<this.players[i].blasters.length){ 
 				var k = 0;
-				while (k<this.players[i].blasters[j].bombs.length){ //Global scope all over here.
+				while (k<this.players[i].blasters[j].bombs.length){ 
 					var m = 0;
 					while (m<this.ships.length){
 						if (this.ships[m].hp>0){
 							this.players[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
-							if (this.ships[m].hp<0){ //This is getting repeated allblasters.length times, not sure how best to fix
+							if (this.ships[m].hp<0){ 
 								if (this.ships[m].ai=="enemy"){
 									var getcash = Math.floor(Math.random()*21+10)*this.ships[m].level;
 									this.players[i].money = this.players[i].money + getcash;
@@ -622,7 +632,15 @@ class System{
 								}
 							}
 						m++;
-						}	
+						}
+					var m = 0;
+					while (m<this.players.length){
+						this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
+						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
+						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
+						//	}
+						m++;
+						}
 					k++;
 					}
 				j++;
@@ -632,15 +650,19 @@ class System{
 
 		var i=0;
 		while (i<this.bling.length){
-			if (this.players[0].ship.collide(this.bling[i])){
-				this.players[0].money = this.players[0].money + this.bling[i].value;
-				this.players[0].gotmoney = [30,this.bling[i].value];
-				this.bling.splice(i, 1);
-				cashsound1.play();
-				//i=this.bling.length;
-			}
+			var j = 0;
+			while (j<this.players.length){
+				if (this.players[j].ship.collide(this.bling[i])){
+					this.players[j].money = this.players[0].money + this.bling[i].value;
+					this.players[j].gotmoney = [30,this.bling[i].value];
+					this.bling.splice(i, 1);
+					cashsound1.play();
+					//i=this.bling.length;
+					}
+				j++
+				}	
 			i++;
-		}
+			}
 
 
 	}	
@@ -929,6 +951,7 @@ class System{
 					enginesound1.play();
 					}
 				} 
+			aplayer.mousestate = 0;
 			qq++;
 			}
 		}
@@ -1052,6 +1075,7 @@ class System{
 					//aplayer.shiptarget = closestindex;                                         
 				  break;
 				case "ArrowUp":
+					console.log("ihearya")
 					if (aplayer.dockstate>=0){
 						menuclick1.play();
 						aplayer.shopitem = aplayer.shopitem - 1;
@@ -1226,7 +1250,8 @@ class System{
 				  break;	  	  
 			
 				default:
-				  return; // Quit when this doesn't handle the key event.
+				  break;
+					//return; // Quit when this doesn't handle the key event.
 			  } //end event key handling switch
 
 

@@ -41,7 +41,7 @@ class Shopitem{
 		if (this.type == "blaster"){
 			thisprice = theplayer.blasters[this.i].nextupcost();
 		}else if (this.type == "cargo"){
-			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[this.i]);//fix use of allshops here, so prices are proper random in random systems
+			thisprice = Math.floor(allcargos[this.i].baseprice*allshops[theplayer.dockstate].cargoprices[this.i]);//fix use of allshops here, so prices are proper random in random systems
 		}else if (this.type == "upgrade"){
 			thisprice = theplayer.upgrades[this.i].price*2**(theplayer.upgrades[this.i].tier);
 		}else if (this.type == "booster"){
