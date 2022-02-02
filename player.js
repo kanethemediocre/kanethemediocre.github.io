@@ -19,14 +19,9 @@ class Player{
         this.energy = 100;
         this.thruster = 100;
         this.gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
-        //this.drawdistance = Math.sqrt(canvas.width*canvas.width/4+canvas.height*canvas.height/4)+200;
-        //this.mdx = 0; //I think these were for the mouse?  Not sure if used.
-        //this.mdy = 0;
-        //this.a1 = 0; //armor upgrades
-        //this.s1 = 0; //Shield upgrades
         this.wep = 1; //Currently selected weapon
-        //var moused = 0; //Direction currently indicated by mouse
-        //var mousedistance = 0; // Distance to mouse cursor
+        this.moused = 0; //Direction currently indicated by mouse
+        this.mousedistance = 0; // Distance to mouse cursor
         this.mousestate = 0; //describes state of mouse buttons
         this.shop = 0; //O indicates not shopping, 1 indicates a shop, 2 might indicate a different shop....
         this.shopitem = 0; //Indicates item selected in the shop.
@@ -34,25 +29,15 @@ class Player{
         this.dockstate = -1; //Player dock status, 0 is undocked, 1 is docked at station 1, etc...
         this.shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
         this.radarrange = 4000;//Defines distance a ship can be from the player and still be targetable
-        //var closestdistance = 999999;//needs to be larger than radarrange 
-        //var closestindex = 0; //defaults to self-targeting if no ships in range
         this.storytime = 0;//timestamp of last story event
-        //this.storymessages = loadstorymessages();//storytext.js
         this.task = "Read the tutorial"; //main story mission line
         this.job = "None"; //latest task from a station.
         this.jobs = [];
         this.boosters = [0,16,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
-        //var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
         this.shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
-        //var cheatmode = 0; //0 = not a cheater
-        this.ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
+        this.ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword.  Not sure if I need this.
         this.probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
-        //var starmode = 1; //0 for no starfield.
-        //let testfield = new Starfield(30000,20000,64,1000,4000,32);
-        //var pz = 0;
         this.autopilot = 0; //0 is off, higher numbers are other modes
-        //var menuabout = false;
-        //var menucontrols = false;
     }
     loadblasters(theblasters){
         var i=0;
@@ -93,7 +78,6 @@ class Player{
             }
             i++;
         }
-
     }
     savecharacter(){//returns a string with all saved character data
         var savestring = "";
@@ -184,11 +168,3 @@ class Player{
     }
 var testplayer = new Player();
 
-
-const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
-
-console.log(animals.slice(2));
-// expected output: Array ["camel", "duck", "elephant"]
-
-console.log(animals.slice(2, 4));
-// expected output: Array ["camel", "duck"]

@@ -156,7 +156,7 @@ function hud(playerindex){
 	context.fillStyle = "green"; 
 	context.fillText("task: "+myplayer.task,8,200);
 	context.fillStyle = "yellow";
-	context.fillText("job: ("+myplayer.jobs+" jobs) "+myplayer.job,8,216);
+	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,216);
 	context.fillStyle = "white";
 	context.fillText("dockstate: "+myplayer.dockstate,8,250);//Debugging stuff
 	context.fillText("storystate: "+myplayer.storystate,8,266);
@@ -222,6 +222,4 @@ if (cheatmode == 1){
 	context.font = "12px Ariel";
 	context.fillText("End key gives money, Q key fires scrt blaster, W key warps to planet, V warps to next solar system, X summons rainbow monster",canvas.width/2-300,48);	
 	}
-
-
 }

@@ -466,7 +466,7 @@ class System{
 				}
 			}	
 		}
-	dockcheck(dockstate){ 
+	dockcheck(dockstate){ //This is obseletes all kinds of ways, assuming its even called anymore.
 		var i=0;
 		while (i<outposts.length){
 			if (ships[0].distance(outposts[i])<160){
@@ -602,9 +602,6 @@ class System{
 				j++;
 			}
 
-
-
-
 			var j = 0;
 			while (j<this.players[i].blasters.length){ 
 				var k = 0;
@@ -653,7 +650,7 @@ class System{
 			var j = 0;
 			while (j<this.players.length){
 				if (this.players[j].ship.collide(this.bling[i])){
-					this.players[j].money = this.players[0].money + this.bling[i].value;
+					this.players[j].money = this.players[j].money + this.bling[i].value;
 					this.players[j].gotmoney = [30,this.bling[i].value];
 					this.bling.splice(i, 1);
 					cashsound1.play();
@@ -1167,11 +1164,11 @@ class System{
 							menubuy1.play();
 						}
 					}else if (aplayer.shopmode == 2){
-						//if (systems[ps].shops[dockstate].missions[shopitem].taken == false){//I shouldn't have to comment this if condition.  Side effect is that players can re-take a mission in progress, respawning the bot if it's a destroy mission.  Maybe useful if a bot gets lost just inside the return radius.
+						if (systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].taken == false){//I shouldn't have to comment this if condition.  Side effect is that players can re-take a mission in progress, respawning the bot if it's a destroy mission.  Maybe useful if a bot gets lost just inside the return radius.
 							systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].take(systems[ps].ships,systems[ps].planets,aplayer);
-							aplayer.job = systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].message;
+							//aplayer.job = systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].message;//moved to take()
 							menuclick3.play();
-							//}
+							}
 						}
 					}
 				  break;

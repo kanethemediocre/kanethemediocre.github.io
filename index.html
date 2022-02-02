@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v290 by Andrew Kane </title>
+    <title>Bling Hustle v295 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -288,8 +288,8 @@ while (i<4){
 var i = 0;//Duplicated for trinidad system.  Need to automate this for curated systems.
 while (i<4){
 	var j = 0;
-	while (j<systems[2].shops.length){
-		systems[2].shops[j].addcargomission(systems[2].ships,systems[2].planets,systems[2].outposts);
+	while (j<systems[3].shops.length){
+		systems[3].shops[j].addcargomission(systems[3].ships,systems[3].planets,systems[3].outposts);
 		j=j+1;
 		}
 	i=i+1
@@ -303,7 +303,7 @@ while (i<4){
 		}
 	i=i+1
 	}	
-
+//no kill missions for napa?
 var i = 0;
 while (i<4){
 	var j = 0;
@@ -446,25 +446,32 @@ function update() {
 //Outpost stuff all handled here.....
 	var i=0;
 	while (i<systems[ps].outposts.length){ //for all outposts
-		if (myship.distance(systems[ps].outposts[i])<160){
-			systems[ps].outposts[i].dock(myship);
-			myplayer.dockstate = i;
-			}
-		var j= 0;
-		while (j<systems[ps].shops[i].missions.length){//for all missions (j) from shop at outpost (i)
-			var mischeck = systems[ps].shops[i].missions[j].check(systems[ps].ships,systems[ps].planets,playerradio);//theships,theplanets,theradio
-			if (mischeck[0]>0){
-				myplayer.money = myplayer.money + mischeck[0];
-				if (mischeck[1]>0){myplayer.storystate = mischeck[1];}
+		var qq = 0;
+		while (qq<systems[ps].players.length){
+			if (systems[ps].players[qq].ship.distance(systems[ps].outposts[i])<160){
+				systems[ps].outposts[i].dock(systems[ps].players[qq].ship);
+				systems[ps].players[qq].dockstate = i;
 				}
-			j=j+1;
+			qq++;
 			}
-		i=i+1;
+		var j= 0;//This mission handling needs an overhaul to handle multiple players. Mission class now has taker member equal to name of player that took the mission.
+		while (j<systems[ps].shops[i].missions.length){//for all missions (j) from shop at outpost (i)
+			var k = 0;
+			while (k<systems[ps].players.length){
+				var mischeck = systems[ps].shops[i].missions[j].check(systems[ps].players[k],systems[ps].ships,systems[ps].planets,playerradio);//theships,theplanets,theradio
+				if (mischeck[0]>0){
+					systems[ps].players[k].money = systems[ps].players[k].money + mischeck[0];
+					if (mischeck[1]>0){systems[ps].players[k].storystate = mischeck[1];}
+					}
+				k++;
+				}
+			j++;
+			}
+		i++;
 		}
-
-	var tempthing = systems[ps].nextjob();
-	myplayer.job = tempthing[0];
-	myplayer.jobs = tempthing[1];
+	//var tempthing = systems[ps].nextjob();
+	//myplayer.job = tempthing[0];
+	//myplayer.jobs = tempthing[1];
 ////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
 	if (myship.distance(waldo)>10000){
 		waldo.s = 100000000000000000 / (myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo));// hz * hz / dist * dist

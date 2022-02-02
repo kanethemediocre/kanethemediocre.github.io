@@ -32,12 +32,14 @@ window.addEventListener("keydown", function (event) {
       i++;
     }
     systems[ps].players[systems[ps].players.length-1].ship.setorbit(systems[ps].planets[0], 32000, 0.215+Math.random()*0.01, 1);
-    systems[ps].players[systems[ps].players.length-1].storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
+    systems[ps].players[systems[ps].players.length-1].storystate = 999;
+    systems[ps].players[systems[ps].players.length-1].name = "ID "+ time;
     console.log("there are now "+systems[ps].players.length+" players.");
+    console.log("Last players name  "+systems[ps].players[systems[ps].players.length-1].name);
     }else if ((event.key == "o")&&(systems[ps].players.length>1)){
       var i=0;
       while(i<systems.length){
-        systems[i].players.splice(i,1);
+        systems[i].players.splice(myi,1);
         i++;
         }
       if (myi >=systems[ps].players.length){ myi = 0; }
