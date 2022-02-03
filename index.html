@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v295 by Andrew Kane </title>
+    <title>Bling Hustle v298 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -42,6 +42,7 @@
 <script type="text/javascript" src="turrets.js"></script>
 <script>
 // declare global variables/////////////////////////////////////////////////
+var mytime = Date.now();
 const FPS = 60;
 setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
@@ -64,7 +65,8 @@ var cheatmode = 0; //0 = not a cheater
 var ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
 var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
 var starmode = 1; //0 for no starfield.
-let testfield = new Starfield(30000,20000,64,1000,4000,32);
+//let testfield = new Starfield(30000,20000,64,1000,4000,32);
+let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
 var pz = 0;
 var menuabout = false;
 var menucontrols = false;
@@ -368,7 +370,10 @@ systems[1].addrandombling(50);
 ////////update function this is the game loop bruh///////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update() {
-	time = time + 1;
+	var truetime = Date.now();
+  	var servertime = mytime+Math.floor(time*1000/FPS);
+  	if (servertime<truetime){
+	time++;
 	var vwx = systems[ps].players[myi].ship.x;
 	var vwy = systems[ps].players[myi].ship.y;
 	var myplayer = systems[ps].players[myi];
@@ -390,7 +395,8 @@ function update() {
 	}
 	if (starmode == 1){	
 		pz = (ps-1)*4+(waldo.s/6000);
-		testfield.draw(vwx,vwy,pz,testfield.zmax);
+		//testfield.draw(vwx,vwy,pz,testfield.zmax);
+		testfield2.draw(vwx,vwy,pz);
 		}
 	//Menu system handling///////////////////////////////////////////////	
 	if (ps==0){
@@ -659,7 +665,23 @@ while(i<systems[ps].bling.length){
 	i++;
 	}
 storycheck(0);//0 is player index
-}//end update function
+
+
+if(time%2==0){
+    var truetime = Date.now();
+    var servertime = mytime+Math.floor(time*1000/FPS);
+    if (time%FPS==0){console.log("True time: "+truetime+"Server time: "+servertime+"dt: "+(truetime-servertime));}
+    if ((servertime+1000/FPS)<truetime){
+      update();
+      console.log("Running extra frame because server is behind "+(truetime-servertime)+" ms");
+      }
+    }
+
+
+	
+  }else{console.log("Extra loop skipped because server is ahead "+(servertime-truetime)+"ms");}
+
+}
 
 </script>
 </body>
