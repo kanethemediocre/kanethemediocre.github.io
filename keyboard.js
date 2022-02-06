@@ -3,12 +3,12 @@ window.addEventListener("keydown", function (event) {
   if (event.defaultPrevented) {
     return; // Do nothing if the event was already processed
   }
-  if (event.key == "u"){
+  if ((event.key == "u")&&(cheatmode==1)){
     myi++;
     if (myi>systems[ps].players.length-1){
       myi=0;
       }
-    }else if (event.key == "i"){
+    }else if ((event.key == "i")&&(cheatmode==1)){
       var aplayer = new Player();
     aplayer.ship.hp = 1000;
     aplayer.ship.maxhp = 1000;
@@ -36,7 +36,7 @@ window.addEventListener("keydown", function (event) {
     systems[ps].players[systems[ps].players.length-1].name = "ID "+ time;
     console.log("there are now "+systems[ps].players.length+" players.");
     console.log("Last players name  "+systems[ps].players[systems[ps].players.length-1].name);
-    }else if ((event.key == "o")&&(systems[ps].players.length>1)){
+    }else if ((event.key == "o")&&(systems[ps].players.length>1)&&(cheatmode==1)){
       var i=0;
       while(i<systems.length){
         systems[i].players.splice(myi,1);
