@@ -130,8 +130,22 @@ function loadhomesystem(){
 	//xxxx.name = "Xxxx";
 	//xxxx.setorbit(sun,320000,0,-1);
 	//xxxx.parentid = 0;
-	
-	
 	let homeplanets = [sun,murc,vnus,earf,moon,merz,fobz,deem,jupe,heyo,erpa,mede,isto,tern,thys,dion,raya,itan,peet,anus,aril,umbi,titi,bron,tune,tron];
+	var i = 0; //This randomizes planetary dots for home system.
+	while (i<homeplanets.length){
+		var j=0;
+		var extradots = Math.floor(Math.random()*3);
+		while(extradots>0){
+			homeplanets[i].polyradius.push(0);
+			homeplanets[i].polytheta.push(0);
+			extradots = extradots - 1;
+			}
+		while (j<homeplanets[i].polytheta.length){
+			homeplanets[i].polyradius[j] = Math.random()+0.125;
+			homeplanets[i].polytheta[j] = Math.random()*2*Math.PI;
+			j=j+1;
+			}
+		i=i+1;
+		}
 	return homeplanets;
 	}

@@ -20,5 +20,21 @@ function loadmenusystem(){
 	controls.c2 = "teal";
 	controls.m = 0;
 	let menuplanets = [about,playstory,playfree,playrandom,controls];
+	var i = 0; //This randomizes planetary dots for home system.
+	while (i<menuplanets.length){
+		var j=0;
+		var extradots = Math.floor(Math.random()*3);
+		while(extradots>0){
+			menuplanets[i].polyradius.push(0);
+			menuplanets[i].polytheta.push(0);
+			extradots = extradots - 1;
+			}
+		while (j<menuplanets[i].polytheta.length){
+			menuplanets[i].polyradius[j] = Math.random()+0.125;
+			menuplanets[i].polytheta[j] = Math.random()*2*Math.PI;
+			j=j+1;
+			}
+		i=i+1;
+		}
 	return menuplanets;
 	}
