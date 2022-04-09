@@ -310,8 +310,8 @@ class Blaster{
 	 //weapon1.etier = 1; //testing bounce stuff
 	 let weapon2 = new Blaster("Mine","Powerful but very slow moving bomb.  This blaster needs to be used in conjunction with some combination of thrusters and clever planning.",500,"plain",                                 
 	 40,10,10,1,0,0,2,0.2,10,1,0,0,1800,300,10,40,"purple","ID not implemented");
-	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"plain",
-	 10,5,10,12,2,10,1.4,0.2,10,1,0,0,16,8,10,25,"green","ID not implemented");
+	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"fixedspread",
+	 8,4,10,12,2,10,1.2,0.2,10,2,1,10,16,8,10,25,"green","ID not implemented");
 	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
 	 40,10,10,20,4,4,0.2,0,0,1,0,0,80,8,10,80,"blue","ID not implemented");
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               

@@ -115,6 +115,11 @@ function hud(playerindex){
 		var navchart2 = [ ["Name","Class", "Size", "Mass", "Parent", "Orbit Radius", "Orbit speed", "Orbit Position"], [name, pclass, size, mass, parent, Math.floor(orbitradius), Math.floor(orbitspeed), orbitpos.toFixed(3)],  ["Distance","DeltaV", "Cos DV", "Sin DV", "Gravity", "Escape","X","Y"], [Math.floor(distance),deltav, cosdv.toFixed(3), sindv.toFixed(3), gravity, escape.toFixed(3),Math.floor(thenavtarget.x), Math.floor(thenavtarget.y)]  ];
 		showchart(navchart2, 80, 16, canvas.width-480,canvas.height-160);	
 		}
+	else {
+		context.font = '20px Ariel';
+		context.fillStyle = "white";
+		context.fillText("Navigation is off", canvas.width-160, canvas.height-16);
+		}
 	//context.fillText("Press N key to cycle navigation computer mode",canvas.width-300,canvas.height-8);
 ////////////////////////Map/////////////////////////////////////
 			//if (mapactive == 1){drawmap(planets,256,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y);}
@@ -133,30 +138,31 @@ function hud(playerindex){
 	var statuschart1 = [ ["Health","Shields", "Weapons", "Thrusters"]  ];
 	showchart(statuschart1, 80, 20, 8,16);	
 	context.fillText("Money",5,90);
-	context.fillText(myplayer.money,50,90);
-	if (myplayer.gotmoney[0]>0){
-		myplayer.gotmoney[0] = myplayer.gotmoney[0]-1;
+	context.fillText(myplayer.money,50,90);//Displays how much money the player has
+	if (myplayer.gotmoney[0]>0){//If the player has received money recently, display how much and decrement the display lifetime of that event.
+		myplayer.gotmoney[0] = myplayer.gotmoney[0]-1;//gotmoney[0] is the timer integer
 		context.fillStyle = "green";
-		context.fillText("+"+myplayer.gotmoney[1],100,90);
+		context.fillText("+"+myplayer.gotmoney[1],100,90);//gotmoney[1] is the value integer
 		context.fillStyle = "white";
 		}
-	context.fillStyle = "red";
-	context.fillRect(8*myplayer.wep,96,8,16);
 	
-	var i=0;//This indicates selected and available blasters to the user
+	var i=0;//This indicates available blasters to the user
 	while(i<myplayer.blasters.length){
 		if (myplayer.blasters[i].phas){context.fillStyle = "white";}else{context.fillStyle = "grey";}
 		context.fillText(i,8*i,110);
 		i=i+1;
 	}
+	context.fillStyle = "red";
+	context.fillRect(8*myplayer.wep,96,8,16);//This highlights which blaster the player has selected
+
 	context.fillStyle = "white";
 	context.fillText(myplayer.boosters[0],8,150);//0 index is booster type
 	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,175);
 	context.font='12px Arial';
 	context.fillStyle = "green"; 
-	context.fillText("task: "+myplayer.task,8,200);
+	context.fillText("task: "+myplayer.task,8,200);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
-	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,216);
+	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,216);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	context.fillStyle = "white";
 	context.fillText("dockstate: "+myplayer.dockstate,8,250);//Debugging stuff
 	context.fillText("storystate: "+myplayer.storystate,8,266);
@@ -164,11 +170,10 @@ function hud(playerindex){
 	context.fillText("autopilot: "+myplayer.autopilot,8,298);
 	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,314);
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
-	
-	if (myplayer.ship.hp==-1000){
+	if (myplayer.ship.hp==-1000){//This is the death screen.
 		context.fillStyle = "red";
 		context.font='24px Arial';
-		context.fillText("u ded bruh."+myplayer.ship.deadtime,canvas.width/2,canvas.height/2);
+		context.fillText("u ded bruh.  Maybe take a break for "+myplayer.ship.deadtime+" frames.",canvas.width/2,canvas.height/2);
 		context.fillStyle = "white";
 		context.font='12px Arial';
 	}
@@ -184,7 +189,12 @@ function hud(playerindex){
 		systems[ps].joblist(200,50);
 		//display jobs
 	}
-	
+//Autopilot indicator
+	if (myplayer.autopilot>0){
+		context.fillStyle = "red";
+		context.font='32px Arial';
+		context.fillText("Autopilot on",canvas.width/2 - 80,canvas.height/2 - 100);
+	} 
 ////Shopping!//////////////////////////////////////////////////////
 	if ((myplayer.dockstate>=0)&&(myplayer.dockstate<systems[ps].shops.length)){
 		//console.log("itriedtodrawthebuymenu0");
@@ -220,6 +230,6 @@ if (cheatmode == 1){
 	context.fillStyle = "red";
 	context.fillText("YOU'RE A CHEATER",canvas.width/2-100,64);	
 	context.font = "12px Ariel";
-	context.fillText("End key gives money, Q key fires scrt blaster, W key warps to planet, V warps to next solar system, X summons rainbow monster",canvas.width/2-300,48);	
+	context.fillText("End key gives money, Q key fires scrt blaster, W key warps to planet, V warps to next solar system",canvas.width/2-300,48);	
 	}
 }

@@ -373,7 +373,7 @@ class System{
 		while (i>0){
 			i=i-1;
 			this.outposts[i].update1();
-			this.outposts[i].d = this.outposts[i].directionof(planets[0]);
+			this.outposts[i].d = this.outposts[i].directionof(this.planets[0]);
 			}
 		var i = this.turrets.length; 
 		while (i>0){
@@ -948,7 +948,7 @@ class System{
 					enginesound1.play();
 					}
 				} 
-			aplayer.mousestate = 0;
+			//aplayer.mousestate = 0;//Need to handle this server-side in actual multiplayer so w6 can work.
 			qq++;
 			}
 		}
@@ -1133,8 +1133,8 @@ class System{
 					aplayer.navtarget = 0;
 					pz = 0;
 					var randdir = Math.random()*2*Math.PI;
-					xxxx.setorbit(systems[ps].planets[0], 320000, randdir+Math.PI, -1);
-					waldo.setorbit(systems[ps].planets[0], 320000, randdir, -1);
+					xxxx.setorbit(this.planets[0], 320000, randdir+Math.PI, -1);//Global scope here is bad
+					waldo.setorbit(this.planets[0], 320000, randdir, -1);
 					aplayer.ship.vx = 0; //Otherwise players inherit the momentum acquired in descent.
 					aplayer.ship.vy = 0;
 					}

@@ -144,7 +144,7 @@
 			this.sender = sndr;
 			this.senderx = Math.floor(canvas.width/2) - Math.floor(this.sender.length/2);
 			this.msgnow = msg;
-			this.msgtime = Math.floor(this.msgnow.length*1.5) + 120;
+			this.msgtime = Math.floor(this.msgnow.length*1.5) + 240;
 			this.log.push(this.msgnow);
 			}
 		display(thetime){

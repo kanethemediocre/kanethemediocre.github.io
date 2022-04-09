@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v309 by Andrew Kane </title>
+    <title>Bling Hustle v312 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -27,7 +27,6 @@
 <script type="text/javascript" src="napasystem.js"></script>
 <script type="text/javascript" src="menusystem.js"></script>
 <script type="text/javascript" src="smallworldsystem.js"></script>		
-<script type="text/javascript" src="storytext.js"></script>	
 <script type="text/javascript" src="mission.js"></script>	
 <script type="text/javascript" src="homeoutposts.js"></script>
 <script type="text/javascript" src="trinidadoutposts.js"></script>
@@ -352,6 +351,11 @@ function update() {
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
 	if (ps>0){
+		if (myplayer.mapactive == 0){
+			context.font = "20px Ariel";
+			context.fillStyle = "white";
+			context.fillText("Map is off.",16,canvas.height-16);
+			}
 		if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].ships,myplayer);}//centered map
 		if (myplayer.mapactive == 2){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].ships,myplayer);//corner map c 
 			context.fillStyle = "black";//Background is black
@@ -645,14 +649,14 @@ if(time%2==0){
     var truetime = Date.now();
     var servertime = mytime+Math.floor(time*1000/FPS);
     if (time%FPS==0){console.log("True time: "+truetime+"Server time: "+servertime+"dt: "+(truetime-servertime));}
-    if ((servertime+1000/FPS)<truetime){
-      update();
+    var lagging = truetime-(servertime+1000/FPS);
+	if (lagging>1000){console.log("Lagging too far, not correcting "+(truetime-servertime)+" ms");}
+	else if (lagging>0){      
+	  update();
       console.log("Running extra frame because server is behind "+(truetime-servertime)+" ms");
       }
     }
 
-
-	
   }else{console.log("Extra loop skipped because server is ahead "+(servertime-truetime)+"ms");}
 
 }

@@ -30,7 +30,7 @@ var dstory = time - myplayer.storytime;
 switch(myplayer.storystate){//Tutorial missions so far.
 	case 0:
 		if (dstory>1){
-			var themsg = "Right click for thrust, left click to shoot, and steer your ship with the mouse.  Don't forget that you have to use as much thrust to slow down as you did to get going.  Going anywhere in particular is more complicated.  Use your ship's map and nav computer, or you'll find what space is really made made of:  Nothing.";
+			var themsg = "Right click for thrust, left click to shoot, and steer your ship with the mouse.  You will need as much thrust to slow down as you did to get going.  Going anywhere in particular is more complicated.  Use your ship's map and nav computer, or you'll find what space is really made made of:  Nothing.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -178,7 +178,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			var themsg =  "Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].ships[9].name+", it should be near Merz";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Destroy ship "+systems[ps].ships[9].name+" near Merz";
-			ships[9].respawn(systems[ps].planets[ships[9].parentid]);
+			systems[ps].ships[9].respawn(systems[ps].planets[ships[9].parentid]);
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -552,7 +552,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 53:
 		if (myplayer.dockstate==0){
 			var themsg = "1 crate delivered.  Bring me one more."
-			playerradio.newmsg("Tutorial Dude55",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate = 54;
 			myplayer.storytime = time;
 			}
@@ -568,7 +568,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 55:
 		if (myplayer.dockstate==0){
 			var themsg = "Last crate delivered.";
-			playerradio.newmsg("Tutorial Dude57",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate = 57;
 			myplayer.storytime = time;
 			}
@@ -576,16 +576,201 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 56:
 		if (myplayer.dockstate==0){
 			var themsg = "Both crates delivered.";
-			playerradio.newmsg("Tutorial Dude58",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.storystate = 57;
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
 	break;
 	case 57:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Gee willickers thats the end of the quest as written.";
-			playerradio.newmsg("Tutorial Dude58",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.storystate = 57;
+			var themsg = "That should be it, let me look through what we've got and get it all ready to install.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 58:
+		if (dstory>playerradio.msgtime+600){
+			var themsg = "Mofugga used packing peanuts...";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 59:
+		if (dstory>playerradio.msgtime+600){
+			var themsg = "OK I've got the anchor ready to install. Pivot and blaster are still a pile of parts but we can install the anchor as soon as Earf is clear.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate=62;
+			myplayer.storytime = time;
+			}
+	break;
+	case 62:
+		if (dstory>playerradio.msgtime+600){
+			var themsg = "OK I've got the platform ready to install.  Pivot and blaster are still a pile of parts but we can install the anchor.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 63:
+		if (dstory>playerradio.msgtime){
+			var themsg = "You'll need to tow the platform from my shop to the moon. If it gets hit by a bot, you'll have to bring it back for me to fix.  So, plan A is don't get in any fights while towing the platform.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 64:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Once you get the platform in position, you will need to follow the prompts to anchor the platform and activate the shield.  Once the shield is active the platform should be safe enough.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 65:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Once you get the platform in position, you will need to follow the prompts to anchor the platform and activate the shield.  Once the shield is active the platform should be safe enough.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 70:
+		var i=0;
+		var closestbotdistance = 8192;
+		while (i<systems[ps].ships.length){
+			var botdistance = systems[ps].planets[3].distance(systems[ps].ships[i]);
+			if (botdistance<closestbotdistance){
+				closestbotdistance = botdistance;
+				}
+			i++;
+			}
+		if (closestbotdistance<3000){
+			var themsg = "Great, now hurry up and place the platform before they come back.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 71:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Sensors show platform is in position.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 72:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Installation minigame goes here.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 73:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Installation successful";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate=80;
+			myplayer.storytime = time;
+			}
+	break;
+	case 74:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Platform has been damaged.  Bring it back to my shop and I'll fix it.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 75:
+		if (dstory>playerradio.msgtime){
+			var themsg = "OK while I fix the platform why don't you clear out any bots near Earf again.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate=70;
+			myplayer.storytime = time;
+			}
+	break;
+	case 80:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Nice.  The pivot section is ready.  Bring it to the platform and install it.  If the bots haven't come back already, they will soon.  The platform shield can protect the pivot during installation, but not your ship";
+			
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 81:
+		if (dockstate==0){
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 82:
+		if (true){//Need to check for being "in position"
+			var themsg = "Sensors show pivot is in position.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 83:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Pivot installation minigame goes here";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 84:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Pivot is installed.  It should automatically point towards any bots nearby now.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	
+	case 100:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Cargo missions are fairly easy enough, but they require 10 units of cargo space each.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 101:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Kill missions don't require any cargo space, but you need to hunt down and kill a particular bot, which isn't always found where expected.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 102:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Courier missions only require one unit of cargo space, but you need to deliver to a ship that's on the move."
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 103:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Engineering missions require you to dock at a mission destination and complete repairs or upgrades on the mission target, often under fire from bots."
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 104:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Otherwise, you can always sweep up loose bling and destroy bots.  Trading independently is an option too."
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
 	break;

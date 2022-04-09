@@ -351,6 +351,7 @@ let upw5boom = new Shopitem("blaster",5,"boom",1);
 let upw8boom = new Shopitem("blaster",8,"boom",1);
 let upw9boom = new Shopitem("blaster",9,"boom",1);
 //Only w5 and w8 get n upgrades (more projectiles). 
+let upw3n = new Shopitem("blaster",3,"n",1);
 let upw5n = new Shopitem("blaster",5,"n",1);
 let upw8n = new Shopitem("blaster",8,"n",1);
 
@@ -360,7 +361,8 @@ upw1damage,upw2damage,upw3damage,upw4damage,upw5damage,upw6damage,upw7damage,upw
 upw0speed,upw1speed,upw2speed,upw3speed,upw4speed,upw5speed,upw7speed,upw8speed,upw9speed,
 //upw1bounce,upw2bounce,upw4bounce,upw5bounce,upw8bounce,upw9bounce,//bounce upgrades nonfunctional, removed
 upw0timer,upw1timer,upw2timer,upw3timer,upw4timer,upw5timer,upw6timer,upw7timer,upw8timer,upw9timer,
-upw1boom,upw2boom,upw3boom,upw5boom,upw8boom,upw9boom
+upw1boom,upw2boom,upw3boom,upw5boom,upw8boom,upw9boom,
+upw3n,upw5n,upw8n
 ];
 let booster1 = new Shopitem("booster",0,"buy",1); //Tier 0 booster
 
@@ -388,7 +390,7 @@ let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,up
 let billbits = new Shop("Bills Billion Bits", 0, "Welcome to Earf", billshopitems);
 let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,uparmoritem,upshielditem,upradaritem,buycargo2,buycargo5];
 let jojocheese = new Shop("JoJo's House of Cheese", 2, "Jupe Fantastico", jojoshopitems);
-let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5bounce,upw1damage,upshieldregenitem,buycargo1,buycargo6,buycargo0];
+let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5n,upw1damage,upshieldregenitem,buycargo1,buycargo6,buycargo0];
 let dangustown = new Shop("Dangustown", 3, "It's YOUR Anus!", dangshopitems);
 let randshopitems1 = [];
 var i = 0;
