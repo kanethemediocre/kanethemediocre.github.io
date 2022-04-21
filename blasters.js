@@ -315,7 +315,7 @@ class Blaster{
 	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
 	 40,10,10,20,4,4,0.2,0,0,1,0,0,80,8,10,80,"blue","ID not implemented");
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               
-	 10,5,10,10,2,5,0.75,0.25,5,4,2,4,80,16,10,30,"white","ID not implemented");
+	 8,4,10,10,2,5,0.75,0.25,5,6,2,10,80,16,10,30,"white","ID not implemented");
 	 let weapon6 = new Blaster("Blazor","Unique beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,384,64,10,11,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          

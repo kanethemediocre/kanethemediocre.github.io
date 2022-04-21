@@ -156,9 +156,13 @@
 				}
 			}
 		showlog(index,xpos,ypos){
-			context.font = "12px Verdana";
-			context.fillText(this.log.length+" entries",xpos,ypos-20);
+			context.font = "24px Verdana";
+			context.fillText("Journal",xpos,ypos-24);
+			context.font = "16px Verdana";
+			context.fillText("("+this.log.length+" entries)",xpos+128,ypos-24);
+			//fillwrappedtext(this.log[index],76,20,xpos,ypos+300);
 			if (this.log.length>0){
+			fillwrappedtext(this.log[index],76,20,xpos,ypos+300);
 			var logchart = [ this.log  ];
 				var chartstart = 0;
 				var chartend = this.log.length-1;
@@ -172,13 +176,26 @@
 				var logchart = [ this.log.slice(chartstart,chartend+1) ];
 				//if (index>4){showchartabbrev(logchart, 64, 16, xpos,ypos, 80);}
 				//else {showchartabbrev(logchart, 64, 16, xpos,ypos+, 80);}
-				showchartabbrev(logchart, 64, 16, xpos,ypos, 80);
-				fillwrappedtext(this.log[index],100,16,xpos,ypos+300);
+				context.font = "12px Verdana";
+				showchartabbrev(logchart, 64, 16, xpos+16,ypos, 80);
+				//fillwrappedtext(this.log[index],100,16,xpos,ypos+300);
 				if ((this.log.length<8)||(index < 4)){
-					context.fillText('X',xpos-16,ypos+index*16);
+					context.beginPath();
+					context.rect(xpos,ypos-12+index*16,600,18);
+					context.stroke();
+					//context.fillText('X',xpos,ypos+index*16);
 				}else{
-					context.fillText('X',xpos-16,ypos+4*16);
+					context.beginPath();
+					context.rect(xpos,ypos+4*16-12,600,18);
+					context.stroke();
+					//context.fillText('X',xpos,ypos+4*16);
 					}
 				}
+			context.beginPath();
+			context.rect(xpos-4,ypos-48,640,500);
+			context.rect(xpos-4,ypos-16,640,300);
+			context.stroke();
+			
+			
 			}
 		}////end class radio

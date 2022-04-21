@@ -60,8 +60,8 @@ function hud(playerindex){
 		}
 	}
 	
-	drawaskey(32,149,"B","white");
-	drawaskey(32,176,"G","white");
+	drawaskey(32,167,"B","white");
+	drawaskey(32,197,"G","white");
 	drawaskey(canvas.width/2-104,32,"C","white");
 	drawaskey(canvas.width/2-128,canvas.height-24," ","white");
 	drawaskey(canvas.width/2+128,canvas.height-24,"J","white");
@@ -137,38 +137,42 @@ function hud(playerindex){
 	context.fillStyle = "white";
 	var statuschart1 = [ ["Health","Shields", "Weapons", "Thrusters"]  ];
 	showchart(statuschart1, 80, 20, 8,16);	
-	context.fillText("Money",5,90);
-	context.fillText(myplayer.money,50,90);//Displays how much money the player has
+	context.font='16px Arial';
+	context.fillText("Bling",5,96);
+	context.fillText(myplayer.money,50,96);//Displays how much money the player has
 	if (myplayer.gotmoney[0]>0){//If the player has received money recently, display how much and decrement the display lifetime of that event.
 		myplayer.gotmoney[0] = myplayer.gotmoney[0]-1;//gotmoney[0] is the timer integer
 		context.fillStyle = "green";
-		context.fillText("+"+myplayer.gotmoney[1],100,90);//gotmoney[1] is the value integer
+		context.fillText("+"+myplayer.gotmoney[1],100,96);//gotmoney[1] is the value integer
 		context.fillStyle = "white";
 		}
-	
+	context.fillStyle = "red";
+	context.fillRect(12*myplayer.wep,104,10,20);//This highlights which blaster the player has selected
 	var i=0;//This indicates available blasters to the user
 	while(i<myplayer.blasters.length){
 		if (myplayer.blasters[i].phas){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-		context.fillText(i,8*i,110);
+		context.fillText(i,12*i,120);
 		i=i+1;
 	}
 	context.fillStyle = "red";
-	context.fillRect(8*myplayer.wep,96,8,16);//This highlights which blaster the player has selected
+	context.font='16px Arial';
+	context.fillText(myplayer.blasters[myplayer.wep].name,8,144);
 
 	context.fillStyle = "white";
-	context.fillText(myplayer.boosters[0],8,150);//0 index is booster type
-	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,175);
-	context.font='12px Arial';
+	context.fillText(myplayer.boosters[0],8,168);//0 index is booster type
+	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,196);
+	context.font='16px Arial';
 	context.fillStyle = "green"; 
-	context.fillText("task: "+myplayer.task,8,200);//The task is a brief description of the last thing a player was asked to do.
+	context.fillText("task: "+myplayer.task,8,224);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
-	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,216);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
+	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,244);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	context.fillStyle = "white";
-	context.fillText("dockstate: "+myplayer.dockstate,8,250);//Debugging stuff
-	context.fillText("storystate: "+myplayer.storystate,8,266);
-	context.fillText("probemode: "+myplayer.probemode,8,282);
-	context.fillText("autopilot: "+myplayer.autopilot,8,298);
-	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,314);
+	context.font='12px Arial';
+	context.fillText("dockstate: "+myplayer.dockstate,8,300);//Debugging stuff
+	context.fillText("storystate: "+myplayer.storystate,8,316);
+	context.fillText("probemode: "+myplayer.probemode,8,332);
+	context.fillText("autopilot: "+myplayer.autopilot,8,348);
+	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,364);
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
 	if (myplayer.ship.hp==-1000){//This is the death screen.
 		context.fillStyle = "red";
@@ -183,8 +187,16 @@ function hud(playerindex){
 //Journal display if active
 	if (myplayer.journalactive==1){
 		if (myplayer.journalitem>playerradio.log.length-1){myplayer.journalitem=0;}
-		context.fillStyle = "teal";
-		playerradio.showlog(myplayer.journalitem,200,50);
+		context.fillStyle = "skyblue";
+		
+		context.strokeStyle = "skyblue";
+		playerradio.showlog(myplayer.journalitem,200,64);
+		//if (playerradio.log.length>0){ playerradio.showlog(myplayer.journalitem,200,50); }
+		//else{
+		//	context.fillText("No journal entries",200,50);//The task is a brief description of the last thing a player was asked to do.
+		//}
+		drawaskeyspecial(700,160,60,24,"Up","white");
+		drawaskeyspecial(700,200,60,24,"Down","white");
 	}else if (myplayer.journalactive==2){
 		systems[ps].joblist(200,50);
 		//display jobs

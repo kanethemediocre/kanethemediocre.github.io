@@ -38,6 +38,7 @@ class Player{
         this.ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword.  Not sure if I need this.
         this.probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
         this.autopilot = 0; //0 is off, higher numbers are other modes
+		this.storyselect = 0;
     }
     loadblasters(theblasters){
         var i=0;

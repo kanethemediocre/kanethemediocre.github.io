@@ -1,36 +1,11 @@
-/*
-	
-			"Bill mentioned you would be coming.  You'll need at least 10 units of cargo space to take a crate, and I've got 2 crates.",
-			"First crate is loaded, but you'll have to come back for the other one.",
-			"First crate delivered.  I just need you to go back and pick up one more crate from Dangustown",
-			"2nd crate is loaded. Tell Bill I said good luck.",
-			"Great, both crates are delivered.   I'll need some time to sort through all this and build up pieces, so I'd suggest you spend some of those credits on your ship and maybe do some work from the mission board in the meantime.",
-			"We're ready to start installing the Earf Defense platform.  We're going to start with the mounting pillar.  Stop by Bill's when you're ready to help.  ",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"filler.",
-			"Yo Yo this is the last message."
 
-*/
 function storycheck(playerindex){
 var myplayer = systems[ps].players[playerindex];
 var dstory = time - myplayer.storytime;
 switch(myplayer.storystate){//Tutorial missions so far.
 	case 0:
 		if (dstory>1){
-			var themsg = "Right click for thrust, left click to shoot, and steer your ship with the mouse.  You will need as much thrust to slow down as you did to get going.  Going anywhere in particular is more complicated.  Use your ship's map and nav computer, or you'll find what space is really made made of:  Nothing.";
+			var themsg = "Some people think all you need to know is right click zoom left click boom, but getting anywhere in particular is more complicated.  Use your ship's map and nav computer, or you'll find what space is really made made of:  Nothing.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -38,7 +13,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		break;
 	case 1:
 		if (dstory>playerradio.msgtime){
-			var themsg = " < and > will cycle through available nav targets.  The bottom right compass will point towards your nav target, and indicates name and distance.  The chart to the left gives more information if you're interested.  Try selecting planet Merz.";
+			var themsg = "The N key will activate or retask your nav computer, which displays on the bottom right.  The < and > keys will cycle through available nav targets, use them to select Merz.  The nav computer indicates much more than direction and distance if you're interested, but most of the time that's all you need.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Select Merz on your nav computer (N,<,>)";
 			myplayer.storystate++;
@@ -47,7 +22,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		break;
 	case 2:
 		if ((myplayer.navtarget==5)&&(myplayer.navactive==1)){
-			var themsg = "Great!  You'll be going their soon.  You can also cycle navigation modes between targeting planets, targeting stations, and off with the N key.  But to help you know your place in the universe, your HUD also has a map.  The M key cycles between a full-screen display, a corner display, and off.";
+			var themsg = "Great!  You'll be going there soon.  But to help you know your place in the universe, your HUD also has the Omnicompass and a map.  The Omnicompass can be activated or retasked with the C key, and the map with the M key. The map features a full-screen display mode and a corner display mode.  The Omnicompass can track planets, ships, or both.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -56,9 +31,9 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		break;
 	case 3:
 		if (dstory>playerradio.msgtime){
-			var themsg = "The yellow rectangle in the center of the map is where you and the space you can see are located.  Planets, moons, and stations are drawn on the map, and planetary orbits are shown with grey lines.   You can zoom in and out with the + and - keys.  Try zooming way out (- key) so that the whole system is in view.";
+			var themsg = "The yellow rectangle in the center of the map represents the area that you can see on the screen without the map.  Planets, moons, and stations are drawn on the map, and planetary orbits are shown with grey lines.   You can zoom in and out with the + and - keys.  Try zooming way out (- key) so that the whole system is in view.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.task = "Zoom out on the map to show the whole system( - )";
+			myplayer.task = "Zoom out with - key to show the whole system.";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -75,7 +50,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 
 	case 5:
 		if ((dstory>5)&&(myplayer.mapscale<128)&&(myplayer.mapactive>0)){
-			var themsg = "OK, so thats basically what you need to fly this burrito to Merz.  Don't hang around and get in any fights, just do a close flyby--the rest is automatic.";
+			var themsg = "The map and nav computer are more than sufficient guide you wherever you need, but some people like the Omnicompass (C key) because it tracks everything at once.  OK, so try applying what you've learned to fly to Merz.  Don't get in any fights, just do a close flyby and come back.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Go to Merz";
 			myplayer.storystate++;
@@ -84,7 +59,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 6:
 		if ((dstory>5)&&(myplayer.ship.distance(systems[ps].planets[5])<512)){
-			var themsg = "Now get back to the Merry Merzian.  Remember you can use your nav (N, <, >) computer to find the station.  When you're close you'll dock automatically.";
+			var themsg = "Now get back to the Merry Merzian.  Remember you can use your nav (N, <, >) computer to find the station.  When you're close you'll dock automatically.  If you're far away, hit the  A key to activate the autopilot, which will get you closer, then hit A again when you're close to resume manual flight.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.money = myplayer.money + 200;
 			myplayer.task = "Dock at the Merry Merzian";
@@ -94,7 +69,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 7:
 		if ((dstory>60)&&(myplayer.dockstate==1)){
-			var themsg = "I suppose we should talk about the 'bots.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  Around Merz they aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.";
+			var themsg = "The autopilot works well between distant objects in empty space, and most trips you'll want it for fit that description well enough.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  Around Merz they aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -103,7 +78,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 8:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Bots can be destroyed easily enough, but replacements are never far behind.  Still, the Institute pays out for each one destroyed, as well as for the resulting salvage.  The salvage, usually called bling, drives almost the entire off-planet economy.";
+			var themsg = "Bots can be destroyed easily enough, but replacements are never far behind.  Still, the Institute pays out for each one destroyed, as well as for the resulting salvage.  That salvage, usually called bling, is so universally valued it has become currency.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -303,8 +278,8 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 30:
 		if (myplayer.dockstate == 2){		
-		    var themsg = "Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
-			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
+		    var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.money = myplayer.money + 800;
 			myplayer.task = "Go to Earf and meet Bill";
 			myplayer.storystate = 35;
@@ -319,8 +294,8 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 31:
 		if (myplayer.dockstate == 2){
-			var themsg = "Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";	
-			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
+			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";	
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.money = myplayer.money + 800;
 			myplayer.task = "Go to Earf and meet Bill";
 			myplayer.storystate = 35;
@@ -336,8 +311,8 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 32:
 		if (myplayer.dockstate == 2){
-			var themsg = "Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
-			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
+			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.money = myplayer.money + 800;
 			myplayer.task = "Go to Earf and meet Bill";
 			myplayer.storystate = 35;
@@ -353,8 +328,8 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 33:
 		if (myplayer.dockstate == 2){
-			var themsg = "Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
-			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
+			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.money =myplayer. money + 800;
 			myplayer.task = "Go to Earf and meet Bill";
 			myplayer.storystate = 35;
@@ -369,8 +344,8 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 34:
 		if (myplayer.dockstate==2){
-			var themsg = "Nice work.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or just take time to explore or seek your own fortune.";
-			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
+			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or just take time to explore or seek your own fortune.";
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.money = myplayer.money + 800;
 			myplayer.task = "Go to Earf and meet Bill";
 			myplayer.storystate = 35;
@@ -495,7 +470,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		if (myplayer.dockstate==3){//Need to add mission cargo handling to this mission code
 		var freecargo = myplayer.inventory.maxcargo-myplayer.inventory.totalcargo();
 		var themsg = "Bill told me you'd be running some turret parts for us.  Each crate or parts takes 10 inventory space, and I have 2 left to take, You have "+freecargo+" inventory space available.";;
-			playerradio.newmsg("Tutorial Dude49",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -518,14 +493,14 @@ switch(myplayer.storystate){//Tutorial missions so far.
 				}
 			myplayer.storytime = time;
 			//var themsg = "Bill told me you'd be running some turret parts for us.  Each crate or parts takes 10 inventory space, and I have 2 left to take, You have "+freecargo+" inventory space available.";
-			playerradio.newmsg("Tutorial Dude50",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storytime = time;
 			}
 	break;
 	case 51:
 		if (dstory>playerradio.msgtime){// No crates taken from 
 			var themsg = "No crates loaded:  Insufficient cargo space.";
-			playerradio.newmsg("Tutorial Dude51",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate = 52;
 			myplayer.storytime = time;
 			}
@@ -537,14 +512,14 @@ switch(myplayer.storystate){//Tutorial missions so far.
 				var themsg = "2 crates loaded.  Take these to Billiam and he should have enough scrt to build his first turret."
 				myplayer.inventory.takecargo(allcargos.length-1,20);
 				myplayer.storystate=56;
-				playerradio.newmsg("Tutorial Dude52",themsg,time);//newmsg(sndr, msg, thetime)
+				playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 				myplayer.storytime = time;
 				}
 			else if (freecargo>=10){
 				var themsg = "1 crate loaded.  Take this to Billiam's shop and then come back for the other crate.";
 				myplayer.inventory.takecargo(allcargos.length-1,10);
 				myplayer.storystate=53;
-				playerradio.newmsg("Tutorial Dude52",themsg,time);//newmsg(sndr, msg, thetime)
+				playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 				myplayer.storytime = time;
 				}
 			}
@@ -560,7 +535,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 54:
 		if (myplayer.dockstate==3){
 			var themsg = "Last crate loaded.  Bring this to Billy";
-			playerradio.newmsg("Tutorial Dude56",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate = 55;
 			myplayer.storytime = time;
 			}
@@ -729,6 +704,14 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		if (dstory>playerradio.msgtime){
 			var themsg = "Pivot is installed.  It should automatically point towards any bots nearby now.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate=86;
+			myplayer.storytime = time;
+			}
+	break;
+		case 85:
+		if (dstory>playerradio.msgtime){
+			var themsg = "Pivot was damaged.  Return to my shop to get it fixed.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -768,7 +751,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 104:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Otherwise, you can always sweep up loose bling and destroy bots.  Trading independently is an option too."
+			var themsg = "Otherwise, you can always sweep up loose bling and destroy bots.  Trading commodities might work if you find a good route and have the bling to get started."
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;

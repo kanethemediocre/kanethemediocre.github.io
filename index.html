@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v312 by Andrew Kane </title>
+    <title>Bling Hustle v316 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -49,6 +49,8 @@ canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
 context = canvas.getContext("2d");
 context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 established in html.
 context.canvas.height = window.innerHeight-24;
+var comfy = false;
+if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
 var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
 var nmeactive = 1; //targeting computer starts off
 var mdx = 0; //I think these were for the mouse?  Not sure if used.
@@ -651,7 +653,7 @@ if(time%2==0){
     if (time%FPS==0){console.log("True time: "+truetime+"Server time: "+servertime+"dt: "+(truetime-servertime));}
     var lagging = truetime-(servertime+1000/FPS);
 	if (lagging>1000){console.log("Lagging too far, not correcting "+(truetime-servertime)+" ms");}
-	else if (lagging>0){      
+	else if (lagging>0){
 	  update();
       console.log("Running extra frame because server is behind "+(truetime-servertime)+" ms");
       }
