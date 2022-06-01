@@ -118,16 +118,22 @@ class Blaster{
 				var cnum = (thetime+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
+					this.bombs[i].c2 = "orange";
 				}else if (cnum == 1){
 					this.bombs[i].c = "orange";
+					this.bombs[i].c2 = "yellow";
 				}else if (cnum == 2){
 					this.bombs[i].c = "yellow";
+					this.bombs[i].c2 = "green";
 				}else if (cnum == 3){
 					this.bombs[i].c = "green";
+					this.bombs[i].c2 = "blue";
 				}else if (cnum == 4){
 					this.bombs[i].c = "blue";
+					this.bombs[i].c2 = "purple";
 				}else if (cnum == 5){
 					this.bombs[i].c = "purple";
+					this.bombs[i].c2 = "red";
 					}
 			}
 			i=i+1;

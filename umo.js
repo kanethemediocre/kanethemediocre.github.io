@@ -5,7 +5,14 @@ class Umo { //Universal Moving Object
 		this.x = xxx; //x
 		this.y = yyy; //y
 		this.c = ccc; //color
-		this.c2 = 0; //Not a color, used to exclude 2-tone functions on single color umos.
+		
+		this.c2 = "red";
+		if (this.c=="red"){this.c2 = "orange";}
+		if (this.c=="orange"){this.c2 = "yellow";}
+		if (this.c=="yellow"){this.c2 = "green";}
+		if (this.c=="green"){this.c2 = "blue";}
+		if (this.c=="blue"){this.c2 = "purple";}
+		//this.c2 = 0; //Not a color, used to exclude 2-tone functions on single color umos.
 		this.s = sss; //size
 		this.d = 0; // direction
 		this.vx = 0; //start with 0 velocity 
@@ -13,6 +20,7 @@ class Umo { //Universal Moving Object
 		this.vd = 0; //0 rotation 
 		this.m = this.s*this.s*this.s; //So far only used by gravitate function.
 		this.thrust = 0;
+		this.thruststate = 0;
 		this.deadtime = 0;   //0 is alive.  N is dead for N more frames.
 		this.hp = 100 ; //This is used for destructible entities to track health
 		this.maxhp = 100;
@@ -379,11 +387,30 @@ class Umo { //Universal Moving Object
 	drawbomb(viewx, viewy){ //Bombs are also drawn as circles, but not labelled.
 		var x = this.x - viewx + canvas.width/2;
 		var y = this.y - viewy + canvas.height/2;
-		context.beginPath();
-		context.strokeStyle = this.c;
-		context.arc(x, y, this.s, 0, 2 * Math.PI, false);
-		context.lineWidth = 4;
-		context.stroke();		 
+		if (this.s>4){
+			context.beginPath();
+			context.strokeStyle = this.c;
+			context.arc(x, y, this.s, 0, 2 * Math.PI, false);
+			context.lineWidth = 6;
+			context.stroke();
+			context.beginPath();
+			context.strokeStyle = this.c2;
+			context.arc(x, y, this.s-4, 0, 2 * Math.PI, false);
+			context.lineWidth = 4;	
+			context.stroke();		
+			//context.beginPath();
+			//context.strokeStyle = this.c2;
+			//context.arc(x, y, this.s, 0, 2 * Math.PI, false);
+			//context.lineWidth = 2;	
+			//context.stroke();					
+		}else{
+			context.beginPath();
+			context.strokeStyle = this.c;
+			context.arc(x, y, this.s, 0, 2 * Math.PI, false);
+			context.lineWidth = 4;
+			context.stroke();
+			}
+			
 	}
 	drawdot(viewx, viewy){ //Draws as a solid circle
 		var x = this.x - viewx + canvas.width/2;
@@ -478,20 +505,39 @@ class Umo { //Universal Moving Object
 			this.vx = this.vx + this.thrust*Math.cos(this.d);
 			this.vy = this.vy + this.thrust*Math.sin(this.d);
 			if (this.ai == "player"){//quick hack to prevent other ships movements affecting player thruster energy and stuff.
+				this.thruststate = 4+systems[ps].players[0].upgrades[6].tier;
+				console.log(systems[ps].players[0].upgrades[6].tier);
 				systems[ps].players[0].thruster = systems[ps].players[0].thruster - 24;//thruster is a global variable, shame.
-				var td = 48;
-				var tr = 24;
-				var x = Math.cos(this.d+Math.PI)*td + canvas.width/2;
-				var y = Math.sin(this.d+Math.PI)*td + canvas.height/2;
+				enginesound1.play();
+				}
+			}
+		if (this.thruststate>0){
+			
+			this.thruststate--;
+			if (this.thruststate >= 6){	this.thruststate = 6; }
+			var maxthruststate = 3+systems[ps].players[0].upgrades[6].tier
+			if (maxthruststate >= 6){ maxthruststate = 6; }
+			var td = 48+(maxthruststate-this.thruststate)*16;
+			var tr = 24+maxthruststate-(maxthruststate-this.thruststate)*2;
+			var x = Math.cos(this.d+Math.PI)*td + canvas.width/2;
+			var y = Math.sin(this.d+Math.PI)*td + canvas.height/2;
+			var flamecolor = "red";
+				if (this.thruststate >= 6){
+					this.thruststate = 6;
+					flamecolor="purple";
+					}
+				if (this.thruststate == 5){flamecolor="blue";}
+				if (this.thruststate == 4){flamecolor="green";}
+				if (this.thruststate == 3){flamecolor="yellow";}
+				if (this.thruststate == 2){flamecolor="orange";}
 				context.beginPath();
-				context.strokeStyle = "orange";
+				context.strokeStyle = flamecolor;
 				context.arc(x, y, tr, 0, 2 * Math.PI, false);
-				context.fillStyle = "orange";
+				context.fillStyle = flamecolor;
 				context.fill();
 				context.lineWidth = 2;
 				context.stroke();	
-				enginesound1.play();
-				}
+				//enginesound1.play();
 			}
 		if (this.damagestate>0){this.damagestate = this.damagestate-1;}
 		if (this.shielddamagestate>0){this.shielddamagestate = this.shielddamagestate-1;}

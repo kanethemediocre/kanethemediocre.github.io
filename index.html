@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v316 by Andrew Kane </title>
+    <title>Bling Hustle v333 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -463,7 +463,7 @@ function update() {
 	waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
 	waldo.gravitate(myship); //pull only player ship
 	waldo.c = randcolor(); //groovy
-	//systems[ps].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
+	systems[ps].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
 	waldo.update1();
 	waldo.drawplanet(vwx,vwy);
 	if (waldo.collide(myship)){
