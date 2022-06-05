@@ -60,22 +60,11 @@ function hud(playerindex){
 		}
 	}
 	
-	drawaskey(32,167,"B","white");
-	drawaskey(32,197,"G","white");
-	drawaskey(canvas.width/2-104,32,"C","white");
-	drawaskey(canvas.width/2-128,canvas.height-24," ","white");
-	drawaskey(canvas.width/2+128,canvas.height-24,"J","white");
-	drawaskey(canvas.width-64,360,"Z","white");
-	
-	drawaskey(canvas.width-324,32,"[","white");
-	drawaskey(canvas.width-324,64,"]","white");
-	drawaskey(canvas.width-324,96,"T","white");
-	drawaskey(32,canvas.height-320,"+","white");
-	drawaskey(64,canvas.height-320,"-","white");
-	drawaskey(96,canvas.height-320,"M","white");
-	drawaskey(canvas.width-32,canvas.height-200,">","white");
-	drawaskey(canvas.width-64,canvas.height-200,"<","white");
-	drawaskey(canvas.width-96,canvas.height-200,"N","white");
+	var i=0;
+	while (i<vkeys.length){
+		vkeys[i].draw();
+		i++;
+		}
 ///////////////Navigation hud///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (myplayer.navactive > 0){
 		var thenavtarget=0;

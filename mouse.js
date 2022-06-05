@@ -14,6 +14,15 @@ var myplayer = systems[1].players[myi];
 myplayer.mousestate = e.buttons;
 myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
 myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
+var i=0;
+while(i<vkeys.length){
+	if (vkeys[i].inside(e.clientX,e.clientY)){
+		myplayer.input = vkeys[i].key;
+		systems[ps].playerkeys();
+		console.log("sheeeesh");
+		}
+	i++;
+	}
 systems[ps].playermice();
 }
 document.addEventListener("mouseup", mouseUpHandler, false);

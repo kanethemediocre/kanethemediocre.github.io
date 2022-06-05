@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v333 by Andrew Kane </title>
+    <title>Bling Hustle v334 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -39,6 +39,8 @@
 <script type="text/javascript" src="about.js"></script>
 <script type="text/javascript" src="controls.js"></script>
 <script type="text/javascript" src="turrets.js"></script>
+<script type="text/javascript" src="virtualkey.js"></script>
+<script type="text/javascript" src="bhvirtualkeys.js"></script>
 <script>
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
@@ -49,6 +51,7 @@ canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
 context = canvas.getContext("2d");
 context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 established in html.
 context.canvas.height = window.innerHeight-24;
+var vkeys = allvkeys(canvas.width,canvas.height);
 var comfy = false;
 if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
 var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
@@ -136,12 +139,12 @@ let trinidadplanets = loadtrinidadsystem();
 
 var ships = [];
 ///////Special Station Umos//////////////////////////////////////////////////////////////////////////////
-let outposts= loadhomeoutposts();
+let outposts = loadhomeoutposts();
 ////////Player Bombs//////////////////////////////////////////////////////////////////////////////////////////       
 let botbombs=[];
 let home = new System(1,"Sool",0,0);
-home.planets = planets;//these are from loadhomesystem function output, which defines the starter system.
-home.ships = ships;
+home.planets = planets; //these are from loadhomesystem function output, which defines the starter system.
+home.ships = ships;     
 home.botbombs = botbombs;
 home.outposts = outposts; 
 home.shops = allshops;
@@ -250,7 +253,7 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].shield = 0;  
 	}
 var i = 0;
-while (i<4){
+while (i<4){//number of missions to be added
 	var j = 0;
 	while (j<systems[1].shops.length){
 		systems[1].shops[j].addcargomission(systems[1].ships,systems[1].planets,systems[1].outposts);
