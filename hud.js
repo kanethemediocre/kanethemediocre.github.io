@@ -184,12 +184,22 @@ function hud(playerindex){
 		//else{
 		//	context.fillText("No journal entries",200,50);//The task is a brief description of the last thing a player was asked to do.
 		//}
-		drawaskeyspecial(700,160,60,24,"Up","white");
-		drawaskeyspecial(700,200,60,24,"Down","white");
+		//drawaskeyspecial(700,160,60,24,"Up","white");
+		//drawaskeyspecial(700,200,60,24,"Down","white");
+		vkeys[15].display = true;
+		vkeys[15].active = true;	
+		vkeys[16].display = true;
+		vkeys[16].active = true;	
 	}else if (myplayer.journalactive==2){
 		systems[ps].joblist(200,50);
 		//display jobs
+	}else{
+		vkeys[15].display = false;
+		vkeys[15].active = false;
+		vkeys[16].display = false;
+		vkeys[16].active = false;		
 	}
+	
 //Autopilot indicator
 	if (myplayer.autopilot>0){
 		context.fillStyle = "red";
@@ -199,10 +209,19 @@ function hud(playerindex){
 ////Shopping!//////////////////////////////////////////////////////
 	if ((myplayer.dockstate>=0)&&(myplayer.dockstate<systems[ps].shops.length)){
 		//console.log("itriedtodrawthebuymenu0");
-		drawaskeyspecial(480,32,128,24,"Backspace","white");
-		drawaskeyspecial(800,180,80,24,"Enter","white");
-		drawaskeyspecial(800,140,60,24,"Up","white");
-		drawaskeyspecial(800,220,60,24,"Down","white");
+		//drawaskeyspecial(480,32,128,24,"Backspace","white");
+		//drawaskeyspecial(800,180,80,24,"Enter","white");
+		
+		//drawaskeyspecial(800,140,60,24,"Up","white");
+		//drawaskeyspecial(800,220,60,24,"Down","white");
+		vkeys[17].display = true;//these assignments get executed redundantly, fixable
+		vkeys[17].active = true;//up and down
+		vkeys[18].display = true;
+		vkeys[18].active = true;
+		vkeys[19].display = true;//backspace and enter
+		vkeys[19].active = true;		
+		vkeys[20].display = true;
+		vkeys[20].active = true;	
 		if (myplayer.shopmode == 0){
 			//console.log("itriedtodrawthebuymenu1");
 			if (myplayer.shopitem >= systems[ps].shops[myplayer.dockstate].inv.length){myplayer.shopitem=0;}
@@ -215,7 +234,16 @@ function hud(playerindex){
 			//console.log("itriedtodrawthebuymenu4");
 			systems[ps].shops[myplayer.dockstate].drawworkmenu(400,64,myplayer.shopitem,myplayer);
 		}
-	}
+	}else{ 
+		vkeys[17].display = false;//these assignments get executed redundantly every frame, fixable
+		vkeys[17].active = false;
+		vkeys[18].display = false;
+		vkeys[18].active = false;	
+		vkeys[19].display = false;//these assignments get executed redundantly every frame, fixable
+		vkeys[19].active = false;
+		vkeys[20].display = false;
+		vkeys[20].active = false;		
+		}
 	//draw cargo stuff
 	if (diagnostic == 1){myplayer.blasters[myplayer.wep].drawstats(canvas.width-200,400);}
 	if (diagnostic == 2){myplayer.inventory.draw(canvas.width-200,400);}//Oof, add to player

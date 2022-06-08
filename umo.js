@@ -506,13 +506,12 @@ class Umo { //Universal Moving Object
 			this.vy = this.vy + this.thrust*Math.sin(this.d);
 			if (this.ai == "player"){//quick hack to prevent other ships movements affecting player thruster energy and stuff.
 				this.thruststate = 4+systems[ps].players[0].upgrades[6].tier;
-				console.log(systems[ps].players[0].upgrades[6].tier);
-				systems[ps].players[0].thruster = systems[ps].players[0].thruster - 24;//thruster is a global variable, shame.
+				//console.log(systems[ps].players[0].upgrades[6].tier);
+				systems[ps].players[myi].thruster = systems[ps].players[myi].thruster - 24;//Weird global scope used here.  Maybe handle this on the control side.
 				enginesound1.play();
 				}
 			}
-		if (this.thruststate>0){
-			
+		if (this.thruststate>0){  //Most of this is drawing, not updating.
 			this.thruststate--;
 			if (this.thruststate >= 6){	this.thruststate = 6; }
 			var maxthruststate = 3+systems[ps].players[0].upgrades[6].tier

@@ -4,7 +4,7 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var cvk=new Virtualkey("c","C",xmax/2-112,16);//constructor(key,label,x,y){
 	var gvk=new Virtualkey("g","G",24,181);//constructor(key,label,x,y){
 	//var hvk=new Virtualkey("h","H",-100,-100);//constructor(key,label,x,y){
-	var jvk=new Virtualkey("j","J",xmax/2+120,ymax-40);//constructor(key,label,x,y)
+	var jvk=new Virtualkey("j","J",160,24);//constructor(key,label,x,y)
 	var mvk=new Virtualkey("m","M",88,ymax-336);//constructor(key,label,x,y)
 	var nvk=new Virtualkey("n","N",xmax-104,ymax-216);//constructor(key,label,x,y)
 	var zvk=new Virtualkey("z","Z",xmax-72,344);//constructor(key,label,x,y)
@@ -15,12 +15,28 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var ltvk=new Virtualkey(",","<",xmax-72,ymax-216);//constructor(key,label,x,y)
 	var plusvk=new Virtualkey("+","+",24,ymax-336);//constructor(key,label,x,y)
 	var minusvk=new Virtualkey("-","-",56,ymax-336);//constructor(key,label,x,y)
-	return [avk,bvk,cvk,gvk,jvk,mvk,nvk,zvk,spacebarvk,lbracketvk,rbracketvk,gtvk,ltvk,plusvk,minusvk];
+	var upjvk = new Virtualkey("ArrowUp","Up",684,152);//constructor(key,label,x,y)
+	upjvk.display = false;
+	upjvk.active = false;
+	var downjvk = new Virtualkey("ArrowDown","Down",684,192);//constructor(key,label,x,y)
+	downjvk.display = false;
+	downjvk.active = false;
+	var upsvk = new Virtualkey("ArrowUp","Up",784,124);//constructor(key,label,x,y)
+	upsvk.display = false;
+	upsvk.active = false;
+	var downsvk = new Virtualkey("ArrowDown","Down",784,204);//constructor(key,label,x,y)
+	downsvk.display = false;
+	downsvk.active = false;
+	var backspacevk = new Virtualkey("Backspace","Backspace",472,20);//constructor(key,label,x,y)
+	backspacevk.display = false;
+	backspacevk.active = false;
+	var entervk = new Virtualkey("Enter","Enter",784,164);//constructor(key,label,x,y)
+	entervk.display = false;
+	entervk.active = false;
+	var mobilethrust = new Virtualkey("thrust", "Thrust mode is OFF",420,ymax-64);
+	return [avk,bvk,cvk,gvk,jvk,mvk,nvk,zvk,spacebarvk,lbracketvk,rbracketvk,gtvk,ltvk,plusvk,minusvk,upjvk,downjvk,upsvk,downsvk,backspacevk,entervk,mobilethrust];
 }
-
-
 /*
-
 	drawaskey(32,167,"B","white");
 	drawaskey(32,197,"G","white");
 	drawaskey(canvas.width/2-104,32,"C","white");
@@ -38,4 +54,10 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	drawaskey(canvas.width-64,canvas.height-200,"<","white");
 	drawaskey(canvas.width-96,canvas.height-200,"N","white");
 	
+			drawaskeyspecial(700,160,60,24,"Up","white");
+		drawaskeyspecial(700,200,60,24,"Down","white");
+			drawaskeyspecial(480,32,128,24,"Backspace","white");
+		drawaskeyspecial(800,180,80,24,"Enter","white");
+		drawaskeyspecial(800,140,60,24,"Up","white");
+		drawaskeyspecial(800,220,60,24,"Down","white");
 	*/

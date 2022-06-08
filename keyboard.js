@@ -10,6 +10,8 @@ window.addEventListener("keydown", function (event) {
       }
     }else if ((event.key == "i")&&(cheatmode==1)){
       var aplayer = new Player();
+	  aplayer.initialize(1000,200,1);
+	/*  
     aplayer.ship.hp = 1000;
     aplayer.ship.maxhp = 1000;
     aplayer.ship.shield = 200;
@@ -25,7 +27,7 @@ window.addEventListener("keydown", function (event) {
     aplayer.ship.polytheta = randomplayerverts[0];//Assigns randomized polygon
     aplayer.ship.polyradius = randomplayerverts[1]; //to player1 ship
     aplayer.ship.ai = "player";
-
+	*/
     var i=0;
     while(i<systems.length){
       systems[i].players.push(aplayer);

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v334 by Andrew Kane </title>
+    <title>Bling Hustle v342 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -31,6 +31,7 @@
 <script type="text/javascript" src="homeoutposts.js"></script>
 <script type="text/javascript" src="trinidadoutposts.js"></script>
 <script type="text/javascript" src="napaoutposts.js"></script>
+<script type="text/javascript" src="napaturrets.js"></script>
 <script type="text/javascript" src="mouse.js"></script>
 <script type="text/javascript" src="keyboard.js"></script>
 <script type="text/javascript" src="storyfunction.js"></script>
@@ -41,44 +42,8 @@
 <script type="text/javascript" src="turrets.js"></script>
 <script type="text/javascript" src="virtualkey.js"></script>
 <script type="text/javascript" src="bhvirtualkeys.js"></script>
+<script type="text/javascript" src="superbomb.js"></script>
 <script>
-// declare global variables/////////////////////////////////////////////////
-var mytime = Date.now();
-const FPS = 60;
-setInterval(update, 1000 / FPS);// set up interval (game loop)
-var canvas, context;
-canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
-context = canvas.getContext("2d");
-context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 established in html.
-context.canvas.height = window.innerHeight-24;
-var vkeys = allvkeys(canvas.width,canvas.height);
-var comfy = false;
-if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
-var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
-var nmeactive = 1; //targeting computer starts off
-var mdx = 0; //I think these were for the mouse?  Not sure if used.
-var mdy = 0;
-//var a1 = 0; //armor upgrades
-//var s1 = 0; //Shield upgrades
-//var moused = 0; //Direction currently indicated by mouse
-//var mousedistance = 0; // Distance to mouse cursor
-//var mousestate = 0; //describes state of mouse buttons
-//var storymessages = loadstorymessages();//storytext.js
-var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
-var cheatmode = 0; //0 = not a cheater
-var ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
-var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
-var starmode = 1; //0 for no starfield.
-//let testfield = new Starfield(30000,20000,64,1000,4000,32);
-let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
-var pz = 0;
-var menuabout = false;
-var menucontrols = false;
-var upgradesavestring="";
-var loadgamestring = "";
-var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
-var playerselect = 0;
-
 var blastersound1 = new Audio("bubble4_short2.mp3");
 var blastersound2 = new Audio("close_door_12.mp3");
 var blastersound3 = new Audio("Bubble5_trunc.mp3");
@@ -99,6 +64,37 @@ var menubuy1 = new Audio("buyitem1.mp3");
 var respawn1 = new Audio("respawn.mp3");
 var boost1 =  new Audio("boingpowerup1.mp3");
 var missioncomplete1 = new Audio("JazzStab1.mp3");
+// declare global variables/////////////////////////////////////////////////
+var mytime = Date.now();
+const FPS = 60;
+setInterval(update, 1000 / FPS);// set up interval (game loop)
+var canvas, context;
+canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
+context = canvas.getContext("2d");
+context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 established in html.
+context.canvas.height = window.innerHeight-24;
+var vkeys = allvkeys(canvas.width,canvas.height);
+var comfy = false;
+if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
+var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
+var nmeactive = 1; //targeting computer starts off
+var mdx = 0; //I think these were for the mouse?  Not sure if used.
+var mdy = 0;
+var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
+var cheatmode = 0; //0 = not a cheater
+var ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
+var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
+var starmode = 1; //0 for no starfield.
+let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
+var pz = 0;
+var menuabout = false;
+var menucontrols = false;
+var upgradesavestring="";
+var loadgamestring = "";
+var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
+var playerselect = 0;
+var playerweapon9superbomb = new Superbomb("orbitalsystem");
+
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -111,11 +107,8 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 		return 1;
 		}else {return 0;}
 	}
-
 ////////Declarations//////////////////////////////////////////////////////////////////////////////////
 ////////This is basically the game world/////////////////////////////////////////////////////////////////
-
-//let testsystem = loadsmallworldsystem();
 let testsystem = new System(2,randname(4),0,0);
 let testsystem2 = new System(3,randname(4),0,0);
 let testsystem3 = new System(4,randname(4),0,0);
@@ -131,73 +124,33 @@ let testsystem12 = new System(13,randname(4),0,0);
 let testsystem13 = new System(14,randname(4),0,0);
 let testsystem14 = new System(15,randname(4),0,0);
 let playerradio = new Radio(" ");
-
-let planets = loadhomesystem(); //homesystem.
-let menuplanets = loadmenusystem();
-let trinidadplanets = loadtrinidadsystem();
-
-
-var ships = [];
-///////Special Station Umos//////////////////////////////////////////////////////////////////////////////
-let outposts = loadhomeoutposts();
-////////Player Bombs//////////////////////////////////////////////////////////////////////////////////////////       
-let botbombs=[];
 let home = new System(1,"Sool",0,0);
-home.planets = planets; //these are from loadhomesystem function output, which defines the starter system.
-home.ships = ships;     
-home.botbombs = botbombs;
-home.outposts = outposts; 
-home.shops = allshops;
 let menu = new System(0,"Main Menu",0,0);
-menu.planets = menuplanets;
-
 let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
-
-systems[2].randomplanets();
+systems[0].planets = loadmenusystem();
+systems[1].planets = loadhomesystem();
+systems[1].outposts = loadhomeoutposts();
+systems[1].shops = allshops;
+systems[2].randomplanets();//Here is where all the random systems and enemies are generated.
 systems[2].enemypopulate(5,4,17);
 systems[2].addrandombling(50);
-
 systems[3].planets = loadtrinidadsystem(); //from trinidadsystem.js
 systems[3].outposts = loadtrinidadoutposts(); //from trinidadoutposts.js
 systems[3].shops = trinidadshops;//trinidadshops is defined in shop.js
 systems[3].enemypopulate(5,4,16);
 systems[3].addrandombling(50);
-
 systems[4].randomplanets();
 systems[4].enemypopulate(5,5,18);
 systems[4].addrandombling(50);
 systems[5].randomplanets();
 systems[5].enemypopulate(5,5,19);
 systems[5].addrandombling(50);
-
 systems[6].planets = loadnapasystem(); //from napasystem.js
 systems[6].outposts = loadnapaoutposts(); //from napaoutposts.js
 systems[6].shops = napashops;//napashops is defined in shop.js
 systems[6].enemypopulate(6,2,6);
-function napaturrets(){
-var aristurret1 = new Turret("friendly",systems[6].planets[2],0,330);
-var aristurret2 = new Turret("friendly",systems[6].planets[2],Math.PI/2,330);
-var aristurret3 = new Turret("friendly",systems[6].planets[2],Math.PI,330);
-var aristurret4 = new Turret("friendly",systems[6].planets[2],Math.PI*1.5,330);
-var luxeturret1 = new Turret("friendly",systems[6].planets[3],0,300);
-var luxeturret2 = new Turret("friendly",systems[6].planets[3],Math.PI/2,300);
-var luxeturret3 = new Turret("friendly",systems[6].planets[3],Math.PI,300);
-var luxeturret4 = new Turret("friendly",systems[6].planets[3],Math.PI*1.5,300);
-luxeturret1.bombs = [new Umo(0,0,8,"purple"), new Umo(0,0,8,"blue"), new Umo(0,0,8,"green"), new Umo(0,0,8,"yellow"),new Umo(0,0,8,"orange"),new Umo(0,0,8,"red")];
-luxeturret2.bombs = [new Umo(0,0,8,"purple"),new Umo(0,0,8,"blue"),new Umo(0,0,8,"green"),new Umo(0,0,8,"yellow"),new Umo(0,0,8,"orange"),new Umo(0,0,8,"red")];
-luxeturret3.bombs = [new Umo(0,0,8,"purple"),new Umo(0,0,8,"blue"),new Umo(0,0,8,"green"),new Umo(0,0,8,"yellow"),new Umo(0,0,8,"orange"),new Umo(0,0,8,"red")];
-luxeturret4.bombs = [new Umo(0,0,8,"purple"),new Umo(0,0,8,"blue"),new Umo(0,0,8,"green"),new Umo(0,0,8,"yellow"),new Umo(0,0,8,"orange"),new Umo(0,0,8,"red")];
-var arstturret1 = new Turret("friendly",systems[6].outposts[0],Math.PI*1.5,150);
-var arstturret2 = new Turret("friendly",systems[6].outposts[0],Math.PI*0.5,150);
-var lustturret1 = new Turret("friendly",systems[6].outposts[1],Math.PI*1.5,150);
-var lustturret2 = new Turret("friendly",systems[6].outposts[1],Math.PI*0.5,150);
-var turrets = [aristurret1,aristurret2,aristurret3,aristurret4,luxeturret1,luxeturret2,luxeturret3,luxeturret4,arstturret1,arstturret2,lustturret1,lustturret2];
-return turrets;
-}
-
 systems[6].turrets = napaturrets();
 systems[6].addrandombling(50);
-
 systems[7].randomplanets();
 systems[7].enemypopulate(5,6,21);
 systems[7].addrandombling(50);
@@ -244,7 +197,7 @@ systems[1].addrandomgang(22,2,6);
 systems[1].addrandomgang(23,4,4);//no tune bots
 systems[1].addrandomgang(25,5,16);
 systems[1].addrandomtraders([5,11,16], 8, 4);
-//systems[1].addrandomgang(26,8,32);
+//systems[1].addrandomgang(26,8,32);  
 var i = systems[1].botbombs.length;
 while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	i=i-1;
@@ -252,34 +205,10 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].maxhp = 1; //with planets 
 	systems[1].botbombs[i].shield = 0;  
 	}
-var i = 0;
-while (i<4){//number of missions to be added
-	var j = 0;
-	while (j<systems[1].shops.length){
-		systems[1].shops[j].addcargomission(systems[1].ships,systems[1].planets,systems[1].outposts);
-		j=j+1;
-		}
-	i=i+1
-	}
+systems[1].addcargomissions(4);
+systems[3].addcargomissions(4);
+systems[6].addcargomissions(4);
 
-var i = 0;//Duplicated for trinidad system.  Need to automate this for curated systems.
-while (i<4){
-	var j = 0;
-	while (j<systems[3].shops.length){
-		systems[3].shops[j].addcargomission(systems[3].ships,systems[3].planets,systems[3].outposts);
-		j=j+1;
-		}
-	i=i+1
-	}	
-	var i = 0;//Duplicated for napa system.  Need to automate this for curated systems.
-while (i<4){
-	var j = 0;
-	while (j<systems[6].shops.length){
-		systems[6].shops[j].addcargomission(systems[6].ships,systems[6].planets,systems[6].outposts);
-		j=j+1;
-		}
-	i=i+1
-	}	
 //no kill missions for napa?
 var i = 0;
 while (i<4){
@@ -304,28 +233,13 @@ var i = 2;
 while (i<systems.length){
 	systems[i].planets.push(xxxx);
 	systems[i].planets.push(waldo);
+	//systems[i].addrandomgang(systems[i].planets.length-2,8+i,32+i);
+	//above causes hangup, not sure why.
 	i=i+1;
 	}
 ps = 0;
-
-
 var aplayer = new Player();
-aplayer.ship.hp = 1000;
-aplayer.ship.maxhp = 1000;
-aplayer.ship.shield = 200;
-aplayer.ship.maxshield = 200;
-aplayer.ship.parentid = 3;
-aplayer.blasters.push(baseblastercopy(allblasters[0]),baseblastercopy(allblasters[1]),baseblastercopy(allblasters[2]),baseblastercopy(allblasters[3]),baseblastercopy(allblasters[4]),baseblastercopy(allblasters[5]),baseblastercopy(allblasters[6]),baseblastercopy(allblasters[7]),baseblastercopy(allblasters[8]),baseblastercopy(allblasters[9]));
-aplayer.blasters[1].phas = true;
-aplayer.ship.c = randcolor();
-aplayer.ship.c2 = randcolor();
-var randomsides = Math.floor(Math.random()*8)*2+8; //randomized side number
-var randomplayerverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
-normalizepoly(randomplayerverts); //Makes the ship have at least 2 vertices at maximum radius (1).
-aplayer.ship.polytheta = randomplayerverts[0];//Assigns randomized polygon
-aplayer.ship.polyradius = randomplayerverts[1]; //to player1 ship
-aplayer.ship.ai = "player";
-
+aplayer.initialize(1000,200,1);
 var i=0;
 while(i<systems.length){
 	systems[i].players.push(aplayer);
@@ -481,6 +395,7 @@ function update() {
 		myship.vx = 0;
 		myship.vy = 0;
 		myplayer.navtarget = 0;
+		myplayer.shiptarget = 0;
 		}
 	//Size should be inversely related to the distance from event horizon
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships.  Not used yet.///////////////////////////////////////////////////
@@ -617,6 +532,10 @@ function update() {
 			aplayer.energy = aplayer.energy - 6;
 			if (time%24==0){blastersound8.play();}
 		}
+	/////////////////////////////////weapon 9 in-loop code, is even more special////////////////////////////////////////////////////////////////
+		if (aplayer.blasters[9].bombs[0].timer>0){
+			playerweapon9superbomb.maintainorbitbomb();
+			}
 	///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
 		if (aplayer.wep==0){//wep == 11 to disable, wep should ==0
 			var j = systems[ps].ships.length;
@@ -648,8 +567,6 @@ while(i<systems[ps].bling.length){
 	i++;
 	}
 storycheck(0);//0 is player index
-
-
 if(time%2==0){
     var truetime = Date.now();
     var servertime = mytime+Math.floor(time*1000/FPS);

@@ -592,8 +592,6 @@ class System{
 				}
 			i++;
 			}
-
-
 		var i=0;
 		while(i<this.players.length){
 			var j=0;
@@ -644,7 +642,6 @@ class System{
 				}
 			i++;
 			}
-
 		var i=0;
 		while (i<this.bling.length){
 			var j = 0;
@@ -660,12 +657,10 @@ class System{
 				}	
 			i++;
 			}
-
-
-	}	
+		}	
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
 		var  i = externalplanets.length;//unfinished, unused, but a good idea. 		
-	}
+		}
 	planetsmpsummary(){//For onboarding new system
 		var pupdate = [];
 		var i=0;
@@ -769,8 +764,6 @@ class System{
 			i++;
 			}
 		}
-
-
 	shipsmpsummary(){//For onboarding new system
 		var supdate = [];
 		//var i=0;
@@ -901,7 +894,7 @@ class System{
 		var qq = 0;
 		while (qq<this.players.length){
 			var aplayer = this.players[qq];
-			if (aplayer.mousestate==1){ //if it's the left button
+			if (((aplayer.mousestate==1)&&(aplayer.thrustmode==false))||((aplayer.mousestate==2)&&(aplayer.thrustmode==true))){ //if it's the left button
 				//console.log("itried4");
 				if (aplayer.wep < 10){
 					//console.log("itried3");
@@ -920,13 +913,17 @@ class System{
 							else if (aplayer.wep == 6){blastersound6.play();}
 							else if (aplayer.wep == 7){blastersound7.play();}
 							else if (aplayer.wep == 8){blastersound8.play();}
-							else if (aplayer.wep == 9){blastersound9.play();}
+							else if (aplayer.wep == 9){
+								blastersound9.play();
+								playerweapon9superbomb.initorbitbomb(aplayer.blasters[9].bombs,8,16,160,aplayer.ship,0.5,aplayer.moused+Math.PI, 4); //(bombs,coresize,minorbitize,maxorbitsize,origin,orbitspeed,direction,speed){//Orbitspeed is a multiplier value.  Individual orbit speeds are handled with the borbitspeed variable. //global scope here shame
+								}
 							else if (aplayer.wep == 0){blastersound0.play();}
 							}
 						}
 					}
 				}	
-			else if (aplayer.mousestate==2){//if its the right button
+				
+			else if (((aplayer.mousestate==2)&&(aplayer.thrustmode==false))||((aplayer.mousestate==1)&&(aplayer.thrustmode==true))){ //if it's the left button
 				if (aplayer.dockstate>=0){
 					systems[ps].outposts[aplayer.dockstate].undock(aplayer.ship);//undock function sets relative position and velocity.  Maybe other stuff.
 					aplayer.dockstate = -1;
@@ -1131,6 +1128,7 @@ class System{
 					if (ps <15){ps++;}
 					else  {ps = 1;}
 					aplayer.navtarget = 0;
+					aplayer.shiptarget = 0;
 					pz = 0;
 					var randdir = Math.random()*2*Math.PI;
 					xxxx.setorbit(this.planets[0], 320000, randdir+Math.PI, -1);//Global scope here is bad
@@ -1189,7 +1187,15 @@ class System{
 					if (aplayer.autopilot > 1) { aplayer.autopilot = 0;}//disables experimental modes for playability
 					//if (autopilot > 4) { autopilot = 0;}
 				  break;
-				  
+				  case "thrust": 
+				   if (aplayer.thrustmode){
+						aplayer.thrustmode = false;
+						vkeys[vkeys.length-1].label = "Thrust Mode is OFF";
+					}else{
+						aplayer.thrustmode = true;
+						vkeys[vkeys.length-1].label = "Thrust Mode is ON";
+						}
+				  break;
 				   case "k": 
 				   //save game
 					//console.log(aplayer.savecharacter());
@@ -1243,18 +1249,11 @@ class System{
 						aplayer.loadcharacter(savedcharacter);
 						aplayer.loadupgrades(savedupgrades);
 						}
-			
 				  break;	  	  
-			
 				default:
 				  break;
 					//return; // Quit when this doesn't handle the key event.
 			  } //end event key handling switch
-
-
-
-			
-			
 			qq++;
 			}
 		}
@@ -1368,8 +1367,6 @@ class System{
 			
 			var numberofsides = Math.floor(Math.random()*6+7)*2;
 			this.outposts[i].makeemblem(numberofsides,0.1); //randomly generates a shop logo
-			
-			
 			//Now add the shop...  Tons of global scope used here.
 			var randshopitems3 = [];  
 			randshopitems3.push(repairshopitem);//First 2 items are always the same, repair item and booster item.
@@ -1402,6 +1399,17 @@ class System{
 				k=k+1;
 				}// Destroy missions can't be added here (they are added in enemypopulate function), because normally the enemy ships haven't been added to the system yet when randomoutposts() (this function) is run.
 			i=i+1;
+			}
+		}
+	addcargomissions(n){
+		var i=0;
+		while(i<this.shops.length){
+			var j=0;
+			while (j<n){
+				this.shops[i].addcargomission(this.ships,this.planets,this.outposts);
+				j++;
+				}
+			i++;
 			}
 		}
 	levelup(botindex,levels){//adds "levels" to make bots tougher

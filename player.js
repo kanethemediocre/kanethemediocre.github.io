@@ -18,6 +18,7 @@ class Player{
         this.journalitem = 0; //Used to use shopitem, now it has it's own variable.
         this.energy = 100;
         this.thruster = 100;
+		this.thrustmode = false;
         this.gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
         this.wep = 1; //Currently selected weapon
         this.moused = 0; //Direction currently indicated by mouse
@@ -40,6 +41,25 @@ class Player{
         this.autopilot = 0; //0 is off, higher numbers are other modes
 		this.storyselect = 0;
     }
+	initialize(hp,shield,thrustmultiplier){
+		this.ship.hp=hp;
+		this.ship.maxhp=hp;
+		this.ship.shield=shield;
+		this.ship.maxshield=shield;
+		this.thrustmultiplier=thrustmultiplier;
+		this.blasters = [baseblastercopy(allblasters[0]),baseblastercopy(allblasters[1]),baseblastercopy(allblasters[2]),baseblastercopy(allblasters[3]),baseblastercopy(allblasters[4]),baseblastercopy(allblasters[5]),baseblastercopy(allblasters[6]),baseblastercopy(allblasters[7]),baseblastercopy(allblasters[8]),baseblastercopy(allblasters[9])];
+		//the baseblastercopy function comes from blasters.js, after blaster class definition and bh weapons instance definition.
+		this.blasters[1].phas = true;
+		this.ship.c = randcolor();
+		this.ship.c2 = randcolor();
+		var randomsides = Math.floor(Math.random()*8)*2+8; //randomized side number
+		var randomplayerverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
+		normalizepoly(randomplayerverts); //Makes the ship have at least 2 vertices at maximum radius (1).
+		this.ship.polytheta = randomplayerverts[0];//Assigns randomized polygon
+		this.ship.polyradius = randomplayerverts[1]; //to player1 ship
+		this.ship.ai = "player";
+		this.ship.parentid = 3; //Really too specific to be here. Maybe part of the passed variables.
+		}
     loadblasters(theblasters){
         var i=0;
         while(i<theblasters.length){

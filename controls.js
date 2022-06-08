@@ -1,6 +1,6 @@
 var controltext = ["Flying:  Right click mouse to fire thrusters, use the mouse cursor to steer your ship. ",  
 "[B] key will cycle through booster options \n[G] key will fire current booster.  ",
-"[A] key cycles autopilot modes (1 for slow approach, 2 for hold relative position, 3 experimental faster approach). ",
+"[A] key toggles autopilot",
 "[Spacebar] skips current radio message, [J] shows journal of all received messages.  ",
 "[N] key cycles navigation modes (Planets, Stations, or None), [<] and [>] cycle navigation targets. " ,
 "[M] key cycles map modes (off, corner, fullscreen), [+] and [-] keys on keypad zoom in and out. " ,

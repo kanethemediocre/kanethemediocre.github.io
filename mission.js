@@ -36,7 +36,7 @@ class Mission{
 				if (theships[this.target].hp < 0){complete = 1;} //If the ship is dead, the mission is complete.  Doesnt work yet
 				}
 			else if (this.type == "cargo"){ //If the mission is to take cargo to a planet.  Works on last test.
-				if ((theplanets[this.target].distance(theplayer.ship)<theplanets[this.target].s*2+200) && (theplanets[this.target].deltav(theplayer.ship)<10)){
+				if ((theplanets[this.target].distance(theplayer.ship)<theplanets[this.target].s*2+64) && (theplanets[this.target].deltav(theplayer.ship)<4)){
 					theplayer.inventory.givecargo(allcargos.length-1,10);//global scope shame
 					complete = 1; //Requires that you get close, and get slow relative to target planet.
 					}
