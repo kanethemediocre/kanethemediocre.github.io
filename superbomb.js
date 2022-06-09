@@ -12,7 +12,7 @@ class Superbomb{
 		this.bombs[0].vx =  this.bombs[0].vx+Math.cos(direction)*speed;//set velocity to reflect launch speed and distance
 		this.bombs[0].y = this.bombs[0].y+Math.sin(direction)*(maxorbitsize+32);//set position in direction ship is pointint
 		this.bombs[0].vy =  this.bombs[0].vy+Math.sin(direction)*speed;//set velocity to reflect launch speed and distance
-		this.bombs[0].timer = 300;//Lifespan of bomb cluster.
+		this.bombs[0].timer = 1000;//Lifespan of bomb cluster.
 		this.orbits = [ [0,0,0] ];
 		//need to fire this first bomb here
 		var i=1;
@@ -27,7 +27,6 @@ class Superbomb{
 			this.orbits.push([orbitsize,orbitstart,borbitspeed]);  //each element in orbits is a 3 number array--the size of the orbit, the current angular position,
 			this.bombs[i].x = this.bombs[i].x+Math.cos(direction)*maxorbitsize+12;//set position in direction ship is pointint
 			this.bombs[i].y = this.bombs[i].y+Math.sin(direction)*maxorbitsize+12;//set position in direction ship is pointint
-
 			this.bombs[i].timer = this.bombs[0].timer;//Lifespan of bomb cluster.
 			i++;
 			}

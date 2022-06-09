@@ -153,13 +153,13 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			var themsg =  "Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].ships[9].name+", it should be near Merz";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Destroy ship "+systems[ps].ships[9].name+" near Merz";
-			systems[ps].ships[9].respawn(systems[ps].planets[ships[9].parentid]);
+			systems[ps].ships[9].respawn(systems[ps].planets[systems[ps].ships[9].parentid]);
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
 	break;		
 	case 17:
-		if (ships[9].hp==-1000){
+		if (systems[ps].ships[9].hp==-1000){
 			var themsg =  "Alright good job.  Now before you get carried away come back to the station and I'll fit your ship with something a little more powerful.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Return to the Merry Merzian";

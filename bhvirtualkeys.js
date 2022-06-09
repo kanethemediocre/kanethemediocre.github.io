@@ -1,5 +1,5 @@
 function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
-	var avk=new Virtualkey("a","A",-100,-100);//constructor(key,label,x,y){
+	var avk=new Virtualkey("a","A",xmax-136,ymax-216);//constructor(key,label,x,y){
 	var bvk=new Virtualkey("b","B",24,151);//constructor(key,label,x,y){
 	var cvk=new Virtualkey("c","C",xmax/2-112,16);//constructor(key,label,x,y){
 	var gvk=new Virtualkey("g","G",24,181);//constructor(key,label,x,y){
