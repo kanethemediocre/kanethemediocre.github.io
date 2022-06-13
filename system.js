@@ -896,7 +896,7 @@ class System{
 			var aplayer = this.players[qq];
 			if (((aplayer.mousestate==1)&&(aplayer.thrustmode==false))||((aplayer.mousestate==2)&&(aplayer.thrustmode==true))){ //if it's the left button
 				//console.log("itried4");
-				if (aplayer.wep < 10){
+				if (aplayer.wep < 20){
 					//console.log("itried3");
 					//console.log(myplayer.energy+"  "+myplayer.blasters[1].ecost);//myplayer.blasters[myplayer.wep].ecost);
 					if (aplayer.energy>aplayer.blasters[aplayer.wep].ecost){
@@ -1012,6 +1012,36 @@ class System{
 				  break;
 				case "0": 
 					if (aplayer.blasters[0].phas){ aplayer.wep = 0; }
+					  break;
+				case "!":    //This is how weapon switching is handled.
+					if (aplayer.blasters[11].phas){ aplayer.wep = 11; } //If weapon is present, switch to it.		
+					break; //Nothing happens on keypress otherwise.
+				case "@": 
+					if (aplayer.blasters[12].phas){ aplayer.wep = 12; }
+				  break;
+				case "#": 
+					if (aplayer.blasters[13].phas){ aplayer.wep = 13; }
+					  break;
+				case "$": 
+					if (aplayer.blasters[14].phas){ aplayer.wep = 14; }
+					break;
+				case "%": 
+					if (aplayer.blasters[15].phas){ aplayer.wep = 15; }
+				  break;
+				case "^": 
+					if (aplayer.blasters[16].phas){ aplayer.wep = 16; }
+					  break;
+				case "&": 
+					if (aplayer.blasters[17].phas){ aplayer.wep = 17; }
+				  break;
+				case "*": 
+					if (aplayer.blasters[18].phas){ aplayer.wep = 18; }
+					  break;
+				case "(": 
+					if (aplayer.blasters[19].phas){ aplayer.wep = 19; }
+				  break;
+				case ")": 
+					if (aplayer.blasters[10].phas){ aplayer.wep = 10; }
 					  break;
 				case "n": 
 					if (aplayer.navactive == 0){

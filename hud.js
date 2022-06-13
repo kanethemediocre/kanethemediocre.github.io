@@ -136,32 +136,34 @@ function hud(playerindex){
 		context.fillStyle = "white";
 		}
 	context.fillStyle = "red";
-	context.fillRect(12*myplayer.wep,104,10,20);//This highlights which blaster the player has selected
+	context.fillRect(16*myplayer.wep-160*Math.floor(myplayer.wep/10),104+16*Math.floor(myplayer.wep/10),14,20);//This highlights which blaster the player has selected
+	//context.fillRect(16*myplayer.wep-160*Math.floor(i/10),104+16*Math.floor(i/10),14,20);//This highlights which blaster the player has selected
+	context.font='14px Arial';
 	var i=0;//This indicates available blasters to the user
 	while(i<myplayer.blasters.length){
 		if (myplayer.blasters[i].phas){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-		context.fillText(i,12*i,120);
+		context.fillText(i,16*i-160*Math.floor(i/10),120+16*Math.floor(i/10));
 		i=i+1;
 	}
 	context.fillStyle = "red";
-	context.font='16px Arial';
-	context.fillText(myplayer.blasters[myplayer.wep].name,8,144);
+	context.font='20px Arial';
+	context.fillText(myplayer.blasters[myplayer.wep].name,8,160);
 
 	context.fillStyle = "white";
-	context.fillText(myplayer.boosters[0],8,168);//0 index is booster type
-	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,196);
+	context.fillText(myplayer.boosters[0],8,188);//0 index is booster type
+	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,216);
 	context.font='16px Arial';
 	context.fillStyle = "green"; 
-	context.fillText("task: "+myplayer.task,8,224);//The task is a brief description of the last thing a player was asked to do.
+	context.fillText("task: "+myplayer.task,8,240);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
-	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,244);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
+	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,260);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	context.fillStyle = "white";
 	context.font='12px Arial';
-	context.fillText("dockstate: "+myplayer.dockstate,8,300);//Debugging stuff
-	context.fillText("storystate: "+myplayer.storystate,8,316);
-	context.fillText("probemode: "+myplayer.probemode,8,332);
-	context.fillText("autopilot: "+myplayer.autopilot,8,348);
-	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,364);
+	context.fillText("dockstate: "+myplayer.dockstate,8,316);//Debugging stuff
+	context.fillText("storystate: "+myplayer.storystate,8,332);
+	context.fillText("probemode: "+myplayer.probemode,8,348);
+	context.fillText("autopilot: "+myplayer.autopilot,8,364);
+	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,380);
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
 	if (myplayer.ship.hp==-1000){//This is the death screen.
 		context.fillStyle = "red";

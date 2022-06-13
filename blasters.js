@@ -114,7 +114,7 @@ class Blaster{
 				this.bombs[i].hp = 100;
 				this.bombs[i].shield = 1;
 			}
-			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")){
+			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")){
 				var cnum = (thetime+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
@@ -177,6 +177,21 @@ class Blaster{
 				i=i+1;
 				}
 			theplayer.ship.d = shipd;
+		}else if (this.type == "multiplex"){
+			var n = this.bombs.length;
+			var interspread = 12
+			var interstart = -1*((n-1)/2)*interspread
+			var offsetd = theplayer.ship.d+Math.PI/2;
+			var i=0;
+			while (i<n){
+				var interoffset = interstart + interspread*i;
+				var dx = interoffset*Math.cos(offsetd);
+				var dy = interoffset*Math.sin(offsetd);
+				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
+				this.bombs[i].x = this.bombs[i].x + dx;
+				this.bombs[i].y = this.bombs[i].y + dy
+				i=i+1;
+				}
 			}
 		}
 	draw(viewx,viewy){
@@ -308,8 +323,7 @@ class Blaster{
 		}
 	}
 //constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,ID)
-     let qblaster = new Blaster("joe","a dude",1000,"spread",                                                            
-	 10,4,10,12,2,10,1,0.2,10,6,2,10,40,8,10,11,"red","ID not implemented");//All energy costs set at 11 for now.
+ function bhblasters(){
 	 let weapon1 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
 	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"red","ID not implemented");
 	 weapon1.phas = true; //this is the starter blaster
@@ -332,11 +346,31 @@ class Blaster{
 	 16,8,10,12,2,10,0.5,0.25,10,8,1,10,1000,8,10,99,"white","ID not implemented");
 	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"probe",                      
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
-	 let boss1weapon = new Blaster("joe","Simple, but energy efficient blaster",1000,"type variable not used yet",       
-	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 
-	 let allblasters = [weapon0,weapon1,weapon2,weapon3,weapon4,weapon5,weapon6,weapon7,weapon8,weapon9,qblaster,boss1weapon];
-
+	 let weapon10 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"pink","ID not implemented");
+	 let weapon11 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"teal","ID not implemented");
+	 let weapon12 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"tan","ID not implemented");
+	 let weapon13 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"brown","ID not implemented");
+	 let weapon14 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"grey","ID not implemented");
+	 let weapon15 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"white","ID not implemented");
+	 let weapon16 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"lime","ID not implemented");
+	 let weapon17 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"darkslategrey","ID not implemented");
+	 let weapon18 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"olive","ID not implemented");
+	 let weapon19 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            
+	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,12,"skyblue","ID not implemented");
+	
+	 return [weapon0,weapon1,weapon2,weapon3,weapon4,weapon5,weapon6,weapon7,weapon8,weapon9,weapon10,weapon11,weapon12,weapon13,weapon14,weapon15,weapon16,weapon17,weapon18,weapon19];
+ }//Might not need baseblastercopy function here because each time the bhblasters function is called it creates fresh new weapons.
+let allblasters = bhblasters(); //Sort of legacy support
 	 function baseblastercopy(old){//Creates a new Blaster with same base stats as old Blaster.  Upgrades are not copied.
 		let tempblaster = new Blaster(old.name,old.description,old.price,old.type,                                                            
 	 	old.bhurt,old.uphurt,old.maxhurt,old.bspeed,old.upspeed,old.maxspeed,old.bboom,old.upboom,old.maxboom,old.bn,old.upn,old.maxn,
