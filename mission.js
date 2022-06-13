@@ -7,6 +7,8 @@ class Mission{
 		this.message = mmessage; //"Kill that guy", "Take cargo to that planet"
 		this.reward = mreward; //How much money you get, 0 indicates mission no longer active
 		this.storypath = mstory; //What storystate the mission leads to, 0 for no affect on storystate
+		this.danger = 0; //This describes how dangerous the mission is thought to be
+		this.distance = 0; //This describes how far the mission is thought to be.
 		this.taken = false;
 		this.taker = "nobody";
 		}

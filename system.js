@@ -1562,21 +1562,127 @@ class System{
 		return [thejob, numjobs];
 		}
 	joblist(x,y){
-		context.fillStyle = "orange";
+		var item = 0;
+		var joblistcolor = "orange"
+		context.fillStyle = joblistcolor;
+		context.strokeStyle = joblistcolor;
+		context.font = "24px Verdana";
+		context.fillText("Jobs",x,y-24);
+		//context.font = "16px Verdana";
+	//	context.fillText("number of jobs goes here",x+128,y-24);
+		context.rect(x-4,y-48,640,500);
+		context.rect(x-4,y-16,640,300);
+		context.stroke();	
 		context.font='12px Arial';
 		var jobnum = 0;
+		var myjobs = []
 		var i=0;
 		while (i<this.shops.length){
 			var j=0;
 			while (j<this.shops[i].missions.length){
 				if (this.shops[i].missions[j].taken){
-					context.fillText(this.shops[i].missions[j].message,x,y+jobnum*20);
+					myjobs.push(this.shops[i].missions[j]);
+					context.fillText(this.shops[i].missions[j].message,x+8,y+28+jobnum*20);
 					jobnum++;
 					}
 				j=j+1;
 				}
 			i=i+1;
 			}
-		if (jobnum == 0){ context.fillText("No jobs",x,y); }
+		context.font = "16px Verdana";
+		context.fillText(jobnum+" current jobs",x+128,y-24);
+		if (jobnum == 0){ context.fillText("No jobs",x,y); 
+		}else{
+			context.fillText("Type:",x+0,y+20+16*-1);
+			context.fillText("Location:",x+100,y+20+16*-1);
+			context.fillText("Distance:",x+200,y+20+16*-1);
+			context.fillText("Danger:",x+300,y+20+16*-1);
+			context.fillText("Reward:",x+400,y+20+16*-1);
+			context.beginPath(); //This colored rectangle will show which item is selected.
+			context.strokeStyle = joblistcolor;
+			context.rect(x,y+16+item*16,400,16);
+			context.stroke();
+			var i=0;
+			while (i<myjobs.length){
+				
+				
+				
+				i++;
+				}
+			
+			
+			
+			}
+		/*context.beginPath(); //This colored rectangle will show which item is selected.
+		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+		context.rect(x-12,y+28+item*16,400,16);
+		context.stroke();
+		context.fillText("Type:",x+0,y+32+16*-1);
+		context.fillText("Location:",x+80,y+32+16*-1);
+		context.fillText("Distance:",x+160,y+32+16*-1);
+		context.fillText("Danger:",x+240,y+32+16*-1);
+		context.fillText("Reward:",x+320,y+32+16*-1);
+		var i=0;
+		while (i<this.missions.length){
+			if (this.missions[i].taken){context.fillStyle = "red";}else{context.fillStyle = "white";}
+			context.fillText(this.missions[i].type.slice(0,16),x,y+40+16*i);
+			context.fillText(this.missions[i].distance,x+160,y+40+16*i);
+			context.fillText(this.missions[i].danger,x+240,y+40+16*i);
+			//context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
+			context.fillText(this.missions[i].reward,x+320,y+40+16*i);
+			var missionlocation = "unknown";
+			if (this.missions[i].type == "cargo"){
+				missionlocation = systems[ps].planets[this.missions[i].target].name;
+				}
+			if (this.missions[i].type == "destroy"){
+				missionlocation = systems[ps].planets[systems[ps].ships[this.missions[i].target].parentid].name;
+				}
+			context.fillText(missionlocation,x+80,y+40+16*i);
+			context.fillText(missionlocation,x+80,y+40+16*i);
+			i=i+1;
+			}
+			*/
+		
+		
+		
+		
+		
+/*		
+			//fillwrappedtext(this.log[index],76,20,xpos,ypos+300);
+			if (this.log.length>0){
+			fillwrappedtext(this.log[index],76,20,xpos,ypos+300);
+			var logchart = [ this.log  ];
+				var chartstart = 0;
+				var chartend = this.log.length-1;
+				if (this.log.length>8){
+					chartstart = index - 4;
+					chartend = index + 4;
+					if (chartend < 8){chartend = 8;}
+					if (chartstart<0){chartstart=0;}
+					if (chartend>this.log.length-1){chartend=this.log.length-1;}
+					}
+				var logchart = [ this.log.slice(chartstart,chartend+1) ];
+				//if (index>4){showchartabbrev(logchart, 64, 16, xpos,ypos, 80);}
+				//else {showchartabbrev(logchart, 64, 16, xpos,ypos+, 80);}
+				context.font = "12px Verdana";
+				showchartabbrev(logchart, 64, 16, xpos+16,ypos, 80);
+				//fillwrappedtext(this.log[index],100,16,xpos,ypos+300);
+				if ((this.log.length<8)||(index < 4)){
+					context.beginPath();
+					context.rect(xpos,ypos-12+index*16,600,18);
+					context.stroke();
+					//context.fillText('X',xpos,ypos+index*16);
+				}else{
+					context.beginPath();
+					context.rect(xpos,ypos+4*16-12,600,18);
+					context.stroke();
+					//context.fillText('X',xpos,ypos+4*16);
+					}
+				}
+			context.beginPath();
+			context.rect(xpos-4,ypos-48,640,500);
+			context.rect(xpos-4,ypos-16,640,300);
+			context.stroke();
+		*/
 		}
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////

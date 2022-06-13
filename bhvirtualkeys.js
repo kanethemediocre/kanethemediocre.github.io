@@ -16,7 +16,7 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var plusvk=new Virtualkey("+","+",24,ymax-336);//constructor(key,label,x,y)
 	var minusvk=new Virtualkey("-","-",56,ymax-336);//constructor(key,label,x,y)
 	var upjvk = new Virtualkey("ArrowUp","Up",684,152);//constructor(key,label,x,y)
-	upjvk.display = false;
+	upjvk.display = false; //These keys are attached to menus that are not always visible.
 	upjvk.active = false;
 	var downjvk = new Virtualkey("ArrowDown","Down",684,192);//constructor(key,label,x,y)
 	downjvk.display = false;

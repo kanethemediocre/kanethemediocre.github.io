@@ -13,8 +13,6 @@ function hud(playerindex){
 			if (myplayer.ship.pointingat(systems[ps].ships[i])){
 				myplayer.shiptarget = i;	
 				}
-
-
 			if (tdistance<closestdistance){
 				closestdistance = tdistance;
 				closestindex = shipsinrange.length-1;
@@ -43,7 +41,6 @@ function hud(playerindex){
 			context.fillStyle = "red";
 			context.fillText("No targets in range", canvas.width-160, 24);
 			}
-
 	//if (myplayer.shiptarget>shipsinrange.length-1){myplayer.shiptarget = 0;}
 	//else if (myplayer.shiptarget<0){myplayer.shiptarget = 0;}
 	if (shipsinrange.length>0){
@@ -59,7 +56,6 @@ function hud(playerindex){
 		context.stroke();	
 		}
 	}
-	
 	var i=0;
 	while (i<vkeys.length){
 		vkeys[i].draw();
@@ -177,7 +173,6 @@ function hud(playerindex){
 	if (myplayer.journalactive==1){
 		if (myplayer.journalitem>playerradio.log.length-1){myplayer.journalitem=0;}
 		context.fillStyle = "skyblue";
-		
 		context.strokeStyle = "skyblue";
 		playerradio.showlog(myplayer.journalitem,200,64);
 		//if (playerradio.log.length>0){ playerradio.showlog(myplayer.journalitem,200,50); }
@@ -191,7 +186,7 @@ function hud(playerindex){
 		vkeys[16].display = true;
 		vkeys[16].active = true;	
 	}else if (myplayer.journalactive==2){
-		systems[ps].joblist(200,50);
+		systems[ps].joblist(200,64);
 		//display jobs
 	}else{
 		vkeys[15].display = false;

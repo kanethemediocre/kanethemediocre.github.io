@@ -20,6 +20,8 @@ class Shopitem{
 			thisname = allupgrades[this.i].name;
 		}else if (this.type == "booster"){
 			thisname = "Booster"+this.utier; //Boosters can be described entirely by their tier.
+		}else if (this.type == "chassis"){
+			thisname = "Chassis Reroll"; //Boosters can be described entirely by their tier.
 		}
 		return thisname;
 	}
@@ -33,6 +35,8 @@ class Shopitem{
 			thisdescribe = allupgrades[this.i].description;
 		}else if (this.type == "booster"){
 			thisdescribe = "Booster with "+(16*2^this.utier)+" delta V.";//boosters described purely by thrust.
+		}else if (this.type == "chassis"){
+			thisdescribe = "Randomly changes the shape and color of your ship.";//boosters described purely by thrust.
 		}
 		return thisdescribe;
 	}
@@ -46,6 +50,8 @@ class Shopitem{
 			thisprice = theplayer.upgrades[this.i].price*2**(theplayer.upgrades[this.i].tier);
 		}else if (this.type == "booster"){
 			thisprice = 400*(2**this.utier); //Replace with real price as it is determined
+		}else if (this.type == "chassis"){
+			thisprice = 1000; //Replace with real price as it is determined
 		}
 		return thisprice;		
 	}
@@ -84,6 +90,16 @@ class Shopitem{
 				theplayer.boosters[this.utier] = theplayer.boosters[this.utier]+2;
 			}else if (this.type == "cargo"){
 				theplayer.inventory.takecargo(this.i, 1);
+			}else if (this.type == "chassis"){//Always randomizes.  Planned option to ttake station logo.
+				var gangcolor = randcolor();
+				var gangcolor2 = randcolor();
+				var randomsides = Math.floor(Math.random()*8)*2+8; //randomized side number
+				var randomplayerverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
+				normalizepoly(randomplayerverts);
+				theplayer.ship.polytheta = randomplayerverts[0];
+				theplayer.ship.polyradius = randomplayerverts[1];
+				theplayer.ship.c=gangcolor;
+				theplayer.ship.c2=gangcolor2;
 				}
 			}
 		}
@@ -235,26 +251,33 @@ class Shop{
 		}		
 	drawworkmenu(xpos, ypos, item,theplayer){
 		var x = xpos;
-		var y = ypos;
+		var y = ypos+16;
 		context.font='16px Arial';
 		context.fillStyle = "white";
-		context.fillText("Welcome to "+this.name,x,y);
+		context.fillText("Welcome to "+this.name,x,ypos);
 		context.font='32px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
-		context.fillText("Work",x,y-24);
+		context.fillText("Work",x,ypos-24);
 		context.font='12px Arial';
 		context.fillStyle = "white";	
-		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,y+236);}
+		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,ypos+236);}
 		context.beginPath(); //This colored rectangle will show which item is selected.
 		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c;//Global scope here, very bad, also in drawpolarpoly
-		context.rect(x-12,y+20+item*16,400,16);
+		context.rect(x-12,y+28+item*16,400,16);
 		context.stroke();
+		context.fillText("Type:",x+0,y+32+16*-1);
+		context.fillText("Location:",x+80,y+32+16*-1);
+		context.fillText("Distance:",x+160,y+32+16*-1);
+		context.fillText("Danger:",x+240,y+32+16*-1);
+		context.fillText("Reward:",x+320,y+32+16*-1);
 		var i=0;
 		while (i<this.missions.length){
 			if (this.missions[i].taken){context.fillStyle = "red";}else{context.fillStyle = "white";}
-			context.fillText(this.missions[i].type.slice(0,16),x,y+32+16*i);
-			context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
-			context.fillText(this.missions[i].reward,x+160,y+32+16*i);
+			context.fillText(this.missions[i].type.slice(0,16),x,y+40+16*i);
+			context.fillText(this.missions[i].distance,x+160,y+40+16*i);
+			context.fillText(this.missions[i].danger,x+240,y+40+16*i);
+			//context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
+			context.fillText(this.missions[i].reward,x+320,y+40+16*i);
 			var missionlocation = "unknown";
 			if (this.missions[i].type == "cargo"){
 				missionlocation = systems[ps].planets[this.missions[i].target].name;
@@ -262,7 +285,8 @@ class Shop{
 			if (this.missions[i].type == "destroy"){
 				missionlocation = systems[ps].planets[systems[ps].ships[this.missions[i].target].parentid].name;
 				}
-			context.fillText(missionlocation,x+240,y+32+16*i);
+			context.fillText(missionlocation,x+80,y+40+16*i);
+			context.fillText(missionlocation,x+80,y+40+16*i);
 			i=i+1;
 			}
 		context.beginPath();
@@ -278,6 +302,8 @@ class Shop{
 		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Go to "+theplanets[missiontarget].name + "."
 		this.missions.push(new Mission("cargo",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
+		this.missions[this.missions.length-1].distance = Math.floor(missiondistance/2000);
+		this.missions[this.missions.length-1].danger = 0; //maybe factor in local bots later.
 		}
 	addkillmission(theships,theplanets,theoutposts){
 		var missiontarget = 1+Math.floor(Math.random()*(theships.length-2));
@@ -285,6 +311,8 @@ class Shop{
 		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Destroy "+theships[missiontarget].name + ".  It can be found near "+theplanets[theships[missiontarget].parentid].name;
 		this.missions.push(new Mission("destroy",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
+		this.missions[this.missions.length-1].distance = Math.floor(missiondistance/5000);
+		this.missions[this.missions.length-1].danger = theships[missiontarget].level; //maybe also factor in local bots.
 		}
 	}
 let repairshopitem = new Shopitem("upgrade",0,"repair",0);
@@ -384,6 +412,9 @@ let upradaritem = new Shopitem("upgrade",4,"radar",0);
 let upcargoitem = new Shopitem("upgrade",5,"cargo",0);
 let upthrustitem = new Shopitem("upgrade",6,"thrust",0);
 
+let brandchassisitem = new Shopitem("chassis",0,"brand",0);
+let randomchassisitem = new Shopitem("chassis",0,"random",0);
+
 let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0,buycargo1,buycargo2,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
 let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,uparmoritem,buycargo2,buycargo3]
@@ -400,7 +431,7 @@ while (i<12){
 	i=i+1;
 }
 let randoshop1 = new Shop("Rando Calrissian's Blaster Upgrades",4, "Randomized items", randshopitems1);
-var upgradeshopitems = [uprepairitem,uparmoritem,upshielditem,upshieldregenitem,upradaritem,upcargoitem,upthrustitem];
+var upgradeshopitems = [uprepairitem,uparmoritem,upshielditem,upshieldregenitem,upradaritem,upcargoitem,upthrustitem,randomchassisitem];
 let upgradeshop = new Shop("All Upgrades Testing Shop",5, "Upgrades", upgradeshopitems);
 let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,upgradeshop];//"all" meaning home system
 
