@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v351 by Andrew Kane </title>
+    <title>Bling Hustle v354 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -44,26 +44,26 @@
 <script type="text/javascript" src="bhvirtualkeys.js"></script>
 <script type="text/javascript" src="superbomb.js"></script>
 <script>
-var blastersound1 = new Audio("bubble4_short2.mp3");
-var blastersound2 = new Audio("close_door_12.mp3");
-var blastersound3 = new Audio("Bubble5_trunc.mp3");
-var blastersound4 = new Audio("bottleshortpop2.mp3");
-var blastersound5 = new Audio("bottleshortpop1.mp3");
-var blastersound6 = new Audio("chirpshort1.mp3");
-var blastersound7 = new Audio("shortlaser1.mp3");
-var blastersound8 = new Audio("shortburp.mp3");
-var blastersound9 = new Audio("carchirp1.mp3");
-var blastersound0 = new Audio("chirpshort1.mp3");
-var enginesound1 = new Audio("engine26.mp3");
-var damagesound1 = new Audio("engine3.mp3");
-var cashsound1 = new Audio("cash_register_2.mp3");
-var menuclick1 = new Audio("menuclick1.mp3");
-var menuclick2 = new Audio("simplechnk2.mp3");
-var menuclick3 = new Audio("singleshot1.mp3");
-var menubuy1 = new Audio("buyitem1.mp3");
-var respawn1 = new Audio("respawn.mp3");
-var boost1 =  new Audio("boingpowerup1.mp3");
-var missioncomplete1 = new Audio("JazzStab1.mp3");
+var blastersound1 = new Audio("./sounds/bubble4_short2.mp3");
+var blastersound2 = new Audio("./sounds/close_door_12.mp3");
+var blastersound3 = new Audio("./sounds/Bubble5_trunc.mp3");
+var blastersound4 = new Audio("./sounds/bottleshortpop2.mp3");
+var blastersound5 = new Audio("./sounds/bottleshortpop1.mp3");
+var blastersound6 = new Audio("./sounds/chirpshort1.mp3");
+var blastersound7 = new Audio("./sounds/shortlaser1.mp3");
+var blastersound8 = new Audio("./sounds/shortburp.mp3");
+var blastersound9 = new Audio("./sounds/carchirp1.mp3");
+var blastersound0 = new Audio("./sounds/chirpshort1.mp3");
+var enginesound1 = new Audio("./sounds/engine26.mp3");
+var damagesound1 = new Audio("./sounds/engine3.mp3");
+var cashsound1 = new Audio("./sounds/cash_register_2.mp3");
+var menuclick1 = new Audio("./sounds/menuclick1.mp3");
+var menuclick2 = new Audio("./sounds/simplechnk2.mp3");
+var menuclick3 = new Audio("./sounds/singleshot1.mp3");
+var menubuy1 = new Audio("./sounds/buyitem1.mp3");
+var respawn1 = new Audio("./sounds/respawn.mp3");
+var boost1 =  new Audio("./sounds/boingpowerup1.mp3");
+var missioncomplete1 = new Audio("./sounds/JazzStab1.mp3");
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
 const FPS = 60;
@@ -303,9 +303,9 @@ function update() {
 		myship.y = -100;
 		myship.vx = 0;
 		myship.vy = 0;
-		context.font = "128px Ariel";
+		context.font = "160px Ariel";
 		context.fillStyle = "yellow";
-		context.fillText("BLING       HUSTLE",canvas.width/2-500,100);	
+		context.fillText("BLING   HUSTLE",canvas.width/2-550,120);	
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[0])){
 			menuabout = true;
 			menucontrols = false;
@@ -530,13 +530,23 @@ function update() {
 					}
 				}
 			}
-	//////////////////////////////////Weapon 8 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
-		if((aplayer.mousestate==1)&&(time%4==0)&&(aplayer.wep == 8)&&(aplayer.energy>6)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
-			var n = Math.floor(time/4)%6;
+	//////////////////////////////////Weapon 8 in-loop code, its special like that.  Now designed to deal with ANY rapid blaster.//////////////////////////////////////////////////////////////////////////////
+		if((aplayer.mousestate==1)&&(time%4==0)&&(aplayer.blasters[aplayer.wep].type == "rapid")&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
+			var n = Math.floor(time/4)%aplayer.blasters[aplayer.wep].bombs.length;
 			aship.launchbomb(aplayer.blasters[aplayer.wep].bombs[n],aplayer.blasters[aplayer.wep].speed,aplayer.blasters[aplayer.wep].timer);
 			aplayer.energy = aplayer.energy - 6;
 			if (time%24==0){blastersound8.play();}
 		}
+		
+		/*
+			if ((this.firing>=0)&&(this.time%4)){ //This was all under blasters, as an update to rapid blasters
+			this.firing++;
+			console.log("sdfasf"); 
+			if (this.firing>=this.bombs.length){this.firing = 0;}
+			this.origin.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);
+			//this.bombs[this.firing]
+			}
+		*/
 	/////////////////////////////////weapon 9 in-loop code, is even more special////////////////////////////////////////////////////////////////
 		if (aplayer.blasters[9].bombs[0].timer>0){
 			playerweapon9superbomb.maintainorbitbomb();

@@ -50,6 +50,11 @@ class Player{
 		this.ship.maxshield=shield;
 		this.thrustmultiplier=thrustmultiplier;
 		this.blasters = bhblasters();
+		var i = 0;
+		while (i<this.blasters.length){
+			this.blasters[i].origin = this;
+			i++;
+			}
 		//this.blasters = [baseblastercopy(allblasters[0]),baseblastercopy(allblasters[1]),baseblastercopy(allblasters[2]),baseblastercopy(allblasters[3]),baseblastercopy(allblasters[4]),baseblastercopy(allblasters[5]),baseblastercopy(allblasters[6]),baseblastercopy(allblasters[7]),baseblastercopy(allblasters[8]),baseblastercopy(allblasters[9])];
 		//the baseblastercopy function comes from blasters.js, after blaster class definition and bh weapons instance definition.
 		//this.blasters[1].phas = true;
