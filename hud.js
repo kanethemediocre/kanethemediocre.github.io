@@ -4,7 +4,7 @@ function hud(playerindex){
 	context.fillStyle = "white"; 
 	var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
 	var closestdistance = 999999;//needs to be larger than radarrange 
-	//var closestindex = 0; //defaults to self-targeting if no ships in range
+	var closestindex = 0; //defaults to self-targeting if no ships in range
 	var i=0;
 	while (i<systems[ps].ships.length){ //this loop makes the short list
 		var tdistance = Math.floor(myplayer.ship.distance(systems[ps].ships[i]));
@@ -20,6 +20,10 @@ function hud(playerindex){
 			}
 		i++;
 		}
+	if (myplayer.ship.distance(systems[ps].ships[myplayer.shiptarget])>myplayer.radarrange){
+		myplayer.shiptarget=0;
+		closestindex = 0;
+		}
 	var i=0;
 	if (nmeactive == 1){//if targeting computer is on...
 			context.font='12px Courier New';
@@ -28,7 +32,7 @@ function hud(playerindex){
 			while(i<shipsinrange.length){
 				var cellposx = canvas.width-300;
 				var cellposy = 16+i*16;
-				context.fillStyle = systems[ps].ships[shipsinrange[i]].c
+				context.fillStyle = systems[ps].ships[shipsinrange[i]].c;
 				context.fillText(systems[ps].ships[shipsinrange[i]].name,cellposx,cellposy);
 				var cellposx = canvas.width-300+64;
 				var shipdistance = myplayer.ship.distance(systems[ps].ships[shipsinrange[i]]);
@@ -50,7 +54,7 @@ function hud(playerindex){
 		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].ships[myplayer.shiptarget].name, systems[ps].ships[myplayer.shiptarget].level, systems[ps].ships[myplayer.shiptarget].hp,  systems[ps].ships[myplayer.shiptarget].shield,  systems[ps].botbombs[myplayer.shiptarget].hurt, systems[ps].botbombs[myplayer.shiptarget].boombuff,systems[ps].ships[myplayer.shiptarget].shieldregen,systems[ps].ships[myplayer.shiptarget].ai]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 
-		context.rect(canvas.width-304,4+16*myplayer.shiptarget, 160, 16); //This is the item selection indicator
+		context.rect(canvas.width-304,4+16*closestindex, 160, 16); //This is the item selection indicator
 		context.lineWidth = 2; 
 		context.strokeStyle = "white";
 		context.stroke();	

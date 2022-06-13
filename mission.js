@@ -20,6 +20,7 @@ class Mission{
 			this.taker = theplayer.name;
 			theplayer.job = this.message;
 			theplayer.jobs.push(this.message);
+			theplayer.jobtarget.match(theships[this.target]);
 			}
 		if ((this.type=="cargo")&&(theplayer.inventory.maxcargo-theplayer.inventory.totalcargo()>=10)){
 			theplayer.inventory.takecargo(allcargos.length-1,10); //global scope
@@ -27,6 +28,7 @@ class Mission{
 			this.taker = theplayer.name;
 			theplayer.job = this.message;
 			theplayer.jobs.push(this.message);
+			theplayer.jobtarget.match(theplanets[this.target]);
 			}
 		
 		}

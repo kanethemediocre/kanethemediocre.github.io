@@ -1,6 +1,8 @@
 class Player{
     constructor(){
         this.ship = new Umo(0,0,32,"tan");
+		this.jobtarget = new Umo (0,0,100,"orange");
+		this.storytarget = new Umo (0,0,100,"teal");
         this.blasters = [];//figure that out better
         this.input = "";
         this.money = 100;

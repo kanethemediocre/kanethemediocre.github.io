@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v347 by Andrew Kane </title>
+    <title>Bling Hustle v349 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -288,7 +288,12 @@ function update() {
 			}
 	}
 	if (starmode == 1){	
-		pz = (ps-1)*4+(waldo.s/6000);
+		if (ps==0){
+			pz=pz+.01;
+			if (pz>64){pz=0;}
+		}else{
+			pz = (ps-1)*4+(waldo.s/6000);
+			}
 		//testfield.draw(vwx,vwy,pz,testfield.zmax);
 		testfield2.draw(vwx,vwy,pz);
 		}
@@ -298,9 +303,9 @@ function update() {
 		myship.y = -100;
 		myship.vx = 0;
 		myship.vy = 0;
-		context.font = "20px Ariel";
-		context.fillStyle = "red";
-		context.fillText("Try the new Omnicompass with the C key.",canvas.width/2-128,32);	
+		context.font = "128px Ariel";
+		context.fillStyle = "yellow";
+		context.fillText("BLING       HUSTLE",canvas.width/2-500,100);	
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[0])){
 			menuabout = true;
 			menucontrols = false;
@@ -560,6 +565,7 @@ function update() {
 if ((systems[ps].bling.length<256)&&(time%16==0)){
 	systems[ps].bling.push(new Bling(0,0,0,0,Math.floor(Math.random()*128)));
 	systems[ps].bling[systems[ps].bling.length-1].reset(systems[ps].planets);
+	if (ps==0){ systems[0].bling = []; }
 	}
 var i=0;
 while(i<systems[ps].bling.length){
