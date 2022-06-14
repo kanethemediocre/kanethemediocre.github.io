@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v355 by Andrew Kane </title>
+    <title>Bling Hustle v356 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -506,10 +506,30 @@ function update() {
 			var i = systems[ps].ships.length;
 			while (i>1){//For all ships except 0
 				i = i - 1; 
-				if (aship.distance(systems[ps].ships[i])<range){
+				var targetdistance = aship.distance(systems[ps].ships[i]);
+				if (targetdistance<range){
 					var ptest = pointingat( aship.directionof(systems[ps].ships[i]), aship.d, aship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
 					if (ptest == 1){
 						systems[ps].ships[i].damage(aplayer.blasters[aplayer.wep].hurt);
+						//more visual flair
+						/*
+						//disabled all this because it doesn't look cool.  But it makes circles on hits successfully.
+						var hitx = canvas.width/2+Math.cos(aplayer.ship.d)*targetdistance;
+						var hity = canvas.height/2+Math.sin(aplayer.ship.d)*targetdistance;
+						context.strokeStyle=beamcolor1;
+						context.linewidth=4;
+						context.beginPath();
+						context.arc(hitx, hity, 20, 0, 2 * Math.PI, false); //draws the circle
+						context.stroke()
+						context.strokeStyle=beamcolor2;
+						context.beginPath();
+						context.arc(hitx, hity, 16, 0, 2 * Math.PI, false); //draws the circle
+						context.stroke()
+						context.strokeStyle=beamcolor3;
+						context.beginPath();
+						context.arc(hitx, hity, 12, 0, 2 * Math.PI, false); //draws the circle
+						context.stroke()
+						*/
 						if (systems[ps].ships[i].hp<0){
 							if (systems[ps].ships[i].ai=="enemy"){
 								var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;

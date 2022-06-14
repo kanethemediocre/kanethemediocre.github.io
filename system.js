@@ -171,6 +171,7 @@ class System{
 			var indc = this.planets[i].c;
 			var inddist = this.players[playerindex].ship.distance(this.planets[i]);
 			var indsize = (this.planets[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
+			if (indsize>64){indsize=64;}
 			var indx = cx + radius*Math.cos(inddir);
 			var indy = cy + radius*Math.sin(inddir);
 			var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
@@ -188,9 +189,6 @@ class System{
 			context.lineTo(arcstartx,arcstarty);
 			context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
 			context.stroke();	
-			//context.beginPath();
-			//context.arc(cx, cy, radius, inddir-indsize/radius,inddir+indsize/radius, false);
-			//context.stroke();
 			i++;
 			}
 		var i=0;
@@ -211,8 +209,6 @@ class System{
 			}
 		}
 	drawshipfinder(playerindex,radius){
-		//var viewx = this.players[playerindex].ship.x;
-		//var viewy = this.players[playerindex].ship.y;
 		context.font = '20px Ariel';
 		context.fillStyle = "red";
 		context.fillText("Targeting Compass Active", canvas.width/2-80, 48);
@@ -228,6 +224,7 @@ class System{
 				else if (this.ships[i].ai == "trader") {indc = "blue";}
 				//var inddist = this.players[playerindex].ship.distance(this.ships[i]);
 				var indsize = (this.ships[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
+				if (indsize>32){indsize=32;}
 				var indx = cx + radius*Math.cos(inddir);
 				var indy = cy + radius*Math.sin(inddir);
 				var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
