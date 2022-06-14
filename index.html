@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v354 by Andrew Kane </title>
+    <title>Bling Hustle v355 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -469,14 +469,14 @@ function update() {
 	if (systems[ps].players.length>0){//This prevents errors at start
 		if (myplayer.autopilot == 0){myship.d = myplayer.moused+Math.PI;} //If no autopilot, use mous to turn.
 	}
-//////////////////////////////////Weapon 6 in-loop code, its special like that////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////Weapon 6 in-loop code, its special like that.   Now handles any beam weapons.////////////////////////////////////////////////////////////////////////////////////
 	var qq = 0;
 	while(qq<systems[ps].players.length){
 		//console.log("trytoshoot2");
 		var aplayer = systems[ps].players[qq];
-		aship = systems[ps].players[qq].ship;
+		aship = systems[ps].players[qq].ship; //sus
 		//console.log(aplayer.mousestate+" "+aplayer.wep+" "+aplayer.energy);
-		if((aplayer.mousestate==1)&&(aplayer.wep == 6)&&(aplayer.energy>2)){ 
+		if((aplayer.mousestate==1)&&(aplayer.blasters[aplayer.wep].type == "beam")&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){ 
 			//console.log("trytoshoot1");
 			var n1 = Math.floor(time/4)%6;
 			var n2 = Math.floor(time/4+1)%6;
@@ -484,7 +484,7 @@ function update() {
 			var beamcolor1 = rainbow(n1);
 			var beamcolor2 = rainbow(n2);
 			var beamcolor3 = rainbow(n3);
-			var range = aplayer.blasters[6].timer+32;
+			var range = aplayer.blasters[aplayer.wep].timer+32;
 			context.beginPath();
 			context.lineWidth = 12; 
 			context.moveTo(canvas.width/2+Math.cos(aship.d)*32, canvas.height/2+Math.sin(aship.d)*32);
@@ -502,14 +502,14 @@ function update() {
 			context.lineTo(canvas.width/2+Math.cos(aship.d)*range,canvas.height/2+Math.sin(aship.d)*range);
 			context.strokeStyle = beamcolor3;
 			context.stroke();
-			aplayer.energy = aplayer.energy - 2;
+			aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
 			var i = systems[ps].ships.length;
 			while (i>1){//For all ships except 0
 				i = i - 1; 
 				if (aship.distance(systems[ps].ships[i])<range){
 					var ptest = pointingat( aship.directionof(systems[ps].ships[i]), aship.d, aship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
 					if (ptest == 1){
-						systems[ps].ships[i].damage(5);
+						systems[ps].ships[i].damage(aplayer.blasters[aplayer.wep].hurt);
 						if (systems[ps].ships[i].hp<0){
 							if (systems[ps].ships[i].ai=="enemy"){
 								var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
@@ -531,10 +531,10 @@ function update() {
 				}
 			}
 	//////////////////////////////////Weapon 8 in-loop code, its special like that.  Now designed to deal with ANY rapid blaster.//////////////////////////////////////////////////////////////////////////////
-		if((aplayer.mousestate==1)&&(time%4==0)&&(aplayer.blasters[aplayer.wep].type == "rapid")&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
-			var n = Math.floor(time/4)%aplayer.blasters[aplayer.wep].bombs.length;
+		if((aplayer.mousestate==1)&&(time%6==0)&&(aplayer.blasters[aplayer.wep].type == "rapid")&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
+			var n = Math.floor(time/6)%aplayer.blasters[aplayer.wep].bombs.length;
 			aship.launchbomb(aplayer.blasters[aplayer.wep].bombs[n],aplayer.blasters[aplayer.wep].speed,aplayer.blasters[aplayer.wep].timer);
-			aplayer.energy = aplayer.energy - 6;
+			aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
 			if (time%24==0){blastersound8.play();}
 		}
 		
