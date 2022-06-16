@@ -958,7 +958,6 @@ class System{
 		var qq = 0;
 		while (qq<this.players.length){
 			aplayer = this.players[qq];
-			
 			switch (aplayer.input) {  //events for all the keyboard keys
 				case "q":
 					//unused for now
@@ -1119,6 +1118,10 @@ class System{
 						aplayer.journalitem--;
 						if (aplayer.journalitem<0){aplayer.journalitem = playerradio.log.length-1;}
 						}
+					else{ 
+						if (aplayer.wep>=10){ aplayer.wep = aplayer.wep-10;	}
+						else {aplayer.wep = aplayer.wep+10;}	
+						}
 				  break;
 				case "ArrowDown":
 					if (aplayer.dockstate>=0){
@@ -1131,11 +1134,25 @@ class System{
 						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].missions.length-1)&&(aplayer.shopmode == 2))
 							{aplayer.shopitem = 0;}
 						}
-					if (aplayer.journalactive==1){
+					else if (aplayer.journalactive==1){
 						aplayer.journalitem++;
 						if (aplayer.journalitem>playerradio.log.length-1){aplayer.journalitem = 0;}
 						}
+					else{ 
+						if (aplayer.wep>=10){ aplayer.wep = aplayer.wep-10;	}
+						else {aplayer.wep = aplayer.wep+10;}	
+						}
 				  break;   
+
+				case "ArrowLeft":
+					if (aplayer.wep<=0){ aplayer.wep = 19;	}
+					else {aplayer.wep--;}	
+				  break;   
+				case "ArrowRight":
+					if (aplayer.wep>=19){ aplayer.wep = 0;	}
+					else {aplayer.wep++;}	
+				  break;  
+				  
 				case "End":
 					if (cheatmode == 1){aplayer.money = aplayer.money +10000;}
 				  break;  
