@@ -12,6 +12,36 @@ class Mission{
 		this.taken = false;
 		this.taker = "nobody";
 		}
+	calcdanger(theships,theplanets){
+		if (this.type=="destroy"){
+			var targetumo = theships[this.target];
+			this.danger = targetumo.level;
+			}
+		else if (this.type=="cargo"){var targetumo = theplanets[this.target];}
+		else {var targetumo = "none";}
+		var i=0;
+		while ((i<theships.length)&&(targetumo!="none")){
+			//console.log("dangerous2");
+			if (theships[i].ai== "enemy"){
+				//console.log("dangerous1");
+				if (targetumo.distance(theships[i])<10000){
+					//console.log("dangerous");
+					this.danger = this.danger + theships[i].level/64;
+					if (targetumo.distance(theships[i])<4000){
+						this.danger = this.danger + theships[i].level/16;
+						if (targetumo.distance(theships[i])<2000){
+							this.danger = this.danger + theships[i].level/8;	
+							}							
+						}
+					}
+				}
+			i++
+			}
+		//console.log(this.danger);
+		this.danger = Math.floor(this.danger);
+		if (this.type=="cargo"){this.reward = 500+this.danger*25+this.distance*50;}
+		if (this.type=="destroy"){this.reward = 500+this.danger*50+this.distance*25;}
+		}
 	take(theships,theplanets,theplayer){
 		if (this.type=="destroy"){
 			console.log("try to respawn bot "+this.target+" at planet "+theships[this.target].parentid);

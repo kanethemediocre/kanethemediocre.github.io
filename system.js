@@ -566,7 +566,7 @@ class System{
 					while(k<this.turrets[i].bombs.length){
 						this.turrets[i].bombs[k].bombcollide(this.players[j].ship);
 						k++;
-					}
+						}
 					j++;
 					}
 
@@ -602,7 +602,7 @@ class System{
 				var k = 0;
 				while (k<this.players[i].blasters[j].bombs.length){ 
 					var m = 0;
-					while (m<this.ships.length){
+					while (m<this.ships.length){//Players hit other ships
 						if (this.ships[m].hp>0){
 							this.players[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
 							if (this.ships[m].hp<0){ 
@@ -626,8 +626,16 @@ class System{
 						m++;
 						}
 					var m = 0;
-					while (m<this.players.length){
+					while (m<this.players.length){ //players hit other players
 						this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
+						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
+						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
+						//	}
+						m++;
+						}
+					var m=0;
+					while (m<this.turrets.length){
+						this.players[i].blasters[j].bombs[k].bombcollide(this.turrets[m].pivot);
 						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
 						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
 						//	}

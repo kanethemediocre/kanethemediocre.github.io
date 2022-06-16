@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v356 by Andrew Kane </title>
+    <title>Bling Hustle v359 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -252,6 +252,14 @@ var murcturret2 = new Turret("enemy",systems[1].planets[1],Math.PI,192);
 var murcturret3 = new Turret("enemy",systems[1].planets[1],Math.PI/2,192);   
 var murcturret4 = new Turret("enemy",systems[1].planets[1],3*Math.PI/2,192);
 var turrets = [testturret,murcturret1,murcturret2,murcturret3,murcturret4];
+var i=0;
+while (i<turrets.length){
+	turrets[i].pivot.hp = 4000;
+	turrets[i].pivot.maxhp = 4000;
+	turrets[i].pivot.shield = 1000;
+	turrets[i].pivot.maxshield = 1000;
+	i++;
+	}
 systems[1].turrets = turrets;
 //systems[1].addbling(systems[1].planets[5],20,50,10);
 systems[1].addrandombling(50);
@@ -323,7 +331,7 @@ function update() {
 			myplayer.task = "Profit";
 			}
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[3])){
-			ps = 2;
+			ps = 7;
 			myship.setorbit(systems[ps].planets[3], 1000, 0.4, 1);
 			myplayer.storystate = 999;
 			myplayer.money = 2000;

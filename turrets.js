@@ -26,20 +26,39 @@ class Turret{
 		//this.pivot.vd = 0.1;
 	}
 	update1(){
-		this.pivot.vx = this.a.vx;
-		this.pivot.vy = this.a.vy;
-		this.pivot.x = this.a.x+Math.cos(this.ad+this.a.d)*this.ar;
-		this.pivot.y = this.a.y+Math.sin(this.ad+this.a.d)*this.ar;
-		//this.pivot.d = this.pivot.d+this.pivot.vd;
-		this.basex = this.a.x+Math.cos(this.ad+this.a.d)*(this.ar-48);
-		this.basey = this.a.y+Math.sin(this.ad+this.a.d)*(this.ar-48);
-		var i=0;
-		while(i<this.bombs.length){
-			this.bombs[i].update1();
-			this.bombs[i].updatebomb();
-			i++;
+		//update it like a ship here?
+		this.pivot.updatepivot();
+		if (this.pivot.hp>0){
+			this.pivot.vx = this.a.vx;
+			this.pivot.vy = this.a.vy;
+			this.pivot.x = this.a.x+Math.cos(this.ad+this.a.d)*this.ar;
+			this.pivot.y = this.a.y+Math.sin(this.ad+this.a.d)*this.ar;
+			//this.pivot.d = this.pivot.d+this.pivot.vd;
+			this.basex = this.a.x+Math.cos(this.ad+this.a.d)*(this.ar-48);
+			this.basey = this.a.y+Math.sin(this.ad+this.a.d)*(this.ar-48);
+			var i=0;
+			while(i<this.bombs.length){
+				this.bombs[i].update1();
+				this.bombs[i].updatebomb();
+				i++;
+				}
+			}
+		else if (this.pivot.hp==-1000){
+			this.pivot.deadtime--;
+			if (this.pivot.deadtime<=0){
+				this.pivot.hp = this.pivot.maxhp;
+				this.pivot.shield = Math.floor(this.pivot.maxshield/4)
+				}
+			}
+		else{
+			this.pivot.deadtime = 2400;
+			this.pivot.hp = -1000;
+			this.pivot.vx = 0;
+			this.pivot.vy = 0;
+			this.pivot.x = -1000000 - Math.floor(Math.random()*100000);
+			this.pivot.y = 0;
+			}
 		}
-	}
 	draw(viewx,viewy){ //mostly stolen from draw ship stuff
 		drawpolarpoly(this.basex-viewx+canvas.width/2, this.basey-viewy+canvas.height/2,this.basetheta,this.baseradius,48,this.basecolor,this.a.directionof(this.pivot));
 		this.pivot.drawship(viewx,viewy);

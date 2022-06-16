@@ -558,6 +558,20 @@ class Umo { //Universal Moving Object
 				}
 			}
 		}
+	updatepivot(){//Not used yet.
+		if (this.damagestate>0){this.damagestate = this.damagestate-1;}
+		if (this.shielddamagestate>0){this.shielddamagestate = this.shielddamagestate-1;}
+		this.thrust = 0; //keeps thrusters momentary
+		if ((this.hp <= 0) && (this.hp !==-1000)){ this.killship(1800); }
+		this.deadtime = this.deadtime - 1;
+		//this.energy = this.energy + 1;
+		//if (this.energy > 100){	this.energy = 100; }				
+		this.shield = this.shield + this.shieldregen;
+		if (this.shield > this.maxshield){ this.shield = this.maxshield; }			
+		//if ((this.deadtime < 0) && (this.hp == -1000)){
+		//	this.respawn(theplanets[this.parentid]); //maybe change how I handle this
+		//	}
+		}
 	updatebomb(){ //Handles timer and explosions
 		this.timer= this.timer -1;
 		if (this.timer == 0){this.killbomb();}
@@ -573,7 +587,7 @@ class Umo { //Universal Moving Object
 			}
 		}
 	killship(deathtime){ //Ship is dead, and respawns after deathtime frames.
-		this.x = 1000000+ Math.random()*100000; //Dead ships are banished 
+		this.x = 10000000+ Math.random()*1000000; //Dead ships are banished 
 		this.y = 0;
 		this.vx = 0;
 		this.vy = 0;
