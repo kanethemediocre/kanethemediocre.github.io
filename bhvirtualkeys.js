@@ -1,8 +1,8 @@
 function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var avk=new Virtualkey("a","A",xmax-136,ymax-216);//constructor(key,label,x,y){
-	var bvk=new Virtualkey("b","B",24,167);//constructor(key,label,x,y){
+	var bvk=new Virtualkey("b","B",24,187);//constructor(key,label,x,y){
 	var cvk=new Virtualkey("c","C",xmax/2-112,16);//constructor(key,label,x,y){
-	var gvk=new Virtualkey("g","G",24,197);//constructor(key,label,x,y){
+	var gvk=new Virtualkey("g","G",24,217);//constructor(key,label,x,y){
 	//var hvk=new Virtualkey("h","H",-100,-100);//constructor(key,label,x,y){
 	var jvk=new Virtualkey("j","J",160,24);//constructor(key,label,x,y)
 	var mvk=new Virtualkey("m","M",88,ymax-336);//constructor(key,label,x,y)

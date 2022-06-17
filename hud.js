@@ -114,56 +114,81 @@ function hud(playerindex){
 			//if (mapactive == 1){drawmap(planets,256,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y);}
 			//planets[0].drawcompass(ships[0],canvas.width/2,canvas.height-48); //Nav computer compass for sun
 ///////////////Rest of HUD/////////////////////////////////////////////////////////////////////////////////////////////////	
+	var sbl = 150; //status bar length
 	context.font='12px Arial';
 	context.fillStyle = "orange"; //thruster power bar 
-    context.fillRect(4, 64,Math.floor(0.64*myplayer.thruster), 16);
+    context.fillRect(4, 84,Math.floor(sbl*myplayer.thruster/100), 16);
+	context.strokeStyle = "orange";
+	context.beginPath();
+	context.rect(4,84,sbl,16);
+	context.stroke();
 	context.fillStyle = "red"; //weapons energy bar
-    context.fillRect(4, 44,Math.floor(0.64*myplayer.energy), 16);
+    context.fillRect(4, 64,Math.floor(sbl*myplayer.energy/100), 16);
+	context.strokeStyle = "red";
+	context.beginPath();
+	context.rect(4,64,sbl,16);
+	context.stroke();
+	context.fillStyle = "purple"; //weapons energy bar
+    context.fillRect(4, 44,Math.floor(sbl*myplayer.levelcheck()), 16);
+	context.strokeStyle = "purple";
+	context.beginPath();
+	context.rect(4,44,sbl,16);
+	context.stroke();
 	context.fillStyle = "blue"; //shield bar
-    context.fillRect(4, 24,Math.floor(64*myplayer.ship.shield/myplayer.ship.maxshield), 16);
+    context.fillRect(4, 24,Math.floor(sbl*myplayer.ship.shield/myplayer.ship.maxshield), 16);
+	context.strokeStyle = "blue";
+	context.beginPath();
+	context.rect(4,24,sbl,16);
+	context.stroke();
 	context.fillStyle = "green"; //health bar
-    context.fillRect(4, 4,Math.floor(64*myplayer.ship.hp/myplayer.ship.maxhp), 16);
+    context.fillRect(4, 4,Math.floor(sbl*myplayer.ship.hp/myplayer.ship.maxhp), 16);
+	context.strokeStyle = "green";
+	context.beginPath();
+	context.rect(4,4,sbl,16);
+	context.stroke();
 	context.fillStyle = "white";
-	var statuschart1 = [ ["Health","Shields", "Weapons", "Thrusters"]  ];
+	myplayer.levelcheck();//Remove this to run this function less.
+	var statuschart1 = [ ["Health","Shields","Level "+myplayer.ship.level,"Weapons", "Thrusters"]  ];
 	showchart(statuschart1, 80, 20, 8,16);	
 	context.font='16px Arial';
-	context.fillText("Bling",5,96);
-	context.fillText(myplayer.money,50,96);//Displays how much money the player has
+	context.fillStyle = "yellow";
+	context.fillText("Bling",5,116);
+	context.fillText(myplayer.money,50,116);//Displays how much money the player has
 	if (myplayer.gotmoney[0]>0){//If the player has received money recently, display how much and decrement the display lifetime of that event.
 		myplayer.gotmoney[0] = myplayer.gotmoney[0]-1;//gotmoney[0] is the timer integer
 		context.fillStyle = "green";
-		context.fillText("+"+myplayer.gotmoney[1],100,96);//gotmoney[1] is the value integer
+		context.fillText("+"+myplayer.gotmoney[1],100,116);//gotmoney[1] is the value integer
 		context.fillStyle = "white";
 		}
 	context.fillStyle = "red";
-	context.fillRect(16*myplayer.wep-160*Math.floor(myplayer.wep/10),104+16*Math.floor(myplayer.wep/10),14,20);//This highlights which blaster the player has selected
+	context.fillRect(16*myplayer.wep-160*Math.floor(myplayer.wep/10),124+16*Math.floor(myplayer.wep/10),14,20);//This highlights which blaster the player has selected
 	//context.fillRect(16*myplayer.wep-160*Math.floor(i/10),104+16*Math.floor(i/10),14,20);//This highlights which blaster the player has selected
 	context.font='14px Arial';
 	var i=0;//This indicates available blasters to the user
 	while(i<myplayer.blasters.length){
 		if (myplayer.blasters[i].phas){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-		context.fillText(i,16*i-160*Math.floor(i/10),120+16*Math.floor(i/10));
+		context.fillText(i,16*i-160*Math.floor(i/10),140+16*Math.floor(i/10));
 		i=i+1;
 	}
 	context.fillStyle = "red";
 	context.font='20px Arial';
-	context.fillText(myplayer.blasters[myplayer.wep].name,8,160);
+	context.fillText(myplayer.blasters[myplayer.wep].name,8,180);
 
 	context.fillStyle = "white";
-	context.fillText(myplayer.boosters[0],8,188);//0 index is booster type
-	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,216);
+	context.fillText(myplayer.boosters[0],8,208);//0 index is booster type
+	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,236);
 	context.font='16px Arial';
 	context.fillStyle = "green"; 
-	context.fillText("task: "+myplayer.task,8,240);//The task is a brief description of the last thing a player was asked to do.
+	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
-	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,260);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
+	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,280);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	context.fillStyle = "white";
 	context.font='12px Arial';
-	context.fillText("dockstate: "+myplayer.dockstate,8,316);//Debugging stuff
-	context.fillText("storystate: "+myplayer.storystate,8,332);
-	context.fillText("probemode: "+myplayer.probemode,8,348);
-	context.fillText("autopilot: "+myplayer.autopilot,8,364);
-	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,380);
+	context.fillText("dockstate: "+myplayer.dockstate,8,336);//Debugging stuff
+	context.fillText("storystate: "+myplayer.storystate,8,352);
+	context.fillText("probemode: "+myplayer.probemode,8,368);
+	context.fillText("autopilot: "+myplayer.autopilot,8,384);
+	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
 	if (myplayer.ship.hp==-1000){//This is the death screen.
 		context.fillStyle = "red";

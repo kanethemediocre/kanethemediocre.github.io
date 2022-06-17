@@ -1119,8 +1119,12 @@ class System{
 						if (aplayer.journalitem<0){aplayer.journalitem = playerradio.log.length-1;}
 						}
 					else{ 
-						if (aplayer.wep>=10){ aplayer.wep = aplayer.wep-10;	}
-						else {aplayer.wep = aplayer.wep+10;}	
+						if (aplayer.wep<10){
+							if (aplayer.blasters[aplayer.wep+10].phas){	aplayer.wep = aplayer.wep+10;}
+							}
+						else {
+							if (aplayer.blasters[aplayer.wep-10].phas){	aplayer.wep = aplayer.wep-10; }
+							}	
 						}
 				  break;
 				case "ArrowDown":
@@ -1139,18 +1143,22 @@ class System{
 						if (aplayer.journalitem>playerradio.log.length-1){aplayer.journalitem = 0;}
 						}
 					else{ 
-						if (aplayer.wep>=10){ aplayer.wep = aplayer.wep-10;	}
-						else {aplayer.wep = aplayer.wep+10;}	
+						if (aplayer.wep>=10){
+							if (aplayer.blasters[aplayer.wep-10].phas){	aplayer.wep = aplayer.wep-10;}
+							}
+						else {
+							if (aplayer.blasters[aplayer.wep+10].phas){	aplayer.wep = aplayer.wep+10; }
+							}	
 						}
 				  break;   
 
 				case "ArrowLeft":
-					if (aplayer.wep<=0){ aplayer.wep = 19;	}
-					else {aplayer.wep--;}	
+					if ((aplayer.wep<=0)&&(aplayer.blasters[19].phas)){ aplayer.wep = 19;	}
+					else if ((aplayer.wep>0)&&(aplayer.blasters[aplayer.wep-1].phas)){ aplayer.wep--;}
 				  break;   
 				case "ArrowRight":
-					if (aplayer.wep>=19){ aplayer.wep = 0;	}
-					else {aplayer.wep++;}	
+					if ((aplayer.wep>=19)&&(aplayer.blasters[0].phas)){ aplayer.wep = 0;	}
+					else if ((aplayer.wep<19)&&(aplayer.blasters[aplayer.wep+1].phas)){ aplayer.wep++;}
 				  break;  
 				  
 				case "End":

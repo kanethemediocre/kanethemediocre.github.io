@@ -68,6 +68,30 @@ class Player{
 		this.ship.ai = "player";
 		this.ship.parentid = 3; //Really too specific to be here. Maybe part of the passed variables.
 		}
+	levelcheck(){//Updates member .ship.level
+		var installedvalue = 0;
+		var i=0;
+		while(i<this.blasters.length){
+			if (this.blasters[i].phas){
+				var blastervalue = this.blasters[i].price*(Math.pow(2,this.blasters[i].level));
+				installedvalue = installedvalue + blastervalue;
+				}
+			i++;
+			}
+		var i=1;//skip repair
+		while(i<this.upgrades.length){
+			var upgradevalue = this.upgrades[i].price*(Math.pow(2,this.upgrades[i].tier)-1);
+			installedvalue = installedvalue + upgradevalue;
+			i++;
+			}
+		var rawlevel = Math.sqrt(installedvalue) / 20;
+		this.ship.level = Math.floor(rawlevel);// shep level = (sqrt installed value) /50  ship level ^2 = (sqrt installed value)^2 / 50^2  = installed value /2500
+		var nextlevelvalue = 400*Math.pow(this.ship.level+1,2);  //installed value = ship level ^2 *2500
+		var prevlevelvalue = 400*Math.pow(this.ship.level,2);
+		var levelupvalue = nextlevelvalue - prevlevelvalue;
+		var almostthere = (installedvalue-prevlevelvalue)/levelupvalue;
+		return almostthere;
+		}
     loadblasters(theblasters){
         var i=0;
         while(i<theblasters.length){

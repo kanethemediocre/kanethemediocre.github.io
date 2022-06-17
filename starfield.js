@@ -95,7 +95,7 @@ class Starfield{
 						var dy = (this.starlayers[i][j].y-(viewy / xyscale))/dz;
 						if (Math.abs(dy)<hcy){
 							var dotsize = this.starlayers[i][j].s/(250*dz);
-							if (dotsize>2.25){
+							if (dotsize>1.00){
 								context.beginPath();
 								context.strokeStyle = this.starlayers[i][j].c;
 								context.arc(hcx + dx,hcy+dy, this.starlayers[i][j].s/(250*dz), 0, 2 * Math.PI, false);
@@ -103,9 +103,9 @@ class Starfield{
 								context.fill();
 								context.lineWidth = 1;
 								context.stroke();
-							}else if (dotsize>1.25){
+							}else if (dotsize>0.5){
 								context.fillStyle = this.starlayers[i][j].c;
-								context.fillRect(hcx + dx,hcy+dy,dotsize,dotsize);
+								context.fillRect(hcx + dx,hcy+dy,dotsize+1,dotsize+1);
 							}else if (dotsize>0.25){
 							context.fillStyle = this.starlayers[i][j].c;
 							context.fillRect(hcx + dx,hcy+dy,1,1);
