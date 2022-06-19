@@ -4,6 +4,7 @@ class Mission{
 		this.type = missiontype; //string indicating type of mission, such as "Assassinate", "Defend" or "Cargo"
 		this.origin = morigin; //Starting point for a cargo mission, in positive integer planet index
 		this.target = mtarget; //Target for mission, positive integer list for ship(s) or planet index.
+		this.targetlocationname = "unknown";
 		this.message = mmessage; //"Kill that guy", "Take cargo to that planet"
 		this.reward = mreward; //How much money you get, 0 indicates mission no longer active
 		this.storypath = mstory; //What storystate the mission leads to, 0 for no affect on storystate
@@ -12,20 +13,21 @@ class Mission{
 		this.taken = false;
 		this.taker = "nobody";
 		}
-	calcdanger(theships,theplanets){
+	calcdanger(theships,theplanets){ //Also determines distance and targetlocationname
 		if (this.type=="destroy"){
 			var targetumo = theships[this.target];
 			this.danger = targetumo.level;
+			this.targetlocationname = theplanets[theships[this.target].parentid].name;
 			}
-		else if (this.type=="cargo"){var targetumo = theplanets[this.target];}
+		else if (this.type=="cargo"){
+			var targetumo = theplanets[this.target];
+			this.targetlocationname = theplanets[this.target].name;
+			}
 		else {var targetumo = "none";}
 		var i=0;
 		while ((i<theships.length)&&(targetumo!="none")){
-			//console.log("dangerous2");
 			if (theships[i].ai== "enemy"){
-				//console.log("dangerous1");
 				if (targetumo.distance(theships[i])<10000){
-					//console.log("dangerous");
 					this.danger = this.danger + theships[i].level/64;
 					if (targetumo.distance(theships[i])<4000){
 						this.danger = this.danger + theships[i].level/16;
@@ -37,10 +39,18 @@ class Mission{
 				}
 			i++
 			}
-		//console.log(this.danger);
 		this.danger = Math.floor(this.danger);
 		if (this.type=="cargo"){this.reward = 500+this.danger*25+this.distance*50;}
 		if (this.type=="destroy"){this.reward = 500+this.danger*50+this.distance*25;}
+		}
+	calcdistance(theships,theplanets){ //WWWWWIIIIIIIIPPPPP
+		if (this.type=="destroy"){
+			}
+		else if (this.type=="cargo"){
+			}
+		else {var targetumo = "none";}
+		var i=0;
+
 		}
 	take(theships,theplanets,theplayer){
 		if (this.type=="destroy"){

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v363 by Andrew Kane </title>
+    <title>Bling Hustle v365 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -132,6 +132,24 @@ systems[0].planets = loadmenusystem();
 systems[1].planets = loadhomesystem();
 systems[1].outposts = loadhomeoutposts();
 systems[1].shops = allshops;
+systems[1].addrandomgang(1,2,16);
+systems[1].addrandomgang(2,3,3);
+systems[1].addrandomgang(3,4,2);//no moon bots
+systems[1].addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
+systems[1].addrandomgang(10,3,4);
+systems[1].addrandomgang(11,4,6);
+systems[1].addrandomgang(12,3,5);
+systems[1].addrandomgang(14,2,7);
+systems[1].addrandomgang(15,4,9);
+systems[1].addrandomgang(16,4,10);
+systems[1].addrandomgang(17,4,8);
+systems[1].addrandomgang(18,2,11);
+systems[1].addrandomgang(21,2,6);
+systems[1].addrandomgang(22,2,6);
+systems[1].addrandomgang(23,4,4);//no tune bots
+systems[1].addrandomgang(25,5,16);
+systems[1].addrandomtraders([5,11,16], 8, 4);
+
 systems[2].randomplanets();//Here is where all the random systems and enemies are generated.
 systems[2].enemypopulate(5,4,17);
 systems[2].addrandombling(50);
@@ -152,52 +170,16 @@ systems[6].shops = napashops;//napashops is defined in shop.js
 systems[6].enemypopulate(6,2,6);
 systems[6].turrets = napaturrets();
 systems[6].addrandombling(50);
-systems[7].randomplanets();
-systems[7].enemypopulate(5,6,21);
-systems[7].addrandombling(50);
-systems[8].randomplanets();
-systems[8].enemypopulate(5,7,22);
-systems[8].addrandombling(50);
-systems[9].randomplanets();
-systems[9].enemypopulate(5,7,23);
-systems[9].addrandombling(50);
-systems[10].randomplanets();
-systems[10].enemypopulate(5,8,24);	
-systems[10].addrandombling(50);		
-systems[11].randomplanets();
-systems[11].enemypopulate(5,8,25);		
-systems[11].addrandombling(50);	
-systems[12].randomplanets();
-systems[12].enemypopulate(5,9,26);
-systems[12].addrandombling(50);
-systems[13].randomplanets();
-systems[13].enemypopulate(5,9,27);	
-systems[13].addrandombling(50);		
-systems[14].randomplanets();
-systems[14].enemypopulate(5,10,28);	
-systems[14].addrandombling(50);		
-systems[15].randomplanets();
-systems[15].enemypopulate(5,10,29);	
-systems[15].addrandombling(50);		
+var speciali = 7;
+while (speciali<16){	
+	systems[speciali].randomplanets();
+	systems[speciali].enemypopulate(5,10,29);	
+	systems[speciali].addrandombling(50);		
+	speciali++;
+	}
 			
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
-systems[1].addrandomgang(1,2,16);
-systems[1].addrandomgang(2,3,3);
-systems[1].addrandomgang(3,4,2);//no moon bots
-systems[1].addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
-systems[1].addrandomgang(10,3,4);
-systems[1].addrandomgang(11,4,6);
-systems[1].addrandomgang(12,3,5);
-systems[1].addrandomgang(14,2,7);
-systems[1].addrandomgang(15,4,9);
-systems[1].addrandomgang(16,4,10);
-systems[1].addrandomgang(17,4,8);
-systems[1].addrandomgang(18,2,11);
-systems[1].addrandomgang(21,2,6);
-systems[1].addrandomgang(22,2,6);
-systems[1].addrandomgang(23,4,4);//no tune bots
-systems[1].addrandomgang(25,5,16);
-systems[1].addrandomtraders([5,11,16], 8, 4);
+
 //systems[1].addrandomgang(26,8,32);  
 var i = systems[1].botbombs.length;
 while (i>0){  ////For all bot bombs, set them up as a bomb Umos.

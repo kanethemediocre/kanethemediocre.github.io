@@ -36,6 +36,7 @@ class Player{
         this.task = "Read the tutorial"; //main story mission line
         this.job = "None"; //latest task from a station.
         this.jobs = [];
+		this.jobitem = 0;
         this.boosters = [0,16,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
         this.shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
         this.ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword.  Not sure if I need this.
@@ -97,8 +98,8 @@ class Player{
         while(i<theblasters.length){
             this.blasters.push(baseblastercopy(theblasters[i]));
             i++;
-        }
-    }
+			}
+		}
     update1(theplanets){
         if (this.energy<100){ this.energy++; }
         else {this.energy = 100;}
@@ -109,11 +110,11 @@ class Player{
         while (i<this.blasters.length){
             this.blasters[i].update1();
             i++;
-        }
-    }
+			}
+		}
     drawship(viewx,viewy){
         this.ship.drawship(viewx,viewy);
-    }
+		}
     drawbombs(viewx,viewy){//Filter by proximity
         var xtol = 2000; //Edge cases may be a problem for this, like if I use a massive screen resolution or the explosion has a massive radius
         var ytol = 2000;

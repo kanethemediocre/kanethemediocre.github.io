@@ -1118,6 +1118,10 @@ class System{
 						aplayer.journalitem--;
 						if (aplayer.journalitem<0){aplayer.journalitem = playerradio.log.length-1;}
 						}
+					else if (aplayer.journalactive==2){
+						aplayer.jobitem--;
+						//if (aplayerjobs<0){aplayer.journalitem = playerradio.log.length-1;}
+						}
 					else{ 
 						if (aplayer.wep<10){
 							if (aplayer.blasters[aplayer.wep+10].phas){	aplayer.wep = aplayer.wep+10;}
@@ -1141,6 +1145,9 @@ class System{
 					else if (aplayer.journalactive==1){
 						aplayer.journalitem++;
 						if (aplayer.journalitem>playerradio.log.length-1){aplayer.journalitem = 0;}
+						}
+					else if (aplayer.journalactive==2){
+						aplayer.jobitem++;//boundaries handled in joblist function.
 						}
 					else{ 
 						if (aplayer.wep>=10){
@@ -1621,8 +1628,8 @@ class System{
 			}
 		return [thejob, numjobs];
 		}
-	joblist(x,y){
-		var item = 0;
+	joblist(x,y,theplayer){  
+		//var item = thepla;
 		var joblistcolor = "orange"
 		context.fillStyle = joblistcolor;
 		context.strokeStyle = joblistcolor;
@@ -1642,13 +1649,15 @@ class System{
 			while (j<this.shops[i].missions.length){
 				if (this.shops[i].missions[j].taken){
 					myjobs.push(this.shops[i].missions[j]);
-					context.fillText(this.shops[i].missions[j].message,x+8,y+28+jobnum*20);
+					//context.fillText(this.shops[i].missions[j].message,x+8,y+28+jobnum*20);
 					jobnum++;
 					}
 				j=j+1;
 				}
 			i=i+1;
 			}
+		if (theplayer.jobitem<0){theplayer.jobitem = jobnum - 1;}
+		else if (theplayer.jobitem>=jobnum){theplayer.jobitem = 0;}
 		context.font = "16px Verdana";
 		context.fillText(jobnum+" current jobs",x+128,y-24);
 		if (jobnum == 0){ context.fillText("No jobs",x,y); 
@@ -1658,91 +1667,35 @@ class System{
 			context.fillText("Distance:",x+200,y+20+16*-1);
 			context.fillText("Danger:",x+300,y+20+16*-1);
 			context.fillText("Reward:",x+400,y+20+16*-1);
-			context.beginPath(); //This colored rectangle will show which item is selected.
-			context.strokeStyle = joblistcolor;
-			context.rect(x,y+16+item*16,400,16);
-			context.stroke();
-			var i=0;
-			while (i<myjobs.length){
-				
-				
-				
+			context.fillText(myjobs[theplayer.jobitem].message,x+0,y+300);
+			var chartstart = 0;
+			var chartend = jobnum-1;
+			if (myjobs.length>8){
+				chartstart = theplayer.jobitem - 4;
+				chartend = theplayer.jobitem + 4;
+				if (chartend < 8){chartend = 8;}
+				if (chartstart<0){chartstart=0;}
+				if (chartend>myjobs.length-1){chartend=myjobs.length-1;}
+				}
+			else{
+				chartstart = 0;
+				chartend = myjobs.length-1;
+				}
+			var i=chartstart;
+			while (i<=chartend){
+				context.fillText(myjobs[i].type,x+0,y+24+20*(i-chartstart));
+				context.fillText(myjobs[i].targetlocationname,x+100,y+24+20*(i-chartstart));
+				context.fillText(myjobs[i].distance,x+200,y+24+20*(i-chartstart));
+				context.fillText(myjobs[i].danger,x+300,y+24+20*(i-chartstart));
+				context.fillText(myjobs[i].reward,x+400,y+24+20*(i-chartstart));
 				i++;
 				}
-			
-			
-			
+		
 			}
-		/*context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c;//Global scope here, very bad, also in drawpolarpoly
-		context.rect(x-12,y+28+item*16,400,16);
-		context.stroke();
-		context.fillText("Type:",x+0,y+32+16*-1);
-		context.fillText("Location:",x+80,y+32+16*-1);
-		context.fillText("Distance:",x+160,y+32+16*-1);
-		context.fillText("Danger:",x+240,y+32+16*-1);
-		context.fillText("Reward:",x+320,y+32+16*-1);
-		var i=0;
-		while (i<this.missions.length){
-			if (this.missions[i].taken){context.fillStyle = "red";}else{context.fillStyle = "white";}
-			context.fillText(this.missions[i].type.slice(0,16),x,y+40+16*i);
-			context.fillText(this.missions[i].distance,x+160,y+40+16*i);
-			context.fillText(this.missions[i].danger,x+240,y+40+16*i);
-			//context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
-			context.fillText(this.missions[i].reward,x+320,y+40+16*i);
-			var missionlocation = "unknown";
-			if (this.missions[i].type == "cargo"){
-				missionlocation = systems[ps].planets[this.missions[i].target].name;
-				}
-			if (this.missions[i].type == "destroy"){
-				missionlocation = systems[ps].planets[systems[ps].ships[this.missions[i].target].parentid].name;
-				}
-			context.fillText(missionlocation,x+80,y+40+16*i);
-			context.fillText(missionlocation,x+80,y+40+16*i);
-			i=i+1;
-			}
-			*/
+		context.beginPath(); //This colored rectangle will show which item is selected.
+		context.strokeStyle = joblistcolor;
+		context.rect(x-2,y+8+(theplayer.jobitem-chartstart)*20,500,20);
+		context.stroke();	
 		
-		
-		
-		
-		
-/*		
-			//fillwrappedtext(this.log[index],76,20,xpos,ypos+300);
-			if (this.log.length>0){
-			fillwrappedtext(this.log[index],76,20,xpos,ypos+300);
-			var logchart = [ this.log  ];
-				var chartstart = 0;
-				var chartend = this.log.length-1;
-				if (this.log.length>8){
-					chartstart = index - 4;
-					chartend = index + 4;
-					if (chartend < 8){chartend = 8;}
-					if (chartstart<0){chartstart=0;}
-					if (chartend>this.log.length-1){chartend=this.log.length-1;}
-					}
-				var logchart = [ this.log.slice(chartstart,chartend+1) ];
-				//if (index>4){showchartabbrev(logchart, 64, 16, xpos,ypos, 80);}
-				//else {showchartabbrev(logchart, 64, 16, xpos,ypos+, 80);}
-				context.font = "12px Verdana";
-				showchartabbrev(logchart, 64, 16, xpos+16,ypos, 80);
-				//fillwrappedtext(this.log[index],100,16,xpos,ypos+300);
-				if ((this.log.length<8)||(index < 4)){
-					context.beginPath();
-					context.rect(xpos,ypos-12+index*16,600,18);
-					context.stroke();
-					//context.fillText('X',xpos,ypos+index*16);
-				}else{
-					context.beginPath();
-					context.rect(xpos,ypos+4*16-12,600,18);
-					context.stroke();
-					//context.fillText('X',xpos,ypos+4*16);
-					}
-				}
-			context.beginPath();
-			context.rect(xpos-4,ypos-48,640,500);
-			context.rect(xpos-4,ypos-16,640,300);
-			context.stroke();
-		*/
 		}
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////

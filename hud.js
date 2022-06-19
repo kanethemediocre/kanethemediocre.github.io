@@ -201,7 +201,7 @@ function hud(playerindex){
 	context.font='12px Arial';
 	playerradio.display(time);
 //Journal display if active
-	if (myplayer.journalactive==1){
+	if (myplayer.journalactive==1){//Journal of radio messages
 		if (myplayer.journalitem>playerradio.log.length-1){myplayer.journalitem=0;}
 		context.fillStyle = "skyblue";
 		context.strokeStyle = "skyblue";
@@ -216,14 +216,17 @@ function hud(playerindex){
 		vkeys[15].active = true;	
 		vkeys[16].display = true;
 		vkeys[16].active = true;	
-	}else if (myplayer.journalactive==2){
-		systems[ps].joblist(200,64);
+	}else if (myplayer.journalactive==2){ //journal of jobs taken
+	
+		systems[ps].joblist(200,64,myplayer);
+
 		//display jobs
 	}else{
 		vkeys[15].display = false;
 		vkeys[15].active = false;
 		vkeys[16].display = false;
 		vkeys[16].active = false;		
+		
 	}
 	
 //Autopilot indicator
