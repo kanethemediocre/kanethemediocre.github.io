@@ -302,7 +302,8 @@ class Shop{
 		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Go to "+theplanets[missiontarget].name + "."
 		this.missions.push(new Mission("cargo",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
-		this.missions[this.missions.length-1].distance = Math.floor(missiondistance/2000);
+		//this.missions[this.missions.length-1].distance = Math.floor(missiondistance/2000);
+		this.missions[this.missions.length-1].calcdistance(theships,theplanets,theoutposts);
 		this.missions[this.missions.length-1].calcdanger(theships,theplanets);
 		}
 	addkillmission(theships,theplanets,theoutposts){
@@ -311,7 +312,7 @@ class Shop{
 		var missionpay = Math.floor(500 + missiondistance/40);
 		var missionmessage = "Destroy "+theships[missiontarget].name + ".  It can be found near "+theplanets[theships[missiontarget].parentid].name;
 		this.missions.push(new Mission("destroy",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
-		this.missions[this.missions.length-1].distance = Math.floor(missiondistance/5000);
+		this.missions[this.missions.length-1].calcdistance(theships,theplanets,theoutposts);
 		this.missions[this.missions.length-1].calcdanger(theships,theplanets);
 		}
 	}

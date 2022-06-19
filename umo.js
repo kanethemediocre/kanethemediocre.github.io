@@ -453,10 +453,28 @@ class Umo { //Universal Moving Object
 	drawreticle(viewx, viewy){ //input variables are player ship / camera position
 		var x = this.x - viewx + canvas.width/2; //draws reticle around object
 		var y = this.y - viewy + canvas.height/2; //circular reticle.
+		if (this.ai == "enemy"){ context.strokeStyle = "red"; }
+		if (this.ai == "trader"){ context.strokeStyle = "blue"; }
+		var dx = this.s+12;
+		var dy = this.s+12;
+		var tick = 12;
 		context.beginPath();
-		context.arc(x, y, this.s+24, 0, 2 * Math.PI, false);
+		context.moveTo(x+dx-tick,y+dy);
+		context.lineTo(x+dx,y+dy);
+		context.lineTo(x+dx,y+dy-tick);
+		
+		context.moveTo(x+dx,y-dy+tick);
+		context.lineTo(x+dx,y-dy);
+		context.lineTo(x+dx-tick,y-dy);
+		
+		context.moveTo(x-dx+tick,y+dy);
+		context.lineTo(x-dx,y+dy);
+		context.lineTo(x-dx,y+dy-tick);
+		
+		context.moveTo(x-dx+tick,y-dy);
+		context.lineTo(x-dx,y-dy);
+		context.lineTo(x-dx,y-dy+tick);		
 		context.lineWidth = 2;
-		context.strokeStyle = "white";
 		context.stroke();	
 	}
 	drawcompass(targetship, compassx, compassy, compasssize){  //Draws a triangle pointing in direction of targetship

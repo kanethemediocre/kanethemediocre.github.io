@@ -28,10 +28,10 @@ class Mission{
 		while ((i<theships.length)&&(targetumo!="none")){
 			if (theships[i].ai== "enemy"){
 				if (targetumo.distance(theships[i])<10000){
-					this.danger = this.danger + theships[i].level/64;
-					if (targetumo.distance(theships[i])<4000){
-						this.danger = this.danger + theships[i].level/16;
-						if (targetumo.distance(theships[i])<2000){
+					this.danger = this.danger + theships[i].level/128;
+					if (targetumo.distance(theships[i])<5000){
+						this.danger = this.danger + theships[i].level/32;
+						if (targetumo.distance(theships[i])<1600){
 							this.danger = this.danger + theships[i].level/8;	
 							}							
 						}
@@ -43,14 +43,44 @@ class Mission{
 		if (this.type=="cargo"){this.reward = 500+this.danger*25+this.distance*50;}
 		if (this.type=="destroy"){this.reward = 500+this.danger*50+this.distance*25;}
 		}
-	calcdistance(theships,theplanets){ //WWWWWIIIIIIIIPPPPP
+	calcdistance(theships,theplanets,theoutposts){ //WWWWWIIIIIIIIPPPPP
+		var rawdistance = 0;
+		var startumo = theoutposts[this.origin];//Beginning and end umos established
+		var endumo = "";
 		if (this.type=="destroy"){
+			endumo = theships[this.target];
 			}
 		else if (this.type=="cargo"){
+			endumo = theplanets[this.target];
 			}
-		else {var targetumo = "none";}
-		var i=0;
-
+		var leadplanet = -1;//Searching for leading/trailing planet of station
+		var i=1;  //No need to check the sun
+		while (i<theplanets.length){//Searching for leading/trailing planet
+			if (theplanets[i].parentid==0){//Only planets, not moons
+				var dr = Math.abs(theplanets[i].distance(theplanets[0])-startumo.distance(theplanets[0]));
+				if (dr<200){//Close enough orbit.  Should be nearly 0.
+					leadplanet = i;
+					}
+				}
+			i++;
+			}
+		var localtarget = false;
+		if (this.type=="cargo"){
+			if ((this.target==leadplanet)||(theplanets[this.target].parentid==leadplanet)){
+				localtarget = true;
+				rawdistance = startumo.distance(theplanets[leadplanet]);
+				}
+			}
+		if (this.type=="destroy"){
+				if ((theships[this.target].parentid==leadplanet)||(theplanets[theships[this.target].parentid].parentid==leadplanet)){
+				localtarget = true;
+				rawdistance = startumo.distance(theplanets[leadplanet]);
+				}
+			}
+		if (localtarget == false){
+			rawdistance = startumo.distance(theplanets[0])+endumo.distance(theplanets[0])
+			}	
+		this.distance = Math.floor(rawdistance/5000);
 		}
 	take(theships,theplanets,theplayer){
 		if (this.type=="destroy"){

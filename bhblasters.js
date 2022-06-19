@@ -23,7 +23,7 @@
 	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"probe",                      
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 
-	 let weapon10 = new Blaster("hmmm","dunno",300,"multiplex",                            
+	 let weapon10 = new Blaster("P-Clone","Blaster takes characteristics from probe data",300,"plain",                            
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
 	 let weapon11 = new Blaster("DoubleBang","Parallel projectiles",300,"multiplex",                            
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
