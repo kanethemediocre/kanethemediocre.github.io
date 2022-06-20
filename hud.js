@@ -283,6 +283,55 @@ function hud(playerindex){
 		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, playerinventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
+	var startlength = 96;
+	var endlength = 128;
+	context.strokeStyle = "purple";
+	context.linewidth = 1;
+	context.beginPath()
+	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
+	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
+	context.stroke();
+	var startlength = 160;
+	var endlength = 192;
+	context.strokeStyle = "blue";
+	context.linewidth = 1;
+	context.beginPath()
+	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
+	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
+	context.stroke();
+	var startlength = 224;
+	var endlength = 256;
+	context.strokeStyle = "lime";
+	context.linewidth = 1;
+	context.beginPath()
+	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
+	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
+	context.stroke();	
+	var startlength = 288;
+	var endlength = 320;
+	context.strokeStyle = "yellow";
+	context.linewidth = 1;
+	context.beginPath()
+	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
+	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
+	context.stroke();	
+	var startlength = 352;
+	var endlength = 384;
+	context.strokeStyle = "orange";
+	context.linewidth = 1;
+	context.beginPath()
+	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
+	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
+	context.stroke();		
+	var startlength = 416;
+	var endlength = 448;
+	context.strokeStyle = "red";
+	context.linewidth = 1;
+	context.beginPath()
+	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
+	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
+	context.stroke();	
+	
 if (cheatmode == 1){
 	context.font = "32px Ariel";
 	context.fillStyle = "red";

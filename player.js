@@ -19,7 +19,9 @@ class Player{
         this.journalactive = 0; //0 is inactive, 1 is story journal, 2 displays active jobs.
         this.journalitem = 0; //Used to use shopitem, now it has it's own variable.
         this.energy = 100;
+		this.energyregen = 0.25;
         this.thruster = 100;
+		this.thrustregen = 1;
 		this.thrustmode = false;
         this.gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
         this.wep = 1; //Currently selected weapon
@@ -101,9 +103,9 @@ class Player{
 			}
 		}
     update1(theplanets){
-        if (this.energy<100){ this.energy++; }
+        if (this.energy<100){ this.energy=this.energy+this.energyregen; }
         else {this.energy = 100;}
-        if (this.thruster<100){ this.thruster++; }
+        if (this.thruster<100){ this.thruster=this.thruster+this.thrustregen; }
         else {this.thruster = 100;}
         this.ship.updateship(theplanets);//maybe needs planets?
         var i = 0;
