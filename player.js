@@ -19,7 +19,7 @@ class Player{
         this.journalactive = 0; //0 is inactive, 1 is story journal, 2 displays active jobs.
         this.journalitem = 0; //Used to use shopitem, now it has it's own variable.
         this.energy = 100;
-		this.energyregen = 0.25;
+		this.energyregen = 0.5;
         this.thruster = 100;
 		this.thrustregen = 1;
 		this.thrustmode = false;

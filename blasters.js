@@ -28,6 +28,8 @@ class Blaster{
 		this.timer = basetimer;
 		this.uptimer = uptimer;
 		this.maxtimer = maxtimer;
+		this.special1 = 0;//For variables that may only apply to certain blaster types.
+		this.special2 = 0;
 		this.id = ID;
 		this.c = bombcolor; 
 		this.firing =-1;//for use with rapid blasters.  -1 is inactive, 0 and above are bomb indices
@@ -52,6 +54,10 @@ class Blaster{
 			this.bombs[i].hp = 1;
 			this.bombs[i].shield = 1;
 			i=i+1;
+			}
+		if (this.type == "fixedspread"){
+			this.special1 = Math.PI/2;//Default spread 
+			this.special2 = 1*Math.PI/4;//default spread start
 			}
 		}//w signifies weapon, next 2 digits are weapon number, x signifies notjhing, next 2 digits are upgrade tier
 	levelcalc(){
@@ -115,7 +121,7 @@ class Blaster{
 				this.bombs[i].hp = 100;
 				this.bombs[i].shield = 1;
 			}
-			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")){
+			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")||(this.type == "rapidmultiplex")||(this.type == "semirapid")){
 				var cnum = (thetime+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
@@ -150,6 +156,10 @@ class Blaster{
 			theplayer.ship.launchbomb(this.bombs[0],this.speed,this.timer);	
 		}else if (this.type == "rapid"){
 			this.firing = 0;
+		}else if (this.type == "semirapid"){
+			this.firing++;
+			if (this.firing>=this.n){this.firing = 0;}
+			theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);	
 		}else if (this.type == "spread"){
 			//var spread = 0.5; //arbitrary angle in radians.
 			var spread = 0.0625 + 128/theplayer.mousedistance; //Used global variable mousedistance here, shame....
@@ -166,16 +176,16 @@ class Blaster{
 				}
 			theplayer.ship.d = shipd;
 		}else if (this.type == "fixedspread"){
-			var spread = Math.PI/2; //arbitrary angle in radians.
+			var spread = this.special1; //arbitrary angle in radians.
 			var n = this.bombs.length;
 			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
 			var shipd = theplayer.ship.d;
-			theplayer.ship.d=theplayer.ship.d+spread/2; //for above, theship.d=theship.d+0.25;
+			theplayer.ship.d=theplayer.ship.d+this.special2; //for above, theship.d=theship.d+0.25;
 			var i=0;
 			while (i<n){
 				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
 				theplayer.ship.d = theplayer.ship.d-interspread;
-				i=i+1;
+				i++;
 				}
 			theplayer.ship.d = shipd;
 		}else if (this.type == "novaspread"){

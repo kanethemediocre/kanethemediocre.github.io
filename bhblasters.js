@@ -13,7 +13,7 @@
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               
 	 8,4,10,10,2,5,0.75,0.25,5,6,2,10,80,16,10,30,"white","ID not implemented");
 	 let weapon6 = new Blaster("Blazor","Unique beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
-	 8,4,10,12,2,10,1,0.2,10,1,0,0,384,64,10,2,"white","ID not implemented");
+	 8,4,10,1,0,0,1,0.2,10,1,0,0,384,64,10,2,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          
 	 8,5,10,8,1,10,0.3,0.2,4,12,2,2,80,16,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster with good damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",                         
@@ -32,13 +32,15 @@
 	 let weapon13 = new Blaster("Nova","Fires in all directions.",300,"novaspread",                            
 	 12,6,10,12,2,10,0.8,0.2,10,9,3,0,40,8,10,48,"tan","ID not implemented");
 	 let weapon14 = new Blaster("Fast Railgun","Fires repeatedly",300,"semirapid",                            
-	 12,6,10,12,2,10,0.8,0.2,10,1,0,10,40,8,10,40,"grey","ID not implemented");
+	 24,8,10,20,4,4,0.3,0,0,6,0,0,64,16,10,25,"grey","ID not implemented");
 	 let weapon15 = new Blaster("Multibanger","Fires a row of projectiles",300,"multiplex",                            
 	 12,6,10,12,2,10,0.8,0.2,10,3,1,10,40,8,10,33,"white","ID not implemented");
 	 let weapon16 = new Blaster("Pulse Blazor","========================================",300,"beam",                            
-	 120,30,10,12,2,10,0.8,0.2,10,1,0,0,640,8,10,60,"lime","ID not implemented");
-	 let weapon17 = new Blaster("Squid","Fires a cloud of projectiles backwards.",300,"squid",                            
-	 12,6,10,12,2,10,0.8,0.2,10,1,0,0,40,8,10,70,"darkslategrey","ID not implemented");
+	 120,30,10,1,0,0,0.8,0.2,10,1,0,0,640,8,10,60,"lime","ID not implemented");
+	 let weapon17 = new Blaster("Squid","Fires a cloud of projectiles backwards.",300,"fixedspread",                            
+	 12,6,10,3,2,10,0.8,0.2,10,12,4,10,80,16,10,70,"darkslategrey","ID not implemented");
+	 weapon17.special1 = 3*Math.PI/2;
+	 weapon17.special2 = 7*Math.PI/4;
 	 let weapon18 = new Blaster("wangus","ZCXZXCa",300,"rapid",                            
 	 12,6,10,12,2,10,0.8,0.2,10,24,0,0,64,8,10,15,"olive","ID not implemented");
 	 let weapon19 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done. This launches a bomb at a moderate 12 p/f relative velocity, exploding on contact, or after a few seconds, doing damage in a small area",300,"plain",                            

@@ -283,48 +283,50 @@ function hud(playerindex){
 		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, playerinventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
-	var startlength = 96;
-	var endlength = 128;
+	var oalstartlength = 32;
+	var oalendlength = 32+(myplayer.blasters[myplayer.wep].timer-6)*myplayer.blasters[myplayer.wep].speed;
+	var startlength = oalstartlength+1*(oalendlength-oalstartlength)/12;
+	var endlength = oalstartlength+2*(oalendlength-oalstartlength)/12;
 	context.strokeStyle = "purple";
 	context.linewidth = 1;
 	context.beginPath()
 	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
 	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
 	context.stroke();
-	var startlength = 160;
-	var endlength = 192;
+	var startlength = oalstartlength+3*(oalendlength-oalstartlength)/12;
+	var endlength = oalstartlength+4*(oalendlength-oalstartlength)/12;
 	context.strokeStyle = "blue";
 	context.linewidth = 1;
 	context.beginPath()
 	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
 	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
 	context.stroke();
-	var startlength = 224;
-	var endlength = 256;
+	var startlength = oalstartlength+5*(oalendlength-oalstartlength)/12;
+	var endlength = oalstartlength+6*(oalendlength-oalstartlength)/12;
 	context.strokeStyle = "lime";
 	context.linewidth = 1;
 	context.beginPath()
 	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
 	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
 	context.stroke();	
-	var startlength = 288;
-	var endlength = 320;
+	var startlength = oalstartlength+7*(oalendlength-oalstartlength)/12;
+	var endlength = oalstartlength+8*(oalendlength-oalstartlength)/12;
 	context.strokeStyle = "yellow";
 	context.linewidth = 1;
 	context.beginPath()
 	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
 	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
 	context.stroke();	
-	var startlength = 352;
-	var endlength = 384;
+	var startlength = oalstartlength+9*(oalendlength-oalstartlength)/12;
+	var endlength = oalstartlength+10*(oalendlength-oalstartlength)/12;
 	context.strokeStyle = "orange";
 	context.linewidth = 1;
 	context.beginPath()
 	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
 	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
 	context.stroke();		
-	var startlength = 416;
-	var endlength = 448;
+	var startlength = oalstartlength+11*(oalendlength-oalstartlength)/12;
+	var endlength = oalstartlength+12*(oalendlength-oalstartlength)/12;
 	context.strokeStyle = "red";
 	context.linewidth = 1;
 	context.beginPath()
