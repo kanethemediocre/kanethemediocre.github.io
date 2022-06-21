@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v375 by Andrew Kane </title>
+    <title>Bling Hustle v376 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -124,10 +124,29 @@ let testsystem11 = new System(12,randname(4),0,0);
 let testsystem12 = new System(13,randname(4),0,0);
 let testsystem13 = new System(14,randname(4),0,0);
 let testsystem14 = new System(15,randname(4),0,0);
+let testsystem15 = new System(16,randname(4),0,0);
+let testsystem16 = new System(17,randname(4),0,0);
+let testsystem17 = new System(18,randname(4),0,0);
+let testsystem18 = new System(19,randname(4),0,0);
+let testsystem19 = new System(20,randname(4),0,0);
+let testsystem20 = new System(21,randname(4),0,0);
+let testsystem21 = new System(22,randname(4),0,0);
+let testsystem22 = new System(23,randname(4),0,0);
+let testsystem23 = new System(24,randname(4),0,0);
+let testsystem24 = new System(25,randname(4),0,0);
+let testsystem25 = new System(26,randname(4),0,0);
+let testsystem26 = new System(27,randname(4),0,0);
+let testsystem27 = new System(28,randname(4),0,0);
+let testsystem28 = new System(29,randname(4),0,0);
+let testsystem29 = new System(30,randname(4),0,0);
+let testsystem30 = new System(31,randname(4),0,0);
+
 let playerradio = new Radio(" ");
 let home = new System(1,"Sool",0,0);
 let menu = new System(0,"Main Menu",0,0);
-let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14];
+let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
+				testsystem15,testsystem16,testsystem17,testsystem18,testsystem19,testsystem20,testsystem21,testsystem22,testsystem23,testsystem24,testsystem25,testsystem26,
+				testsystem27,testsystem28,testsystem29,testsystem30];
 systems[0].planets = loadmenusystem();
 systems[1].planets = loadhomesystem();
 systems[1].outposts = loadhomeoutposts();
@@ -149,6 +168,14 @@ systems[1].addrandomgang(22,2,6);
 systems[1].addrandomgang(23,4,4);//no tune bots
 systems[1].addrandomgang(25,5,16);
 systems[1].addrandomtraders([5,11,16], 8, 4);
+var i = systems[1].botbombs.length;
+while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
+	i=i-1;
+	systems[1].botbombs[i].hp = 1;  //Set hitpoints to 1 so they explode on contact
+	systems[1].botbombs[i].maxhp = 1; //with planets 
+	systems[1].botbombs[i].shield = 0;  
+	}
+systems[1].addcargomissions(4);
 
 systems[2].randomplanets();//Here is where all the random systems and enemies are generated.
 systems[2].enemypopulate(5,4,17);
@@ -158,6 +185,7 @@ systems[3].outposts = loadtrinidadoutposts(); //from trinidadoutposts.js
 systems[3].shops = trinidadshops;//trinidadshops is defined in shop.js
 systems[3].enemypopulate(5,4,16);
 systems[3].addrandombling(50);
+systems[3].addcargomissions(4);
 systems[4].randomplanets();
 systems[4].enemypopulate(5,5,18);
 systems[4].addrandombling(50);
@@ -170,8 +198,9 @@ systems[6].shops = napashops;//napashops is defined in shop.js
 systems[6].enemypopulate(6,2,6);
 systems[6].turrets = napaturrets();
 systems[6].addrandombling(50);
+systems[6].addcargomissions(4);
 var speciali = 7;
-while (speciali<16){	
+while (speciali<32){	
 	systems[speciali].randomplanets();
 	systems[speciali].enemypopulate(5,10,29);	
 	systems[speciali].addrandombling(50);		
@@ -181,16 +210,7 @@ while (speciali<16){
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
 
 //systems[1].addrandomgang(26,8,32);  
-var i = systems[1].botbombs.length;
-while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
-	i=i-1;
-	systems[1].botbombs[i].hp = 1;  //Set hitpoints to 1 so they explode on contact
-	systems[1].botbombs[i].maxhp = 1; //with planets 
-	systems[1].botbombs[i].shield = 0;  
-	}
-systems[1].addcargomissions(4);
-systems[3].addcargomissions(4);
-systems[6].addcargomissions(4);
+
 
 //no kill missions for napa?
 var i = 0;

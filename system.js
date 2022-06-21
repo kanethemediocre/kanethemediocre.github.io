@@ -1206,7 +1206,7 @@ class System{
 				  break;
 				 case "v":
 				 if (cheatmode == 1){
-					if (ps <15){ps++;}
+					if (ps <31){ps++;}
 					else  {ps = 1;}
 					aplayer.navtarget = 0;
 					aplayer.shiptarget = 0;
