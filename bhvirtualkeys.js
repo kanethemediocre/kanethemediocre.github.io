@@ -15,6 +15,13 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var ltvk=new Virtualkey(",","<",xmax-72,ymax-216);//constructor(key,label,x,y)
 	var plusvk=new Virtualkey("+","+",24,ymax-336);//constructor(key,label,x,y)
 	var minusvk=new Virtualkey("-","-",56,ymax-336);//constructor(key,label,x,y)
+	
+	var upwvk = new Virtualkey("ArrowUp","^",200,104);//constructor(key,label,x,y)
+	var downwvk = new Virtualkey("ArrowDown","v",200,132);//constructor(key,label,x,y)
+	var rightwvk = new Virtualkey("ArrowRight",">",228,118);//constructor(key,label,x,y)
+	var leftwvk = new Virtualkey("ArrowLeft","<",172,118);//constructor(key,label,x,y)
+	
+	
 	var upjvk = new Virtualkey("ArrowUp","Up",684,152);//constructor(key,label,x,y)
 	upjvk.display = false; //These keys are attached to menus that are not always visible.
 	upjvk.active = false;
@@ -34,7 +41,7 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	entervk.display = false;
 	entervk.active = false;
 	var mobilethrust = new Virtualkey("thrust", "Thrust mode is OFF",420,ymax-64);
-	return [avk,bvk,cvk,gvk,jvk,mvk,nvk,zvk,spacebarvk,lbracketvk,rbracketvk,gtvk,ltvk,plusvk,minusvk,upjvk,downjvk,upsvk,downsvk,backspacevk,entervk,mobilethrust];
+	return [avk,bvk,cvk,gvk,jvk,mvk,nvk,zvk,spacebarvk,lbracketvk,rbracketvk,gtvk,ltvk,plusvk,minusvk,upjvk,downjvk,upsvk,downsvk,backspacevk,entervk,upwvk,downwvk,rightwvk,leftwvk,mobilethrust];
 }
 /*
 	drawaskey(32,167,"B","white");

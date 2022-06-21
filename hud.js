@@ -216,6 +216,14 @@ function hud(playerindex){
 		vkeys[15].active = true;	
 		vkeys[16].display = true;
 		vkeys[16].active = true;	
+		vkeys[21].display = false;
+		vkeys[21].active = false;
+		vkeys[22].display = false;
+		vkeys[22].active = false;
+		vkeys[23].display = false;
+		vkeys[23].active = false;
+		vkeys[24].display = false;
+		vkeys[24].active = false;	
 	}else if (myplayer.journalactive==2){ //journal of jobs taken
 	
 		systems[ps].joblist(200,64,myplayer);
@@ -225,7 +233,15 @@ function hud(playerindex){
 		vkeys[15].display = false;
 		vkeys[15].active = false;
 		vkeys[16].display = false;
-		vkeys[16].active = false;		
+		vkeys[16].active = false;	
+		vkeys[21].display = true;
+		vkeys[21].active = true;
+		vkeys[22].display = true;
+		vkeys[22].active = true;	
+		vkeys[23].display = true;
+		vkeys[23].active = true;
+		vkeys[24].display = true;
+		vkeys[24].active = true;		
 		
 	}
 	
@@ -283,55 +299,7 @@ function hud(playerindex){
 		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, playerinventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
-	//All this is for the aiming guide//////////////////////////////////////////
-	var aimcolors = ["purple","blue","lime","yellow","orange","red"];
-	var aimdirection = 0;
-	var spread = 0;
-	if ((myplayer.blasters[myplayer.wep].type == "plain")||(myplayer.blasters[myplayer.wep].type == "rapid")||(myplayer.blasters[myplayer.wep].type == "semirapid")||(myplayer.blasters[myplayer.wep].type == "beam")||(myplayer.blasters[myplayer.wep].type == "multiplex")){
-		aimdirection = myplayer.ship.d
-		}
-	else if (myplayer.blasters[myplayer.wep].type == "fixedspread"){
-		aimdirection = myplayer.ship.d + myplayer.blasters[myplayer.wep].special2;
-		}
-	else if (myplayer.blasters[myplayer.wep].type == "spread"){
-		spread = 0.0625 + 128/myplayer.mousedistance; //Used global variable mousedistance here, shame....
-		if (spread>Math.PI){spread = Math.PI;}
-		aimdirection = myplayer.ship.d+spread/2;// + myplayer.blasters[myplayer.wep].special2;
-		}
-	var oalstartlength = 32;
-	var oalendlength = 32+(myplayer.blasters[myplayer.wep].timer-6)*myplayer.blasters[myplayer.wep].speed;
-	var i=2;
-	while(i<13){
-		var startlength = oalstartlength+(i-1)*(oalendlength-oalstartlength)/12;
-		var endlength = oalstartlength+(i)*(oalendlength-oalstartlength)/12;
-		context.strokeStyle = aimcolors[Math.floor(i/2)-1];
-		context.linewidth = 1;
-		context.beginPath()
-		context.moveTo(canvas.width/2+startlength*Math.cos(aimdirection),canvas.height/2+startlength*Math.sin(aimdirection));
-		context.lineTo(canvas.width/2+endlength*Math.cos(aimdirection),canvas.height/2+endlength*Math.sin(aimdirection));
-		context.stroke();
-		i=i+2;
-		}
-	if (myplayer.blasters[myplayer.wep].type == "fixedspread"){
-		aimdirection = myplayer.ship.d + myplayer.blasters[myplayer.wep].special2-myplayer.blasters[myplayer.wep].special1;
-		}
-	else if (myplayer.blasters[myplayer.wep].type == "spread"){
-		aimdirection = myplayer.ship.d-spread/2;// + myplayer.blasters[myplayer.wep].special2;
-		}
-
-	var i=2;
-	while(i<13){
-		var startlength = oalstartlength+(i-1)*(oalendlength-oalstartlength)/12;
-		var endlength = oalstartlength+(i)*(oalendlength-oalstartlength)/12;
-		context.strokeStyle = aimcolors[Math.floor(i/2)-1];
-		context.linewidth = 1;
-		context.beginPath()
-		context.moveTo(canvas.width/2+startlength*Math.cos(aimdirection),canvas.height/2+startlength*Math.sin(aimdirection));
-		context.lineTo(canvas.width/2+endlength*Math.cos(aimdirection),canvas.height/2+endlength*Math.sin(aimdirection));
-		context.stroke();
-		i=i+2;
-		}
-	//end of aiming guide, maybe move this into a blaster member function.
+	myplayer.blasters[myplayer.wep].drawsights(myplayer); //Draws aiming guide
 
 	
 if (cheatmode == 1){

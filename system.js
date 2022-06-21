@@ -1123,12 +1123,16 @@ class System{
 						//if (aplayerjobs<0){aplayer.journalitem = playerradio.log.length-1;}
 						}
 					else{ 
-						if (aplayer.wep<10){
-							if (aplayer.blasters[aplayer.wep+10].phas){	aplayer.wep = aplayer.wep+10;}
+						if 		((aplayer.wep>9)&&(aplayer.blasters[aplayer.wep-10].phas)){aplayer.wep = aplayer.wep-10;}//Try wep = wep - 10
+						else if ((aplayer.wep<10)&&(aplayer.blasters[aplayer.wep+10].phas)){aplayer.wep = aplayer.wep+10; }//try wep = wep + 10
+						else{ //All else fails try wep = wep - 1 until it works.
+							aplayer.wep--;
+							if (aplayer.wep<0){aplayer.wep = aplayer.blasters.length-1;}
+							while (aplayer.blasters[aplayer.wep].phas==false){
+								aplayer.wep--;
+								if (aplayer.wep<0){aplayer.wep = aplayer.blasters.length-1;}
+								}
 							}
-						else {
-							if (aplayer.blasters[aplayer.wep-10].phas){	aplayer.wep = aplayer.wep-10; }
-							}	
 						}
 				  break;
 				case "ArrowDown":
@@ -1150,24 +1154,34 @@ class System{
 						aplayer.jobitem++;//boundaries handled in joblist function.
 						}
 					else{ 
-						if (aplayer.wep>=10){
-							if (aplayer.blasters[aplayer.wep-10].phas){	aplayer.wep = aplayer.wep-10;}
+						if 		((aplayer.wep<10)&&(aplayer.blasters[aplayer.wep+10].phas)){aplayer.wep = aplayer.wep+10;}//Try wep = wep + 10
+						else if ((aplayer.wep>9)&&(aplayer.blasters[aplayer.wep-10].phas)){	aplayer.wep = aplayer.wep-10; }//try wep = wep - 10
+						else{ //All else fails try wep = wep + 1 until it works.
+							aplayer.wep++;
+							if (aplayer.wep>aplayer.blasters.length-1){aplayer.wep = 0;}
+							while (aplayer.blasters[aplayer.wep].phas==false){
+								aplayer.wep++;
+								if (aplayer.wep>aplayer.blasters.length-1){aplayer.wep = 0;}
+								}
 							}
-						else {
-							if (aplayer.blasters[aplayer.wep+10].phas){	aplayer.wep = aplayer.wep+10; }
-							}	
 						}
 				  break;   
-
 				case "ArrowLeft":
-					if ((aplayer.wep<=0)&&(aplayer.blasters[19].phas)){ aplayer.wep = 19;	}
-					else if ((aplayer.wep>0)&&(aplayer.blasters[aplayer.wep-1].phas)){ aplayer.wep--;}
+					aplayer.wep--; //Try decrementing aplayer.wep until you find a blaster that phas
+					if (aplayer.wep<0){aplayer.wep = aplayer.blasters.length-1;}
+					while (aplayer.blasters[aplayer.wep].phas==false){
+						aplayer.wep--;
+						if (aplayer.wep<0){aplayer.wep = aplayer.blasters.length-1;}
+						}
 				  break;   
 				case "ArrowRight":
-					if ((aplayer.wep>=19)&&(aplayer.blasters[0].phas)){ aplayer.wep = 0;	}
-					else if ((aplayer.wep<19)&&(aplayer.blasters[aplayer.wep+1].phas)){ aplayer.wep++;}
+					aplayer.wep++; //Try incrementing aplayer.wep until you find a blaster that phas
+					if (aplayer.wep>aplayer.blasters.length-1){aplayer.wep = 0;}
+					while (aplayer.blasters[aplayer.wep].phas==false){
+						aplayer.wep++;
+						if (aplayer.wep>aplayer.blasters.length-1){aplayer.wep = 0;}
+						}
 				  break;  
-				  
 				case "End":
 					if (cheatmode == 1){aplayer.money = aplayer.money +10000;}
 				  break;  
