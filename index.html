@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v370 by Andrew Kane </title>
+    <title>Bling Hustle v371 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -549,15 +549,6 @@ function update() {
 			if (time%24==0){blastersound8.play();}
 		}
 		
-		/*
-			if ((this.firing>=0)&&(this.time%4)){ //This was all under blasters, as an update to rapid blasters
-			this.firing++;
-			console.log("sdfasf"); 
-			if (this.firing>=this.bombs.length){this.firing = 0;}
-			this.origin.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);
-			//this.bombs[this.firing]
-			}
-		*/
 	/////////////////////////////////weapon 9 in-loop code, is even more special////////////////////////////////////////////////////////////////
 		if (aplayer.blasters[9].bombs[0].timer>0){
 			playerweapon9superbomb.maintainorbitbomb();
@@ -575,7 +566,11 @@ function update() {
 						aship.polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
 						aship.polyradius = systems[ps].ships[j].polyradius;
 					}else if (aplayer.probemode == 2){
-						//do more cool stuff			
+					//	constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,bombcolor,ID){
+						var bb = systems[ps].botbombs[j];
+						aplayer.blasters[10] = new Blaster(""+systems[ps].ships[j].name+"s blaster","The Pclone takes the properties of the weapon used by the last probed enemy.",5000,"plain",
+						bb.hurt,0,0,12,0,0,bb.boombuff,0,0,1,0,0,80,0,0,25,bb.c,"ID not used");//Sadly not many properties to pull, bot weapons are not varied enough.
+						aplayer.blasters[10].phas = true;
 						}
 					}
 				}

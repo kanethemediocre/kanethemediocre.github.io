@@ -283,56 +283,56 @@ function hud(playerindex){
 		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, playerinventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
+	//All this is for the aiming guide//////////////////////////////////////////
+	var aimcolors = ["purple","blue","lime","yellow","orange","red"];
+	var aimdirection = 0;
+	var spread = 0;
+	if ((myplayer.blasters[myplayer.wep].type == "plain")||(myplayer.blasters[myplayer.wep].type == "rapid")||(myplayer.blasters[myplayer.wep].type == "semirapid")||(myplayer.blasters[myplayer.wep].type == "beam")||(myplayer.blasters[myplayer.wep].type == "multiplex")){
+		aimdirection = myplayer.ship.d
+		}
+	else if (myplayer.blasters[myplayer.wep].type == "fixedspread"){
+		aimdirection = myplayer.ship.d + myplayer.blasters[myplayer.wep].special2;
+		}
+	else if (myplayer.blasters[myplayer.wep].type == "spread"){
+		spread = 0.0625 + 128/myplayer.mousedistance; //Used global variable mousedistance here, shame....
+		if (spread>Math.PI){spread = Math.PI;}
+		aimdirection = myplayer.ship.d+spread/2;// + myplayer.blasters[myplayer.wep].special2;
+		}
 	var oalstartlength = 32;
 	var oalendlength = 32+(myplayer.blasters[myplayer.wep].timer-6)*myplayer.blasters[myplayer.wep].speed;
-	var startlength = oalstartlength+1*(oalendlength-oalstartlength)/12;
-	var endlength = oalstartlength+2*(oalendlength-oalstartlength)/12;
-	context.strokeStyle = "purple";
-	context.linewidth = 1;
-	context.beginPath()
-	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
-	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
-	context.stroke();
-	var startlength = oalstartlength+3*(oalendlength-oalstartlength)/12;
-	var endlength = oalstartlength+4*(oalendlength-oalstartlength)/12;
-	context.strokeStyle = "blue";
-	context.linewidth = 1;
-	context.beginPath()
-	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
-	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
-	context.stroke();
-	var startlength = oalstartlength+5*(oalendlength-oalstartlength)/12;
-	var endlength = oalstartlength+6*(oalendlength-oalstartlength)/12;
-	context.strokeStyle = "lime";
-	context.linewidth = 1;
-	context.beginPath()
-	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
-	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
-	context.stroke();	
-	var startlength = oalstartlength+7*(oalendlength-oalstartlength)/12;
-	var endlength = oalstartlength+8*(oalendlength-oalstartlength)/12;
-	context.strokeStyle = "yellow";
-	context.linewidth = 1;
-	context.beginPath()
-	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
-	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
-	context.stroke();	
-	var startlength = oalstartlength+9*(oalendlength-oalstartlength)/12;
-	var endlength = oalstartlength+10*(oalendlength-oalstartlength)/12;
-	context.strokeStyle = "orange";
-	context.linewidth = 1;
-	context.beginPath()
-	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
-	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
-	context.stroke();		
-	var startlength = oalstartlength+11*(oalendlength-oalstartlength)/12;
-	var endlength = oalstartlength+12*(oalendlength-oalstartlength)/12;
-	context.strokeStyle = "red";
-	context.linewidth = 1;
-	context.beginPath()
-	context.moveTo(canvas.width/2+startlength*Math.cos(myplayer.ship.d),canvas.height/2+startlength*Math.sin(myplayer.ship.d));
-	context.lineTo(canvas.width/2+endlength*Math.cos(myplayer.ship.d),canvas.height/2+endlength*Math.sin(myplayer.ship.d));
-	context.stroke();	
+	var i=2;
+	while(i<13){
+		var startlength = oalstartlength+(i-1)*(oalendlength-oalstartlength)/12;
+		var endlength = oalstartlength+(i)*(oalendlength-oalstartlength)/12;
+		context.strokeStyle = aimcolors[Math.floor(i/2)-1];
+		context.linewidth = 1;
+		context.beginPath()
+		context.moveTo(canvas.width/2+startlength*Math.cos(aimdirection),canvas.height/2+startlength*Math.sin(aimdirection));
+		context.lineTo(canvas.width/2+endlength*Math.cos(aimdirection),canvas.height/2+endlength*Math.sin(aimdirection));
+		context.stroke();
+		i=i+2;
+		}
+	if (myplayer.blasters[myplayer.wep].type == "fixedspread"){
+		aimdirection = myplayer.ship.d + myplayer.blasters[myplayer.wep].special2-myplayer.blasters[myplayer.wep].special1;
+		}
+	else if (myplayer.blasters[myplayer.wep].type == "spread"){
+		aimdirection = myplayer.ship.d-spread/2;// + myplayer.blasters[myplayer.wep].special2;
+		}
+
+	var i=2;
+	while(i<13){
+		var startlength = oalstartlength+(i-1)*(oalendlength-oalstartlength)/12;
+		var endlength = oalstartlength+(i)*(oalendlength-oalstartlength)/12;
+		context.strokeStyle = aimcolors[Math.floor(i/2)-1];
+		context.linewidth = 1;
+		context.beginPath()
+		context.moveTo(canvas.width/2+startlength*Math.cos(aimdirection),canvas.height/2+startlength*Math.sin(aimdirection));
+		context.lineTo(canvas.width/2+endlength*Math.cos(aimdirection),canvas.height/2+endlength*Math.sin(aimdirection));
+		context.stroke();
+		i=i+2;
+		}
+	//end of aiming guide, maybe move this into a blaster member function.
+
 	
 if (cheatmode == 1){
 	context.font = "32px Ariel";
