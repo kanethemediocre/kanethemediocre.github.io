@@ -1387,7 +1387,7 @@ class System{
 				}
 			i=i+1;
 			}	
-		this.randomoutposts(3); 
+		this.randomoutposts(5); 
 		var traderstops = Math.floor(Math.random()*3)+2;
 		var destinations = [];
 		var i=0;

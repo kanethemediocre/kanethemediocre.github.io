@@ -227,7 +227,7 @@ class Blaster{
 			i=i+1;
 			}
 		}
-	drawsights(myplayer){
+	drawsights(myplayer,time){
 		var aimcolors = ["purple","blue","lime","yellow","orange","red"];
 		var aimdirection = 0;
 		var spread = 0;
@@ -275,6 +275,60 @@ class Blaster{
 			context.stroke();
 			i=i+2;
 			}
+		if ((this.type=="fixedspread")||(this.type=="spread")){
+			var arcspeed = Math.floor(this.speed);
+			var arctime = Math.floor(this.timer);
+			var arcstart = myplayer.ship.d+0.04;
+			var arcsize = 0.08;
+			var arcposition = 32 + (time%arctime)*arcspeed;
+			var arcfraction = (time%arctime)/arctime;
+			if (arcfraction<(1/6)){context.strokeStyle = "purple";}
+			else if (arcfraction<(2/6)){context.strokeStyle = "blue";}
+			else if (arcfraction<(3/6)){context.strokeStyle = "green";}
+			else if (arcfraction<(4/6)){context.strokeStyle = "yellow";}
+			else if (arcfraction<(5/6)){context.strokeStyle = "orange";}
+			else {context.strokeStyle = "red";}
+			if (this.type=="fixedspread"){
+				arcstart = myplayer.ship.d+this.special2;
+				arcsize = this.special1;
+				context.beginPath();
+				context.arc(canvas.width/2, canvas.height/2, arcposition, arcstart-arcsize, arcstart, false); //draws the circle
+				context.stroke();
+				}
+			else{//this.type must == "spread"
+				arcstart = myplayer.ship.d+spread/2;//spread value established earlier for guidelines
+				arcsize = spread;
+				context.beginPath();
+				context.arc(canvas.width/2, canvas.height/2, arcposition, arcstart-arcsize, arcstart, false); //draws the circle
+				context.stroke();
+				}
+			}
+		else {//if (this.type = "multiplex"){
+			var barsize = 12;
+			if (this.type == "multiplex"){ barsize = this.n*12; }//Bidirectional, so actually twice that.
+			var barspeed = Math.floor(this.speed);
+			var bartime = Math.floor(this.timer)-6;
+			var barposition = 32 + (time%bartime)*barspeed;
+			var barfraction = (time%bartime)/bartime;
+			if (this.type == "beam") {
+				var barposition = 38 + bartime*barspeed;
+				var barfraction = 1;
+				}
+			if (barfraction<(1/6)){context.strokeStyle = "purple";}
+			else if (barfraction<(2/6)){context.strokeStyle = "blue";}
+			else if (barfraction<(3/6)){context.strokeStyle = "green";}
+			else if (barfraction<(4/6)){context.strokeStyle = "yellow";}
+			else if (barfraction<(5/6)){context.strokeStyle = "orange";}
+			var barstartx = canvas.width/2 + Math.cos(myplayer.ship.d)*barposition +Math.cos(myplayer.ship.d+Math.PI/2)*barsize;
+			var barstarty = canvas.height/2+Math.sin(myplayer.ship.d)*barposition+Math.sin(myplayer.ship.d+Math.PI/2)*barsize;
+			var barendx = canvas.width/2+Math.cos(myplayer.ship.d)*barposition+Math.cos(myplayer.ship.d-Math.PI/2)*barsize;
+			var barendy = canvas.height/2+Math.sin(myplayer.ship.d)*barposition+Math.sin(myplayer.ship.d-Math.PI/2)*barsize;
+			//console.log("im elseing "+barposition+" "+barstarty);
+			context.beginPath();
+			context.moveTo(barstartx,barstarty);
+			context.lineTo(barendx,barendy);
+			context.stroke();
+			}	
 		}
 	update1(){
 		var i=0;

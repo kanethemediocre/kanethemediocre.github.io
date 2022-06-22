@@ -299,9 +299,8 @@ function hud(playerindex){
 		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, playerinventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
-	myplayer.blasters[myplayer.wep].drawsights(myplayer); //Draws aiming guide
-
-	
+	myplayer.blasters[myplayer.wep].drawsights(myplayer,time); //Draws aiming guide
+	//}
 if (cheatmode == 1){
 	context.font = "32px Ariel";
 	context.fillStyle = "red";

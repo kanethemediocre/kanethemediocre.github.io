@@ -20,7 +20,7 @@
 	 12,6,10,12,2,10,0.2,0.1,10,6,0,0,24,2,10,11,"white","ID not implemented");
 	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.  Beepapop boowopendongle, prodoopsenboboompo bopopob.",20000,"spread",                                           
 	 16,8,10,12,2,10,0.5,0.25,10,8,1,10,1000,8,10,99,"white","ID not implemented");
-	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"probe",                      
+	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"plain",                      
 	 10,4,10,12,2,10,1,0.2,10,1,0,0,40,8,10,11,"white","ID not implemented");
 	 
 	 let weapon10 = new Blaster("P-Clone","Blaster takes characteristics from probe data",300,"plain",                            
@@ -29,8 +29,10 @@
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
 	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row",300,"multiplex",                            
 	 12,6,10,1,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
-	 let weapon13 = new Blaster("Nova","Fires in all directions.",300,"novaspread",                            
-	 12,6,10,12,2,10,0.8,0.2,10,9,3,0,40,8,10,48,"tan","ID not implemented");
+	 let weapon13 = new Blaster("Nova","Fires in all directions.",300,"fixedspread",                            
+	 12,6,10,12,2,10,0.8,0.2,10,12,6,10,40,8,10,48,"tan","ID not implemented");
+	 weapon13.special1 = 4*Math.PI/2;
+	 weapon13.special2 = 8*Math.PI/4;
 	 let weapon14 = new Blaster("Fast Railgun","Fires repeatedly",300,"semirapid",                            
 	 24,8,10,20,4,4,0.3,0,0,6,0,0,64,16,10,25,"grey","ID not implemented");
 	 let weapon15 = new Blaster("Multibanger","Fires a row of projectiles",300,"multiplex",                            
