@@ -106,6 +106,7 @@
 			}
 		function drawmap(mplanets, mstations,scale,xx,yy, px, py, radar, mships,theplayer){//scale of -1 indicates autozoom?  xx,yy are screen coords
 					var i = mplanets.length; //px, py are perspective x and y
+					if ((theplayer.sensor<1)&&(mplanets[i-1].s<50)){i--;}//Ignores last planet in stack if sensor level isnt at least 1.  This is waldo.
 					var x = 0;
 					var y = 0;
 					var size = 1;
@@ -131,14 +132,16 @@
 						context.strokeStyle = mplanets[i].c; //drawing planet
 						context.arc(x, y, size, 0, 2 * Math.PI, false); 
 						context.lineWidth = 1; 
-						context.stroke();	//ok now actually draw it.	
-						if (mplanets[i].parentid == 0){//If planet
-							oradius = mplanets[0].distance(mplanets[i])/scale;
-							context.beginPath();
-							context.strokeStyle = "darkslategrey"; //drawing faint orbit radius
-							context.arc(xx-px/scale, yy-py/scale, oradius, 0, 2 * Math.PI, false); 
-							context.lineWidth = 1; 
-							context.stroke();	//ok now actually draw it.	
+						context.stroke();	//ok now actually draw it.
+						if (theplayer.sensor>-1){//Maybe <0 or <1 later, this threshold determines how many sensor levels needed to see orbits.  As is, player starts able to see orbits
+							if (mplanets[i].parentid == 0){//If planet
+								oradius = mplanets[0].distance(mplanets[i])/scale;
+								context.beginPath();
+								context.strokeStyle = "darkslategrey"; //drawing faint orbit radius
+								context.arc(xx-px/scale, yy-py/scale, oradius, 0, 2 * Math.PI, false); 
+								context.lineWidth = 1; 
+								context.stroke();	//ok now actually draw it.	
+								}
 							}
 						}
 					var i = mstations.length; //px, py are perspective x and y

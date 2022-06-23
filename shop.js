@@ -465,8 +465,8 @@ let upshieldregenitem = new Shopitem("upgrade",3,"shieldregen",0);
 let upradaritem = new Shopitem("upgrade",4,"radar",0);
 let upcargoitem = new Shopitem("upgrade",5,"cargo",0);
 let upthrustitem = new Shopitem("upgrade",6,"thrust",0);
-
-let brandchassisitem = new Shopitem("chassis",0,"brand",0);
+let upsensoritem = new Shopitem("upgrade",7,"sensor",0);
+//let brandchassisitem = new Shopitem("chassis",0,"brand",0);
 let randomchassisitem = new Shopitem("chassis",0,"random",0);
 
 let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0,buycargo1,buycargo2,buyw0item];
@@ -485,7 +485,7 @@ while (i<12){
 	i=i+1;
 }
 let randoshop1 = new Shop("Rando Calrissian's Blaster Upgrades",4, "Randomized items", randshopitems1);
-var upgradeshopitems = [uprepairitem,uparmoritem,upshielditem,upshieldregenitem,upradaritem,upcargoitem,upthrustitem,randomchassisitem];
+var upgradeshopitems = [uprepairitem,uparmoritem,upshielditem,upshieldregenitem,upradaritem,upcargoitem,upthrustitem,upsensoritem,randomchassisitem];
 let upgradeshop = new Shop("All Upgrades Testing Shop",5, "Upgrades", upgradeshopitems);
 let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,upgradeshop];//"all" meaning home system
 

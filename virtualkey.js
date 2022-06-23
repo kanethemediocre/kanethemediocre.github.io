@@ -21,7 +21,7 @@ class Virtualkey{
 			}
 		}
 	inside(xx,yy){
-		if ((xx>this.x)&&(xx<this.x+14+10*this.label.length)&&(yy>this.y)&&(yy<this.y+24)){//Size code <<here<< needs to match size code in ^^draw function^^
+		if ((this.active)&&(xx>this.x)&&(xx<this.x+14+10*this.label.length)&&(yy>this.y)&&(yy<this.y+24)){//Size code <<here<< needs to match size code in ^^draw function^^
 			return true;
 			}
 		else{

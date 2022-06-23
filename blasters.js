@@ -53,11 +53,40 @@ class Blaster{
 			this.bombs[i].boombuff = this.boom;
 			this.bombs[i].hp = 1;
 			this.bombs[i].shield = 1;
+			if (this.type == "rapidmultiplex"){			
+				var cnum = i%6;
+				if (cnum == 0){
+					this.bombs[i].c = "red";
+					this.bombs[i].c2 = "orange";
+				}else if (cnum == 1){
+					this.bombs[i].c = "orange";
+					this.bombs[i].c2 = "yellow";
+				}else if (cnum == 2){
+					this.bombs[i].c = "yellow";
+					this.bombs[i].c2 = "green";
+				}else if (cnum == 3){
+					this.bombs[i].c = "green";
+					this.bombs[i].c2 = "blue";
+				}else if (cnum == 4){
+					this.bombs[i].c = "blue";
+					this.bombs[i].c2 = "purple";
+				}else if (cnum == 5){
+					this.bombs[i].c = "purple";
+					this.bombs[i].c2 = "red";
+					}
+				}
 			i=i+1;
 			}
 		if (this.type == "fixedspread"){
 			this.special1 = Math.PI/2;//Default spread 
 			this.special2 = 1*Math.PI/4;//default spread start
+			}
+		if (this.type == "rapidmultiplex"){
+			this.firing = 0;
+			this.special1 = 8;
+			}
+		if (this.type == "rapid"){
+			this.special1 = 8;//default frames per shot
 			}
 		}//w signifies weapon, next 2 digits are weapon number, x signifies notjhing, next 2 digits are upgrade tier
 	levelcalc(){
@@ -112,7 +141,7 @@ class Blaster{
 	fire(theplayer,thetime){ //
 		var i=0; 
 		while (i<this.bombs.length){//first set/verify weapon properties on bomb
-			this.bombs[i].c=this.c;
+			//this.bombs[i].c=this.c;
 			this.bombs[i].hurt=this.hurt;
 			this.bombs[i].boombuff = this.boom;
 			this.bombs[i].hp = 1;
@@ -121,7 +150,7 @@ class Blaster{
 				this.bombs[i].hp = 100;
 				this.bombs[i].shield = 1;
 			}
-			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")||(this.type == "rapidmultiplex")||(this.type == "semirapid")){
+			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")||(this.type == "semirapid")){
 				var cnum = (thetime+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
@@ -142,9 +171,9 @@ class Blaster{
 					this.bombs[i].c = "purple";
 					this.bombs[i].c2 = "red";
 					}
+				}
+				i=i+1;
 			}
-			i=i+1;
-		}
 		//Firing bomb(s)
 		if ((this.rtier == 1)&&(this.bombs[0].timer>6)){//if blaster has remote detonator and bombs are not yet detonated....
 			var i=0;
@@ -189,7 +218,7 @@ class Blaster{
 				}
 			theplayer.ship.d = shipd;
 		}else if (this.type == "novaspread"){
-			var spread = 2*Math.PI; //arbitrary angle in radians.
+			var spread = 2*Math.PI; 
 			var n = this.bombs.length;
 			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
 			var shipd = theplayer.ship.d;
@@ -216,6 +245,23 @@ class Blaster{
 				this.bombs[i].y = this.bombs[i].y + dy
 				i=i+1;
 				}
+		}else if (this.type == "rapidmultiplex"){
+			var n = Math.floor(this.bombs.length / 12);
+			var interspread = 32;
+			var interstart = -1*((n-1)/2)*interspread;
+			var offsetd = theplayer.ship.d+Math.PI/2;
+			var i=0;
+			while (i<n){
+				var interoffset = interstart + interspread*i;
+				var dx = interoffset*Math.cos(offsetd);
+				var dy = interoffset*Math.sin(offsetd);
+				theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);	
+				this.bombs[this.firing].x = this.bombs[this.firing].x + dx;
+				this.bombs[this.firing].y = this.bombs[this.firing].y + dy;
+				this.firing++;
+				if (this.firing>=this.bombs.length){this.firing = 0;}
+				i=i+1;
+				}
 			}
 		}
 	draw(viewx,viewy){
@@ -231,7 +277,7 @@ class Blaster{
 		var aimcolors = ["purple","blue","lime","yellow","orange","red"];
 		var aimdirection = 0;
 		var spread = 0;
-		if ((myplayer.blasters[myplayer.wep].type == "plain")||(myplayer.blasters[myplayer.wep].type == "rapid")||(myplayer.blasters[myplayer.wep].type == "semirapid")||(myplayer.blasters[myplayer.wep].type == "beam")||(myplayer.blasters[myplayer.wep].type == "multiplex")){
+		if ((myplayer.blasters[myplayer.wep].type == "plain")||(myplayer.blasters[myplayer.wep].type == "rapid")||(myplayer.blasters[myplayer.wep].type == "semirapid")||(myplayer.blasters[myplayer.wep].type == "beam")||(myplayer.blasters[myplayer.wep].type == "multiplex")||(myplayer.blasters[myplayer.wep].type == "rapidmultiplex")){
 			aimdirection = myplayer.ship.d
 			}
 		else if (myplayer.blasters[myplayer.wep].type == "fixedspread"){
@@ -305,7 +351,8 @@ class Blaster{
 			}
 		else {//if (this.type = "multiplex"){
 			var barsize = 12;
-			if (this.type == "multiplex"){ barsize = this.n*12; }//Bidirectional, so actually twice that.
+			if (this.type == "multiplex"){ barsize = (this.n-1)*16+4; }//Bidirectional, so actually twice that.
+			if (this.type == "rapidmultiplex"){ barsize = Math.floor((this.n-1)*16/12)+4; }//Bidirectional, so actually twice that.
 			var barspeed = Math.floor(this.speed);
 			var bartime = Math.floor(this.timer)-6;
 			var barposition = 32 + (time%bartime)*barspeed;

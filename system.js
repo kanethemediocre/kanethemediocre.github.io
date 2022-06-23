@@ -160,13 +160,15 @@ class System{
 	drawplanetfinder(playerindex,radius){
 		var viewx = this.players[playerindex].ship.x;
 		var viewy = this.players[playerindex].ship.y;
+		var maxnavtarget = systems[ps].planets.length-1;
+		if ((aplayer.sensor<1)&&(systems[ps].planets[systems[ps].planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
 		context.font = '20px Ariel';
 		context.fillStyle = "yellow";
 		context.fillText("Navigation Compass Active", canvas.width/2-80, 24);
 		var cx = canvas.width/2;
 		var cy = canvas.height/2;
 		var i=0;
-		while(i<this.planets.length){
+		while(i<=maxnavtarget){
 			var inddir = this.players[playerindex].ship.directionof(this.planets[i]);//indicated direction
 			var indc = this.planets[i].c;
 			var inddist = this.players[playerindex].ship.distance(this.planets[i]);
@@ -1071,18 +1073,22 @@ class System{
 					if (aplayer.mapscale>64){aplayer.mapscale = Math.floor(aplayer.mapscale);}
 					  break;	  
 				case ".": 
-						if (aplayer.navactive == 1){
-							aplayer.navtarget++;
-							if (aplayer.navtarget > systems[ps].planets.length-2){ aplayer.navtarget = 0; }//Waldo is now excluded
-						}else if (aplayer.navactive == 2){
-							aplayer.navtarget++;
-							if (aplayer.navtarget > systems[ps].outposts.length-1){aplayer.navtarget = 0; }
-							}
+					var maxnavtarget = systems[ps].planets.length-1;
+					if ((aplayer.sensor<1)&&(systems[ps].planets[systems[ps].planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
+					if (aplayer.navactive == 1){
+						aplayer.navtarget++;
+						if (aplayer.navtarget > maxnavtarget){ aplayer.navtarget = 0; }//Waldo is now excluded
+					}else if (aplayer.navactive == 2){
+						aplayer.navtarget++;
+						if (aplayer.navtarget > systems[ps].outposts.length-1){aplayer.navtarget = 0; }
+						}
 					  break;
 				case ",": 
+					var maxnavtarget = systems[ps].planets.length-1;
+					if ((aplayer.sensor<1)&&(systems[ps].planets[systems[ps].planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
 					if (aplayer.navactive == 1){
 						aplayer.navtarget--;
-						if (aplayer.navtarget == -1){ aplayer.navtarget = systems[ps].planets.length-2; }
+						if (aplayer.navtarget == -1){ aplayer.navtarget = maxnavtarget; }
 					}else if (aplayer.navactive == 2){
 						aplayer.navtarget--;
 						if (aplayer.navtarget == -1){ aplayer.navtarget = systems[ps].outposts.length-1; }

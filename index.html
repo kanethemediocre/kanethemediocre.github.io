@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v377 by Andrew Kane </title>
+    <title>Bling Hustle v382 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -562,13 +562,21 @@ function update() {
 				}
 			}
 	//////////////////////////////////Weapon 8 in-loop code, its special like that.  Now designed to deal with ANY rapid blaster.//////////////////////////////////////////////////////////////////////////////
-		if((aplayer.mousestate==1)&&(time%6==0)&&(aplayer.blasters[aplayer.wep].type == "rapid")&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
-			var n = Math.floor(time/6)%aplayer.blasters[aplayer.wep].bombs.length;
-			aship.launchbomb(aplayer.blasters[aplayer.wep].bombs[n],aplayer.blasters[aplayer.wep].speed,aplayer.blasters[aplayer.wep].timer);
-			aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
-			if (time%24==0){blastersound8.play();}
+		if ((aplayer.blasters[aplayer.wep].type == "rapid")){
+			if((aplayer.mousestate==1)&&(time%(aplayer.blasters[aplayer.wep].special1)==0)&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){ //mousestate is always evaluating true, so it fires constantly.  oof, why?
+				var n = Math.floor(time/(aplayer.blasters[aplayer.wep].special1))%aplayer.blasters[aplayer.wep].bombs.length;
+				aship.launchbomb(aplayer.blasters[aplayer.wep].bombs[n],aplayer.blasters[aplayer.wep].speed,aplayer.blasters[aplayer.wep].timer);
+				aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
+				if (time%24==0){blastersound8.play();}
+			}
 		}
-		
+		if ((aplayer.blasters[aplayer.wep].type == "rapidmultiplex")){
+			if((aplayer.mousestate==1)&&(time%(aplayer.blasters[aplayer.wep].special1)==0)&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){  //mousestate is always evaluating true, so it fires constantly.  oof, why?
+				aplayer.blasters[aplayer.wep].fire(aplayer,time);
+				aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
+				if (time%24==0){blastersound8.play();}
+			}
+		}
 	/////////////////////////////////weapon 9 in-loop code, is even more special////////////////////////////////////////////////////////////////
 		if (aplayer.blasters[9].bombs[0].timer>0){
 			playerweapon9superbomb.maintainorbitbomb();

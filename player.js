@@ -22,7 +22,8 @@ class Player{
 		this.energyregen = 0.5;
         this.thruster = 100;
 		this.thrustregen = 1;
-		this.thrustmode = false;
+		this.sensor = 0;
+		this.thrustmode = false;//For mobile support, switch between click to shoot and click to thrust.
         this.gotmoney = [0,0]; //For animation, [$ amount, frames left in animation]
         this.wep = 1; //Currently selected weapon
         this.moused = 0; //Direction currently indicated by mouse
