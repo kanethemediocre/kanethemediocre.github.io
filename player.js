@@ -46,6 +46,8 @@ class Player{
         this.probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
         this.autopilot = 0; //0 is off, higher numbers are other modes
 		this.storyselect = 0;
+		this.solarpain = 0;
+		this.shieldbonus = "none";
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;

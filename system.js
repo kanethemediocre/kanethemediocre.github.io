@@ -510,6 +510,12 @@ class System{
 			while(j>0){
 				j=j-1;
 				//console.log("itried3");
+				if (this.planets[i].collide(this.players[j].ship)){
+					var collidedamagebonus = 9;//9x bonus damage plus the normal damage done in circlecollide
+					if (this.players[j].shieldbonus != "impact"){
+						this.players[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+						}
+					}
 				this.planets[i].circlecollide(this.players[j].ship);
 				var k=this.players[j].blasters.length;
 				while(k>0){

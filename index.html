@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v382 by Andrew Kane </title>
+    <title>Bling Hustle v383 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -391,8 +391,17 @@ function update() {
 ////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
 	if (myship.distance(waldo)>10000){
 		waldo.s = 100000000000000000 / (myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo));// hz * hz / dist * dist
-		}
+		}//Size should be inversely related to the distance from event horizon
 	else {waldo.s = 10000;}
+	var solarignore = 0;
+	var solarresist = 1;
+	if (myplayer.shieldbonus == "solar"){
+		solarignore = 2;
+		solarresist = 0.25
+		}
+	myplayer.solarpain = .025*systems[ps].planets[0].m/(myship.distance(systems[ps].planets[0])*myship.distance(systems[ps].planets[0]))*solarresist;
+	if ( myplayer.solarpain>(1.125+solarignore) ) { myplayer.ship.damage(Math.floor(8*myplayer.solarpain)/8-1-solarignore); }//Once this is settled it should move to the system update sequence.
+	//console.log(myplayer.solarpain);
 	waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
 	waldo.gravitate(myship); //pull only player ship
 	waldo.c = randcolor(); //groovy
@@ -413,7 +422,7 @@ function update() {
 		myplayer.navtarget = 0;
 		myplayer.shiptarget = 0;
 		}
-	//Size should be inversely related to the distance from event horizon
+
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships.  Not used yet.///////////////////////////////////////////////////
 	var i = systems[ps].planets.length;
 	while (i>0){//For all planets...
@@ -430,7 +439,7 @@ function update() {
 		i=i-1;
 		systems[ps].ships[i].active = systems[ps].planets[systems[ps].ships[i].parentid].active;
 		}
-		////explosion testing////////////////////////////////
+
 ///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
 	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
 	if (ps>0){//ps==0 is the menu system.  Hud looks dumb here, and I want room for other stuff.
