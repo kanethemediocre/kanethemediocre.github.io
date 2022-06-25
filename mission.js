@@ -23,6 +23,10 @@ class Mission{
 			var targetumo = theplanets[this.target];
 			this.targetlocationname = theplanets[this.target].name;
 			}
+		else if (this.type=="courier"){
+			var targetumo = theships[this.target];
+			this.targetlocationname = "In transit";
+			}
 		else {var targetumo = "none";}
 		var i=0;
 		while ((i<theships.length)&&(targetumo!="none")){
@@ -42,6 +46,7 @@ class Mission{
 		this.danger = Math.floor(this.danger);
 		if (this.type=="cargo"){this.reward = 500+this.danger*25+this.distance*50;}
 		if (this.type=="destroy"){this.reward = 500+this.danger*50+this.distance*25;}
+		if (this.type=="courier"){this.reward = 1500+this.distance*10+this.danger*10;}
 		}
 	calcdistance(theships,theplanets,theoutposts){ //WWWWWIIIIIIIIPPPPP
 		var rawdistance = 0;
@@ -72,10 +77,14 @@ class Mission{
 				}
 			}
 		if (this.type=="destroy"){
-				if ((theships[this.target].parentid==leadplanet)||(theplanets[theships[this.target].parentid].parentid==leadplanet)){
+			if ((theships[this.target].parentid==leadplanet)||(theplanets[theships[this.target].parentid].parentid==leadplanet)){
 				localtarget = true;
 				rawdistance = startumo.distance(theplanets[leadplanet]);
 				}
+			}
+		if (this.type=="courier"){
+			localtarget = false;
+			rawdistance = startumo.distance(theships[this.target]);
 			}
 		if (localtarget == false){
 			rawdistance = startumo.distance(theplanets[0])+endumo.distance(theplanets[0])

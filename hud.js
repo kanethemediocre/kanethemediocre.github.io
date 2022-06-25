@@ -81,10 +81,11 @@ function hud(playerindex){
 		var solargravity = (.0003*systems[ps].planets[0].m)/(solardistance*solardistance); //Gravitational influence of sun, pixels per frame per frame.
 		var distance = thenavtarget.distance(myplayer.ship); //distance to target planet
 		var planetarygravity = (.0003*thenavtarget.m)/(distance*distance); //gravity from target planet
-		var name = thenavtarget.name;
+		var name = thenavtarget.name.slice(0,16);
 		var pclass = "Moon"; //Defaults to Moon,
 		if (thenavtarget==0){pclass = "Star";} //0 index is the sun
 		else if (thenavtarget.parentid == 0){pclass = "Planet";}//Objects orbiting sun are planets
+		if (myplayer.navactive==2){pclass = "Station"; }
 		var size = String(Math.floor(thenavtarget.s));
 		var mass = String(Math.floor(thenavtarget.m/1000));
 		var parent = systems[ps].planets[thenavtarget.parentid].name;	
@@ -95,12 +96,14 @@ function hud(playerindex){
 		while (orbitpos < -1*Math.PI){orbitpos = orbitpos + 2*Math.PI;}
 		var distance = thenavtarget.distance(myplayer.ship); //distance to target planet
 		//var planetarygravity = (.0003*planets[navtarget].m)/(distance*distance); //gravity from target planet
-		var gravity = ((.0003*thenavtarget.m*900)/(distance*distance)).toFixed(3);
+		var gravity = 0;
+		if (myplayer.navactive==1){ gravity = ((.0003*thenavtarget.m*900)/(distance*distance)).toFixed(3); }
 		var dv = thenavtarget.deltav2(myplayer.ship);
 		var deltav = (dv[0]).toFixed(3).padStart(8,"0");
 		var cosdv =  Math.cos(dv[1]-myplayer.ship.directionof(thenavtarget))*dv[0];
 		var sindv =  Math.sin(dv[1]-myplayer.ship.directionof(thenavtarget))*dv[0];
-		var escape = Math.sqrt(thenavtarget.m*2*.0003/myplayer.ship.distance(thenavtarget));
+		var escape = 0;
+		if (myplayer.navactive == 1){escape = Math.sqrt(thenavtarget.m*2*.0003/myplayer.ship.distance(thenavtarget));}
 		var navchart2 = [ ["Name","Class", "Size", "Mass", "Parent", "Orbit Radius", "Orbit speed", "Orbit Position"], [name, pclass, size, mass, parent, Math.floor(orbitradius), Math.floor(orbitspeed), orbitpos.toFixed(3)],  ["Distance","DeltaV", "Cos DV", "Sin DV", "Gravity", "Escape","X","Y"], [Math.floor(distance),deltav, cosdv.toFixed(3), sindv.toFixed(3), gravity, escape.toFixed(3),Math.floor(thenavtarget.x), Math.floor(thenavtarget.y)]  ];
 		showchart(navchart2, 80, 16, canvas.width-480,canvas.height-160);	
 		}

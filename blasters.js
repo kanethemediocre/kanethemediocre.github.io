@@ -353,7 +353,7 @@ class Blaster{
 			var barsize = 12;
 			if (this.type == "multiplex"){ barsize = (this.n-1)*16+4; }//Bidirectional, so actually twice that.
 			if (this.type == "rapidmultiplex"){ barsize = Math.floor((this.n-1)*16/12)+4; }//Bidirectional, so actually twice that.
-			var barspeed = Math.floor(this.speed);
+			var barspeed = this.speed;
 			var bartime = Math.floor(this.timer)-6;
 			var barposition = 32 + (time%bartime)*barspeed;
 			var barfraction = (time%bartime)/bartime;

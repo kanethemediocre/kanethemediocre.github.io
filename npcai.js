@@ -1,9 +1,14 @@
 class NPCAI{
 	constructor(){
 		this.behavenow = "none";//Describes AI behavior state in terms of immediate response
+		//options: "gotoplanet","gotoship","gotoplayer","gotostation","attackship","attackplayer","loiter"
 		this.behavior = "none"; //Describes overall motivation to choose different behavenows and targets
+		//options: "cargoroute","loiter","attackmission","blockade", 
 		this.team = 0;
 		this.nowtargetplanet = 0;
+		this.alltargetplanets = [];
+		this.alltargetships = [];
+		this.alltargetplayers = [];
 		this.nowtargetship = 0;
 		this.homeplanet = 0;
 		this.homestation = 0;

@@ -203,10 +203,48 @@ class Shop{
 			if (this.inv[i].available(systems[ps].players[0])){//Used global variable instead of reference
 				context.fillStyle = "white";
 				}
+			var utypewithstats = this.inv[i].utype.slice(0,16);
+			if (this.inv[i].type == "blaster"){
+				if (this.inv[i].utype == "damage"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].uphurt;
+					}
+				else if (this.inv[i].utype == "timer"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].uptimer;
+					}
+				else if (this.inv[i].utype == "boom"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upboom;
+					}
+				else if (this.inv[i].utype == "speed"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upspeed;
+					}
+				else if (this.inv[i].utype == "n"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upn;
+					}
+				}
+			if (this.inv[i].type == "upgrade"){
+				if (this.inv[i].utype == "armor"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + 250";
+					}
+				else if (this.inv[i].utype == "shield"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + 100";
+					}
+				else if (this.inv[i].utype == "shieldregen"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + 0.25";
+					}
+				else if (this.inv[i].utype == "cargo"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + 10";
+					}
+				else if (this.inv[i].utype == "thrust"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + 0.5";
+					}
+				else if (this.inv[i].utype == "radar"){
+					utypewithstats = this.inv[i].utype.slice(0,16)+" + 1000";
+					}
+				}
 			context.fillText(this.inv[i].namestring().slice(0,16),x,y+32+16*i);
 			context.fillText(this.inv[i].describestring().slice(0,16),x+80,y+32+16*i);
 			context.fillText(this.inv[i].itemprice(theplayer),x+200,y+32+16*i);
-			context.fillText(this.inv[i].utype.slice(0,16),x+300,y+32+16*i);
+			context.fillText(utypewithstats,x+300,y+32+16*i);
 			i=i+1;
 			}
 		context.beginPath();

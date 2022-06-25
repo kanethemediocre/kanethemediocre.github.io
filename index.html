@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v383 by Andrew Kane </title>
+    <title>Bling Hustle v386 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -96,7 +96,6 @@ var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2
 var playerselect = 0;
 var playerweapon9superbomb = new Superbomb("orbitalsystem");
 
-
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
 	var dd = dir - objdir; //How much off the actual direction are you pointing?
@@ -176,7 +175,6 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].shield = 0;  
 	}
 systems[1].addcargomissions(4);
-
 systems[2].randomplanets();//Here is where all the random systems and enemies are generated.
 systems[2].enemypopulate(5,4,17);
 systems[2].addrandombling(50);
@@ -200,18 +198,13 @@ systems[6].turrets = napaturrets();
 systems[6].addrandombling(50);
 systems[6].addcargomissions(4);
 var speciali = 7;
-while (speciali<32){	
+while (speciali<32){	//woo for 32 systems
 	systems[speciali].randomplanets();
 	systems[speciali].enemypopulate(5,speciali,16+speciali);	
 	systems[speciali].addrandombling(50);		
 	speciali++;
-	}
-			
+	}			
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
-
-//systems[1].addrandomgang(26,8,32);  
-
-
 //no kill missions for napa?
 var i = 0;
 while (i<4){
