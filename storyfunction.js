@@ -877,7 +877,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			}
 	break;
 	case 129:
-		if ((myplayer.ship.level) > 7)&&(myplayer.upgrades[7]<1)){
+		if ((myplayer.ship.level > 7)&&(myplayer.upgrades[7]<1)){
 			var themsg = "You've got quite a shiny ship these days don'tcha.  Maybe you ought to buy the sensor upgrade from Sharon and see what else is out there.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Buy sensor upgrade";
