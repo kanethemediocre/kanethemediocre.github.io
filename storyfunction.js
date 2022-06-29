@@ -839,7 +839,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		if (myplayer.dockstate == 0){
 			var themsg = "Turret base loaded."
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.task = "Go to Bills";
+			myplayer.task = "Unload turret base on Moon";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -860,7 +860,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		if (myplayer.dockstate == 0){
 			var themsg = "Turret loaded";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.task = "Go to Bills";
+			myplayer.task = "Unload turret on Moon";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -880,7 +880,14 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		if ((myplayer.ship.level > 7)&&(myplayer.upgrades[7].tier<1)){
 			var themsg = "You've got quite a shiny ship these days don'tcha.  Maybe you ought to buy the sensor upgrade from Sharon and see what else is out there.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.task = "Buy sensor upgrade";
+			myplayer.task = "Buy sensor upgrade from Sharon";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 130:
+		if (myplayer.upgrades[7].tier>=1){
+			myplayer.task = "Go forth and profit";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
