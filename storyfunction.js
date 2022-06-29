@@ -463,6 +463,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.storytime = time;
 			}
 	break;
+//48-119 are cancelled, but kept in code in case I bring them back in some sense.//////////////////////////////	
 	case 48:
 		if (dstory>playerradio.msgtime){
 			var themsg = "The bots are very dangerous out there, but you probably won't need to fight any to make the pickup.  You will, however need 10 units of cargo space to take a crate, and 20 to bring both crates in one trip.";
