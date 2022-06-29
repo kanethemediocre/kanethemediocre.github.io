@@ -877,7 +877,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			}
 	break;
 	case 129:
-		if ((myplayer.ship.level > 7)&&(myplayer.upgrades[7]<1)){
+		if ((myplayer.ship.level > 7)&&(myplayer.upgrades[7].tier<1)){
 			var themsg = "You've got quite a shiny ship these days don'tcha.  Maybe you ought to buy the sensor upgrade from Sharon and see what else is out there.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Buy sensor upgrade";
@@ -896,14 +896,6 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 1001:
 		if (dstory>playerradio.msgtime){
 			var themsg = "I'm certainly curious as to what happened to them, and I'd love to see what a probe could reveal about Waldo, but under the circumstances I strongly advise you not to go anywhere near it.";
-			playerradio.newmsg("Sharon",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.storystate++;
-			myplayer.storytime = time;
-			}
-	break;
-	case 1002:
-		if (dstory>playerradio.msgtime){
-			var themsg = "I'm certainly curious as to what happened to them, and I'd love to see what a probe could reveal about Waldo, but under the circumstances I advise you against going near it.";
 			playerradio.newmsg("Sharon",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate = myplayer.storyreturn;
 			myplayer.storytime = time;

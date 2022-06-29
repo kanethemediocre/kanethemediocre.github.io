@@ -36,7 +36,7 @@ class Player{
         this.shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
         this.radarrange = 4000;//Defines distance a ship can be from the player and still be targetable
         this.storytime = 0;//timestamp of last story event
-		this.storywarned = 0;
+		this.storywarn = 0;
 		this.storyreturn = 0;
         this.task = "Read the tutorial"; //main story mission line
         this.job = "None"; //latest task from a station.
