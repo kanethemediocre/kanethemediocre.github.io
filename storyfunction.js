@@ -2,6 +2,11 @@
 function storycheck(playerindex){
 var myplayer = systems[ps].players[playerindex];
 var dstory = time - myplayer.storytime;
+if ((myplayer.storywarn < 1)&&(myplayer.upgrades[7].tier>0)){
+	myplayer.storyreturn = myplayer.storystate;
+	myplayer.storystate = 1000;
+	myplayer.storywarn = 1;
+	}
 switch(myplayer.storystate){//Tutorial missions so far.
 	case 0:
 		if (dstory>1){
@@ -452,9 +457,9 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 47:
 		if (dstory>playerradio.msgtime){
-			var themsg = "There's a guy I know who shares my enthusiasm for this base, and he's actually collected enough parts that we could build it.  However, he and all the gear are out on the edge of the system in Dangustown";
+			var themsg = "There's a guy I know who shares my enthusiasm for this base, and he's actually built the turret.  It is, however, on his station at on the edge of the system in Dangustown.";
 			playerradio.newmsg("Tutorial Dude47",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.storystate++;
+			myplayer.storystate=120;//This is a story redirect--Basically, everything above 47 and below 120 is cancelled pending further development.
 			myplayer.storytime = time;
 			}
 	break;
@@ -551,6 +556,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 56:
 		if (myplayer.dockstate==0){
 			var themsg = "Both crates delivered.";
+			var task = "chill bruh";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -672,7 +678,6 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 80:
 		if (dstory>playerradio.msgtime){
 			var themsg = "Nice.  The pivot section is ready.  Bring it to the platform and install it.  If the bots haven't come back already, they will soon.  The platform shield can protect the pivot during installation, but not your ship";
-			
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -735,7 +740,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 102:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Courier missions only require one unit of cargo space, but you need to deliver to a ship that's on the move."
+			var themsg = "Courier missions only require one unit of cargo space, but you need to deliver to a ship on the move.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -743,7 +748,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 103:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Engineering missions require you to dock at a mission destination and complete repairs or upgrades on the mission target, often under fire from bots."
+			var themsg = "Engineering missions require you to dock at a mission destination and complete repairs or upgrades on the mission target, often under fire from bots.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -751,11 +756,237 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 104:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Otherwise, you can always sweep up loose bling and destroy bots.  Trading commodities might work if you find a good route and have the bling to get started."
+			var themsg = "Otherwise, you can always sweep up loose bling and destroy bots.  Trading commodities might work if you find a good route and have the bling to get started.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
 	break;
+	case 104:
+		if (dstory>playerradio.msgtime){
+			var themsg = "One way or another, you've gotta be getting bling, or you don't matter much around here.  I'm sure you've seen all the gear there is to buy, but you might not have noticed that when you upgrade something, there's almost always another better, more expensive upgrade to buy.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 105:
+		if (dstory>playerradio.msgtime){
+			var themsg = "All that gear matters, and people can tell about how much of it you have from your ship level.  Some jobs might not even be offered to hustlers without a high enough ship level.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 105:
+		if (dstory>playerradio.msgtime){
+			var themsg = "All that gear matters, and people can tell about how much of it you have from your ship level.  Some jobs might only be offered to hustlers with a high enough ship level.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	////Everything above this was cancelled//////////////
+/////Abreviated story continues below at 120	
+	case 120:
+		if (dstory>playerradio.msgtime){
+			var themsg = "It's pretty big, and we don't want to take it apart, so you'll need an upgraded cargo hold with 20 free cargo slots to load it."
+			if (myplayer.inventory.maxcargo<20){myplayer.task = "Buy cargo upgrade";}
+			else if (myplayer.inventory.maxcargo-myplayer.inventory.totalcargo()<20){ myplayer.task = "Upgrade cargo or free up cargo space"; }
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 121:
+		if (myplayer.inventory.maxcargo-myplayer.inventory.totalcargo()>=20){
+			myplayer.task = "Pick up turret at Dangustown";
+			if (myplayer.dockstate==3){
+				myplayer.storystate++;
+				}
+			}
+		else if (myplayer.inventory.maxcargo<20){}//Don't change the task from buy cargo upgrade if it still applies.
+		else if (myplayer.inventory.maxcargo-myplayer.inventory.totalcargo()<20){ myplayer.task = "Upgrade cargo or free up cargo space"; }//This should reapply the message if the player picks up too much other cargo to fir the 20u turret.
+	break;
+	case 122:
+		var themsg = "Yo, Billdude says you're picking up the giant-ass turret sitting in the middle of my shop.  It's about time."
+		playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
+		myplayer.inventory.takecargo(allcargos.length-1,20);//Last index of allcargos is mission cargo, 20 units taken. 
+		myplayer.task = "Deliver turret to Bill";
+		myplayer.storystate++;
+		myplayer.storytime = time;
+	break;
+	case 123:
+		if (myplayer.dockstate==0){
+			var themsg = "Hell yeah this thing looks sweet.  I've got to make a few adaptors to put this all together, but it should be ready in a few minutes.  Feel free to do other work in the meantime.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.inventory.givecargo(allcargos.length-1,20);//Last index of allcargos is mission cargo, 20 units taken. 
+			myplayer.task = "Wait for Bill";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 124:
+		if (dstory>18000){
+			var themsg = "Sorry to keep you waiting.  It's ready when you are, you can tow the turret base into position as soon as you get here.."
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Go to Bills";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 125:
+		if (myplayer.dockstate == 0){
+			var themsg = "Turret base loaded."
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Go to Bills";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 126:
+		if (myplayer.ship.distance(systems[ps].planets[4])<systems[ps].planets[4].s+32){
+			var themsg = "Turret base installed.   Looks good, now come back for the turret";
+			//make invisible turret
+			//move the turret to systems[ps].planets[4].directionof(myplayer.ship)
+			//make turret anchor visible
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Go to Bills";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 127:
+		if (myplayer.dockstate == 0){
+			var themsg = "Turret loaded";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Go to Bills";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 128:
+		if (myplayer.ship.distance(systems[ps].planets[4])<systems[ps].planets[4].s+32){
+			var themsg = "Turret installed. Many thanks!  Earf is much safer thanks to you.";
+			//make turret pivot visible
+			//activate turret
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Go forth and profit";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 129:
+		if ((myplayer.ship.level) > 7)&&(myplayer.upgrades[7]<1)){
+			var themsg = "You've got quite a shiny ship these days don'tcha.  Maybe you ought to buy the sensor upgrade from Sharon and see what else is out there.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Buy sensor upgrade";
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 1000:
+		if (dstory>playerradio.msgtime){
+			var themsg = "The sensor upgrade you just bought will, among other things, show a new, tiny, faraway planetary signal called Waldo.  Lots of curious people have investigated that signal, none have gotten close enough for a better look and come back.";
+			playerradio.newmsg("Sharon",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 1001:
+		if (dstory>playerradio.msgtime){
+			var themsg = "I'm certainly curious as to what happened to them, and I'd love to see what a probe could reveal about Waldo, but under the circumstances I strongly advise you not to go anywhere near it.";
+			playerradio.newmsg("Sharon",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+	break;
+	case 1002:
+		if (dstory>playerradio.msgtime){
+			var themsg = "I'm certainly curious as to what happened to them, and I'd love to see what a probe could reveal about Waldo, but under the circumstances I advise you against going near it.";
+			playerradio.newmsg("Sharon",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.storystate = myplayer.storyreturn;
+			myplayer.storytime = time;
+			}
+	break;
 	}
 }
+/*
+Required info:
+How to:
+Fly (Thrust, shoot, boost, change weapon)
+Map (Zoom, change modes)
+Compass (Change modes)
+Navigation (Cycle navtarget, cycle nav modes, autopilot)
+Targeting (IFF, using compass / map / radar to track enemies)
+Fighting (Shooting, changing weapons, basic tactics / mechanics)
+Shop (How ship upgrades work, how blaster upgrades work, how cargo works, how repair works)\
+Work (How cargo missions work, how destroy missions work, how to get bling without formally taking missions)
+Watdo (How journal / jobs journal works,
+Waldo and XXXX rumors, myths, legends etc.
+
+Current "plot"
+Player has shit explained at them
+Player demonstrates nav target selection and map zooming
+Player goes to destination and returns
+Player has shit explained
+Player goes to bot, kills it and returns
+Player has shit explained.
+Player gets free mine (w2)
+Player has shit explained
+Player goes to faraway shop Jojos
+<encourage story intermission here>
+Player goes to shop Bills
+Player has shit explained
+Player transports 20 mission cargo from faraway shop Dangustown to Bills.  I should cut that to just 1 package so its simple.
+Player has shit explained
+Player transports base of turret to moon
+Player transports pivot of turret to moon
+Player has shit explained
+
+Sort of written up to this point
+
+Player "levels up" to maybe 10 or so
+Mc#s contacts player about doing a tough job for him.
+Player acquires or already has probe for job.
+Player does something moderately difficult involving the probe.  Maybe survey a bunch of bots.
+Mc#s upgrades something for player.
+Mc#s tells the player that he has another job in the pipeline that will involve the probe but also require upgraded sensors.
+And that Sharon sells the sensor upgrades needed, but might also trade them for some favors
+Player goes to Sharons. 
+Short version, player buys sensor upgrade
+Short version, Sharon tells player not to go to the new sensor contact, Waldo, because no one has ever returned.
+Short version, player goes or doesn't go to Waldo, does or doesn't explore the greater universe.
+
+Longer version
+Player does thing for Sharon
+Sharon upgrades player's sensors
+Player goes to MC#s.
+MC#s tells player he wants to probe XXXX.  Advises investing heavily in armor, shields to pull it off.
+Sharon contacts player, tells player thant Mc#s doesn't know what he's talking about, and that instead he should buy lots of boosters to avoid the bots.
+At least 6 boosts of solar delta V are needed to prevent the blockade bots from matching your speed.  Times four if you do everything perfect, when you account for decelleration and return trip.
+Player can upgrade or prepare as the player chooses.  But Sharon's strategy will probably work, and Mc#s probably wont.
+XXXX has huge bot swarm.  They do not attack, until player fires a weapon nearby.  
+Player probes XXXX
+Probe is technically a weapon so player best gtfo.
+Player returns with data to Sharons.  Sharon indicates that the probe readings are actually quite mundane, not unusual by standards of other planets.
+Talking leads to mission to probe Waldo.
+Player needs further sensor upgrade for the job.
+Probe upgrades also recommended.
+Player attempts to probe waldo.  Player may fall into waldo without probing it, fall into waldo while probing it, or successd in probing it without falling in.
+If the last one, player returns to sharon or mc#s and learns that waldo  might be some sort of portal.
+Player may or may not enter waldo and explore the larger universe.
+
+
+
+Nothing explaining why it's way out there, or why there is an unusual bot swarm around it.  Certainly nothing to explain why the bots are here in the first place, or operating a blockade in the oort cloud.
+Sharon asks you will try to probe waldo next.  Mc#s insists that waldo is a fairy tale.  Sharon counters that he needs better sensors, and that she has tracked a faint but persistent signal in deep space.
+Opposite XXXX but much harder to detect, Sharon had hoped for answers about both phenomena from the probe.
+Also deep space signals from roughly the same direction as the waldo signal will occasionally fade out in concert with a spike in the waldo signal itself.
+But people who go looking for waldo have a way of disappearing.  None have even gotten a better sensor reading than what I can detect with my station.
+
+(more stuff goes here)
+Player sent to Sharons to buy sensor upgrade
+Player uses sensor upgrade to travel to the Waldo event
+
+*/

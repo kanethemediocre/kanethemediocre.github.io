@@ -304,6 +304,15 @@ function hud(playerindex){
 	}
 	myplayer.blasters[myplayer.wep].drawsights(myplayer,time); //Draws aiming guide
 	//}
+var netsolarpain = 0;
+if (myplayer.shieldbonus!="solar"){netsolarpain = myplayer.solarpain-1.125;}
+else {netsolarpain = myplayer.solarpain - 3.125;}
+if (netsolarpain > 0){
+	context.font = "32px Ariel";
+	context.fillStyle = "yellow";
+	context.fillText("SOLAR DAMAGE",canvas.width/2-100,256);	
+	
+	}
 if (cheatmode == 1){
 	context.font = "32px Ariel";
 	context.fillStyle = "red";

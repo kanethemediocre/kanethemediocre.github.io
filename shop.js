@@ -517,6 +517,8 @@ let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,u
 let jojocheese = new Shop("JoJo's House of Cheese", 2, "Jupe Fantastico", jojoshopitems);
 let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5n,upw1damage,upshieldregenitem,buycargo1,buycargo6,buycargo0];
 let dangustown = new Shop("Dangustown", 3, "It's YOUR Anus!", dangshopitems);
+let sharonshopitems = [repairshopitem,buyw2item,buyw0item,upw0speed,upw0timer,upsensoritem,buycargo1,buycargo6,buycargo0];
+let sharons = new Shop("Sharon's Scientific Supplies", 4, "wubbasomethinggoeshere", sharonshopitems);
 let randshopitems1 = [];
 var i = 0;
 while (i<12){
@@ -524,10 +526,11 @@ while (i<12){
 	randshopitems1.push(blasterupgradeitems[randomblasterupgrade]);
 	i=i+1;
 }
-let randoshop1 = new Shop("Rando Calrissian's Blaster Upgrades",4, "Randomized items", randshopitems1);
+let randoshop1 = new Shop("Rando Calrissian's Blaster Upgrades",5, "Randomized items", randshopitems1);
 var upgradeshopitems = [uprepairitem,uparmoritem,upshielditem,upshieldregenitem,upradaritem,upcargoitem,upthrustitem,upsensoritem,upsolaritem,upimpactitem,randomchassisitem];
-let upgradeshop = new Shop("All Upgrades Testing Shop",5, "Upgrades", upgradeshopitems);
-let allshops = [billbits,merrymerz,jojocheese,dangustown,randoshop1,upgradeshop];//"all" meaning home system
+let upgradeshop = new Shop("All Upgrades Testing Shop",6, "Upgrades", upgradeshopitems);
+
+let allshops = [billbits,merrymerz,jojocheese,dangustown,sharons,randoshop1,upgradeshop];//"all" meaning home system
 
 let dadashopitems = [uprepairitem,buyw2item,buyw3item,buyw4item,upw1damage,upw4damage,uparmoritem,buycargo0,buycargo6,buycargo5];
 let dadashop = new Shop("Ye Olde Space Shoppe",0,"The Gentleman's Outfitter",dadashopitems);

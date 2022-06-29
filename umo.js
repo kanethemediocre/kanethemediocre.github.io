@@ -380,9 +380,11 @@ class Umo { //Universal Moving Object
 				i=i+1;
 				}
 			}
+		context.textAlign = "center";
 		context.fillStyle = "white"; 
 		context.font='20px Arial';
-		context.fillText(this.name,x,y);		
+		context.fillText(this.name,x,y);	
+		context.textAlign = "start";
 	}
 	drawbomb(viewx, viewy){ //Bombs are also drawn as circles, but not labelled.
 		var x = this.x - viewx + canvas.width/2;
@@ -429,9 +431,11 @@ class Umo { //Universal Moving Object
 		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s, this.c, this.d);//ship polyon
 		drawpolarpoly(x,y,this.polytheta, this.polyradius, this.s-16, this.c2, this.d);//ship polyon but smaller, makes first one the outline
 		drawpolarpoly(x,y,this.emblem[0],this.emblem[1],this.s/2,this.c,this.d); //this.emblem is a randomized logo
+		context.textAlign = "center";
 		context.fillStyle = "white";
 		context.font='20px Arial';
 		context.fillText(this.name,x,y);	
+		context.textAlign = "start";
 	}
 	dock(dship){
 		var offsetd = 0;
@@ -495,8 +499,10 @@ class Umo { //Universal Moving Object
 		context.font='12px Arial';
 		context.fillStyle = "white";
 		//context.fillText(this.name,compassx-8,compassy - 48);
-		context.fillText(this.name,compassx-8,compassy - compasssize);
+		context.textAlign = "center";
+		context.fillText(this.name,compassx,compassy - compasssize);
 		context.fillStyle = "white";
+		context.textAlign = "start";
 		//context.fillText(this.hp,compassx-8,compassy - 32);
 		context.fillStyle = "white";
 		context.fillText(Math.floor(this.distance(targetship)),compassx-16,compassy + compasssize);

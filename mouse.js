@@ -19,7 +19,6 @@ function mouseDownHandler(e) {
 		if (vkeys[i].inside(e.clientX,e.clientY)){
 			myplayer.input = vkeys[i].key;
 			systems[ps].playerkeys();
-			console.log("sheeeesh");
 			i=vkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
 			}
 		i++;
@@ -31,3 +30,24 @@ function mouseUpHandler(e) {
 var myplayer = systems[1].players[0];
 myplayer.mousestate = e.buttons;
 }
+document.addEventListener("wheel", mouseWheelHandler, {passive: false});
+function mouseWheelHandler(e) {
+	var myplayer = systems[1].players[0];
+	if (e.deltaY>0){myplayer.cyclewep(1);}
+	if (e.deltaY<0){myplayer.cyclewep(-1);}
+    e.preventDefault();
+    e.stopPropagation();
+	return false;
+}
+/*
+
+document.querySelector('#scrollable').addEventListener('wheel', preventScroll, {passive: false});
+
+function preventScroll(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    return false;
+}
+
+*/

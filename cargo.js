@@ -49,7 +49,7 @@ class Inventory{
 	takecargo(cargoi, quantity){//takes cargo index cargoi, and integer quantity.
 		this.cargo[cargoi] = this.cargo[cargoi]+quantity;		
 		}
-	givecargo(cargoi, quantity){//This filters for available cargo space, but i
+	givecargo(cargoi, quantity){
 		this.cargo[cargoi] = this.cargo[cargoi]-quantity;		
 		}
 	draw(xpos,ypos){

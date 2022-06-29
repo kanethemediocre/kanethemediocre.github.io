@@ -39,6 +39,16 @@ anusoutpost.polytheta = totheta;
 anusoutpost.polyradius = toradii;
 anusoutpost.setorbit(systems[1].planets[0], 170000, 0.05, 1);//set in orbit around sun behind jupe
 
+let oortoutpost = new Umo(0,0,128, randcolor());
+oortoutpost.c2 = randcolor();
+oortoutpost.parentid = 0;
+oortoutpost.name = "Sharon's Scientific Supplies";
+var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
+var toradii = [1,1,1,1]; //rectangle
+oortoutpost.polytheta = totheta;
+oortoutpost.polyradius = toradii;
+oortoutpost.setorbit(systems[1].planets[0], 320000, 0.3, 1);//set in orbit around sun in bufu
+
 let randoutpost1 = new Umo(0,0,128, randcolor());
 randoutpost1.c2 = randcolor();
 randoutpost1.parentid = 0;
@@ -60,7 +70,7 @@ randoutpost2.polyradius = toradii;
 randoutpost2.setorbit(systems[1].planets[0], 32000, 0.32, 1);//set in orbit around sun trailing earf
 
 
-var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost, randoutpost1,randoutpost2];
+var outposts = [terranoutpost, merzoutpost, jupeoutpost, anusoutpost, oortoutpost, randoutpost1, randoutpost2];
 
 var i=0;
 while (i<outposts.length){

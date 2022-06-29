@@ -36,6 +36,8 @@ class Player{
         this.shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a short list / shallow copy of nearby ships.
         this.radarrange = 4000;//Defines distance a ship can be from the player and still be targetable
         this.storytime = 0;//timestamp of last story event
+		this.storywarned = 0;
+		this.storyreturn = 0;
         this.task = "Read the tutorial"; //main story mission line
         this.job = "None"; //latest task from a station.
         this.jobs = [];
@@ -223,7 +225,25 @@ class Player{
              i++;
              }
         }
-
+	cyclewep(n){
+		if (n>0){
+			var newwep = (this.wep + n)%this.blasters.length;//+n blasters, rolling over.  % instead of subtraction prevents errors from unreasonable values of n.
+			while (this.blasters[newwep].phas==false){//All else fails try wep = wep - 1 until it works.
+				newwep++;
+				if (newwep>this.blasters.length-1){newwep = 0;}
+				}
+			this.wep = newwep
+			}
+		else {
+			var newwep = (this.wep + n);//+n blasters, where n is negative...
+			while (newwep<0){ newwep = newwep + this.blasters.length; } //Similar to how modulus operator was used, but modulus is weird with negative numbers to I did this.
+			while (this.blasters[newwep].phas==false){
+				newwep--;
+				if (newwep<0){newwep = this.blasters.length-1;}
+				}
+			this.wep = newwep
+			}
+		}
     }
 var testplayer = new Player();
 
