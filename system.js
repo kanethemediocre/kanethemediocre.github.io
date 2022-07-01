@@ -25,6 +25,10 @@ class System{
 			this.ships[i].drawship(viewx,viewy);
 			}
 		var i= this.planets.length;
+		if (this.planets[this.planets.length-1].name=="Waldo"){
+			console.log("dontdrawwaldoyo");
+			i--;
+			}
 		while  (i>0){
 			i=i-1;
 			this.planets[i].drawplanet(viewx,viewy);

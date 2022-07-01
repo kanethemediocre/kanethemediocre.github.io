@@ -19,6 +19,10 @@ function loadmenusystem(){
 	controls.name = "Controls";
 	controls.c2 = "teal";
 	controls.m = 0;
+	let waldotest = new Umo(-200, 200, 100, "purple"); //3
+	waldotest.name = "Waldo Test";
+	waldotest.c2 = "red";
+	waldotest.m = 0;//Not currently used
 	let menuplanets = [about,playstory,playfree,playrandom,controls];
 	var i = 0; //This randomizes planetary dots for home system.
 	while (i<menuplanets.length){

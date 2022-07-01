@@ -10,7 +10,7 @@ if ((myplayer.storywarn < 1)&&(myplayer.upgrades[7].tier>0)){
 switch(myplayer.storystate){//Tutorial missions so far.
 	case 0:
 		if (dstory>1){
-			var themsg = "Some people think all you need to know is right click zoom left click boom, but getting anywhere in particular is more complicated.  Use your ship's map and nav computer, or you'll find what space is really made made of:  Nothing.";
+			var themsg = "Don't touch anything just yet.  Some people think all you need to know is right click zoom left click boom, but getting anywhere in particular is more complicated.  Learn to use your ship's map and nav computer, or you'll find what space is really made made of:  Nothing.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -45,17 +45,16 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		break;
 	case 4:	
 		if ((dstory>5)&&(myplayer.mapscale>1024)&&(myplayer.mapactive>0)){
-			var themsg = "Nifty, right?  OK, so we're not going nearly that far away, so zoom back in on us and Merz.";
+			var themsg = "Nifty, right?  OK, so we're not going nearly that far away, so zoom back in on us and Merz. The number 1 struggle for new pilots is stopping at the destination, which requires about as much thrust as getting there usually.  Some pilots count their pulses, and know that they need that many in the opposite direction to stop.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Zoom out on the map to show the whole system( - )";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
 		break;
-
 	case 5:
 		if ((dstory>5)&&(myplayer.mapscale<128)&&(myplayer.mapactive>0)){
-			var themsg = "The map and nav computer are more than sufficient guide you wherever you need, but some people like the Omnicompass (C key) because it tracks everything at once.  OK, so try applying what you've learned to fly to Merz.  Don't get in any fights, just do a close flyby and come back.";
+			var themsg = "The map and nav computer are more than sufficient guide you wherever you need, but some people like the Omnicompass (C key) because it tracks everything at once.  OK, so try applying what you've learned to fly to Merz.  Don't get in any fights, just do a flyby and come back.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Go to Merz";
 			myplayer.storystate++;
@@ -888,7 +887,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 130:
 		if (myplayer.upgrades[7].tier>=1){
-			myplayer.task = "Go forth and profit";
+			myplayer.task = "Don't investigate Waldo";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}

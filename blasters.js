@@ -377,6 +377,7 @@ class Blaster{
 			context.stroke();
 			}	
 		}
+	drawstats(xpos,ypos,color1,color2){}
 	update1(){
 		var i=0;
 		while (i<this.bombs.length){

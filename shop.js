@@ -382,6 +382,7 @@ let remotew1item = new Shopitem("blaster",1,"remote",1);//blaster remote upgrade
 let remotew2item = new Shopitem("blaster",2,"remote",1); //Mine remote detonator upgrade
 let remotew5item = new Shopitem("blaster",5,"remote",1); //Scatter cannon remote detonator upgrade
 let remotew9item = new Shopitem("blaster",9,"remote",1); //Beepadoop remote detonator upgrade
+let remotew11item = new Shopitem("blaster",11,"remote",1);
 let remotew12item = new Shopitem("blaster",12,"remote",1); //MultiMine remote detonator upgrade
 
 //No damage upgrade for w0 (probe)
@@ -469,9 +470,10 @@ let upw3n = new Shopitem("blaster",3,"n",1);
 let upw5n = new Shopitem("blaster",5,"n",1);
 //let upw8n = new Shopitem("blaster",8,"n",1);
 let upw9n = new Shopitem("blaster",9,"n",1);
+let upw11n = new Shopitem("blaster",11,"n",1);
 let upw12n = new Shopitem("blaster",12,"n",1);
 let upw13n = new Shopitem("blaster",13,"n",1);
-let upw15n = new Shopitem("blaster",15,"n",1);
+//let upw15n = new Shopitem("blaster",15,"n",1);
 let upw17n = new Shopitem("blaster",17,"n",1);
 
 
@@ -482,7 +484,7 @@ upw0speed,upw1speed,upw2speed,upw3speed,upw4speed,upw5speed,upw7speed,upw8speed,
 //upw1bounce,upw2bounce,upw4bounce,upw5bounce,upw8bounce,upw9bounce,//bounce upgrades nonfunctional, removed
 upw0timer,upw1timer,upw2timer,upw3timer,upw4timer,upw5timer,upw6timer,upw7timer,upw8timer,upw9timer,upw10timer,upw11timer,upw12timer,upw13timer,upw14timer,upw15timer,upw16timer,upw17timer,upw18timer,upw19timer,
 upw1boom,upw2boom,upw3boom,upw5boom,upw8boom,upw9boom,upw11boom,upw12boom,upw13boom,upw15boom,upw17boom,upw18boom,upw19boom,
-upw3n,upw5n,upw9n,upw12n,upw13n,upw15n,upw17n //upw8n removed
+upw3n,upw5n,upw9n,upw11n,upw12n,upw13n,upw17n //upw8n removed
 ];
 let booster1 = new Shopitem("booster",0,"buy",1); //Tier 0 booster
 
