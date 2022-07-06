@@ -25,7 +25,7 @@
 	 let weapon10 = new Blaster("P-Clone","Blaster takes characteristics from probe data",300,"plain",                            
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
 	 let weapon11 = new Blaster("Multibanger","Parallel projectiles",800,"multiplex",                            
-	 12,6,10,12,2,10,0.75,0.25,10,2,0,0,40,8,10,12,"pink","ID not implemented");
+	 12,6,10,12,2,10,0.75,0.25,10,2,1,10,40,8,10,12,"pink","ID not implemented");
 	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row",2500,"multiplex",                            
 	 20,10,10,0.5,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
 	 let weapon13 = new Blaster("Nova","Fires in all directions.",2000,"fixedspread",                            
@@ -35,8 +35,8 @@
 	 let weapon14 = new Blaster("Fast Railgun","The new dank cheese.  Fast firing and fast flying long range bombs.",2000,"semirapid",                            
 	 24,8,10,20,4,4,0.3,0,0,6,0,0,64,16,10,25,"grey","ID not implemented");
 	 let weapon15 = new Blaster("Gemini Cutter","Rapidly fires 2 projectiles at a time.  ",5000,"rapidmultiplex",                            
-	 16,8,10,16,4,10,0.5,0.25,10,24,0,0,50,10,10,20,"white","ID not implemented");
-	 weapon15.special1 = 20;
+	 16,8,10,16,4,10,0.5,0.25,10,24,0,0,50,10,10,15,"white","ID not implemented");
+	 weapon15.special1 = 24; //e g a b d e
 	 let weapon16 = new Blaster("Pulse Blazor","Beam weapon damages everything in it's path.  Unlike the Blazor, this fires a powerful, instantaneous pulse on click.",3500,"beam",                            
 	 120,30,10,1,0,0,0.8,0.2,10,1,0,0,640,8,10,60,"lime","ID not implemented");
 	 let weapon17 = new Blaster("Squid","Fires a cloud of projectiles backwards.",1500,"fixedspread",                            

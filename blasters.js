@@ -83,10 +83,10 @@ class Blaster{
 			}
 		if (this.type == "rapidmultiplex"){
 			this.firing = 0;
-			this.special1 = 8;
+			this.special1 = 12;
 			}
 		if (this.type == "rapid"){
-			this.special1 = 8;//default frames per shot
+			this.special1 = 12;//default frames per shot
 			}
 		}//w signifies weapon, next 2 digits are weapon number, x signifies notjhing, next 2 digits are upgrade tier
 	levelcalc(){
