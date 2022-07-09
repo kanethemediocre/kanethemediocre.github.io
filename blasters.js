@@ -32,7 +32,7 @@ class Blaster{
 		this.special2 = 0;
 		this.id = ID;
 		this.c = bombcolor; 
-		this.firing =-1;//for use with rapid blasters.  -1 is inactive, 0 and above are bomb indices
+		this.firing =0;//for use with rapid blasters.  -1 is inactive, 0 and above are bomb indices
 		this.level = 0;
 		this.rtier = 0; //number of remote upgrades applied (max 1)
 		this.etier = 0; //number of "elastic"(bounce) upgrades applied
@@ -183,8 +183,8 @@ class Blaster{
 				}
 		}else if ((this.bombs.length==1)&&((this.type=="plain")||(this.type=="probe"))){ //single projectile handling is simplest
 			theplayer.ship.launchbomb(this.bombs[0],this.speed,this.timer);	
-		}else if (this.type == "rapid"){
-			this.firing = 0;
+		}else if (this.type == "rapid"){//Nothing needs to be done, firing logic is handled in main index loop
+			//this.firing = 0;
 		}else if (this.type == "semirapid"){
 			this.firing++;
 			if (this.firing>=this.n){this.firing = 0;}

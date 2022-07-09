@@ -921,32 +921,38 @@ class System{
 						if (aplayer.blasters[aplayer.wep].type!=="beam"){
 							aplayer.blasters[aplayer.wep].fire(aplayer,time);
 							aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
-							//console.log("itried1");
-							if (aplayer.wep == 1){blastersound1.play();}
-							else if (aplayer.wep == 2){blastersound2.play();}
-							else if (aplayer.wep == 3){blastersound3.play();}
-							else if (aplayer.wep == 4){blastersound4.play();}
-							else if (aplayer.wep == 5){blastersound5.play();}
-							else if (aplayer.wep == 6){blastersound6.play();}
-							else if (aplayer.wep == 7){blastersound7.play();}
-							//else if (aplayer.wep == 8){blastersound8.play();}
-							else if (aplayer.wep == 9){
-								blastersound9.play();
-								playerweapon9superbomb.initorbitbomb(aplayer.blasters[9].bombs,8,16,160,aplayer.ship,0.5,aplayer.moused+Math.PI, 4); //(bombs,coresize,minorbitize,maxorbitsize,origin,orbitspeed,direction,speed){//Orbitspeed is a multiplier value.  Individual orbit speeds are handled with the borbitspeed variable. //global scope here shame
-								}
-							else if (aplayer.wep == 0){blastersound0.play();}
-							else if (aplayer.wep == 11){
-								var sounds = [blastersound11x2,	blastersound11x3,blastersound11x4,blastersound11x5,blastersound11x6,blastersound11x7,blastersound11x8,blastersound11x9,blastersound11x10,blastersound11x11,blastersound11x12];
-								var bombi =  aplayer.blasters[aplayer.wep].n - 2;
-								sounds[bombi].play();
-								}
-							else if (aplayer.wep == 14){
-								var sounds = [blastersound14x0,	blastersound14x1,blastersound14x2,blastersound14x3,blastersound14x4,blastersound14x5];
-								var bombi =  Math.floor(Math.random()*sounds.length);//aplayer.blasters[aplayer.wep].firing
-								sounds[bombi].play();
-								}
-							else if (aplayer.wep == 17){blastersound17.play();}
 							}
+						//console.log("itried1");
+						if (aplayer.wep == 1){blastersound1.play();}
+						else if (aplayer.wep == 2){blastersound2.play();}
+						else if (aplayer.wep == 3){blastersound3.play();}
+						else if (aplayer.wep == 4){blastersound4.play();}
+						else if (aplayer.wep == 5){blastersound5.play();}
+						else if (aplayer.wep == 6){blastersound6.play();}
+						else if (aplayer.wep == 7){blastersound7.play();}
+						//else if (aplayer.wep == 8){blastersound8.play();}
+						else if (aplayer.wep == 9){
+							blastersound9.play();
+							playerweapon9superbomb.initorbitbomb(aplayer.blasters[9].bombs,8,16,160,aplayer.ship,0.5,aplayer.moused+Math.PI, 4); //(bombs,coresize,minorbitize,maxorbitsize,origin,orbitspeed,direction,speed){//Orbitspeed is a multiplier value.  Individual orbit speeds are handled with the borbitspeed variable. //global scope here shame
+							}
+						else if (aplayer.wep == 0){blastersound0.play();}
+						else if (aplayer.wep == 10){blastersound0.play();}
+						else if (aplayer.wep == 11){
+							var sounds = [blastersound11x2,	blastersound11x3,blastersound11x4,blastersound11x5,blastersound11x6,blastersound11x7,blastersound11x8,blastersound11x9,blastersound11x10,blastersound11x11,blastersound11x12];
+							var bombi =  aplayer.blasters[aplayer.wep].n - 2;
+							sounds[bombi].play();
+							}
+						else if (aplayer.wep == 12){blastersound12.play();}
+						else if (aplayer.wep == 13){blastersound13.play();}
+						else if (aplayer.wep == 14){
+							var sounds = [blastersound14x0,	blastersound14x1,blastersound14x2,blastersound14x3,blastersound14x4,blastersound14x5];
+							var bombi =  Math.floor(Math.random()*sounds.length);//aplayer.blasters[aplayer.wep].firing
+							sounds[bombi].play();
+							}
+						//else if (aplayer.wep == 15){blastersound15.play();}//removed because sound is triggered in main loop
+						else if (aplayer.wep == 16){blastersound16.play();}
+						else if (aplayer.wep == 17){blastersound17.play();}
+						else if (aplayer.wep == 19){blastersound19.play();}	
 						}
 					}
 				}	

@@ -62,7 +62,7 @@ var blastersound8x4 = new Audio("./sounds/w8s4.mp3");
 var blastersound8x5 = new Audio("./sounds/w8s5.mp3");
 var blastersound9 = new Audio("./sounds/w9s0.mp3");
 var blastersound0 = new Audio("./sounds/chirpshort1.mp3");
-
+var blastersound10 = new Audio("./sounds/chirpshort1.mp3");
 //var blastersound11x1 = new Audio("./sounds/w11s1.mp3");
 var blastersound11x2 = new Audio("./sounds/w11s2.mp3");
 var blastersound11x3 = new Audio("./sounds/w11s3.mp3");
@@ -75,7 +75,8 @@ var blastersound11x9 = new Audio("./sounds/w11s9.mp3");
 var blastersound11x10 = new Audio("./sounds/w11s10.mp3");
 var blastersound11x11 = new Audio("./sounds/w11s11.mp3");
 var blastersound11x12 = new Audio("./sounds/w11s12.mp3");
-
+var blastersound12 = new Audio("./sounds/w12s4.mp3");
+var blastersound13 = new Audio("./sounds/w13s0.mp3");
 
 var blastersound14x0 = new Audio("./sounds/w14s0.mp3");
 var blastersound14x1 = new Audio("./sounds/w14s1.mp3");
@@ -84,7 +85,17 @@ var blastersound14x3 = new Audio("./sounds/w14s3.mp3");
 var blastersound14x4 = new Audio("./sounds/w14s4.mp3");
 var blastersound14x5 = new Audio("./sounds/w14s5.mp3");
 var blastersound15 = new Audio("./sounds/w15s0.mp3");
+var blastersound16 = new Audio("./sounds/w16s0.mp3");
 var blastersound17 = new Audio("./sounds/w17s0.mp3");
+
+var blastersound18x0 = new Audio("./sounds/w18s0.mp3");
+var blastersound18x1 = new Audio("./sounds/w18s1.mp3");
+var blastersound18x2 = new Audio("./sounds/w18s2.mp3");
+var blastersound18x3 = new Audio("./sounds/w18s3.mp3");
+var blastersound18x4 = new Audio("./sounds/w18s4.mp3");
+var blastersound18x5 = new Audio("./sounds/w18s5.mp3");
+var blastersound19 = new Audio("./sounds/shortburp.mp3");
+
 var enginesound1 = new Audio("./sounds/engine26.mp3");
 var damagesound1 = new Audio("./sounds/engine3.mp3");
 var cashsound1 = new Audio("./sounds/cash_register_2.mp3");
@@ -247,12 +258,12 @@ while (i<4){
 	}
 let xxxx = new Umo(0,0,550,"black");//26
 xxxx.name = "Xxxx";
-xxxx.setorbit(systems[1].planets[0],320000,0,-1);
+xxxx.setorbit(systems[1].planets[0],400000,0,-1);
 xxxx.parentid = 0;
 systems[1].planets.push(xxxx);
 let waldo = new Umo(0,0,1000,"purple");
 waldo.name = "Waldo";
-waldo.setorbit(systems[1].planets[0], 320000, Math.PI, -1);
+waldo.setorbit(systems[1].planets[0], 400000, Math.PI, -1);
 waldo.parentid = 0;
 systems[1].planets.push(waldo);
 var i = 2;
@@ -415,9 +426,6 @@ function update() {
 			}
 		i++;
 		}
-	//var tempthing = systems[ps].nextjob();
-	//myplayer.job = tempthing[0];
-	//myplayer.jobs = tempthing[1];
 ////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
 	if (myship.distance(waldo)>10000){
 		waldo.s = 100000000000000000 / (myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo));// hz * hz / dist * dist
@@ -445,8 +453,8 @@ function update() {
 			}
 		pz = 0;
 		var randdir = Math.random()*2*Math.PI;
-		xxxx.setorbit(systems[ps].planets[0], 320000, randdir+Math.PI, -1);
-		waldo.setorbit(systems[ps].planets[0], 320000, randdir, -1);
+		xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
+		waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 		myship.vx = 0;
 		myship.vy = 0;
 		myplayer.navtarget = 0;
@@ -607,23 +615,12 @@ function update() {
 				aship.launchbomb(aplayer.blasters[aplayer.wep].bombs[n],aplayer.blasters[aplayer.wep].speed,aplayer.blasters[aplayer.wep].timer);
 				aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
 				//if (time%24==0){blastersound8.play();}
-				if (aplayer.wep==8){
-					var lastbomb = n;
-					//if (aplayer.blasters[aplayer.wep].firing == 0){
-					//	lastbomb = aplayer.blasters[aplayer.wep].bombs.length-1;
-					//	}
-					//else {lastbomb = aplayer.blasters[aplayer.wep].firing-1; }
-					console.log(lastbomb);
-					var lastcolor = aplayer.blasters[aplayer.wep].bombs[lastbomb].c;
-					if (lastcolor == "red"){blastersound8x0.play();}
-					else if (lastcolor == "orange"){blastersound8x1.play();}
-					else if (lastcolor == "yellow"){blastersound8x2.play();}
-					else if (lastcolor == "green"){blastersound8x3.play();}
-					else if (lastcolor == "blue"){blastersound8x4.play();}
-					else if (lastcolor == "purple"){blastersound8x5.play();}
-					}
+				if (aplayer.wep==8){var sounds = [blastersound8x0,blastersound8x1,blastersound8x2,blastersound8x3,blastersound8x4,blastersound8x5];}
+				if (aplayer.wep==18){var sounds = [blastersound18x0,blastersound18x1,blastersound18x2,blastersound18x3,blastersound18x4,blastersound18x5];}
+				var soundi = n%6;
+				sounds[soundi].play();
+				}
 			}
-		}
 		if ((aplayer.blasters[aplayer.wep].type == "rapidmultiplex")){
 			if((aplayer.mousestate==1)&&(time%(aplayer.blasters[aplayer.wep].special1)==0)&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){  //mousestate is always evaluating true, so it fires constantly.  oof, why?
 				aplayer.blasters[aplayer.wep].fire(aplayer,time);
