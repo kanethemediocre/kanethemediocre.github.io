@@ -182,7 +182,7 @@ let testsystem29 = new System(30,randname(4),0,0);
 let testsystem30 = new System(31,randname(4),0,0);
 let asteroidarena = new System(32,randname(4),0,0);
 asteroidarena.planetarycollisions = true;
-asteroidarena.planets.push( new Umo(asteroidarena.x,asteroidarena.y,1000, "orange") ); //make the sun 
+asteroidarena.planets.push( new Umo(asteroidarena.x,asteroidarena.y,1280, "orange") ); //make the sun 
 asteroidarena.planets[0].name = asteroidarena.name; // Star name is same as system name
 let decoy = new Umo(1000, 16000, 200, "blue"); //4
 decoy.name = "Rodi";
@@ -190,25 +190,39 @@ decoy.setorbit(asteroidarena.planets[0], 40000, 0, 1);
 decoy.parentid = 0;
 decoy.c2 = "teal";
 asteroidarena.planets.push(decoy);
-var maxsize = 150;
-var minsize = 50;
-var maxorbit = 13000;
-var minorbit = 7000;
-var orbitwonk = .02;
+var maxsize = 256;
+var minsize = 64;
+var maxorbit = 12000;
+var minorbit = 6000;
+var orbitwonk = .04;
 var i = 0;
-while (i<160){
+while (i<128){
 	var orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());
 	var wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
 	var aodir = Math.random()*2*Math.PI;
+	var asize = minsize + Math.floor((maxsize-minsize)*Math.random());
 	//console.log(orbitr);
 	//console.log(wonk);
 	//console.log(aodir);
-	let nextplanet = new Umo(1000, 16000, 200, randcolor());
+	let nextplanet = new Umo(1000, 16000, asize, randcolor());
 	nextplanet.name = "rock";
 	nextplanet.setorbit(asteroidarena.planets[0], orbitr, aodir, 1);
 	nextplanet.parentid = 1;
 	nextplanet.vx = nextplanet.vx * wonk;
 	nextplanet.vy = nextplanet.vy * wonk;
+	var j=0;
+	while (j<asteroidarena.planets.length){
+		if (asteroidarena.planets[j].collide(nextplanet)){//If planets overlaps
+			orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());//Re-roll planet orbit
+			wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
+			aodir = Math.random()*2*Math.PI;
+			nextplanet.setorbit(asteroidarena.planets[0], orbitr, aodir, 1);
+			nextplanet.vx = nextplanet.vx * wonk;
+			nextplanet.vy = nextplanet.vy * wonk;
+			j=-1;//start at 0 after the j++  to re-check for overlap
+			}
+		j++;
+		}
 	asteroidarena.planets.push(nextplanet);
 	i++;
 	}
