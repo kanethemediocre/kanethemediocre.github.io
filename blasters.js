@@ -42,6 +42,7 @@ class Blaster{
 		this.stier = 0; //number of speed upgrades applied
 		this.ttier = 0; //number of timer upgrades applied
 		this.xtier = 0; //special upgrade slot
+		this.recoil = 0;
 		this.bombs = []; 
 		var i = 0;
 		while(i<this.n){ //sets up an array of n bombs needed for the blaster, most often n=1.
@@ -86,7 +87,7 @@ class Blaster{
 			this.special1 = 12;
 			}
 		if (this.type == "rapid"){
-			this.special1 = 12;//default frames per shot
+			this.special1 = 8;//default frames per shot
 			}
 		}//w signifies weapon, next 2 digits are weapon number, x signifies notjhing, next 2 digits are upgrade tier
 	levelcalc(){
@@ -263,6 +264,7 @@ class Blaster{
 				i=i+1;
 				}
 			}
+		if (this.recoil!=0){ theplayer.ship.push(this.recoil,theplayer.ship.d);	}
 		}
 	draw(viewx,viewy){
 		var i = 0;

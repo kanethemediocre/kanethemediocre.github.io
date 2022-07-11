@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v399 by Andrew Kane </title>
+    <title>Bling Hustle v401 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -180,13 +180,46 @@ let testsystem27 = new System(28,randname(4),0,0);
 let testsystem28 = new System(29,randname(4),0,0);
 let testsystem29 = new System(30,randname(4),0,0);
 let testsystem30 = new System(31,randname(4),0,0);
+let asteroidarena = new System(32,randname(4),0,0);
+asteroidarena.planetarycollisions = true;
+asteroidarena.planets.push( new Umo(asteroidarena.x,asteroidarena.y,1000, "orange") ); //make the sun 
+asteroidarena.planets[0].name = asteroidarena.name; // Star name is same as system name
+let decoy = new Umo(1000, 16000, 200, "blue"); //4
+decoy.name = "Rodi";
+decoy.setorbit(asteroidarena.planets[0], 40000, 0, 1);
+decoy.parentid = 0;
+decoy.c2 = "teal";
+asteroidarena.planets.push(decoy);
+var maxsize = 150;
+var minsize = 50;
+var maxorbit = 13000;
+var minorbit = 7000;
+var orbitwonk = .02;
+var i = 0;
+while (i<160){
+	var orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());
+	var wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
+	var aodir = Math.random()*2*Math.PI;
+	//console.log(orbitr);
+	//console.log(wonk);
+	//console.log(aodir);
+	let nextplanet = new Umo(1000, 16000, 200, randcolor());
+	nextplanet.name = "rock";
+	nextplanet.setorbit(asteroidarena.planets[0], orbitr, aodir, 1);
+	nextplanet.parentid = 1;
+	nextplanet.vx = nextplanet.vx * wonk;
+	nextplanet.vy = nextplanet.vy * wonk;
+	asteroidarena.planets.push(nextplanet);
+	i++;
+	}
+
 
 let playerradio = new Radio(" ");
 let home = new System(1,"Sool",0,0);
 let menu = new System(0,"Main Menu",0,0);
 let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
 				testsystem15,testsystem16,testsystem17,testsystem18,testsystem19,testsystem20,testsystem21,testsystem22,testsystem23,testsystem24,testsystem25,testsystem26,
-				testsystem27,testsystem28,testsystem29,testsystem30];
+				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena];
 systems[0].planets = loadmenusystem();
 systems[1].planets = loadhomesystem();
 systems[1].outposts = loadhomeoutposts();
@@ -244,7 +277,8 @@ while (speciali<32){	//woo for 32 systems
 	systems[speciali].enemypopulate(5,speciali,16+speciali);	
 	systems[speciali].addrandombling(50);		
 	speciali++;
-	}			
+	}		
+systems[32].enemypopulate(1,2,6);	
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
 //no kill missions for napa?
 var i = 0;
@@ -284,6 +318,8 @@ while(i<systems.length){
 }
 //var testboom = new Bubblesplosion(3,30,"red",systems[ps].players[0].ships);
 var testturret = new Turret("friendly",systems[1].planets[4],0,150);
+testturret.anchorvisible = false;
+testturret.pivotvisible = false;
 var murcturret1 = new Turret("enemy",systems[1].planets[1],0,192);
 var murcturret2 = new Turret("enemy",systems[1].planets[1],Math.PI,192);
 var murcturret3 = new Turret("enemy",systems[1].planets[1],Math.PI/2,192);   
@@ -358,7 +394,7 @@ function update() {
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
 			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
-			myplayer.storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
+			myplayer.storystate = 125;//adjust for testing of stuff, should be 0 on major releases.
 			}
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;
@@ -378,13 +414,15 @@ function update() {
 			menucontrols = true;
 			menuabout = false;
 			}
-		//if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
-		//	ps = 1;
-		//	myship.setorbit(systems[ps].planets[systems[ps].planets.length-1], 32000, 0.215, 1);
-		//	myplayer.storystate = 999;
-		//	myplayer.money = 2000;
-		//	myplayer.task = "Fall";
-		//	}
+		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
+			ps = 32;
+			console.log(systems[ps].planets[0].x);
+			myship.setorbit(systems[ps].planets[0], 15000, 0, 1);
+			console.log(myship.x);
+			myplayer.storystate = 999;
+			myplayer.money = 2000;
+			myplayer.task = "Explore";
+			}
 		if (menuabout){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";

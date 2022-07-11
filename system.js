@@ -15,6 +15,7 @@ class System{
 		this.players = [];//list of ship type umos
 		this.bling = [];
 		this.difficulty = 1; //Scales ship generation attributes
+		this.planetarycollisions = false;
 		this.x = x;
 		this.y = y;
 	}
@@ -480,6 +481,18 @@ class System{
 			}
 		}
 	collideself(){ //Internal system collisions, ships to planets, ships to bot bombs, planets to bot bombs, turret bombs to ships and planets....
+		if (this.planetarycollisions){//Planets are normally set up to not collide with each other, but in special cases it can be enabled.
+			var i=0;
+			while (i<this.planets.length){
+				var j=i+1;
+				while (j<this.planets.length){
+					this.planets[i].circlecollide4(this.planets[j]);
+					j++;
+					}
+				i++;
+				}
+			}
+		
 		var i = this.planets.length;
 		while (i>0){
 			//For all planets+other collisions/////////////////////////////////
@@ -540,12 +553,12 @@ class System{
 		while (i<this.ships.length-1){
 			j = i+1; //avoids duplicate executions 
 			while (j<this.ships.length){
-				this.ships[i].circlecollide2(this.ships[j]);
+				this.ships[i].circlecollide4(this.ships[j]);
 				j++;
 				}
 			var j=0;
 			while(j<this.players.length){
-				this.players[j].ship.circlecollide2(this.ships[i])
+				this.players[j].ship.circlecollide4(this.ships[i])
 				j++;
 				}
 			i++;

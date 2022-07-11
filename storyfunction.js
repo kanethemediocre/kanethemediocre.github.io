@@ -12,6 +12,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		if (dstory>1){
 			var themsg = "Don't touch anything just yet.  Some people think all you need to know is right click zoom left click boom, but getting anywhere in particular is more complicated.  Learn to use your ship's map and nav computer, or you'll find what space is really made made of:  Nothing.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Don't touch anything";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -47,14 +48,14 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		if ((dstory>5)&&(myplayer.mapscale>1024)&&(myplayer.mapactive>0)){
 			var themsg = "Nifty, right?  OK, so we're not going nearly that far away, so zoom back in on us and Merz. The number 1 struggle for new pilots is stopping at the destination, which requires about as much thrust as getting there usually.  Some pilots count their pulses, and know that they need that many in the opposite direction to stop.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.task = "Zoom out on the map to show the whole system( - )";
+			myplayer.task = "Zoom back in on the map";
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
 		break;
 	case 5:
 		if ((dstory>5)&&(myplayer.mapscale<128)&&(myplayer.mapactive>0)){
-			var themsg = "The map and nav computer are more than sufficient guide you wherever you need, but some people like the Omnicompass (C key) because it tracks everything at once.  OK, so try applying what you've learned to fly to Merz.  Don't get in any fights, just do a flyby and come back.";
+			var themsg = "The map and nav computer are more than sufficient guide you wherever you need, but some people like the Omnicompass (C key) because it tracks everything at once.  OK, so try applying what you've learned to fly to Merz.  Don't get in any fights, just use your thrusters (right click) to do a flyby and come back.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Go to Merz";
 			myplayer.storystate++;
@@ -73,7 +74,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 7:
 		if ((dstory>60)&&(myplayer.dockstate==1)){
-			var themsg = "The autopilot works well between distant objects in empty space, and most trips you'll want it for fit that description well enough.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  Around Merz they aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.";
+			var themsg = "The autopilot works well between distant objects in empty space, and most trips you'll want it for fit that description well enough, but you will need to guide your ship in manually for the last few thousand meters.  Most planets and moons have hostile Umobots.  They orbit their host planets and shoot at any ships that come near.  Around Merz they aren't particularly dangerous, but each planet has it's own breed of bot, and most are more dangerous than the Merz bots.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -82,7 +83,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 8:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Bots can be destroyed easily enough, but replacements are never far behind.  Still, the Institute pays out for each one destroyed, as well as for the resulting salvage.  That salvage, usually called bling, is so universally valued it has become currency.";
+			var themsg = "Bots can be destroyed easily enough, but replacements are never far behind.  Still, the Institute pays out for each one destroyed, as well as for the resulting salvage.  That salvage, called Bling, is so universally valued it has become currency.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -91,7 +92,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 9:
 		if (dstory>playerradio.msgtime){
-			var themsg = "No one knows where they came from, or why they suddenly started appearing 30 years ago.  But life off-world has changed dramatically since they came.  Most of your ships systems are made from Bling, and a whole new industry has developed around both fighting and studying the 'bots";
+			var themsg = "No one knows where they came from, or why they suddenly started appearing 30 years ago.  But life off-world has changed dramatically since they came.  Most of your ships systems are made from Bling technology, and a whole new industry has developed around both fighting and studying the 'bots";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -100,7 +101,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;		
 	case 10:
 		if (dstory>playerradio.msgtime){
-			var themsg = "You better learn a thing or two about combat before I send you anywhere more dangerous, eh?  The top left corner of your HUD has 4 important indicators.  At the top the green bar indicates your ship's health.  It's a basic measure of how close you are to blowing up.  Don't blow up.";
+			var themsg = "You better learn a thing or two about combat before I send you anywhere more dangerous, eh?  The top left corner of your HUD has a few important indicators.  At the top the green bar indicates your ship's health.  It's a basic measure of how close you are to blowing up.  Don't blow up.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -118,7 +119,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;		
 	case 12:
 		if (dstory>playerradio.msgtime){
-			var themsg = "The next red bar is your weapons energy.  The ship has capacitors to provide the burst current that the ships reactor can't directly provide.  The red bar indicates their energy level.";
+			var themsg = "The purple bar is your ship level, which approximately represents your ship's value.  The next red bar is your weapons energy.  The ship has capacitors to provide the burst current that the ships reactor can't directly provide.  The red bar indicates their energy level.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -136,7 +137,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;		
 	case 14:
 		if (dstory>playerradio.msgtime){			
-			var themsg = "Below the status bars is a weapons indicator highlighting your current weapon in green, and showing available weapons in white (just weapon 1 for now).";
+			var themsg = "Below the status bars is a weapons indicator highlighting your current weapon in red, and showing available weapons in white (just weapon 1 for now).  You can fire most weapons with a left click, and use the scroll wheel to select different weapons if you have them.  A few weapons will require holding down the left mouse button.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -145,7 +146,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;	
 	case 15:
 		if (dstory>playerradio.msgtime){
-			var themsg = "The last part of the HUD we need to talk about is the targeting computer.  Your radar can detect enemies within a certain distance (4000p, as shown by the green circle on your map), and tell you useful information about them.  Use the [ and ] keys to select targets.  In visual range, you'll also see a targeting reticle around your target.";
+			var themsg = "The last part of the HUD we need to talk about is the targeting computer.  Your radar can detect enemies within a certain distance (4000p, as shown by the green circle on your map), and tell you useful information about them.  The targeting computer will track the last bot you pointed at, and add a color coded reticle if in visual range.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -154,7 +155,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;			
 	case 16:
 		if (dstory>playerradio.msgtime){
-			var themsg =  "Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].ships[9].name+", it should be near Merz";
+			var themsg =  "Not every ship out there is an enemy.  Use your radar and your targeting computer to tell friend from foe.  Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].ships[9].name+", it should be near Merz.  ";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Destroy ship "+systems[ps].ships[9].name+" near Merz";
 			systems[ps].ships[9].respawn(systems[ps].planets[systems[ps].ships[9].parentid]);
@@ -163,7 +164,15 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			}
 	break;		
 	case 17:
-		if (systems[ps].ships[9].hp==-1000){
+		if (dstory>60000){
+			var themsg =  "Not much of a fighter I guess.  That's alright, there's lots you can do to get bling without firing a shot.  Come on back to my shop and I'll fit you with something more powerful in case you change your mind.";
+			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
+			myplayer.task = "Return to the Merry Merzian";
+			//myplayer.money = myplayer.money + 400;
+			myplayer.storystate++;
+			myplayer.storytime = time;
+			}
+		else if (systems[ps].ships[9].hp==-1000){
 			var themsg =  "Alright good job.  Now before you get carried away come back to the station and I'll fit your ship with something a little more powerful.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Return to the Merry Merzian";
@@ -184,7 +193,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;		
 	case 19:
 		if (dstory>playerradio.msgtime){
-			var themsg = "New weapons an upgrades can be purchased at stations like the Merry Merzian, but I'm installing the mine launcher for free.  Go ahead and launch, it should be ready.";
+			var themsg = "New weapons and upgrades can be purchased at stations like the mine.  I'm installing the mine launcher gratis, but don't count on any more freebies.  Go ahead and launch, it should be ready.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -193,7 +202,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 20:
 		if (dstory>playerradio.msgtime){
-			var themsg = "OK now switch to weapon 2 and give it a shot.";
+			var themsg = "Switch to weapon 2 and give it a shot.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Try out the Mine (weapon 2)";
 			myplayer.blasters[2].phas = true;
@@ -225,7 +234,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;	
 	case 23:
 		if (dstory>playerradio.msgtime){//if player has retuirned to the merry merz
-			var themsg = "Although not usually used for picking off faraway targets, the mine technically has the longest range (by far) of any weapon due to its long timer, provided the pilot provides a bit of speed for the mine.";
+			var themsg = "Although not usually used for picking off faraway targets, the mine arguably has the longest range (by far) of any weapon due to its long timer, provided the pilot provides a bit of speed for the mine.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -233,7 +242,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;	
 	case 24:
 		if (dstory>playerradio.msgtime){			
-			var themsg = "Many weapons, including the mine, have an upgrade that allows you to detonate the mine with a second click.  For the mine this is highly recommended.";
+			var themsg = "Some weapons, including the mine, have an upgrade that allows you to detonate the bomb with a second click.  For the mine this is strongly recommended.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -241,7 +250,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;	
 	case 25:
 		if (dstory>playerradio.msgtime){			
-			var themsg = "In space, bling is everything.  At stations like the Merry Merzian you can spend it on repairs or upgrades.  You get paid in bling by the Institute for destroying umo bots, and more for salvaging their bling.";
+			var themsg = "Bling is everything.  At stations like the Merry Merzian you can spend it on repairs or upgrades.  Each weapon can be upgraded in a variety of different ways, and each mod is more expensive than the last, so choose them wisely.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -249,7 +258,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;	
 	case 26:
 		if (dstory>playerradio.msgtime){			
-			var themsg = "Stations have Buy, Sell, and Work menus, which you can cycle through with the Backspace key.  Aside from missions at the Work menu, you can buy and sell commodities for profit.";			
+			var themsg = "Stations have Buy, Sell, and Work menus, which you can cycle through with the Backspace key.  Aside from missions at the Work menu, you can buy and sell commodities for profit.   You get also get paid in bling by the Institute for destroying hostile bots, and you can even collect bling directly from destroyed bots";			
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -273,7 +282,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 29:
 		if (dstory>playerradio.msgtime){			
-			var themsg = "Speaking of which, I've got a package for Jojo's (trailing Jupe), and I'll pay $800 for it to be delivered.  You'll probably want to use boosters.";
+			var themsg = "Speaking of which, I've got a package for Jojo's (trailing Jupe), and I'll pay $800 for it to be delivered.  You'll probably want to use boosters.  Boosters provide a single-use burst of speed for faster travel among the outer planets.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Go to Jojo's and drop off a merry package."
 			myplayer.storystate++;
@@ -290,7 +299,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.storytime = time;
 			}
 		if (dstory>playerradio.msgtime){			
-			var themsg = "Boosters provide a single-use burst of speed for faster travel among the outer planets.  They're sold in pairs, because for every one you use to get moving towards your destination, you'll need another to slow down when you get there.";
+			var themsg = "Boosters are sold in pairs, because for every one you use to get moving towards your destination, you'll need another to slow down when you get there.  This is true of your basic thrusters, but the stakes are higher when you use boosters.  ";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate = 31;
 			myplayer.storytime = time;
@@ -307,7 +316,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			}
 			
 		if (dstory>playerradio.msgtime){
-			var themsg = "You can cycle between booster types with the B key, and fire the booster with the G key.  Your ship comes with 8 type 1 boosters, and you can buy more at certain traders.";
+			var themsg = "You can cycle between booster types with the B key, and fire the booster with the G key.  Your ship comes with 16 type 1 boosters, and you can buy more at some traders.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate = 32;
 			myplayer.storytime = time;
@@ -408,7 +417,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 41:
 		if (dstory>playerradio.msgtime){
 			var themsg = "A few weapons like w6 and w8 fire continuously when the mouse button is held, and they don't have that limitation.";
-			playerradio.newmsg("Tutorial Dude41",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -416,7 +425,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 42:
 		if (dstory>playerradio.msgtime){
 			var themsg = "Aside from the remote detonator upgrade, there are a myriad of different ways to upgrade weapons, and they can all be combined as you see fit.  However, each time you buy an upgrade, the cost of the next one for that weapon will be double.";
-			playerradio.newmsg("Tutorial Dude42",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -424,7 +433,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 43:
 		if (dstory>playerradio.msgtime){
 			var themsg = "Not every upgrade will be equally beneficial to every weapon, and sometimes it might pay to wait until you encounter a station with the upgrade(s) that you REALLY want before you spend your bling and drive up the costs.";
-			playerradio.newmsg("Tutorial Dude43",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -432,7 +441,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 44:
 		if (dstory>playerradio.msgtime){
 			var themsg = "The bots around the inner planets aren't as dangerous as those around outer planets like Jupe and Tern, but they're bad enough that we can't ignore them completely.  ";
-			playerradio.newmsg("Tutorial Dude44",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -440,7 +449,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 45:
 		if (dstory>playerradio.msgtime){
 			var themsg = "There's been an initiative to build a moon base with blasters to keep their numbers down, but its a costly endeavor and no one wants to see it blown up by bots before it's finished.";
-			playerradio.newmsg("Tutorial Dude45",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Get supplies from Dangustown";
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -449,7 +458,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 46:
 		if (dstory>playerradio.msgtime){
 			var themsg = "I've been hoarding materials for a while now, and I'm close to having what I need, but I still need to somehow build the thing without taking any hits until the shield generator comes up. ";
-			playerradio.newmsg("Tutorial Dude46",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -457,7 +466,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 47:
 		if (dstory>playerradio.msgtime){
 			var themsg = "There's a guy I know who shares my enthusiasm for this base, and he's actually built the turret.  It is, however, on his station at on the edge of the system in Dangustown.";
-			playerradio.newmsg("Tutorial Dude47",themsg,time);//newmsg(sndr, msg, thetime)
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate=120;//This is a story redirect--Basically, everything above 47 and below 120 is cancelled pending further development.
 			myplayer.storytime = time;
 			}
@@ -465,8 +474,8 @@ switch(myplayer.storystate){//Tutorial missions so far.
 //48-119 are cancelled, but kept in code in case I bring them back in some sense.//////////////////////////////	
 	case 48:
 		if (dstory>playerradio.msgtime){
-			var themsg = "The bots are very dangerous out there, but you probably won't need to fight any to make the pickup.  You will, however need 10 units of cargo space to take a crate, and 20 to bring both crates in one trip.";
-			playerradio.newmsg("Tutorial Dude48",themsg,time);//newmsg(sndr, msg, thetime)
+			var themsg = "The bots are very dangerous out there, but you probably won't need to fight any to make the pickup.  You will, however need 20 e trip.";
+			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -847,7 +856,8 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 126:
 		if (myplayer.ship.distance(systems[ps].planets[4])<systems[ps].planets[4].s+32){
 			var themsg = "Turret base installed.   Looks good, now come back for the turret";
-			//make invisible turret
+			systems[ps].turrets[0].anchorvisible = true;
+			systems[ps].turrets[0].ad = systems[ps].planets[4].directionof(myplayer.ship);
 			//move the turret to systems[ps].planets[4].directionof(myplayer.ship)
 			//make turret anchor visible
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
@@ -866,10 +876,11 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			}
 	break;
 	case 128:
-		if (myplayer.ship.distance(systems[ps].planets[4])<systems[ps].planets[4].s+32){
+		if (myplayer.ship.distance(systems[ps].turrets[0].pivot)<systems[ps].turrets[0].pivot.s+32){
 			var themsg = "Turret installed. Many thanks!  Earf is much safer thanks to you.";
-			//make turret pivot visible
-			//activate turret
+			systems[ps].turrets[0].pivotvisible = true;
+			systems[ps].turrets[0].active = true;
+
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Go forth and profit";
 			myplayer.storystate++;

@@ -5,7 +5,6 @@ class Umo { //Universal Moving Object
 		this.x = xxx; //x
 		this.y = yyy; //y
 		this.c = ccc; //color
-		
 		this.c2 = "red";
 		if (this.c=="red"){this.c2 = "orange";}
 		if (this.c=="orange"){this.c2 = "yellow";}
@@ -285,7 +284,38 @@ class Umo { //Universal Moving Object
 			that.push(1,cdir);//Objects are pushed away from each other along the contact axis by a constant amount, but it gets applied every frame the objects overlap.
 			}
 		}	
-		
+	circlecollide4(that){//Circular bouncing where both objects are affected according to their mass
+		if (this.distance(that)<(this.s+that.s)){
+			// Distance between balls
+			var fDistance = Math.sqrt((this.x - that.x)*(this.x - that.x) + (this.y - that.y)*(this.y - that.y));
+
+			// Normal
+			var nx = (that.x - this.x) / fDistance;
+			var ny = (that.y - this.y) / fDistance;
+
+			// Tangent
+			var tx = -ny;
+			var ty = nx;
+
+			// Dot Product Tangent
+			var dpTan1 = this.vx * tx + this.vy * ty;
+			var dpTan2 = that.vx * tx + that.vy * ty;
+
+			// Dot Product Normal
+			var dpNorm1 = this.vx * nx + this.vy * ny;
+			var dpNorm2 = that.vx * nx + that.vy * ny;
+
+			// Conservation of momentum in 1D
+			var m1 = (dpNorm1 * (this.m - that.m) + 2.0 * that.m * dpNorm2) / (this.m + that.m);
+			var m2 = (dpNorm2 * (that.m - this.m) + 2.0 * this.m * dpNorm1) / (this.m + that.m);
+			// Update ball velocities
+			this.vx = tx * dpTan1 + nx * m1;//This formula was adapted from https://github.com/OneLoneCoder/videos/blob/master/OneLoneCoder_Balls1.cpp
+			this.vy = ty * dpTan1 + ny * m1;
+			that.vx = tx * dpTan2 + nx * m2;
+			that.vy = ty * dpTan2 + ny * m2;
+			}
+		}	
+				
 	bombcollide(that){ //explodes on contact, damages every frame in explosion
 		if (this.distance(that) < (this.s + that.s)) {
 			that.damage(this.hurt); //Automatically proportional based on time spent inside 

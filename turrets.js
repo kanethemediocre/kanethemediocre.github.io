@@ -5,6 +5,9 @@ class Turret{
 		this.pivot.ai = team;
 		this.team = team;
 		this.a = anchor;
+		this.anchorvisible = true;
+		this.pivotvisible = true;
+		this.active = true;
 		this.ad = anchord;
 		this.ar = anchorr;
 		this.basecolor = randcolor();
@@ -60,8 +63,8 @@ class Turret{
 			}
 		}
 	draw(viewx,viewy){ //mostly stolen from draw ship stuff
-		drawpolarpoly(this.basex-viewx+canvas.width/2, this.basey-viewy+canvas.height/2,this.basetheta,this.baseradius,48,this.basecolor,this.a.directionof(this.pivot));
-		this.pivot.drawship(viewx,viewy);
+		if (this.anchorvisible){ drawpolarpoly(this.basex-viewx+canvas.width/2, this.basey-viewy+canvas.height/2,this.basetheta,this.baseradius,48,this.basecolor,this.a.directionof(this.pivot)); }
+		if (this.pivotvisible){ this.pivot.drawship(viewx,viewy); }
 		var i=0;
 		while (i<this.bombs.length){
 			this.bombs[i].drawbomb(viewx,viewy);

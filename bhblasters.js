@@ -40,9 +40,10 @@
 	 let weapon16 = new Blaster("Pulse Blazor","Beam weapon damages everything in it's path.  Unlike the Blazor, this fires a powerful, instantaneous pulse on click.",3500,"beam",                            
 	 120,30,10,1,0,0,0.8,0.2,10,1,0,0,640,8,10,60,"lime","ID not implemented");
 	 let weapon17 = new Blaster("Squid","Fires a cloud of projectiles backwards.",1500,"fixedspread",                            
-	 12,6,10,3,2,10,0.8,0.2,10,12,4,10,100,20,10,70,"darkslategrey","ID not implemented");
+	 12,6,10,3,2,10,0.8,0.2,10,12,4,10,100,20,10,90,"darkslategrey","ID not implemented");
 	 weapon17.special1 = 3*Math.PI/2;
 	 weapon17.special2 = 7*Math.PI/4;
+	 weapon17.recoil = 8;
 	 let weapon18 = new Blaster("wangus","Medium range, rapid-firing blaster with good damage output.  Hold the left mouse button down instead of tapping it.",10000,"rapid",                            
 	 12,6,10,12,2,10,0.8,0.2,10,24,0,0,64,8,10,15,"olive","ID not implemented");
 	 let weapon19 = new Blaster("Denier","Great walls of fire.",42069,"rapidmultiplex",                            
