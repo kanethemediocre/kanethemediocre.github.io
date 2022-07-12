@@ -483,6 +483,12 @@ class System{
 	collideself(){ //Internal system collisions, ships to planets, ships to bot bombs, planets to bot bombs, turret bombs to ships and planets....
 		if (this.planetarycollisions){//Planets are normally set up to not collide with each other, but in special cases it can be enabled.
 			var i=0;
+			var j=1;
+			while (j<this.planets.length){//Handles sun only, sun not moved by collisions.
+				this.planets[i].circlecollide(this.planets[j]);
+				j++;
+				}
+			var i=1;
 			while (i<this.planets.length){
 				var j=i+1;
 				while (j<this.planets.length){
