@@ -1487,7 +1487,7 @@ class System{
 				j=j+1;
 				}
 			while (j<12){ //And 3 cargo items
-				var randcargo = Math.floor(Math.random()*allcargos.length);
+				var randcargo = Math.floor(Math.random()*(allcargos.length-1));
 				randshopitems3.push(new Shopitem("cargo",randcargo,"buy",1));
 				j=j+1;
 				}

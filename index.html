@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v401 by Andrew Kane </title>
+    <title>Bling Hustle v404 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -180,6 +180,7 @@ let testsystem27 = new System(28,randname(4),0,0);
 let testsystem28 = new System(29,randname(4),0,0);
 let testsystem29 = new System(30,randname(4),0,0);
 let testsystem30 = new System(31,randname(4),0,0);
+//Begin asteroid arena stuff//////////////////////////////////////////////////////////////////////////////////////////////////////////
 let asteroidarena = new System(32,randname(4),0,0);
 asteroidarena.planetarycollisions = true;
 asteroidarena.planets.push( new Umo(asteroidarena.x,asteroidarena.y,1280, "orange") ); //make the sun 
@@ -192,11 +193,11 @@ decoy.c2 = "teal";
 asteroidarena.planets.push(decoy);
 var maxsize = 256;
 var minsize = 64;
-var maxorbit = 12000;
+var maxorbit = 15000;
 var minorbit = 6000;
 var orbitwonk = .04;
 var i = 0;
-while (i<128){
+while (i<200){
 	var orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());
 	var wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
 	var aodir = Math.random()*2*Math.PI;
@@ -208,6 +209,7 @@ while (i<128){
 	nextplanet.name = "rock";
 	nextplanet.setorbit(asteroidarena.planets[0], orbitr, aodir, 1);
 	nextplanet.parentid = 1;
+	nextplanet.grange = nextplanet.s*8+512;
 	nextplanet.vx = nextplanet.vx * wonk;
 	nextplanet.vy = nextplanet.vy * wonk;
 	var j=0;
@@ -226,7 +228,16 @@ while (i<128){
 	asteroidarena.planets.push(nextplanet);
 	i++;
 	}
-
+var outpostnum = 16
+asteroidarena.randomoutposts(outpostnum);
+var i=0;
+while(i<asteroidarena.outposts.length){
+	asteroidarena.outposts[i].setorbit(asteroidarena.planets[0],24000,i*(2/outpostnum)*Math.PI,1);
+	i++;
+	}
+asteroidarena.enemypopulate(1,1,4);	
+console.log(asteroidarena.shops);
+//end asteroid arena stuff///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let playerradio = new Radio(" ");
 let home = new System(1,"Sool",0,0);
@@ -292,7 +303,6 @@ while (speciali<32){	//woo for 32 systems
 	systems[speciali].addrandombling(50);		
 	speciali++;
 	}		
-systems[32].enemypopulate(1,2,6);	
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
 //no kill missions for napa?
 var i = 0;
@@ -431,10 +441,10 @@ function update() {
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
 			ps = 32;
 			console.log(systems[ps].planets[0].x);
-			myship.setorbit(systems[ps].planets[0], 15000, 0, 1);
+			myship.setorbit(systems[ps].planets[0], 16000, 0, 1);
 			console.log(myship.x);
 			myplayer.storystate = 999;
-			myplayer.money = 2000;
+			myplayer.money = 2001;
 			myplayer.task = "Explore";
 			}
 		if (menuabout){
@@ -718,6 +728,10 @@ var i=0;
 while(i<systems[ps].bling.length){
 	if(systems[ps].bling[i].t>20000){systems[ps].bling[i].reset(systems[ps].planets);}
 	i++;
+	}
+if ((ps==32)&&(time%1800==0)){//Special asteroid arena stuff.  Randomly levels up a bot every 20 seconds
+	var lub = Math.floor(Math.random()*systems[ps].ships.length)//level up bot
+	systems[ps].levelup(lub,1);
 	}
 storycheck(0);//0 is player index
 if(time%2==0){

@@ -32,6 +32,7 @@ class Umo { //Universal Moving Object
 		this.polyradius = [1,1,1]; //Default values are the triangle originally
 		this.polytheta = [0,0.8*Math.PI,1.2*Math.PI];	//used for ship drawing
 		this.level = 1; //Describes difficulty of a given ship
+		this.grange = 0; //For limiting gravity to only affect nearby ships, helps performance in some circumstances.
 		this.parentid = 0;
 		this.active = true; //Flag indicating if ship (or planet's ships) needs to be considered by the game engine 
 		this.shopchart = [];//["Item Name","Item type",price,tier]
@@ -207,13 +208,16 @@ class Umo { //Universal Moving Object
 	gravitate(pulled){ //For planets.
 		var dx = this.x - pulled.x; 
 		var dy = this.y - pulled.y;
-		var distance = Math.sqrt(((dx)*(dx) + (dy)*(dy)));
-		var gconstant = 0.0003;
-		var magnitude = (gconstant*this.m)/(distance*distance);
-		var dcos = dx/distance;
-		var dsin = dy/distance;
-		pulled.vx = pulled.vx + magnitude*dcos;
-		pulled.vy = pulled.vy + magnitude*dsin;
+		var distance2 = dx*dx+dy*dy
+		if ((this.grange==0)||(distance2<1000000)){//Effective distance of 2000
+			var distance = Math.sqrt(distance2);
+			var gconstant = 0.0003;
+			var magnitude = (gconstant*this.m)/(distance2);
+			var dcos = dx/distance;
+			var dsin = dy/distance;
+			pulled.vx = pulled.vx + magnitude*dcos;
+			pulled.vy = pulled.vy + magnitude*dsin;
+			}
 		}
 	gravitategroup(pulled){ //Input is a list of objects to pull.  
 		var i = pulled.length;
