@@ -274,7 +274,10 @@ while (i<sbturrets.length){
 	sbturrets[i].pivot.shield = 200;
 	sbturrets[i].pivot.maxshield = 200;
 	sbturrets[i].anchorvisible = false;
-	
+	sbturrets[i].pivot.c = sbturrets[0].pivot.c
+	sbturrets[i].pivot.c2 = sbturrets[0].pivot.c2
+	sbturrets[i].pivot.polyradius = sbturrets[0].pivot.polyradius
+	sbturrets[i].pivot.polytheta = sbturrets[0].pivot.polytheta
 	i++;
 	}
 asteroidarena.turrets = sbturrets;
