@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v406 by Andrew Kane </title>
+    <title>Bling Hustle v407 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -247,10 +247,14 @@ superboss.shieldregen = 1.5;
 superboss.parentid = 1; 
 superboss.respawn(asteroidarena.planets[superboss.parentid]);
 superboss.name = randname(5);
-var randomplayerverts = randpolarpoly(16, 0.25);//sides,  minimum radius
+var randomplayerverts = randpolarpoly(20, 0.5);//sides,  minimum radius
 normalizepoly(randomplayerverts);
 superboss.polytheta = randomplayerverts[0];
 superboss.polyradius = randomplayerverts[1];
+superboss.polyradius[3] = superboss.polyradius[3]+.75
+superboss.polyradius[superboss.polyradius.length-4] = superboss.polyradius[superboss.polyradius.length-4]+.75
+superboss.polyradius[6] = superboss.polyradius[6]+.75
+superboss.polyradius[superboss.polyradius.length-7] = superboss.polyradius[superboss.polyradius.length-7]+.75
 superboss.ai = "enemy";
 asteroidarena.botbombs.push( new Umo(0,0,0,"red"));
 asteroidarena.botbombs[asteroidarena.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
@@ -258,17 +262,17 @@ asteroidarena.botbombs[asteroidarena.botbombs.length-1].maxhp = 1; //with planet
 asteroidarena.botbombs[asteroidarena.botbombs.length-1].shield=0;  
 asteroidarena.ships.push(superboss);
 
-var sbturret1 = new Turret("enemy",superboss,0,160);
-var sbturret2 = new Turret("enemy",superboss,Math.PI,160);
-var sbturret3 = new Turret("enemy",superboss,Math.PI/2,160);   
-var sbturret4 = new Turret("enemy",superboss,3*Math.PI/2,160);
+var sbturret1 = new Turret("enemy",superboss,superboss.polytheta[3],superboss.s*superboss.polyradius[3]);
+var sbturret2 = new Turret("enemy",superboss,superboss.polytheta[6],superboss.s*superboss.polyradius[6]);
+var sbturret3 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-7],superboss.s*superboss.polyradius[superboss.polyradius.length-7]);   
+var sbturret4 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-4],superboss.s*superboss.polyradius[superboss.polyradius.length-4]); 
 var sbturrets = [sbturret1,sbturret2,sbturret3,sbturret4];
 var i=0;
 while (i<sbturrets.length){
-	sbturrets[i].pivot.hp = 1000;
-	sbturrets[i].pivot.maxhp = 1000;
-	sbturrets[i].pivot.shield = 400;
-	sbturrets[i].pivot.maxshield = 400;
+	sbturrets[i].pivot.hp = 800;
+	sbturrets[i].pivot.maxhp = 800;
+	sbturrets[i].pivot.shield = 200;
+	sbturrets[i].pivot.maxshield = 200;
 	sbturrets[i].anchorvisible = false;
 	
 	i++;
