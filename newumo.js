@@ -53,10 +53,20 @@ class Umo { //Universal Moving Object
 		var dy = this.y - relation.y;
 		return Math.sqrt(((dx)*(dx) + (dy)*(dy)));	
 	}
+	distancesq(relation){//Distance squared.  Saves some calculation in some instances.
+		var dx = this.x - relation.x; 
+		var dy = this.y - relation.y;
+		return ((dx)*(dx) + (dy)*(dy));	
+	}
 	deltav(relation){ //returns magnitude only
 		var dvx = this.vx - relation.vx; 
 		var dvy = this.vy - relation.vy;
 		return Math.sqrt(((dvx)*(dvx) + (dvy)*(dvy)));			
+		}
+	deltavsq(relation){ //returns magnitude only, delta v squared
+		var dvx = this.vx - relation.vx; 
+		var dvy = this.vy - relation.vy;
+		return ((dvx)*(dvx) + (dvy)*(dvy));			
 		}
 	deltav2(relation){//returns magnitude, direction (polar vector)
 		var dvx = this.vx - relation.vx; 
@@ -98,7 +108,8 @@ class Umo { //Universal Moving Object
 			}
 		}
 	collide(that){ //circular collision function
-		if (this.distance(that) < (this.s + that.s)) {return true; }else{return false;} 
+		var clearance = this.s+that.s;
+		if (this.distancesq(that) < clearance*clearance) {return true; }else{return false;} 
 		} //Doesn't bounce or damage, just returns 1 if a collision is occuring.
 	directionof(destination){
 		var dx = this.x - destination.x; 
@@ -240,7 +251,8 @@ class Umo { //Universal Moving Object
 		this.vy = this.vy + mag*Math.sin(dir);
 	}
 	circlecollide(that){			//circular bouncing where 1 object is affected
-		if (this.distance(that) < (this.s + that.s)) {
+		var clearance = this.s+that.s;
+		if (this.distancesq(that) < clearance*clearance) {
 			var dir = this.directionof(that);
 			var dvx = this.vx - that.vx;
 			var dvy = this.vy - that.vy;
@@ -253,7 +265,8 @@ class Umo { //Universal Moving Object
 			}
 		}
 	circlecollidesafe(that){			//circular bouncing where 1 object is affected
-		if (this.distance(that) < (this.s + that.s)) {
+		var clearance = this.s+that.s;
+		if (this.distancesq(that) < clearance*clearance) {
 			var dir = this.directionof(that);
 			var dvx = this.vx - that.vx;
 			var dvy = this.vy - that.vy;
@@ -282,33 +295,30 @@ class Umo { //Universal Moving Object
 		var av2 = [avx2,dir]; //also maybe backwards?
 		}
 	circlecollide2(that){//Circular bouncing where both objects are affected.  
-		if (this.distance(that)<(this.s+that.s)){
+		var clearance = this.s+that.s;
+		if (this.distancesq(that)<clearance*clearance){
 			var cdir = this.directionof(that);//Not real elastic collisions, but these at least keep ships from overlapping long.  Mass is not considered.
 			this.push(1,cdir+Math.PI);//In some circumstances this does act as a reasonable approximation of an elastic collision.
 			that.push(1,cdir);//Objects are pushed away from each other along the contact axis by a constant amount, but it gets applied every frame the objects overlap.
 			}
 		}	
 	circlecollide4(that){//Circular bouncing where both objects are affected according to their mass
-		if (this.distance(that)<(this.s+that.s)){
+		var clearance = this.s+that.s;
+		if (this.distancesq(that)<clearance*clearance){
 			// Distance between balls
 			var fDistance = Math.sqrt((this.x - that.x)*(this.x - that.x) + (this.y - that.y)*(this.y - that.y));
-
 			// Normal
 			var nx = (that.x - this.x) / fDistance;
 			var ny = (that.y - this.y) / fDistance;
-
 			// Tangent
 			var tx = -ny;
 			var ty = nx;
-
 			// Dot Product Tangent
 			var dpTan1 = this.vx * tx + this.vy * ty;
 			var dpTan2 = that.vx * tx + that.vy * ty;
-
 			// Dot Product Normal
 			var dpNorm1 = this.vx * nx + this.vy * ny;
 			var dpNorm2 = that.vx * nx + that.vy * ny;
-
 			// Conservation of momentum in 1D
 			var m1 = (dpNorm1 * (this.m - that.m) + 2.0 * that.m * dpNorm2) / (this.m + that.m);
 			var m2 = (dpNorm2 * (that.m - this.m) + 2.0 * this.m * dpNorm1) / (this.m + that.m);
@@ -321,7 +331,8 @@ class Umo { //Universal Moving Object
 		}	
 				
 	bombcollide(that){ //explodes on contact, damages every frame in explosion
-		if (this.distance(that) < (this.s + that.s)) {
+		var clearance = this.s+that.s;
+		if (this.distancesq(that) < clearance*clearance) {
 			that.damage(this.hurt); //Automatically proportional based on time spent inside 
 			if (this.timer>6){this.timer = 6;}//sets off explosion by setting timer to start of explosion
 			}
@@ -697,7 +708,7 @@ class Umo { //Universal Moving Object
 		if (dtheta*dtheta > dd*dd){
 			answer = true;
 			}
-		return answer; //wrong for testing
+		return answer; //wrong for testing //wtf does that even mean
 		}
 	drawbeam(viewx, viewy, beamlength, beamwidth, beamcolor){  //Draws the lazor
 		var x = this.x - viewx + canvas.width/2; //normally camera center being the player ship.
@@ -715,8 +726,8 @@ class Umo { //Universal Moving Object
 	}
 	beamcollide(beamlength, target){ //Returns 1 if the beam of length beamlength is touching target Umo.
 	var collide = 0;
-	var clearance = this.s+target.s+beamlength;
-	if (this.distance(target) < clearance*clearance){
+	var clearance = this.s+that.s;
+	if (this.distancesq(target) < clearance*clearance){
 		var deltad = this.d - this.directionof(target);
 		if (deltad > Math.PI){deltad = deltad - 2*Math.PI;}
 		if (deltad < -1*Math.PI){deltad = deltad + 2*Math.PI;}

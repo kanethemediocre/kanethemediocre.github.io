@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v407 by Andrew Kane </title>
+    <title>Bling Hustle v410 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -182,105 +182,7 @@ let testsystem29 = new System(30,randname(4),0,0);
 let testsystem30 = new System(31,randname(4),0,0);
 //Begin asteroid arena stuff//////////////////////////////////////////////////////////////////////////////////////////////////////////
 let asteroidarena = new System(32,randname(4),0,0);
-asteroidarena.planetarycollisions = true;
-asteroidarena.planets.push( new Umo(asteroidarena.x,asteroidarena.y,1400, "orange") ); //make the sun 
-asteroidarena.planets[0].name = asteroidarena.name; // Star name is same as system name
-let decoy = new Umo(1000, 16000, 200, "blue"); //4
-decoy.name = "Rodi";
-decoy.setorbit(asteroidarena.planets[0], 40000, 0, 1);
-decoy.parentid = 0;
-decoy.c2 = "teal";
-asteroidarena.planets.push(decoy);
-var maxsize = 320;
-var minsize = 160;
-var maxorbit = 20000;
-var minorbit = 8000;
-var orbitwonk = .02;
-var i = 0;
-while (i<200){
-	var orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());
-	var wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
-	var aodir = Math.random()*2*Math.PI;
-	var asize = minsize + Math.floor((maxsize-minsize)*Math.random());
-	//console.log(orbitr);
-	//console.log(wonk);
-	//console.log(aodir);
-	let nextplanet = new Umo(1000, 16000, asize, randcolor());
-	nextplanet.name = randname(4);
-	nextplanet.setorbit(asteroidarena.planets[0], orbitr, aodir, 1);
-	nextplanet.parentid = 1;
-	nextplanet.grange = nextplanet.s*8+512;
-	nextplanet.vx = nextplanet.vx * wonk;
-	nextplanet.vy = nextplanet.vy * wonk;
-	var j=0;
-	while (j<asteroidarena.planets.length){
-		if (asteroidarena.planets[j].collide(nextplanet)){//If planets overlaps
-			orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());//Re-roll planet orbit
-			wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
-			aodir = Math.random()*2*Math.PI;
-			nextplanet.setorbit(asteroidarena.planets[0], orbitr, aodir, 1);
-			nextplanet.vx = nextplanet.vx * wonk;
-			nextplanet.vy = nextplanet.vy * wonk;
-			j=-1;//start at 0 after the j++  to re-check for overlap
-			}
-		j++;
-		}
-	asteroidarena.planets.push(nextplanet);
-	i++;
-	}
-var outpostnum = 16
-asteroidarena.randomoutposts(outpostnum);
-var i=0;
-while(i<asteroidarena.outposts.length){
-	asteroidarena.outposts[i].setorbit(asteroidarena.planets[0],30000,i*(2/outpostnum)*Math.PI,1);
-	i++;
-	}
-asteroidarena.enemypopulate(2,1,8);	
-console.log(asteroidarena.shops);
-let superboss = new Umo(1000, 16000, 128, "blue"); //Superboss is a test capital ship
-superboss.c2 = "teal";
-superboss.hp = 5000;
-superboss.maxhp = 5000;
-superboss.shield = 1000;
-superboss.maxshield = 1000;
-superboss.shieldregen = 1.5;
-superboss.parentid = 1; 
-superboss.respawn(asteroidarena.planets[superboss.parentid]);
-superboss.name = randname(5);
-var randomplayerverts = randpolarpoly(20, 0.5);//sides,  minimum radius
-normalizepoly(randomplayerverts);
-superboss.polytheta = randomplayerverts[0];
-superboss.polyradius = randomplayerverts[1];
-superboss.polyradius[3] = superboss.polyradius[3]+.75
-superboss.polyradius[superboss.polyradius.length-4] = superboss.polyradius[superboss.polyradius.length-4]+.75
-superboss.polyradius[6] = superboss.polyradius[6]+.75
-superboss.polyradius[superboss.polyradius.length-7] = superboss.polyradius[superboss.polyradius.length-7]+.75
-superboss.ai = "enemy";
-asteroidarena.botbombs.push( new Umo(0,0,0,"red"));
-asteroidarena.botbombs[asteroidarena.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
-asteroidarena.botbombs[asteroidarena.botbombs.length-1].maxhp = 1; //with planets 
-asteroidarena.botbombs[asteroidarena.botbombs.length-1].shield=0;  
-asteroidarena.ships.push(superboss);
-
-var sbturret1 = new Turret("enemy",superboss,superboss.polytheta[3],superboss.s*superboss.polyradius[3]);
-var sbturret2 = new Turret("enemy",superboss,superboss.polytheta[6],superboss.s*superboss.polyradius[6]);
-var sbturret3 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-7],superboss.s*superboss.polyradius[superboss.polyradius.length-7]);   
-var sbturret4 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-4],superboss.s*superboss.polyradius[superboss.polyradius.length-4]); 
-var sbturrets = [sbturret1,sbturret2,sbturret3,sbturret4];
-var i=0;
-while (i<sbturrets.length){
-	sbturrets[i].pivot.hp = 800;
-	sbturrets[i].pivot.maxhp = 800;
-	sbturrets[i].pivot.shield = 200;
-	sbturrets[i].pivot.maxshield = 200;
-	sbturrets[i].anchorvisible = false;
-	sbturrets[i].pivot.c = sbturrets[0].pivot.c
-	sbturrets[i].pivot.c2 = sbturrets[0].pivot.c2
-	sbturrets[i].pivot.polyradius = sbturrets[0].pivot.polyradius
-	sbturrets[i].pivot.polytheta = sbturrets[0].pivot.polytheta
-	i++;
-	}
-asteroidarena.turrets = sbturrets;
+asteroidarena.generateasteroidarena();
 
 //end asteroid arena stuff///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -296,8 +198,10 @@ systems[1].outposts = loadhomeoutposts();
 systems[1].shops = allshops;
 systems[1].addrandomgang(1,2,16);
 systems[1].addrandomgang(2,3,3);
-systems[1].addrandomgang(3,4,2);//no moon bots
-systems[1].addrandomgang(5,3,1);//no deem, fobz, jupe, or heyo bots
+systems[1].addrandomgang(3,4,2);
+//no moon bots
+systems[1].addrandomgang(5,3,1);
+//no deem, fobz, jupe, or heyo bots
 systems[1].addrandomgang(10,3,4);
 systems[1].addrandomgang(11,4,6);
 systems[1].addrandomgang(12,3,5);
@@ -308,7 +212,8 @@ systems[1].addrandomgang(17,4,8);
 systems[1].addrandomgang(18,2,11);
 systems[1].addrandomgang(21,2,6);
 systems[1].addrandomgang(22,2,6);
-systems[1].addrandomgang(23,4,4);//no tune bots
+systems[1].addrandomgang(23,4,4);
+//no tune bots
 systems[1].addrandomgang(25,5,16);
 systems[1].addrandomtraders([5,11,16], 8, 4);
 var i = systems[1].botbombs.length;
@@ -319,21 +224,24 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	systems[1].botbombs[i].shield = 0;  
 	}
 systems[1].addcargomissions(4);
-systems[2].randomplanets();//Here is where all the random systems and enemies are generated.
-systems[2].enemypopulate(5,4,17);
-systems[2].addrandombling(50);
+systems[2].generatebasicsystem(5,2,16+2,80);//new lightly tested
+//systems[2].randomplanets();//Here is where all the random systems and enemies are generated.
+//systems[2].enemypopulate(5,4,17);
+//systems[2].addrandombling(50);
 systems[3].planets = loadtrinidadsystem(); //from trinidadsystem.js
 systems[3].outposts = loadtrinidadoutposts(); //from trinidadoutposts.js
 systems[3].shops = trinidadshops;//trinidadshops is defined in shop.js
 systems[3].enemypopulate(5,4,16);
 systems[3].addrandombling(50);
 systems[3].addcargomissions(4);
-systems[4].randomplanets();
-systems[4].enemypopulate(5,5,18);
-systems[4].addrandombling(50);
-systems[5].randomplanets();
-systems[5].enemypopulate(5,5,19);
-systems[5].addrandombling(50);
+systems[4].generatebasicsystem(5,4,16+4,80);//new lightly tested
+//systems[4].randomplanets();
+//systems[4].enemypopulate(5,5,18);
+//systems[4].addrandombling(50);
+systems[5].generatebasicsystem(5,5,16+5,80);//new lightly tested
+//systems[5].randomplanets();
+//systems[5].enemypopulate(5,5,19);
+//systems[5].addrandombling(50);
 systems[6].planets = loadnapasystem(); //from napasystem.js
 systems[6].outposts = loadnapaoutposts(); //from napaoutposts.js
 systems[6].shops = napashops;//napashops is defined in shop.js
@@ -343,9 +251,7 @@ systems[6].addrandombling(50);
 systems[6].addcargomissions(4);
 var speciali = 7;
 while (speciali<32){	//woo for 32 systems
-	systems[speciali].randomplanets();
-	systems[speciali].enemypopulate(5,speciali,16+speciali);	
-	systems[speciali].addrandombling(50);		
+	systems[speciali].generatebasicsystem(5,speciali,16+speciali,80);//new lightly tested
 	speciali++;
 	}		
 //////procedural bot ship generation for home system//////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,6 +381,10 @@ function update() {
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[3])){
 			ps = 7;
 			myship.setorbit(systems[ps].planets[3], 1000, 0.4, 1);
+			var randdir = Math.random()*2*Math.PI;
+			xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
+			waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
+			//special system stuff
 			myplayer.storystate = 999;
 			myplayer.money = 2000;
 			myplayer.task = "Profit";
@@ -486,7 +396,10 @@ function update() {
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
 			ps = 32;
 			console.log(systems[ps].planets[0].x);
-			myship.setorbit(systems[ps].planets[0], 16000, 0, 1);
+			myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
+			var randdir = Math.random()*2*Math.PI;
+			xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
+			waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
@@ -595,7 +508,7 @@ function update() {
 			systems[ps].drawshipfinder(0,300);
 			}
 		hud(myi);//myi is the player index.  
-	}
+		}
 	systems[ps].updateall(); //Updates everthing in system
 	systems[ps].gravitateall(); //gravitates everything in system
 	systems[ps].collideself(); //executes all collisions between objects in the system.

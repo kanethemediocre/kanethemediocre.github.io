@@ -86,7 +86,7 @@ class Turret{
 		//this.pivot.d = realdir;
 		}else{
 			this.bombs[0].hurt = 8; //nerf damage for testing
-			this.pivot.launchbomb(this.bombs[0],24,40);//	launchbomb(thebomb, mag, time){ 
+			this.pivot.launchbomb(this.bombs[0],20,32);//	launchbomb(thebomb, mag, time){ 
 		}
 
 	}

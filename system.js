@@ -1229,14 +1229,14 @@ class System{
 			
 				  break;
 				 case "v":
-				 if (cheatmode == 1){
-					if (ps <31){ps++;}
+				 if (cheatmode == 1){//global scope stuff
+					if (ps <31){ps++;} //maybe ps should be a player property?
 					else  {ps = 1;}
 					aplayer.navtarget = 0;
 					aplayer.shiptarget = 0;
 					pz = 0;
 					var randdir = Math.random()*2*Math.PI;
-					xxxx.setorbit(this.planets[0], 320000, randdir+Math.PI, -1);//Global scope here is bad
+					xxxx.setorbit(this.planets[0], 320000, randdir+Math.PI, -1);//Global scope here is bad, but setorbiting previous system is worse.
 					waldo.setorbit(this.planets[0], 320000, randdir, -1);
 					aplayer.ship.vx = 0; //Otherwise players inherit the momentum acquired in descent.
 					aplayer.ship.vy = 0;
@@ -1623,6 +1623,119 @@ class System{
 			i=i+1;
 			}
 		}
+	generatebasicsystem(gangsize,minlevel,maxlevel,bling){
+		this.randomplanets();
+		this.enemypopulate(gangsize,minlevel,maxlevel);
+		this.addrandombling(bling);
+	}
+	generateasteroidarena(){
+		this.planetarycollisions = true;
+		this.planets.push( new Umo(this.x,this.y,1400, "orange") ); //make the sun 
+		this.planets[0].name = this.name; // Star name is same as system name
+		let decoy = new Umo(1000, 16000, 200, "blue"); //4
+		decoy.name = "Rodi";
+		decoy.setorbit(this.planets[0], 40000, 0, 1);
+		decoy.parentid = 0;
+		decoy.c2 = "teal";
+		this.planets.push(decoy);
+		var maxsize = 320;
+		var minsize = 160;
+		var maxorbit = 20000;
+		var minorbit = 8000;
+		var orbitwonk = .02;
+		var i = 0;
+		while (i<200){
+			var orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());
+			var wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
+			var aodir = Math.random()*2*Math.PI;
+			var asize = minsize + Math.floor((maxsize-minsize)*Math.random());
+			//console.log(orbitr);
+			//console.log(wonk);
+			//console.log(aodir);
+			let nextplanet = new Umo(1000, 16000, asize, randcolor());
+			nextplanet.name = randname(4);
+			nextplanet.setorbit(this.planets[0], orbitr, aodir, 1);
+			nextplanet.parentid = 1;
+			nextplanet.grange = nextplanet.s*8+512;
+			nextplanet.vx = nextplanet.vx * wonk;
+			nextplanet.vy = nextplanet.vy * wonk;
+			var j=0;
+			while (j<this.planets.length){
+				if (this.planets[j].collide(nextplanet)){//If planets overlaps
+					orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());//Re-roll planet orbit
+					wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
+					aodir = Math.random()*2*Math.PI;
+					nextplanet.setorbit(this.planets[0], orbitr, aodir, 1);
+					nextplanet.vx = nextplanet.vx * wonk;
+					nextplanet.vy = nextplanet.vy * wonk;
+					j=-1;//start at 0 after the j++  to re-check for overlap
+					}
+				j++;
+				}
+			this.planets.push(nextplanet);
+			i++;
+			}
+		var outpostnum = 16
+		this.randomoutposts(outpostnum);
+		var i=0;
+		while(i<this.outposts.length){
+			this.outposts[i].setorbit(this.planets[0],30000,i*(2/outpostnum)*Math.PI,1);
+			i++;
+			}
+		this.enemypopulate(2,1,8);	
+		console.log(this.shops);
+		this.addsuperboss(96,4,4000,1000,320,80,1);
+		this.addsuperboss(96,4,4000,1000,320,80,2);
+		this.addsuperboss(96,4,4000,1000,320,80,3);
+	}
+	addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
+		var superboss = new Umo(0, 0, size, randcolor() ); //Superboss is a test capital ship
+		superboss.c2 = randcolor();
+		superboss.hp = hp;
+		superboss.maxhp = hp;
+		superboss.shield = shield;
+		superboss.maxshield = shield;
+		superboss.shieldregen = 2;
+		superboss.parentid = parentid; 
+		superboss.respawn(this.planets[superboss.parentid]);
+		superboss.name = randname(5);
+		var randomplayerverts = randpolarpoly(20, 0.5);//sides,  minimum radius
+		normalizepoly(randomplayerverts);
+		superboss.polytheta = randomplayerverts[0];
+		superboss.polyradius = randomplayerverts[1];
+		//var sbpi = [3,6,13,16];
+		superboss.polyradius[3] = superboss.polyradius[3]+.75
+		superboss.polyradius[superboss.polyradius.length-4] = superboss.polyradius[superboss.polyradius.length-4]+.75
+		superboss.polyradius[6] = superboss.polyradius[6]+.75
+		superboss.polyradius[superboss.polyradius.length-7] = superboss.polyradius[superboss.polyradius.length-7]+.75
+		superboss.ai = "enemy";
+		this.botbombs.push( new Umo(0,0,0,"red"));
+		this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
+		this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
+		this.botbombs[this.botbombs.length-1].shield=0;  
+		this.ships.push(superboss);
+
+		var sbturret1 = new Turret("enemy",superboss,superboss.polytheta[3],superboss.s*superboss.polyradius[3]);
+		var sbturret2 = new Turret("enemy",superboss,superboss.polytheta[6],superboss.s*superboss.polyradius[6]);
+		var sbturret3 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-7],superboss.s*superboss.polyradius[superboss.polyradius.length-7]);   
+		var sbturret4 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-4],superboss.s*superboss.polyradius[superboss.polyradius.length-4]); 
+		var sbturrets = [sbturret1,sbturret2,sbturret3,sbturret4];
+		var i=0;
+		while (i<sbturrets.length){
+			sbturrets[i].pivot.hp = turrethp;
+			sbturrets[i].pivot.maxhp = turrethp;
+			sbturrets[i].pivot.shield = turretshield;
+			sbturrets[i].pivot.maxshield = turretshield;
+			sbturrets[i].anchorvisible = false;
+			sbturrets[i].pivot.c = sbturrets[0].pivot.c;
+			sbturrets[i].pivot.c2 = sbturrets[0].pivot.c2;
+			sbturrets[i].pivot.polyradius = sbturrets[0].pivot.polyradius
+			sbturrets[i].pivot.polytheta = sbturrets[0].pivot.polytheta
+			this.turrets.push(sbturrets[i]);
+			i++;
+			}
+		//this.turrets.pushsbturrets;
+	}
 	addbling(parent,basevalue,bonusvalue,num){//adds bling to 1 planet
 		var i=0;
 		while(i<num){
