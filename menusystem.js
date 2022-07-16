@@ -23,7 +23,15 @@ function loadmenusystem(){
 	aatest.name = "Asteroid Arena";
 	aatest.c2 = "red";
 	aatest.m = 0;//Not currently used
-	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest];
+	let bp1test = new Umo(0, 300, 100, "pink"); //3
+	bp1test.name = "Bubble Arena 1";
+	bp1test.c2 = "teal";
+	bp1test.m = 0;//Not currently used
+	let bp2test = new Umo(200, 200, 100, "violet"); //3
+	bp2test.name = "Bubble Arena 2";
+	bp2test.c2 = "lime";
+	bp2test.m = 0;//Not currently used
+	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest,bp1test,bp2test];
 	var i = 0; //This randomizes planetary dots for home system.
 	while (i<menuplanets.length){
 		var j=0;

@@ -11,7 +11,7 @@
 	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
 	 48,16,10,20,4,4,0.2,0,0,1,0,0,80,20,10,90,"blue","ID not implemented");
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               
-	 8,4,10,10,2,5,0.75,0.25,5,6,2,10,80,16,10,30,"white","ID not implemented");
+	 8,4,10,10,2,5,0.75,0.25,5,6,2,10,80,16,10,40,"white","ID not implemented");
 	 let weapon6 = new Blaster("Blazor","Beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
 	 8,4,10,1,0,0,1,0,0,1,0,0,384,64,10,2,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          
@@ -25,7 +25,7 @@
 	 let weapon10 = new Blaster("P-Clone","Blaster takes characteristics from probe data",300,"plain",                            
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
 	 let weapon11 = new Blaster("Multibanger","Parallel projectiles",800,"multiplex",                            
-	 12,6,10,12,2,10,0.75,0.25,10,2,1,10,40,8,10,12,"pink","ID not implemented");
+	 12,6,10,12,2,10,0.75,0.25,10,2,1,10,40,8,10,24,"pink","ID not implemented");
 	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row",2500,"multiplex",                            
 	 20,10,10,0.5,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
 	 let weapon13 = new Blaster("Nova","Fires in all directions.",2000,"fixedspread",                            

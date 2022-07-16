@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v410 by Andrew Kane </title>
+    <title>Bling Hustle v415 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -180,18 +180,22 @@ let testsystem27 = new System(28,randname(4),0,0);
 let testsystem28 = new System(29,randname(4),0,0);
 let testsystem29 = new System(30,randname(4),0,0);
 let testsystem30 = new System(31,randname(4),0,0);
-//Begin asteroid arena stuff//////////////////////////////////////////////////////////////////////////////////////////////////////////
 let asteroidarena = new System(32,randname(4),0,0);
-asteroidarena.generateasteroidarena();
-
-//end asteroid arena stuff///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+asteroidarena.generateasteroidarena(1400,160,320,8000,20000,30000,40000,200,2,3,16);//generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
+let bubbleparty1 = new System(33,randname(4),0,0);
+bubbleparty1.generatebubbleparty(160,320,12000,12000,160,2,3,16,0);//	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops, heat){
+bubbleparty1.wraps = 13000;
+bubbleparty1.addrandombling(64);
+let bubbleparty2 = new System(34,randname(4),0,0);
+bubbleparty2.generatebubbleparty(160,240,12000,12000,160,1,3,16,2);//	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops, heat){
+bubbleparty2.wraps = 13000;
+bubbleparty2.addrandombling(32);
 let playerradio = new Radio(" ");
 let home = new System(1,"Sool",0,0);
 let menu = new System(0,"Main Menu",0,0);
 let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
 				testsystem15,testsystem16,testsystem17,testsystem18,testsystem19,testsystem20,testsystem21,testsystem22,testsystem23,testsystem24,testsystem25,testsystem26,
-				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena];
+				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena,bubbleparty1,bubbleparty2];
 systems[0].planets = loadmenusystem();
 systems[1].planets = loadhomesystem();
 systems[1].outposts = loadhomeoutposts();
@@ -225,9 +229,6 @@ while (i>0){  ////For all bot bombs, set them up as a bomb Umos.
 	}
 systems[1].addcargomissions(4);
 systems[2].generatebasicsystem(5,2,16+2,80);//new lightly tested
-//systems[2].randomplanets();//Here is where all the random systems and enemies are generated.
-//systems[2].enemypopulate(5,4,17);
-//systems[2].addrandombling(50);
 systems[3].planets = loadtrinidadsystem(); //from trinidadsystem.js
 systems[3].outposts = loadtrinidadoutposts(); //from trinidadoutposts.js
 systems[3].shops = trinidadshops;//trinidadshops is defined in shop.js
@@ -235,13 +236,7 @@ systems[3].enemypopulate(5,4,16);
 systems[3].addrandombling(50);
 systems[3].addcargomissions(4);
 systems[4].generatebasicsystem(5,4,16+4,80);//new lightly tested
-//systems[4].randomplanets();
-//systems[4].enemypopulate(5,5,18);
-//systems[4].addrandombling(50);
 systems[5].generatebasicsystem(5,5,16+5,80);//new lightly tested
-//systems[5].randomplanets();
-//systems[5].enemypopulate(5,5,19);
-//systems[5].addrandombling(50);
 systems[6].planets = loadnapasystem(); //from napasystem.js
 systems[6].outposts = loadnapaoutposts(); //from napaoutposts.js
 systems[6].shops = napashops;//napashops is defined in shop.js
@@ -366,19 +361,19 @@ function update() {
 			menuabout = true;
 			menucontrols = false;
 			}
-		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
 			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
 			myplayer.storystate = 125;//adjust for testing of stuff, should be 0 on major releases.
 			}
-		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[2])){
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;
 			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
 			myplayer.storystate = 999;
 			myplayer.money = 2000;
 			myplayer.task = "Profit";
 			}
-		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[3])){
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[3])){
 			ps = 7;
 			myship.setorbit(systems[ps].planets[3], 1000, 0.4, 1);
 			var randdir = Math.random()*2*Math.PI;
@@ -389,11 +384,11 @@ function update() {
 			myplayer.money = 2000;
 			myplayer.task = "Profit";
 			}
-		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[4])){
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[4])){
 			menucontrols = true;
 			menuabout = false;
 			}
-		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
 			ps = 32;
 			console.log(systems[ps].planets[0].x);
 			myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
@@ -403,14 +398,38 @@ function update() {
 			console.log(myship.x);
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
-			myplayer.task = "Explore";
+			myplayer.task = "Collect Bling";
 			}
-		if (menuabout){
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[6])){
+			ps = 33;
+			//console.log(systems[ps].planets[0].x);
+			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
+			myplayer.ship.x = 12000
+			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
+			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
+			console.log(myship.x);
+			myplayer.storystate = 999;
+			myplayer.money = 3001;
+			myplayer.task = "Collect Bling";
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[7])){
+			ps = 34;
+			//console.log(systems[ps].planets[0].x);
+			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
+			var randdir = Math.random()*2*Math.PI;
+			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
+			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
+			console.log(myship.x);
+			myplayer.storystate = 999;
+			myplayer.money = 3001;
+			myplayer.task = "Collect Bling";
+			}
+		else if (menuabout){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
 			fillwrappedtext(abouttext,128,16, 420,canvas.height-200);
 			}//display stuff here.
-		if (menucontrols){
+		else if (menucontrols){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
 			var i=0;
@@ -672,6 +691,25 @@ function update() {
 						aplayer.blasters[10].phas = true;
 						}
 					}
+				}
+			var j = systems[ps].turrets.length;
+			while (j>1){ //for all ships...
+				j=j-1;
+				if (aplayer.blasters[0].bombs[0].collide(systems[ps].turrets[j].pivot)){//Checks for collision only
+					if (aplayer.probemode == 0){//clones color
+						aship.c = systems[ps].turrets[j].pivot.c;
+						aship.c2 = systems[ps].turrets[j].pivot.c2;
+					}else if (aplayer.probemode == 1){//clones shape
+						aship.polytheta = systems[ps].turrets[j].pivot.polytheta;//Applies enemy polygon to player
+						aship.polyradius = systems[ps].turrets[j].pivot.polyradius;
+					}else if (aplayer.probemode == 2){
+					//	constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,bombcolor,ID){
+						var bb = systems[ps].turrets[j].bombs[0];
+						aplayer.blasters[10] = new Blaster("Some Turret's blaster","The Pclone takes the properties of the weapon used by the last probed enemy.",5000,"plain",
+						bb.hurt,0,0,12,0,0,bb.boombuff,0,0,1,0,0,80,0,0,25,bb.c,"ID not used");//Sadly not many properties to pull, bot weapons are not varied enough.
+						aplayer.blasters[10].phas = true;
+						}
+					}				
 				}
 			}
 		qq++;

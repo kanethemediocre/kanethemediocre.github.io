@@ -16,9 +16,70 @@ class System{
 		this.bling = [];
 		this.difficulty = 1; //Scales ship generation attributes
 		this.planetarycollisions = false;
+		this.gravity = true;
 		this.x = x;
 		this.y = y;
-	}
+		this.wraps = 0; //0 for off, >0 for wrapping at that radius.
+		}
+	isclear(target,x,y){
+		var dummy = new Umo(0,0,target.s,"pink");
+		dummy.match(target);
+		var clear = true;
+		//var problems = 0;
+		var i=0;
+		while(i<this.planets.length){
+			if ( (dummy.collide(this.planets[i])) && (target!==this.planets[i]) ){
+				clear = false; 
+				//problem = this.planets[i];
+				//console.log("Collided with planet "+i);
+				}
+			i++;
+			}
+		var i=0;
+		while(i<this.ships.length){
+			if ( (dummy.collide(this.ships[i])) && (target!==this.ships[i]) ){
+				clear = false; 
+				//problem = this.ships[i];
+				//console.log("Collided with ship "+i);
+				}
+			i++;
+			}
+		var i=0;
+		while(i<this.outposts.length){
+			if ( (dummy.collide(this.outposts[i])) && (target!==this.outposts[i]) ){
+				clear = false;
+				//problem = this.outposts[i];
+				//console.log("Collided with outpost "+i);
+				}
+			i++;
+			}
+		while(i<this.botbombs.length){
+			if ( (dummy.collide(this.botbombs[i])) && (target!==this.botbombs[i]) ){
+				clear = false; 
+				//problem this.botbombs[i];
+				//console.log("Collided with botbomb "+i);
+				}
+			i++;
+			}
+		return clear;
+		}
+	placenear(target,x,y){
+		//console.log("triedtoplacenear");
+		target.x = x;
+		target.y = y;
+		var i=0;//I doesn't control the loop exit, but algorithmically indicates next point to try
+		while (this.isclear(target,target.x,target.y)==false){
+			var nextdir = i%4; //Cardinal directions, easy math
+			var nextmag = i*50;//target.s*(1+Math.floor(i/4))
+			if 		(nextdir == 0){target.x = x+nextmag;}
+			else if (nextdir == 1){target.x = x-nextmag;}
+			else if (nextdir == 2){target.y = y+nextmag;}
+			else if (nextdir == 3){target.y = y-nextmag;}
+			//console.log(i);
+			i++;
+			}
+		//console.log("placednear");
+		}
 	draw(viewx,viewy){ //no filter draws everything, sort of obselete
 		var i= this.ships.length;
 		while  (i>0){
@@ -285,6 +346,7 @@ class System{
 			}
 		}
 	updateall(){
+		if (this.wraps>0){ this.radialwrap(this.wraps); }
 		var i = 0; //update section////////////////////////////////////////////////////////////
 		while (i<this.ships.length){ //update ships
 			this.ships[i].updateship(this.planets); //basic ship updates
@@ -389,7 +451,7 @@ class System{
 			i=i-1;
 			this.players[i].update1(this.planets);
 			}					
-///update explosions///////////////////////////////////////////////////
+//update explosions///////////////////////////////////////////////////
 		var i=0;
 		while(i<this.explosions.length){
 			this.explosions[i].update1();
@@ -418,45 +480,47 @@ class System{
 		}
 	}//end updateall()////////////////////////////////////////////////////////////////////////
 	gravitateall(){
-		var i = this.planets.length;
-		while (i>0){ //Planet on ships and bombs
-			i=i-1;
-			var j = this.ships.length;
-			while (j>0){ //gravitate on each ship
-				j=j-1;
-				this.planets[i].gravitate(this.ships[j]);
-				}
-			j = this.botbombs.length;
-			while (j>0){ //gravitate on each bot bomb
-				j=j-1;
-				this.planets[i].gravitate(this.botbombs[j]);
-				}				
-			j = this.bling.length;
-			while (j>0){ //gravitate on each bling
-				j=j-1;
-				this.planets[i].gravitate(this.bling[j]);
-				}
-			j = this.players.length;
-			while (j>0){ //gravitate on each player
-				j=j-1;
-				this.planets[i].gravitate(this.players[j].ship);
-				var k = this.players[j].blasters.length;
-				while (k>0){ //For all blasters to each planet
-					k=k-1;
-					this.players[j].blasters[k].fall(systems[ps].planets[i]);
+		if (this.gravity){	
+			var i = this.planets.length;
+			while (i>0){ //Planet on ships and bombs
+				i=i-1;
+				var j = this.ships.length;
+				while (j>0){ //gravitate on each ship
+					j=j-1;
+					this.planets[i].gravitate(this.ships[j]);
 					}
-				}		
-			}
-		var i = this.outposts.length;
-		while (i>0){
-			i=i-1;
-			this.planets[0].gravitate(this.outposts[i]);	
-			}
-		var i = this.planets.length;
-		while (i>1){//Planet on planet gravity
-			i=i-1;
-			this.planets[0].gravitate(this.planets[i]);//sun gravitates all
-			if (this.planets[i].parentid>0){ this.planets[this.planets[i].parentid].gravitate(this.planets[i]); } //others only affected by parent
+				j = this.botbombs.length;
+				while (j>0){ //gravitate on each bot bomb
+					j=j-1;
+					this.planets[i].gravitate(this.botbombs[j]);
+					}				
+				j = this.bling.length;
+				while (j>0){ //gravitate on each bling
+					j=j-1;
+					this.planets[i].gravitate(this.bling[j]);
+					}
+				j = this.players.length;
+				while (j>0){ //gravitate on each player
+					j=j-1;
+					this.planets[i].gravitate(this.players[j].ship);
+					var k = this.players[j].blasters.length;
+					while (k>0){ //For all blasters to each planet
+						k=k-1;
+						this.players[j].blasters[k].fall(systems[ps].planets[i]);
+						}
+					}		
+				}
+			var i = this.outposts.length;
+			while (i>0){
+				i=i-1;
+				this.planets[0].gravitate(this.outposts[i]);	
+				}
+			var i = this.planets.length;
+			while (i>1){//Planet on planet gravity
+				i=i-1;
+				this.planets[0].gravitate(this.planets[i]);//sun gravitates all
+				if (this.planets[i].parentid>0){ this.planets[this.planets[i].parentid].gravitate(this.planets[i]); } //others only affected by parent
+				}
 			}
 		}
 	gravitateothers(umolist){//For gravitating Umos external to the system (playerbombs at the start) not used afaik
@@ -600,9 +664,6 @@ class System{
 						}
 					j++;
 					}
-
-
-
 			i=i+1; 
 			}
 		var i=0;
@@ -696,6 +757,86 @@ class System{
 		}	
 	collideothers(externalplanets, externalships, externalbombs){//input are umo arrays
 		var  i = externalplanets.length;//unfinished, unused, but a good idea. 		
+		}
+	radialwrap(wrapr){
+		var wrapr2 = wrapr*wrapr;
+		var i=0;
+		//console.log("triedtowrap");
+		while (i<this.ships.length){
+			var tested = this.ships[i]
+			var rad2 = tested.x*tested.x+tested.y*tested.y;
+			if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
+				var overshoot = (wrapr/Math.sqrt(rad2));
+				tested.x = tested.x* overshoot;
+				tested.y = tested.y* overshoot;
+				//console.log("trying to place a ship");
+				this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
+				//tested.x = -0.99*tested.x;
+				//tested.y = -0.99*tested.y;
+				}
+			i++;
+			}
+		var i=0;
+		while (i<this.players.length){
+			var tested = this.players[i].ship;
+			var rad2 = tested.x*tested.x+tested.y*tested.y;
+			if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
+				var overshoot = (wrapr/Math.sqrt(rad2));
+				tested.x = tested.x* overshoot;
+				tested.y = tested.y* overshoot;
+				//console.log("trying to place a player");
+				this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
+				//tested.x = -0.99*tested.x;
+				//tested.y = -0.99*tested.y;
+				}
+			i++;
+			}
+		var i=0;
+		while (i<this.planets.length-2){//Let waldo and xxxx do their thing and not be involved.
+			var tested = this.planets[i];
+			var rad2 = tested.x*tested.x+tested.y*tested.y;
+			if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
+				var overshoot = (wrapr/Math.sqrt(rad2));
+				tested.x = tested.x* overshoot;
+				tested.y = tested.y* overshoot;
+				//console.log("trying to place a planet");
+				this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
+				//tested.x = -0.98*tested.x;//Planets get moved further inwards to prevent ships from spawing inside planets.
+				//tested.y = -0.98*tested.y;
+				}
+			i++;
+			}
+		var i=0;
+		while (i<this.outposts.length){//Let waldo and xxxx do their thing and not be involved.
+			var tested = this.outposts[i];
+			var rad2 = tested.x*tested.x+tested.y*tested.y;
+			if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
+				var overshoot = (wrapr/Math.sqrt(rad2));
+				tested.x = tested.x* overshoot;
+				tested.y = tested.y* overshoot;
+				//console.log("trying to place an outpost");
+				this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
+				//tested.x = -0.98*tested.x;//Planets get moved further inwards to prevent ships from spawing inside planets.
+				//tested.y = -0.98*tested.y;
+				}
+			i++;
+			}
+		var i=0;
+		while (i<this.botbombs.length){//Let waldo and xxxx do their thing and not be involved.
+			var tested = this.botbombs[i];
+			var rad2 = tested.x*tested.x+tested.y*tested.y;
+			if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
+				var overshoot = (wrapr/Math.sqrt(rad2));
+				tested.x = tested.x* overshoot;
+				tested.y = tested.y* overshoot;
+				//console.log("trying to place an outpost");
+				this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
+				//tested.x = -0.98*tested.x;//Planets get moved further inwards to prevent ships from spawing inside planets.
+				//tested.y = -0.98*tested.y;
+				}
+			i++;
+			}
+		//console.log("finishedwrap");
 		}
 	planetsmpsummary(){//For onboarding new system
 		var pupdate = [];
@@ -1628,23 +1769,23 @@ class System{
 		this.enemypopulate(gangsize,minlevel,maxlevel);
 		this.addrandombling(bling);
 	}
-	generateasteroidarena(){
+	generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
 		this.planetarycollisions = true;
-		this.planets.push( new Umo(this.x,this.y,1400, "orange") ); //make the sun 
+		this.planets.push( new Umo(this.x,this.y,sunsize, "orange") ); //make the sun 
 		this.planets[0].name = this.name; // Star name is same as system name
-		let decoy = new Umo(1000, 16000, 200, "blue"); //4
-		decoy.name = "Rodi";
-		decoy.setorbit(this.planets[0], 40000, 0, 1);
+		let decoy = new Umo(0, 0, 300, randcolor); //4
+		decoy.name = "Rodi";//No idea why the name.
+		decoy.setorbit(this.planets[0], rodiradius, 0, 1);
 		decoy.parentid = 0;
-		decoy.c2 = "teal";
+		decoy.c2 = randcolor;
 		this.planets.push(decoy);
-		var maxsize = 320;
-		var minsize = 160;
-		var maxorbit = 20000;
-		var minorbit = 8000;
+		var maxsize = maxroidsize;
+		var minsize = minroidsize;
+		var maxorbit = maxradius;
+		var minorbit = minradius;
 		var orbitwonk = .02;
 		var i = 0;
-		while (i<200){
+		while (i<numroids){
 			var orbitr = minorbit + Math.floor((maxorbit-minorbit)*Math.random());
 			var wonk = 1 - orbitwonk + 2*orbitwonk*Math.random();
 			var aodir = Math.random()*2*Math.PI;
@@ -1675,19 +1816,70 @@ class System{
 			this.planets.push(nextplanet);
 			i++;
 			}
-		var outpostnum = 16
+		var outpostnum = numshops
 		this.randomoutposts(outpostnum);
 		var i=0;
 		while(i<this.outposts.length){
-			this.outposts[i].setorbit(this.planets[0],30000,i*(2/outpostnum)*Math.PI,1);
+			this.outposts[i].setorbit(this.planets[0],shopradius,i*(2/outpostnum)*Math.PI,1);
 			i++;
 			}
-		this.enemypopulate(2,1,8);	
+		this.enemypopulate(gangsize,1,8);	
 		console.log(this.shops);
 		this.addsuperboss(96,4,4000,1000,320,80,1);
 		this.addsuperboss(96,4,4000,1000,320,80,2);
 		this.addsuperboss(96,4,4000,1000,320,80,3);
-	}
+		}
+	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops,heat){
+		this.planetarycollisions = true;
+		this.gravity = false;
+		var i=0;
+		while(i<numroids){
+			var asize = minroidsize + Math.floor((maxroidsize-minroidsize)*Math.random());
+			let nextplanet = new Umo(0, 0, asize, randcolor());
+			nextplanet.name = randname(4);
+			nextplanet.parentid = 1;
+			var j=0;
+			var clipped = true;//Defaults to true, so that loop will run at least once to check.
+			var corner = true;
+			while (clipped||corner){
+				var randx = Math.floor( maxroidradius*(Math.random()*2-1) );
+				var randy = Math.floor( maxroidradius*(Math.random()*2-1) );//re-randomizes...
+				var centerdistance = Math.sqrt(randx*randx+randy*randy);
+				nextplanet.x = randx;
+				nextplanet.y = randy;
+				if (centerdistance>maxroidradius){ corner = true; } else { corner = false; }
+				clipped = false;
+				var j=0;
+				while(j<this.planets.length){//Check that the new planet doesn't collide with any prior planets
+					if (this.planets[j].collide(nextplanet)){
+						clipped = true;
+						}
+					j++;
+					}
+				}
+			var tempmag = Math.random()*heat;
+			console.log(tempmag);
+			var tempdir = Math.random()*2*Math.PI;
+			console.log(tempdir);			
+			nextplanet.push(tempmag, tempdir);
+			//nextplanet.vx = Math.random()*heat;
+			this.planets.push(nextplanet);
+			//this.planets[this.planets.length-1].push(tempmag,tempdir);
+			i++;
+			}
+		this.randomoutposts(numshops);
+		var i=0;
+		while(i<this.outposts.length){
+			//this.outposts[i].setorbit(this.planets[0],shopradius,i*(2/outpostnum)*Math.PI,1);
+			i++;
+			}
+		this.enemypopulate(gangsize,1,8);	
+		console.log(this.planets.length);
+		console.log(this.ships.length);
+		//this.addsuperboss(96,4,4000,1000,320,80,1);
+		//this.addsuperboss(96,4,4000,1000,320,80,2);
+		//this.addsuperboss(96,4,4000,1000,320,80,3);
+		}
 	addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
 		var superboss = new Umo(0, 0, size, randcolor() ); //Superboss is a test capital ship
 		superboss.c2 = randcolor();
