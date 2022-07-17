@@ -7,15 +7,15 @@
 	 let weapon2 = new Blaster("Mine","Powerful but very slow moving bomb.  This blaster needs to be used in conjunction with some combination of thrusters and clever planning.",500,"plain",                                 
 	 40,10,10,0.5,0,0,2,0.4,10,1,0,0,1800,300,10,40,"purple","ID not implemented");
 	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"fixedspread",
-	 8,4,10,12,2,10,1.2,0.2,10,2,1,10,16,8,10,25,"green","ID not implemented");
+	 8,4,10,12,2,10,1.2,0.2,10,3,1,10,16,8,10,25,"green","ID not implemented");
 	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
 	 48,16,10,20,4,4,0.2,0,0,1,0,0,80,20,10,90,"blue","ID not implemented");
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               
-	 8,4,10,10,2,5,0.75,0.25,5,6,2,10,80,16,10,40,"white","ID not implemented");
+	 8,4,10,10,2,5,0.75,0.25,5,6,2,10,80,16,10,50,"white","ID not implemented");
 	 let weapon6 = new Blaster("Blazor","Beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
 	 8,4,10,1,0,0,1,0,0,1,0,0,384,64,10,2,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          
-	 8,5,10,8,1,10,0.3,0,0,12,2,2,80,10,10,50,"white","ID not implemented");
+	 10,5,10,10,0,0,0.3,0,0,12,4,10,64,8,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Disintigrator","Short range, rapid-firing blaster with good damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",                         
 	 12,6,10,12,2,10,0.2,0.2,10,6,0,0,24,2,10,10,"white","ID not implemented");
 	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.  Beepapop boowopendongle, prodoopsenboboompo bopopob.",20000,"spread",                                           
@@ -28,8 +28,8 @@
 	 12,6,10,12,2,10,0.75,0.25,10,2,1,10,40,8,10,24,"pink","ID not implemented");
 	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row",2500,"multiplex",                            
 	 20,10,10,0.5,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
-	 let weapon13 = new Blaster("Nova","Fires in all directions.",2000,"fixedspread",                            
-	 12,6,10,12,2,10,0.75,0.25,10,16,8,10,40,8,10,48,"tan","ID not implemented");
+	 let weapon13 = new Blaster("Nova","Fires in all directions.",1600,"fixedspread",                            
+	 12,6,10,12,2,10,0.75,0.25,10,24,12,10,40,8,10,48,"tan","ID not implemented");
 	 weapon13.special1 = 4*Math.PI/2;
 	 weapon13.special2 = 8*Math.PI/4;
 	 let weapon14 = new Blaster("Fast Railgun","The new dank cheese.  Fast firing and fast flying long range bombs.",2000,"semirapid",                            

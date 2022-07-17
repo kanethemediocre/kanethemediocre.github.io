@@ -20,6 +20,7 @@ class System{
 		this.x = x;
 		this.y = y;
 		this.wraps = 0; //0 for off, >0 for wrapping at that radius.
+		this.bombcollisions = false;
 		}
 	isclear(target,x,y){
 		var dummy = new Umo(0,0,target.s,"pink");
@@ -562,7 +563,39 @@ class System{
 				i++;
 				}
 			}
-		
+		if (this.bombcollisions){
+			var i=0;
+			while (i<this.players.length){//Handles sun only, sun not moved by collisions.
+				var j=0;
+				while(j<this.players[i].blasters.length){
+					var k=0;
+					while(k<this.players[i].blasters[j].bombs.length){
+						var h=0;
+						while(h<this.botbombs.length){
+							if ((this.botbombs[h].timer>6)||(this.players[i].blasters[j].bombs[k].timer>6)){
+								if (this.botbombs[h].collide(this.players[i].blasters[j].bombs[k])){
+									this.botbombs[h].timer = 6;
+									this.players[i].blasters[j].bombs[k].timer = 6;
+									}
+								}
+							h++;
+							}
+						k++;
+						}
+					j++;
+					}
+				i++;
+				}
+			var i=1;
+			while (i<this.planets.length){
+				var j=i+1;
+				while (j<this.planets.length){
+					this.planets[i].circlecollide4(this.planets[j]);
+					j++;
+					}
+				i++;
+				}
+			}	
 		var i = this.planets.length;
 		while (i>0){
 			//For all planets+other collisions/////////////////////////////////
@@ -1540,7 +1573,7 @@ class System{
 		while(extradots>0){
 			this.planets[i].polyradius.push(0);
 			this.planets[i].polytheta.push(0);
-			extradots = extradots - 1;
+			extradots--;
 			}
 		var i = 0;
 		while (i<this.planets.length){
@@ -1813,9 +1846,37 @@ class System{
 					}
 				j++;
 				}
+			var extradots = Math.floor(Math.random()*3);
+			while(extradots>0){
+				nextplanet.polyradius.push(0);
+				nextplanet.polytheta.push(0);
+				extradots--;
+				}
+			var j=0;
+			while (j<nextplanet.polytheta.length){
+				nextplanet.polyradius[j] = Math.random()+0.125;
+				nextplanet.polytheta[j] = Math.random()*2*Math.PI;
+				j=j+1;
+				}
 			this.planets.push(nextplanet);
 			i++;
 			}
+		var extradots = Math.floor(Math.random()*3);
+		while(extradots>0){
+			this.planets[i].polyradius.push(0);
+			this.planets[i].polytheta.push(0);
+			extradots--;
+			}
+		var i = 0;
+		while (i<this.planets.length){
+			var j=0;
+			while (j<this.planets[i].polytheta.length){
+				this.planets[i].polyradius[j] = Math.random()+0.125;
+				this.planets[i].polytheta[j] = Math.random()*2*Math.PI;
+				j=j+1;
+				}
+			i=i+1;
+			}	
 		var outpostnum = numshops
 		this.randomoutposts(outpostnum);
 		var i=0;
@@ -1862,11 +1923,23 @@ class System{
 			var tempdir = Math.random()*2*Math.PI;
 			console.log(tempdir);			
 			nextplanet.push(tempmag, tempdir);
-			//nextplanet.vx = Math.random()*heat;
+			var extradots = Math.floor(Math.random()*3);
+			while(extradots>0){
+				nextplanet.polyradius.push(0);
+				nextplanet.polytheta.push(0);
+				extradots--;
+				}
+			var j=0;
+			while (j<nextplanet.polytheta.length){
+				nextplanet.polyradius[j] = Math.random()+0.125;
+				nextplanet.polytheta[j] = Math.random()*2*Math.PI;
+				j=j+1;
+				}
 			this.planets.push(nextplanet);
 			//this.planets[this.planets.length-1].push(tempmag,tempdir);
 			i++;
 			}
+		
 		this.randomoutposts(numshops);
 		var i=0;
 		while(i<this.outposts.length){

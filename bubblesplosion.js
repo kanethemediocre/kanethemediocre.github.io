@@ -16,7 +16,7 @@ class Bubblesplosion{
         var i=1;
         while (i<this.stages){
             var nextstage = [];
-            bubblesize = bubblesize*0.8;
+            bubblesize = bubblesize*0.875;
             bubbleradius = bubbleradius+this.s/2;
             var bubblecolor = rainbow((i-1)%6);
             var numbubbles = Math.floor(Math.random()*(2+i))+3;

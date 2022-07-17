@@ -40,13 +40,13 @@ class Upgrade{
 	}
 allupgrades = [];
 allupgrades.push(new Upgrade("Repair","Repairs any damage to your ship.",20,"repair",0));
-allupgrades.push(new Upgrade("Armor","Improves your ship's armor.",1000,"armor",0));
-allupgrades.push(new Upgrade("Shield","Improves your ship's shield.",4000,"shield",0));
-allupgrades.push(new Upgrade("Shield Regen","Improves your ship's shield regeneration rate.",3000,"shieldregen",0));
-allupgrades.push(new Upgrade("Radar","Improves your ship's radar range.",3000,"radar",0));
+allupgrades.push(new Upgrade("Armor","Improves your ship's armor.",800,"armor",0));
+allupgrades.push(new Upgrade("Shield","Improves your ship's shield.",2000,"shield",0));
+allupgrades.push(new Upgrade("Shield Regen","Improves your ship's shield regeneration rate.",1250,"shieldregen",0));
+allupgrades.push(new Upgrade("Radar","Improves your ship's radar range.",2500,"radar",0));
 allupgrades.push(new Upgrade("Cargo","Improves your ship's cargo capacity",3000,"cargo",0));
-allupgrades.push(new Upgrade("Thrust","Improves your ship's thruster power",3000,"thrust",0));
-allupgrades.push(new Upgrade("Sensor","Improves your ship's navigation and targeting sensors",3000,"sensor",0));
+allupgrades.push(new Upgrade("Thrust","Improves your ship's thruster power",4000,"thrust",0));
+allupgrades.push(new Upgrade("Sensor","Improves your ship's navigation and targeting sensors",5000,"sensor",0));
 allupgrades.push(new Upgrade("Solar Shield","Improves your shield's resistance to solar radiation.",3000,"solar",0));
 allupgrades.push(new Upgrade("Impact Shield","Improves your shield's resistance to collisions.",3000,"impact",0));
 //allupgrades.push(new Upgrade("Thrust Adjust","Adds adjustibility to your ship's thrusters",3000,"thrustadjust",0));
@@ -54,13 +54,13 @@ allupgrades.push(new Upgrade("Impact Shield","Improves your shield's resistance 
 function freshupgrades(){
 	var newupgrades = [];
 	newupgrades.push(new Upgrade("Repair","Repairs any damage to your ship.",20,"repair",0));
-	newupgrades.push(new Upgrade("Armor","Improves your ship's armor.",1000,"armor",0));
-	newupgrades.push(new Upgrade("Shield","Improves your ship's shield.",4000,"shield",0));
-	newupgrades.push(new Upgrade("Shield Regen","Improves your ship's shield regeneration rate.",3000,"shieldregen",0));
-	newupgrades.push(new Upgrade("Radar","Improves your ship's radar range.",3000,"radar",0));
+	newupgrades.push(new Upgrade("Armor","Improves your ship's armor.",800,"armor",0));
+	newupgrades.push(new Upgrade("Shield","Improves your ship's shield.",2000,"shield",0));
+	newupgrades.push(new Upgrade("Shield Regen","Improves your ship's shield regeneration rate.",1250,"shieldregen",0));
+	newupgrades.push(new Upgrade("Radar","Improves your ship's radar range.",2500,"radar",0));
 	newupgrades.push(new Upgrade("Cargo","Improves your ship's cargo capacity",3000,"cargo",0));
-	newupgrades.push(new Upgrade("Thrust","Improves your ship's thruster power",3000,"thrust",0));
-	newupgrades.push(new Upgrade("Sensor","Improves your ship's navigation and targeting sensors",3000,"sensor",0));
+	newupgrades.push(new Upgrade("Thrust","Improves your ship's thruster power",4000,"thrust",0));
+	newupgrades.push(new Upgrade("Sensor","Improves your ship's navigation and targeting sensors",5000,"sensor",0));
 	newupgrades.push(new Upgrade("Solar Shield","Improves your shield's resistance to solar radiation.",3000,"solar",0));
 	newupgrades.push(new Upgrade("Impact Shield","Improves your shield's resistance to collisions.",3000,"impact",0));
 	return newupgrades
