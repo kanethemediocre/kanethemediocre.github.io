@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v417 by Andrew Kane </title>
+    <title>Bling Hustle v420 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -395,6 +395,8 @@ function update() {
 			var randdir = Math.random()*2*Math.PI;
 			xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
+			//waldo.setorbit(systems[ps].planets[0], 1500, randdir, -1);
+			//systems[ps].waldosize = 100000000;
 			console.log(myship.x);
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
@@ -466,10 +468,10 @@ function update() {
 		i++;
 		}
 ////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
-	if (myship.distance(waldo)>10000){
-		waldo.s = 100000000000000000 / (myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo));// hz * hz / dist * dist
+	if (myship.distance(waldo)>100){
+		waldo.s = systems[ps].waldosize / ((myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo))/1000000);// hz * hz / dist * dist
 		}//Size should be inversely related to the distance from event horizon
-	else {waldo.s = 10000;}
+	else {waldo.s = 100;}
 	var solarignore = 0;
 	var solarresist = 1;
 	if (myplayer.shieldbonus == "solar"){

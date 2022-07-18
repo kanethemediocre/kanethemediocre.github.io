@@ -32,7 +32,7 @@ class Blaster{
 		this.special2 = 0;
 		this.id = ID;
 		this.c = bombcolor; 
-		this.firing =0;//for use with rapid blasters.  -1 is inactive, 0 and above are bomb indices
+		this.firing = 0;//for use with rapid blasters.  -1 is inactive, 0 and above are bomb indices
 		this.level = 0;
 		this.rtier = 0; //number of remote upgrades applied (max 1)
 		this.etier = 0; //number of "elastic"(bounce) upgrades applied
@@ -379,7 +379,6 @@ class Blaster{
 			context.stroke();
 			}	
 		}
-	drawstats(xpos,ypos,color1,color2){}
 	update1(){
 		var i=0;
 		while (i<this.bombs.length){
@@ -422,6 +421,32 @@ class Blaster{
 		var blasterchartvalues = [this.name,this.type,this.price,this.ecost,this.hurt,this.speed,this.boom,this.n,this.timer,this.level];
 		var blasterchart = [blasterchartlabels,blasterchartvalues];
 		showchart(blasterchart, 128, 16, xpos,ypos);
+		}
+	drawstats2(xpos,ypos,color1,color2){
+		var titles = ["Attribute","Current Value","Base stat","Upgrade bonus","Max Tier"];
+		var damagestats = ["Damage",this.hurt,this.bhurt,this.uphurt,this.maxhurt];
+		var speedstats = ["Speed",this.speed,this.bspeed,this.upspeed,this.maxspeed];
+		var timerstats = ["Bomb Timer",this.timer,this.btimer,this.uptimer,this.maxtimer];
+		var boomstats = ["Blast Radius",this.boom,this.bboom,this.upboom,this.maxboom];
+		var nstats = ["Bomb Number",this.n,this.bn,this.upn,this.maxn];
+		var remote = this.rtier;
+		context.fillStyle = "white";
+		context.font = "16px Ariel";
+		var blasterchart2 = [titles,damagestats,speedstats,timerstats,boomstats,nstats];
+		showchart(blasterchart2,104, 24, xpos,ypos);
+		context.fillStyle = "red";
+		if (this.phas){
+			context.fillText("You own this blaster",xpos, ypos + 125);
+		}else{
+			context.fillText("You do not own this blaster",xpos, ypos + 125);
+			}	
+
+		if (this.rtier>0){
+			context.fillText("Remote detonator is installed on this blaster.",xpos, ypos + 150);
+		}else{
+			context.fillText("Remote detonator is not installed on this blaster.",xpos, ypos + 150);
+			}
+		//console.log("drewstats");
 		}
 	savetierstring(){//Only saves upgrade state
 		var has = 0;

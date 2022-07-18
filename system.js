@@ -21,6 +21,7 @@ class System{
 		this.y = y;
 		this.wraps = 0; //0 for off, >0 for wrapping at that radius.
 		this.bombcollisions = false;
+		this.waldosize = 100000000000;
 		}
 	isclear(target,x,y){
 		var dummy = new Umo(0,0,target.s,"pink");
@@ -653,7 +654,7 @@ class System{
 		//Intership collisions///////////////////////////////////////
 		var i = 0;//For each ship,
 		var j = 0; //to each other ship
-		while (i<this.ships.length-1){
+		while (i<this.ships.length){
 			j = i+1; //avoids duplicate executions 
 			while (j<this.ships.length){
 				this.ships[i].circlecollide4(this.ships[j]);
@@ -1886,9 +1887,9 @@ class System{
 			}
 		this.enemypopulate(gangsize,1,8);	
 		console.log(this.shops);
-		this.addsuperboss(96,4,4000,1000,320,80,1);
-		this.addsuperboss(96,4,4000,1000,320,80,2);
-		this.addsuperboss(96,4,4000,1000,320,80,3);
+		this.addsuperboss(96,5,4000,1000,320,80,1);
+		this.addsuperboss(96,6,4000,1000,320,80,2);
+		this.addsuperboss(96,8,4000,1000,320,80,3);
 		}
 	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops,heat){
 		this.planetarycollisions = true;
@@ -1964,41 +1965,66 @@ class System{
 		superboss.parentid = parentid; 
 		superboss.respawn(this.planets[superboss.parentid]);
 		superboss.name = randname(5);
-		var randomplayerverts = randpolarpoly(20, 0.5);//sides,  minimum radius
+		superboss.level = 8*turretnum+Math.floor(superboss.hp/400)+Math.floor(superboss.shield/100);
+		var sides = 20;
+		if (turretnum>4){sides = turretnum*4+4; }
+		var randomplayerverts = randpolarpoly(sides, 0.5);//sides,  minimum radius
 		normalizepoly(randomplayerverts);
 		superboss.polytheta = randomplayerverts[0];
 		superboss.polyradius = randomplayerverts[1];
 		//var sbpi = [3,6,13,16];
-		superboss.polyradius[3] = superboss.polyradius[3]+.75
-		superboss.polyradius[superboss.polyradius.length-4] = superboss.polyradius[superboss.polyradius.length-4]+.75
-		superboss.polyradius[6] = superboss.polyradius[6]+.75
-		superboss.polyradius[superboss.polyradius.length-7] = superboss.polyradius[superboss.polyradius.length-7]+.75
+		//superboss.polyradius[3] = superboss.polyradius[3]+.75
+		//superboss.polyradius[superboss.polyradius.length-4] = superboss.polyradius[superboss.polyradius.length-4]+.75
+		//superboss.polyradius[6] = superboss.polyradius[6]+.75
+		//superboss.polyradius[superboss.polyradius.length-7] = superboss.polyradius[superboss.polyradius.length-7]+.75
 		superboss.ai = "enemy";
 		this.botbombs.push( new Umo(0,0,0,"red"));
 		this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
 		this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
 		this.botbombs[this.botbombs.length-1].shield=0;  
 		this.ships.push(superboss);
-
-		var sbturret1 = new Turret("enemy",superboss,superboss.polytheta[3],superboss.s*superboss.polyradius[3]);
-		var sbturret2 = new Turret("enemy",superboss,superboss.polytheta[6],superboss.s*superboss.polyradius[6]);
-		var sbturret3 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-7],superboss.s*superboss.polyradius[superboss.polyradius.length-7]);   
-		var sbturret4 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-4],superboss.s*superboss.polyradius[superboss.polyradius.length-4]); 
-		var sbturrets = [sbturret1,sbturret2,sbturret3,sbturret4];
+		var randomturretverts = randpolarpoly(sides, 0.5);//sides,  minimum radius
+		normalizepoly(randomturretverts);
+		var tc1 = randcolor();
+		var tc2 = randcolor();
 		var i=0;
-		while (i<sbturrets.length){
-			sbturrets[i].pivot.hp = turrethp;
-			sbturrets[i].pivot.maxhp = turrethp;
-			sbturrets[i].pivot.shield = turretshield;
-			sbturrets[i].pivot.maxshield = turretshield;
-			sbturrets[i].anchorvisible = false;
-			sbturrets[i].pivot.c = sbturrets[0].pivot.c;
-			sbturrets[i].pivot.c2 = sbturrets[0].pivot.c2;
-			sbturrets[i].pivot.polyradius = sbturrets[0].pivot.polyradius
-			sbturrets[i].pivot.polytheta = sbturrets[0].pivot.polytheta
-			this.turrets.push(sbturrets[i]);
+		while(i<turretnum){
+			if (i<(turretnum-1)/2){ var polygoni = (i+1)*4-1; }
+			else if (i>(turretnum-1)/2){ var polygoni = superboss.polyradius.length-(turretnum - i)*4; }
+			else {polygoni = Math.floor(superboss.polyradius.length/2);}
+			superboss.polyradius[polygoni] = 1.4;
+			var newturret = new Turret("enemy",superboss,superboss.polytheta[polygoni],superboss.s*superboss.polyradius[polygoni]);
+			newturret.pivot.hp = turrethp;
+			newturret.pivot.maxhp = turrethp;
+			newturret.pivot.shield = turretshield;
+			newturret.pivot.maxshield = turretshield;
+			newturret.anchorvisible = false;
+			newturret.pivot.c = tc1;
+			newturret.pivot.c2 = tc2;
+			newturret.pivot.polyradius = randomturretverts[1];
+			newturret.pivot.polytheta = randomturretverts[0];
+			this.turrets.push(newturret);
 			i++;
 			}
+		//var sbturret1 = new Turret("enemy",superboss,superboss.polytheta[3],superboss.s*superboss.polyradius[3]);
+		//var sbturret2 = new Turret("enemy",superboss,superboss.polytheta[6],superboss.s*superboss.polyradius[6]);
+		//var sbturret3 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-7],superboss.s*superboss.polyradius[superboss.polyradius.length-7]);   
+		//var sbturret4 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-4],superboss.s*superboss.polyradius[superboss.polyradius.length-4]); 
+		//var sbturrets = [sbturret1,sbturret2,sbturret3,sbturret4];
+		//var i=0;
+		//while (i<sbturrets.length){
+		//	sbturrets[i].pivot.hp = turrethp;
+		//	sbturrets[i].pivot.maxhp = turrethp;
+		//	sbturrets[i].pivot.shield = turretshield;
+		//	sbturrets[i].pivot.maxshield = turretshield;
+		//	sbturrets[i].anchorvisible = false;
+		//	sbturrets[i].pivot.c = sbturrets[0].pivot.c;
+		//	sbturrets[i].pivot.c2 = sbturrets[0].pivot.c2;
+		//	sbturrets[i].pivot.polyradius = sbturrets[0].pivot.polyradius
+		//	sbturrets[i].pivot.polytheta = sbturrets[0].pivot.polytheta
+		//	this.turrets.push(sbturrets[i]);
+		//	i++;
+		//	}
 		//this.turrets.pushsbturrets;
 	}
 	addbling(parent,basevalue,bonusvalue,num){//adds bling to 1 planet

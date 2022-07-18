@@ -253,6 +253,10 @@ class Shop{
 		context.rect(xpos-16,ypos+12,512,208);
 		context.stroke();
 		drawpolarpoly(x+464,y-20,systems[ps].outposts[this.home].emblem[0],systems[ps].outposts[this.home].emblem[1],32,systems[ps].outposts[this.home].c,-1*Math.PI/2); //this.emblem is a randomized logo
+		if (this.inv[item].type=="blaster"){
+			//console.log("toldblasterdrawstats");
+			theplayer.blasters[this.inv[item].i].drawstats2(canvas.width/2,160,"lime","cyan");
+			}
 		}	
 	
 	drawsellmenu(xpos,ypos,item,theplayer){//screen coords of top corner, item index
