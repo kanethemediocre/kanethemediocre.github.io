@@ -107,13 +107,13 @@ class Umo { //Universal Moving Object
 		dirof = -1*Math.atan2(dx,dy) - Math.PI/2;//Sort of trial and error for this
 		return dirof;	
 		}
-	track(target) { //Basic tracking algorithm.  Can be used to track any object compatible 
+	track(target,trackspeed) { //Basic tracking algorithm.  Can be used to track any object compatible 
 		var td = this.directionof(target); //with directionof, which just needs a .x and .y to work with
 		var dd = this.directionof(target)-this.d;
 		while (dd > Math.PI){dd = dd - 2*Math.PI;} //This reduces the angle difference to within +- Math.PI
 		while (dd < -1*Math.PI){dd = dd + 2*Math.PI;} //which 
-		if (dd > .04){ this.vd =+.03; }
-		else if (dd < -0.04){ this.vd = -.03; }
+		if (dd > trackspeed*1.25){ this.vd =trackspeed; }
+		else if (dd < trackspeed*-1.25){ this.vd = -1*trackspeed; }
 		else {	this.vd = 0; }
 		}
 	fasttrack(target) { //Basic tracking algorithm.  Can be used to track any object compatible 

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v420 by Andrew Kane </title>
+    <title>Bling Hustle v423 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -106,6 +106,8 @@ var menubuy1 = new Audio("./sounds/buyitem1.mp3");
 var respawn1 = new Audio("./sounds/respawn.mp3");
 var boost1 =  new Audio("./sounds/boingpowerup1.mp3");
 var missioncomplete1 = new Audio("./sounds/JazzStab1.mp3");
+var testsong = new Audio("./sounds/business2.mp3");
+testsong.volume = 0.25;
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
 const FPS = 60;
@@ -364,7 +366,10 @@ function update() {
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
 			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
-			myplayer.storystate = 125;//adjust for testing of stuff, should be 0 on major releases.
+			myplayer.storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
+			//testsong.volume = 0.25;
+			//testsong.play();
+			
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;

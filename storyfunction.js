@@ -291,12 +291,13 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 30:
 		if (myplayer.dockstate == 2){		
-		    var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
-			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.money = myplayer.money + 800;
-			myplayer.task = "Go to Earf and meet Bill";
-			myplayer.storystate = 35;
-			myplayer.storytime = time;
+		   // var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
+			//playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
+			//myplayer.money = myplayer.money + 800;
+			//myplayer.task = "Go to Earf and meet Bill";
+			//myplayer.storystate = 35;
+			//myplayer.storytime = time;
+			myplayer.storystate = 34;
 			}
 		if (dstory>playerradio.msgtime){			
 			var themsg = "Boosters are sold in pairs, because for every one you use to get moving towards your destination, you'll need another to slow down when you get there.  This is true of your basic thrusters, but the stakes are higher when you use boosters.  ";
@@ -307,12 +308,13 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 31:
 		if (myplayer.dockstate == 2){
-			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";	
-			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.money = myplayer.money + 800;
-			myplayer.task = "Go to Earf and meet Bill";
-			myplayer.storystate = 35;
-			myplayer.storytime = time;
+			//var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";	
+			//playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
+			//myplayer.money = myplayer.money + 800;
+			//myplayer.task = "Go to Earf and meet Bill";
+			//myplayer.storystate = 35;
+			//myplayer.storytime = time;
+			myplayer.storystate = 34;
 			}
 			
 		if (dstory>playerradio.msgtime){
@@ -324,12 +326,13 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 32:
 		if (myplayer.dockstate == 2){
-			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
-			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.money = myplayer.money + 800;
-			myplayer.task = "Go to Earf and meet Bill";
-			myplayer.storystate = 35;
-			myplayer.storytime = time;
+			//var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
+			//playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
+			//myplayer.money = myplayer.money + 800;
+			//myplayer.task = "Go to Earf and meet Bill";
+			//myplayer.storystate = 35;
+			//myplayer.storytime = time;
+			myplayer.storystate = 34;
 			}
 	
 		if (dstory>playerradio.msgtime){
@@ -341,12 +344,13 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 33:
 		if (myplayer.dockstate == 2){
-			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
-			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.money =myplayer. money + 800;
-			myplayer.task = "Go to Earf and meet Bill";
-			myplayer.storystate = 35;
-			myplayer.storytime = time;
+			//var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or maybe try taking station missions for extra bling.";
+			//playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
+			//myplayer.money =myplayer. money + 800;
+			//myplayer.task = "Go to Earf and meet Bill";
+			//myplayer.storystate = 35;
+			//myplayer.storytime = time;
+			myplayer.storystate = 34;
 			}
 		if (dstory>playerradio.msgtime){
 			var themsg = "Also, Try not to tangle with the local 'bots around Jupe and moons, they're more dangerous than the 'bots around Merz by far.  The station is far enough away that you shouldn't need to engage them.";
@@ -357,12 +361,14 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 34:
 		if (myplayer.dockstate==2){
-			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  You can go there and work for him, or just take time to explore or seek your own fortune.";
+			var themsg = "Thanks.  I'm going to recommend you to Bill.  Bill's Bits trails Earf, 3rd planet from the sun.  He's got some work for you if you're ready for it, but if you prefer you can do some station missions or freelancing first.  Welcome to the bling hustle.";
 			playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.money = myplayer.money + 800;
 			myplayer.task = "Go to Earf and meet Bill";
 			myplayer.storystate = 35;
 			myplayer.storytime = time;
+			testsong.volume = 0.3;
+			testsong.play();
 			}
 	break;
 	case 35:

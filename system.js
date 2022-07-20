@@ -364,7 +364,8 @@ class System{
 				var thetargetdistance = this.players[0].ship.distance(this.ships[i]);	
 				if (thetargetdistance < 5000){ //Don't do anything if player is far
 					var theparentdistance = this.ships[i].distance(this.planets[this.ships[i].parentid]);
-					this.ships[i].fasttrack(this.players[0].ship); //Bots point towards player
+					if (this.ships[i].s<50){ this.ships[i].fasttrack(this.players[0].ship);  }//Bots point towards player
+					else { this.ships[i].track(this.players[0].ship,1/this.ships[i].s); }
 					if ((Math.random()>0.95) && (this.botbombs[i].timer < 1)){  //Bots fire occasionally, if bomb isn't out
 					if ((!this.ships[i].ispointingat(this.planets[this.ships[i].parentid]))||(thetargetdistance<theparentdistance)){  //Don't shoot if your parent planet is between bot and player (the target)
 							this.ships[i].launchbomb(this.botbombs[i], 12, 80); 
