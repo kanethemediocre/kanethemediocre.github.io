@@ -11,6 +11,10 @@ function mouseMoveHandler(e) {
 document.addEventListener("mousedown", mouseDownHandler, false);
 function mouseDownHandler(e) {
 	var myplayer = systems[1].players[myi];
+	if (myplayer.planetmenu == 1){
+		myplayer.planetmenu = 0;
+		return;
+		}
 	myplayer.mousestate = e.buttons;
 	myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
 	myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);

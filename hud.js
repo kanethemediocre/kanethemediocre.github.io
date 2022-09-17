@@ -67,6 +67,7 @@ function hud(playerindex){
 		}
 ///////////////Navigation hud///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (myplayer.navactive > 0){
+
 		var thenavtarget=0;
 		if (myplayer.navactive==1){
 			thenavtarget=systems[ps].planets[myplayer.navtarget];
@@ -215,36 +216,36 @@ function hud(playerindex){
 		//}
 		//drawaskeyspecial(700,160,60,24,"Up","white");
 		//drawaskeyspecial(700,200,60,24,"Down","white");
-		vkeys[15].display = true;
-		vkeys[15].active = true;	
 		vkeys[16].display = true;
 		vkeys[16].active = true;	
-		vkeys[21].display = false;
-		vkeys[21].active = false;
+		vkeys[17].display = true;
+		vkeys[17].active = true;	
 		vkeys[22].display = false;
 		vkeys[22].active = false;
 		vkeys[23].display = false;
 		vkeys[23].active = false;
 		vkeys[24].display = false;
-		vkeys[24].active = false;	
+		vkeys[24].active = false;
+		vkeys[25].display = false;
+		vkeys[25].active = false;	
 	}else if (myplayer.journalactive==2){ //journal of jobs taken
 	
 		systems[ps].joblist(200,64,myplayer);
 
 		//display jobs
 	}else{
-		vkeys[15].display = false;
-		vkeys[15].active = false;
 		vkeys[16].display = false;
-		vkeys[16].active = false;	
-		vkeys[21].display = true;
-		vkeys[21].active = true;
+		vkeys[16].active = false;
+		vkeys[17].display = false;
+		vkeys[17].active = false;	
 		vkeys[22].display = true;
-		vkeys[22].active = true;	
+		vkeys[22].active = true;
 		vkeys[23].display = true;
-		vkeys[23].active = true;
+		vkeys[23].active = true;	
 		vkeys[24].display = true;
-		vkeys[24].active = true;		
+		vkeys[24].active = true;
+		vkeys[25].display = true;
+		vkeys[25].active = true;		
 		
 	}
 	
@@ -262,14 +263,14 @@ function hud(playerindex){
 		
 		//drawaskeyspecial(800,140,60,24,"Up","white");
 		//drawaskeyspecial(800,220,60,24,"Down","white");
-		vkeys[17].display = true;//these assignments get executed redundantly, fixable
-		vkeys[17].active = true;//up and down
-		vkeys[18].display = true;
-		vkeys[18].active = true;
-		vkeys[19].display = true;//backspace and enter
-		vkeys[19].active = true;		
-		vkeys[20].display = true;
-		vkeys[20].active = true;	
+		vkeys[18].display = true;//these assignments get executed redundantly, fixable
+		vkeys[18].active = true;//up and down
+		vkeys[19].display = true;
+		vkeys[19].active = true;
+		vkeys[20].display = true;//backspace and enter
+		vkeys[20].active = true;		
+		vkeys[21].display = true;
+		vkeys[21].active = true;	
 		if (myplayer.shopmode == 0){
 			//console.log("itriedtodrawthebuymenu1");
 			if (myplayer.shopitem >= systems[ps].shops[myplayer.dockstate].inv.length){myplayer.shopitem=0;}
@@ -283,14 +284,14 @@ function hud(playerindex){
 			systems[ps].shops[myplayer.dockstate].drawworkmenu(400,64,myplayer.shopitem,myplayer);
 		}
 	}else{ 
-		vkeys[17].display = false;//these assignments get executed redundantly every frame, fixable
-		vkeys[17].active = false;
-		vkeys[18].display = false;
-		vkeys[18].active = false;	
-		vkeys[19].display = false;//these assignments get executed redundantly every frame, fixable
-		vkeys[19].active = false;
-		vkeys[20].display = false;
-		vkeys[20].active = false;		
+		vkeys[18].display = false;//these assignments get executed redundantly every frame, fixable
+		vkeys[18].active = false;
+		vkeys[19].display = false;
+		vkeys[19].active = false;	
+		vkeys[20].display = false;//these assignments get executed redundantly every frame, fixable
+		vkeys[20].active = false;
+		vkeys[21].display = false;
+		vkeys[21].active = false;		
 		}
 	//draw cargo stuff
 	if (diagnostic == 1){myplayer.blasters[myplayer.wep].drawstats(canvas.width-200,400);}
@@ -304,6 +305,62 @@ function hud(playerindex){
 	}
 	myplayer.blasters[myplayer.wep].drawsights(myplayer,time); //Draws aiming guide
 	//}
+	
+	if (myplayer.planetmenu == 1){
+		//systems[ps].drawplanetlist(0,400,100,48,80); //Mostly works.  Wasteful, could be more preprocessed
+		//drawplanetlist(playerindex,x,y,ystep,scale){
+		var mx = mdx+canvas.width/2;
+		var my = mdy+canvas.height/2;
+		var ystep = 50;
+		var x = 300;
+		var y = 100;
+		var scale = 64;
+		var i=0;
+		while(i<myplayer.planetarychart.length){
+			var dx = -64;
+			var dy = ystep*(i+0)+6;
+			var j = 0;
+			while(j<myplayer.planetarychart[i].length){
+				if (j>0){
+					dx = 8+ystep*(j-0.5);
+					dy = ystep*(i-0.3);
+					}
+				context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
+				context.arc(x+ystep*(j), y+ystep*(i), systems[ps].planets[myplayer.planetarychart[i][j]].s/scale, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.
+				context.lineWidth = 4;
+				//console.log("i = "+i+" j = "+j);
+				context.strokeStyle = systems[ps].planets[myplayer.planetarychart[i][j]].c;
+				context.stroke();
+				context.fillStyle = "white";
+				context.font = "16px Ariel";
+				context.fillText(systems[ps].planets[myplayer.planetarychart[i][j]].name,x+dx,y+dy);
+				if (systems[ps].players[playerindex].navtarget == myplayer.planetarychart[i][j]){//indicate planet is targeted	
+					context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
+					context.rect(x+ystep*(j)-ystep*0.4, y-ystep*0.4+ystep*(i),ystep*0.8,ystep*0.8); //until linewidth of 1 is reached.
+					context.lineWidth = 2;
+					context.strokeStyle = "white";
+					context.stroke();
+					}
+				j++;
+				}
+			i++;
+			}
+		if ((mx>x)&&(my>y)){
+			var mi = Math.floor((my-y)/ystep);
+			var mj = Math.floor((mx-x)/ystep);
+			if (mi<myplayer.planetarychart.length){
+				if (mj<myplayer.planetarychart[mi].length){
+					myplayer.navtarget = myplayer.planetarychart[mi][mj];
+					}
+				}
+			}
+		}
+		
+
+		
+	
+
+	
 var netsolarpain = 0;
 if (myplayer.shieldbonus!="solar"){netsolarpain = myplayer.solarpain-1.125;}
 else {netsolarpain = myplayer.solarpain - 3.125;}

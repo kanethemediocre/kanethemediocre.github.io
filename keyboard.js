@@ -32,7 +32,7 @@ window.addEventListener("keydown", function (event) {
     while(i<systems.length){
       systems[i].players.push(aplayer);
       i++;
-    }
+	  }
     systems[ps].players[systems[ps].players.length-1].ship.setorbit(systems[ps].planets[0], 32000, 0.215+Math.random()*0.01, 1);
     systems[ps].players[systems[ps].players.length-1].storystate = 999;
     systems[ps].players[systems[ps].players.length-1].name = "ID "+ time;
@@ -47,9 +47,9 @@ window.addEventListener("keydown", function (event) {
       if (myi >=systems[ps].players.length){ myi = 0; }
       console.log("there are now "+systems[ps].players.length+" players.");
       }
-      var theplayer = systems[ps].players[myi];
-      theplayer.input = event.key;
-      systems[ps].playerkeys();
+	var theplayer = systems[ps].players[myi];
+	theplayer.input = event.key;
+	systems[ps].playerkeys();
   event.preventDefault();// Cancel the default action to avoid it being handled twice
 }, true);	//end of event key handling, not clear what the ", true);" is about		
 

@@ -15,6 +15,7 @@ class Player{
         this.shiptarget = 1; // Targets ships[1] 
         this.nmeactive = 1;
         this.mapactive = 2; //2 is corner map, 1 is full map, 0 is no map
+		this.planetmenu = 0; //1 is active.  Uses int to support more options as needed.
         this.mapscale = 128; //Map zoom
         this.journalactive = 0; //0 is inactive, 1 is story journal, 2 displays active jobs.
         this.journalitem = 0; //Used to use shopitem, now it has it's own variable.
@@ -50,6 +51,7 @@ class Player{
 		this.storyselect = 0;
 		this.solarpain = 0;
 		this.shieldbonus = "none";
+		this.planetarychart = [];//Must be filled by current system
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;

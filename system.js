@@ -347,6 +347,96 @@ class System{
 			i++;
 			}
 		}
+	drawplanetlist(playerindex,x,y,ystep,scale){
+		var actualplanets = [];//list of planet indices where parentid = 0 (orbits sun)
+		var i=1;
+		while (i<this.planets.length){
+			if (this.planets[i].parentid==0){actualplanets.push(i);}
+			i++;
+			}
+		console.log(actualplanets);
+		//ok draw sun
+		context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
+		context.arc(x, y, this.planets[0].s/scale, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.
+		context.lineWidth = 4;
+		context.strokeStyle = this.planets[0].c;
+		context.stroke();
+		context.fillStyle = "white";
+		context.font = "16px Ariel";
+		context.fillText(this.planets[0].name,x-64,y+4);
+		//For each planets
+		var i=0;
+		while(i<actualplanets.length){
+			var actualmoons = [];//Find the moons to this planet
+			var j=0;
+			while(j<this.planets.length){
+				if (this.planets[j].parentid == actualplanets[i]){
+					actualmoons.push(j);
+					}
+				j++;
+				}
+			console.log(actualmoons);
+			//Draw this planet
+			context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
+			context.arc(x, y+ystep*(i+1), this.planets[actualplanets[i]].s/scale, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.
+			context.lineWidth = 4;
+			context.strokeStyle = this.planets[actualplanets[i]].c;
+			context.stroke();
+			context.fillText(this.planets[actualplanets[i]].name,x-64,y+4+ystep*(i+1));
+			if (this.players[playerindex].navtarget == actualplanets[i]){//indicate planet is targeted	
+				context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
+				context.rect(x-ystep*0.4, y-ystep*0.4+ystep*(i+1),ystep*0.8,ystep*0.8); //until linewidth of 1 is reached.
+				context.lineWidth = 2;
+				context.strokeStyle = "white";
+				context.stroke();
+				}
+			//Draw this planets moons next to the planet
+			var j = 0;
+			while(j<actualmoons.length){
+				context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
+				context.arc(x+ystep*(j+1), y+ystep*(i+1), this.planets[actualmoons[j]].s/scale, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.
+				context.lineWidth = 4;
+				context.strokeStyle = this.planets[actualmoons[j]].c;
+				context.stroke();
+				context.fillText(this.planets[actualmoons[j]].name,x+4+ystep*(j+0.5),y+ystep*(i+0.75));
+				if (this.players[playerindex].navtarget == actualmoons[j]){//indicate planet is targeted	
+					context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
+					context.rect(x+ystep*(j+1)-ystep*0.4, y-ystep*0.4+ystep*(i+1),ystep*0.8,ystep*0.8); //until linewidth of 1 is reached.
+					context.lineWidth = 2;
+					context.strokeStyle = "white";
+					context.stroke();
+					}
+				
+				
+				j++;
+				}
+			i++;
+			}
+		
+		}
+	generateplanetlist(){
+		var actualplanets = [[0]];//list of planet indices where parentid == 0 (orbits sun)
+		var i=1;
+		while (i<this.planets.length){//This loop adds all the planets as arrays with one member
+			if (this.planets[i].parentid==0){actualplanets.push([i]);}
+			i++;
+			}
+		//For each planets
+		var i=0;
+		while(i<actualplanets.length){
+			var j=0;
+			while(j<this.planets.length){//This loop  adds moons to their parent planets array.
+				if (this.planets[j].parentid == actualplanets[i][0]){
+					actualplanets[i].push(j);
+					}
+				j++;
+				}
+			i++;
+			}
+		actualplanets[0]=[0];//Overrides sun to not include planets as its moon in the chart.
+		console.log(actualplanets);
+		return actualplanets;
+		}
 	updateall(){
 		if (this.wraps>0){ this.radialwrap(this.wraps); }
 		var i = 0; //update section////////////////////////////////////////////////////////////
@@ -1184,8 +1274,9 @@ class System{
 			aplayer = this.players[qq];
 			switch (aplayer.input) {  //events for all the keyboard keys
 				case "q":
-					//unused for now
-				//if (cheatmode == 1){ qblaster.fire(systems[ps].ships[0],time); }
+				if (aplayer.planetmenu < 1){aplayer.planetmenu++;}
+				else {aplayer.planetmenu = 0;}	
+				
 				  break;   
 				 case "Delete":
 				 if (cheatmode == 0){cheatmode = 1;}
@@ -1416,6 +1507,7 @@ class System{
 					waldo.setorbit(this.planets[0], 320000, randdir, -1);
 					aplayer.ship.vx = 0; //Otherwise players inherit the momentum acquired in descent.
 					aplayer.ship.vy = 0;
+					//myplayer.planetarychart = systems[ps].generateplanetlist();
 					}
 				  break;
 				  case "s":
@@ -1921,9 +2013,9 @@ class System{
 					}
 				}
 			var tempmag = Math.random()*heat;
-			console.log(tempmag);
+			//console.log(tempmag);
 			var tempdir = Math.random()*2*Math.PI;
-			console.log(tempdir);			
+			//console.log(tempdir);			
 			nextplanet.push(tempmag, tempdir);
 			var extradots = Math.floor(Math.random()*3);
 			while(extradots>0){

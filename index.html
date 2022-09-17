@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v423 by Andrew Kane </title>
+    <title>Bling Hustle v429 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -138,6 +138,7 @@ var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 var playerselect = 0;
 var playerweapon9superbomb = new Superbomb("orbitalsystem");
+
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -367,6 +368,7 @@ function update() {
 			ps = 1;
 			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
 			myplayer.storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
+			myplayer.planetarychart = systems[ps].generateplanetlist();
 			//testsong.volume = 0.25;
 			//testsong.play();
 			
@@ -377,6 +379,7 @@ function update() {
 			myplayer.storystate = 999;
 			myplayer.money = 2000;
 			myplayer.task = "Profit";
+			myplayer.planetarychart = systems[ps].generateplanetlist();
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[3])){
 			ps = 7;
@@ -388,6 +391,7 @@ function update() {
 			myplayer.storystate = 999;
 			myplayer.money = 2000;
 			myplayer.task = "Profit";
+			myplayer.planetarychart = systems[ps].generateplanetlist();
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[4])){
 			menucontrols = true;
@@ -406,30 +410,34 @@ function update() {
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
+			myplayer.planetarychart = systems[ps].generateplanetlist();
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[6])){
 			ps = 33;
 			//console.log(systems[ps].planets[0].x);
 			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
-			myplayer.ship.x = 12000
+			systems[ps].placenear(myplayer.ship,12000,0);
 			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
+			myplayer.planetarychart = systems[ps].generateplanetlist();
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[7])){
 			ps = 34;
+			systems[ps].placenear(myplayer.ship,3000,0);
 			//console.log(systems[ps].planets[0].x);
 			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
-			var randdir = Math.random()*2*Math.PI;
+			//var randdir = Math.random()*2*Math.PI;
 			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
+			myplayer.planetarychart = systems[ps].generateplanetlist();
 			}
 		else if (menuabout){
 			context.fillStyle = "white";
@@ -505,6 +513,7 @@ function update() {
 		myship.vy = 0;
 		myplayer.navtarget = 0;
 		myplayer.shiptarget = 0;
+		myplayer.planetarychart = systems[ps].generateplanetlist();
 		}
 
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships.  Not used yet.///////////////////////////////////////////////////
@@ -538,6 +547,9 @@ function update() {
 	systems[ps].updateall(); //Updates everthing in system
 	systems[ps].gravitateall(); //gravitates everything in system
 	systems[ps].collideself(); //executes all collisions between objects in the system.
+	
+	
+	
 
 
 ////////////Autopilot behavior section//Formerly AI section, AI behavior moved to System.updateall()/////////////////////////////////////////////

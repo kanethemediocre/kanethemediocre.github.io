@@ -1,9 +1,13 @@
 class NPC{
-	constructor(bodytype){
+	constructor(npcid){
 		//this.behavenow = "none";//Describes AI behavior state in terms of immediate response
 		//options: "gotoplanet","gotoship","gotoplayer","gotostation","attackship","attackplayer","loiter"
 		//this.behavior = "none"; //Describes overall motivation to choose different behavenows and targets
-		this.umotype = "ship"; //options bigship, 
+		this.id = npcid;
+		this.umotype = "ship"; //options bigship, planet, station
+		this.ship = new Umo(0,0,32,randcolor());
+		this.planetarylocation = -1; //Indexes for npcs that are tied to a planet umo
+		this.stationlocation = -1; //Indexes for npcs that are tied to a station umo
 		//options: "cargoroute","loiter","attackmission","blockade", 
 		this.team = "enemy";//More detail on that later, each team will have different behavior towards other teams.
 		this.nowtargetplanet = 0;
@@ -14,23 +18,10 @@ class NPC{
 		this.homeplanet = 0;
 		this.homestation = 0;
 		this.gang = 0;
-		this.attacksfirst = true;
-		this.followattackers = false;
-		this.fleeattackers = false;
-		this.playerhostile = true;
-		this.traderhostile = true;
-		this.coward = 1; //Will run away from matchup where the enemy level * this.coward  > npc level
-		this.ai = "na";
+		this.ai = new NPCAI(0,"none",this.homeplanet,npcid);
 		}
-	setfixedbehavior(newbehavenow,newteam,newhomeplanet,newteam,newgang){
-		this.behavenow = newbehavenow;
-		this.behavior = "fixed";//options toughguypatrol
-		this.team = newteam;
-		this.gang = newgang;
-		this.nowtargetplanet = newhomeplanet;
-		this.homeplanet = newhomeplanet;
-		}
+
 	behave(me){
-		
+		this.ai.behave();
 	}
 }
