@@ -421,6 +421,9 @@ class System{
 			if (this.planets[i].parentid==0){actualplanets.push([i]);}
 			i++;
 			}
+		//actualplanets.sort(function(a,b){return this.planets[0].distance(this.planets[a[0]])-this.planets[0].distance(this.planets[b[0]])}); //points.sort(function(){return 0.5 - Math.random()});
+		var tempplanets = this.planets;
+		actualplanets.sort(function(a,b){return tempplanets[0].distance(tempplanets[a[0]])-tempplanets[0].distance(tempplanets[b[0]])}); //points.sort(function(){return 0.5 - Math.random()});
 		//For each planets
 		var i=0;
 		while(i<actualplanets.length){
@@ -434,6 +437,7 @@ class System{
 			i++;
 			}
 		actualplanets[0]=[0];//Overrides sun to not include planets as its moon in the chart.
+		//actualplanets.sort(function(){return this.planets[0].distance(this.planets)}) //points.sort(function(){return 0.5 - Math.random()});
 		console.log(actualplanets);
 		return actualplanets;
 		}
@@ -1274,7 +1278,10 @@ class System{
 			aplayer = this.players[qq];
 			switch (aplayer.input) {  //events for all the keyboard keys
 				case "q":
-				if (aplayer.planetmenu < 1){aplayer.planetmenu++;}
+				if (aplayer.planetmenu < 1){
+					aplayer.planetmenu++;
+					aplayer.navactive = 1;
+					}
 				else {aplayer.planetmenu = 0;}	
 				
 				  break;   
@@ -1505,6 +1512,7 @@ class System{
 					var randdir = Math.random()*2*Math.PI;
 					xxxx.setorbit(this.planets[0], 320000, randdir+Math.PI, -1);//Global scope here is bad, but setorbiting previous system is worse.
 					waldo.setorbit(this.planets[0], 320000, randdir, -1);
+					aplayer.planetarychart = systems[ps].generateplanetlist();
 					aplayer.ship.vx = 0; //Otherwise players inherit the momentum acquired in descent.
 					aplayer.ship.vy = 0;
 					//myplayer.planetarychart = systems[ps].generateplanetlist();

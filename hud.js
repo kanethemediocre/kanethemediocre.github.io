@@ -309,14 +309,16 @@ function hud(playerindex){
 	if (myplayer.planetmenu == 1){
 		//systems[ps].drawplanetlist(0,400,100,48,80); //Mostly works.  Wasteful, could be more preprocessed
 		//drawplanetlist(playerindex,x,y,ystep,scale){
+		var blind = 1;
+		if (myplayer.sensor >0){blind = 0;}
 		var mx = mdx+canvas.width/2;
 		var my = mdy+canvas.height/2;
 		var ystep = 50;
-		var x = 300;
-		var y = 100;
+		var x = 400;
+		var y = 64;
 		var scale = 64;
 		var i=0;
-		while(i<myplayer.planetarychart.length){
+		while(i<myplayer.planetarychart.length-blind){
 			var dx = -64;
 			var dy = ystep*(i+0)+6;
 			var j = 0;
@@ -348,7 +350,7 @@ function hud(playerindex){
 		if ((mx>x)&&(my>y)){
 			var mi = Math.floor((my-y)/ystep);
 			var mj = Math.floor((mx-x)/ystep);
-			if (mi<myplayer.planetarychart.length){
+			if (mi<myplayer.planetarychart.length-blind){
 				if (mj<myplayer.planetarychart[mi].length){
 					myplayer.navtarget = myplayer.planetarychart[mi][mj];
 					}
