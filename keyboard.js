@@ -49,6 +49,7 @@ window.addEventListener("keydown", function (event) {
       }
 	var theplayer = systems[ps].players[myi];
 	theplayer.input = event.key;
+    if (theplayer.input == "="){theplayer.input = "+";}//For ease of use zooming in
 	systems[ps].playerkeys();
   event.preventDefault();// Cancel the default action to avoid it being handled twice
 }, true);	//end of event key handling, not clear what the ", true);" is about		

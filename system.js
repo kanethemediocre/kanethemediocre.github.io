@@ -481,7 +481,8 @@ class System{
 		var i=this.turrets.length;
 		while(i>0){
 			i=i-1;
-			if (this.turrets[i].pivot.ai == "enemy"){
+
+			if ((this.turrets[i].pivot.ai == "enemy")&&(this.turrets[i].active==true)){
 				var j=0;
 				var closestdistance=9999;
 				var closestindex = 0;
@@ -499,7 +500,7 @@ class System{
 		var i=this.turrets.length;
 		while(i>0){
 			i=i-1;
-			if (this.turrets[i].pivot.ai == "friendly"){
+			if ((this.turrets[i].pivot.ai == "friendly")&&(this.turrets[i].active==true)){
 				var j=this.ships.length;
 				var closest = j;
 				var closestdistance = 1000000;

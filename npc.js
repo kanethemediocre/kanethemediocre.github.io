@@ -6,6 +6,7 @@ class NPC{
 		this.id = npcid;
 		this.umotype = "ship"; //options bigship, planet, station
 		this.ship = new Umo(0,0,32,randcolor());
+		this.blaster = baseblastercopy(allblasters[0]);
 		this.planetarylocation = -1; //Indexes for npcs that are tied to a planet umo
 		this.stationlocation = -1; //Indexes for npcs that are tied to a station umo
 		//options: "cargoroute","loiter","attackmission","blockade", 
@@ -20,8 +21,24 @@ class NPC{
 		this.gang = 0;
 		this.ai = new NPCAI(0,"none",this.homeplanet,npcid);
 		}
-
-	behave(me){
+	whatisnear(thesystem,threshhold){
+		var nearbyplanets = [];
+		var nearbynpcs = [];
+		var i=0;
+		while(i<thesystem.npcs.length){
+			if (this.ship.distance(thesystem.npcs[i].ship)<threshhold){nearbynpcs.push(i);}
+			i++;
+			}
+		var i=0;
+		while(i<thesystem.planets.length){
+			if (this.ship.distance(thesystem.planets[i])<threshhold){nearbyplanets.push(i);}
+			//check and add
+			i++;
+			}
+		this.ai.nearbynpcs = nearbynpcs;
+		this.ai.nearbyplanets = nearbyplanets;
+		}
+	behave(me,time){
 		this.ai.behave();
 	}
 }

@@ -19,7 +19,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		break;
 	case 1:
 		if (dstory>playerradio.msgtime){
-			var themsg = "The N key will activate or retask your nav computer, which displays on the bottom right.  The < and > keys will cycle through available nav targets, use them to select Merz.  The nav computer indicates much more than direction and distance if you're interested, but most of the time that's all you need.";
+			var themsg = "The N key will activate or retask your nav computer, which displays on the bottom right.  The < and > keys will cycle nav targets or you can hit Q and click a planet from the quick select menu.  Use either to select Merz.  The nav computer indicates much more than direction and distance if you're interested, but most of the time that's all you need.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Select Merz on your nav computer (N,<,>)";
 			myplayer.storystate++;
@@ -28,7 +28,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		break;
 	case 2:
 		if ((myplayer.navtarget==5)&&(myplayer.navactive==1)){
-			var themsg = "Great!  You'll be going there soon.  But to help you know your place in the universe, your HUD also has the Omnicompass and a map.  The Omnicompass can be activated or retasked with the C key, and the map with the M key. The map features a full-screen display mode and a corner display mode.  The Omnicompass can track planets, ships, or both.";
+			var themsg = "Great!  You'll be going there soon.  But to help you know your place in the universe, your HUD also has the Omnicompass and a map.  The Omnicompass can be activated or retasked with the C key, and the map with the M key. The map features a full-screen display mode and a corner display mode.  The Omnicompass tracks planets, ships, or both, and is good for staying aware of things just outside of visual range.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -414,7 +414,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 40:
 		if (dstory>playerradio.msgtime){
-			var themsg = "You can, however, switch to a different weapon and fire it without recalling or refreshing the bomb you have out.  This is most useful for the mine, which has a very long timer.";
+			var themsg = "You can, however, switch to a different weapon and fire it without recalling or refreshing the bomb you have out.  This is most useful for the mine, which has a very long timer, and can be upgraded with a remote detonator.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -422,7 +422,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 41:
 		if (dstory>playerradio.msgtime){
-			var themsg = "A few weapons like w6 and w8 fire continuously when the mouse button is held, and they don't have that limitation.";
+			var themsg = "A few weapons can maintain multiple bombs, like the w5 Scatter Cannon which fires a spread of bombs,and the w8 Spectral Disintegrator which fires continuously when the mouse button is held.  They still can only maintain a strictly limited number of bombs.  W5 bombs will recall and reset like other blasters, and the w8 sort of juggles the short lived bombs that it has, never with more than a few bombs out at a time.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -739,7 +739,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	
 	case 100:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Cargo missions are fairly easy enough, but they require 10 units of cargo space each.";
+			var themsg = "Cargo missions don't require any fighting, but they do require 10 units of cargo space each.  Complete missions by getting close to and matching velocity with your destination planet, and remember that the bots won't stop shooting while you do it.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -747,7 +747,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 101:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Kill missions don't require any cargo space, but you need to hunt down and kill a particular bot, which isn't always found where expected.";
+			var themsg = "Kill missions don't require any cargo space, but you need to hunt down and kill a particular bot, which isn't always at it's reported location.  On the upside, you will get credit for the mission no matter how the bot is destroyed, and the bots are quite accident prone.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -755,7 +755,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 102:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Courier missions only require one unit of cargo space, but you need to deliver to a ship on the move.";
+			var themsg = "Courier missions are similar to cargo missions, but only require one unit of cargo space.  However, you need to deliver to a ship on the move.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -763,7 +763,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 103:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Engineering missions require you to dock at a mission destination and complete repairs or upgrades on the mission target, often under fire from bots.";
+			var themsg = "Engineering missions require you to dock at a mission destination and complete repairs or upgrades on the mission target, sometimes under fire from bots.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -771,13 +771,13 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 104:
 		if (dstory>playerradio.msgtime){
-			var themsg = "Otherwise, you can always sweep up loose bling and destroy bots.  Trading commodities might work if you find a good route and have the bling to get started.";
+			var themsg = "You can always sweep up loose bling and destroy bots if you can't or won't take missions.  Trading commodities might work if you find a good route and have the bling to get started.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
 	break;
-	case 104:
+	case 105:
 		if (dstory>playerradio.msgtime){
 			var themsg = "One way or another, you've gotta be getting bling, or you don't matter much around here.  I'm sure you've seen all the gear there is to buy, but you might not have noticed that when you upgrade something, there's almost always another better, more expensive upgrade to buy.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
@@ -785,17 +785,9 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.storytime = time;
 			}
 	break;
-	case 105:
+	case 106:
 		if (dstory>playerradio.msgtime){
-			var themsg = "All that gear matters, and people can tell about how much of it you have from your ship level.  Some jobs might not even be offered to hustlers without a high enough ship level.";
-			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.storystate++;
-			myplayer.storytime = time;
-			}
-	break;
-	case 105:
-		if (dstory>playerradio.msgtime){
-			var themsg = "All that gear matters, and people can tell about how much of it you have from your ship level.  Some jobs might only be offered to hustlers with a high enough ship level.";
+			var themsg = "All that gear matters, and people can tell about how much of it you have from your ship level.  Some jobs or items might not even be offered to hustlers without a high enough ship level.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.storystate++;
 			myplayer.storytime = time;
@@ -805,7 +797,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 /////Abreviated story continues below at 120	
 	case 120:
 		if (dstory>playerradio.msgtime){
-			var themsg = "It's pretty big, and we don't want to take it apart, so you'll need an upgraded cargo hold with 20 free cargo slots to load it."
+			var themsg = "It's pretty big, and we don't want to take it apart, so you'll need an upgraded cargo hold with 20 free cargo slots to load it.  There's a shop trailing Merz that sells cargo upgrades if you need it."
 			if (myplayer.inventory.maxcargo<20){myplayer.task = "Buy cargo upgrade";}
 			else if (myplayer.inventory.maxcargo-myplayer.inventory.totalcargo()<20){ myplayer.task = "Upgrade cargo or free up cargo space"; }
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
@@ -824,7 +816,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 		else if (myplayer.inventory.maxcargo-myplayer.inventory.totalcargo()<20){ myplayer.task = "Upgrade cargo or free up cargo space"; }//This should reapply the message if the player picks up too much other cargo to fir the 20u turret.
 	break;
 	case 122:
-		var themsg = "Yo, Billdude says you're picking up the giant-ass turret sitting in the middle of my shop.  It's about time."
+		var themsg = "Yo, Billdude says you're picking up the giant-ass turret waiting in the middle of my shop.  It's about time.  It's been finished for months and this is a workshop not a warehouse."
 		playerradio.newmsg("Mc#s",themsg,time);//newmsg(sndr, msg, thetime)
 		myplayer.inventory.takecargo(allcargos.length-1,20);//Last index of allcargos is mission cargo, 20 units taken. 
 		myplayer.task = "Deliver turret to Bill";
@@ -852,7 +844,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 125:
 		if (myplayer.dockstate == 0){
-			var themsg = "Turret base loaded."
+			var themsg = "Turret base loaded.  Pick a spot on the moon for the turret and drop the base."
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Unload turret base on Moon";
 			myplayer.storystate++;
@@ -861,7 +853,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 126:
 		if (myplayer.ship.distance(systems[ps].planets[4])<systems[ps].planets[4].s+32){
-			var themsg = "Turret base installed.   Looks good, now come back for the turret";
+			var themsg = "Turret base is stable.   Come back for the turret";
 			systems[ps].turrets[0].anchorvisible = true;
 			systems[ps].turrets[0].ad = systems[ps].planets[4].directionof(myplayer.ship);
 			//move the turret to systems[ps].planets[4].directionof(myplayer.ship)
@@ -874,7 +866,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 127:
 		if (myplayer.dockstate == 0){
-			var themsg = "Turret loaded";
+			var themsg = "Turret loaded, now just attach it to the base already on the moon and it will start working immediately.";
 			playerradio.newmsg("Bill",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Unload turret on Moon";
 			myplayer.storystate++;
@@ -883,7 +875,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 128:
 		if (myplayer.ship.distance(systems[ps].turrets[0].pivot)<systems[ps].turrets[0].pivot.s+32){
-			var themsg = "Turret installed. Many thanks!  Earf is much safer thanks to you.";
+			var themsg = "I see the Turret is installed. Many thanks!  Earf is much safer thanks to you.";
 			systems[ps].turrets[0].pivotvisible = true;
 			systems[ps].turrets[0].active = true;
 

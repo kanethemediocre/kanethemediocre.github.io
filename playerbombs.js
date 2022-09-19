@@ -1,4 +1,4 @@
-function loadplayerbombs(){
+function loadplayerbombs(){//this has been obselete since the blaster class was created.
 	let p1b1 = new Umo(0,0,8,"red"); //Player weapon 1
 	p1b1.c = "red"; //Staple player weapon
 	p1b1.hurt = 16;

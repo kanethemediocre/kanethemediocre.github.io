@@ -5,6 +5,8 @@ class NPCAI{
 		this.behavior = "none"; //Describes overall motivation to choose different behavenows and targets
 		//options: "cargoroute","loiter","attackmission","blockade", 
 		this.team = 0;
+		this.nearbynpcs=[];
+		this.nearbyplanets=[];
 		this.id = myid;
 		this.enemyteams = [];
 		this.friendlyteams =[];
@@ -46,7 +48,19 @@ class NPCAI{
 			//basic autopilotoid 
 			}
 		if (this.behavenow == "trackattack"){
+			var thetargetdistance = this.ship.distance(thesystem.npcs[this.nowtargetship].ship);
+			if (thetargetdistance < 5000){ //Don't do anything if player is far
+				this.ship.fasttrack(thesystem.npcs[this.nowtargetship].ship);//point at target ship
+				if ((Math.random()>0.95) && (this.botbombs[i].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+					this.ships[i].launchbomb(this.botbombs[i], 12, 80);
+					}
+				}
+
+
 			//basic point at and shoot sometimes
+			}
+		if (this.behavenow == "leadattack"){
+			//aim better than basic track
 			}
 		if (this.behavenow == "gototrackattack"){
 			//basic autopilotoid 
