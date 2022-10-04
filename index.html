@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle v434 by Andrew Kane </title>
+    <title>Bling Hustle 471 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -14,11 +14,25 @@
 <script type="text/javascript" src="upgrades.js"></script>	
 <script type="text/javascript" src="blasters.js"></script>	
 <script type="text/javascript" src="cargo.js"></script>
-<script type="text/javascript" src="shop.js"></script>			
+<script type="text/javascript" src="shop.js"></script>
+<script type="text/javascript" src="bhshops.js"></script>
 <script type="text/javascript" src="texthandling.js"></script>
 <script type="text/javascript" src="graphics.js"></script>
 <script type="text/javascript" src="bubblesplosion.js"></script>
 <script type="text/javascript" src="bling.js"></script>
+
+<script type="text/javascript" src="dot.js"></script>
+<script type="text/javascript" src="spot.js"></script>
+<script type="text/javascript" src="axis.js"></script>
+<script type="text/javascript" src="segment.js"></script>
+<script type="text/javascript" src="plot.js"></script>
+<script type="text/javascript" src="challenge.js"></script>
+<script type="text/javascript" src="quiz.js"></script>
+<script type="text/javascript" src="quizblock.js"></script>
+<script type="text/javascript" src="emodule.js"></script>
+<script type="text/javascript" src="emtree.js"></script>
+<script type="text/javascript" src="bhstarttree.js"></script>
+
 <script type="text/javascript" src="player.js"></script>
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
@@ -44,6 +58,9 @@
 <script type="text/javascript" src="bhvirtualkeys.js"></script>
 <script type="text/javascript" src="bhblasters.js"></script>
 <script type="text/javascript" src="superbomb.js"></script>
+<script type="text/javascript" src="npc.js"></script>
+<script type="text/javascript" src="npcai.js"></script>
+
 <script>
 //var blastersound1 = new Audio("./sounds/bubble4_short2.mp3");
 var blastersound1 = new Audio("./sounds/w11s1.mp3");
@@ -138,6 +155,7 @@ var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 var playerselect = 0;
 var playerweapon9superbomb = new Superbomb("orbitalsystem");
+var firsttree = bhstarttree();//from bhstarttree.js
 
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
@@ -184,7 +202,7 @@ let testsystem28 = new System(29,randname(4),0,0);
 let testsystem29 = new System(30,randname(4),0,0);
 let testsystem30 = new System(31,randname(4),0,0);
 let asteroidarena = new System(32,randname(4),0,0);
-asteroidarena.generateasteroidarena(1400,160,320,8000,20000,30000,40000,200,2,3,16);//generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
+asteroidarena.generateasteroidarena(1400,160,320,8000,20000,30000,40000,200,2,63,16);//generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
 let bubbleparty1 = new System(33,randname(4),0,0);
 bubbleparty1.generatebubbleparty(160,320,12000,12000,160,2,3,16,0);//	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops, heat){
 bubbleparty1.wraps = 13000;
@@ -207,7 +225,7 @@ systems[0].planets = loadmenusystem();
 /////////See homesystem.js to see how to set up the planets, and homeoutposts.js to see how to set up the stations.
 systems[1].planets = loadhomesystem();
 systems[1].outposts = loadhomeoutposts();
-systems[1].shops = allshops;  //Defined in shop.js, but is specific to bling hustle and should be separated like planets and outposts
+systems[1].shops = allshops;  //Defined in bhshops.js, "allshops" actually is just all shops in the home system.
 systems[1].addrandomgang(1,2,16);//These addrandomgang statements allow me to define how difficult and how many bots are at each planet
 systems[1].addrandomgang(2,3,3);
 systems[1].addrandomgang(3,4,2);
@@ -236,7 +254,7 @@ systems[2].generatebasicsystem(5,2,16+2,80);//new lightly tested
 //now another custom system, but with less precisely controlled enemy placement
 systems[3].planets = loadtrinidadsystem(); //from trinidadsystem.js
 systems[3].outposts = loadtrinidadoutposts(); //from trinidadoutposts.js
-systems[3].shops = trinidadshops;//trinidadshops is defined in shop.js
+systems[3].shops = trinidadshops;//trinidadshops is defined in bhshops.js
 systems[3].enemypopulate(5,4,16);
 systems[3].addrandombling(50);
 systems[3].addcargomissions(4);
@@ -248,7 +266,7 @@ systems[5].generatebasicsystem(5,5,16+5,80);//new lightly tested
 /////////Another custom system/////////////////////////////////////////////
 systems[6].planets = loadnapasystem(); //from napasystem.js
 systems[6].outposts = loadnapaoutposts(); //from napaoutposts.js
-systems[6].shops = napashops;//napashops is defined in shop.js
+systems[6].shops = napashops;//napashops is defined in bhshops.js
 systems[6].enemypopulate(6,2,6);
 systems[6].turrets = napaturrets();
 systems[6].addrandombling(50);
@@ -318,10 +336,17 @@ systems[1].turrets = turrets;
 //systems[1].addbling(systems[1].planets[5],20,50,10);
 systems[1].addrandombling(50);
 ////////////////////////////////testing NPC class/////////////////////////
+var npc0 = new NPC(0);
+var npc1 = new NPC(1);
+var npc2 = new NPC(2);
+var npc3 = new NPC(3);
+var testnpcs = [npc0,npc1,npc2,npc3];
+testai = new NPCAI("tradeguild","trader",systems[1].planets[3])
+//npc0.update1(systems[1],time);//just a test
+systems[1].npcs = testnpcs;
 
-
-////////////////GAME LOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////update function this is the game loop bruh///////////////////////////////
+///GAMELOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function update() {
 	var truetime = Date.now();
@@ -351,7 +376,7 @@ function update() {
 			context.strokeStyle = "blue";
 			context.stroke();	
 			}
-	}
+		}
 	if (starmode == 1){	
 		if (ps==0){//ONLY affects menu system
 			pz=pz+.01;
@@ -361,6 +386,7 @@ function update() {
 			}
 		testfield2.draw(vwx,vwy,pz);
 		}
+	//testmodule.draw(400,400);
 	//Menu system handling///////////////////////////////////////////////
 	if (ps==0){
 		myship.x = 0;
@@ -376,6 +402,13 @@ function update() {
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
+			systems[ps].npcs = testnpcs;
+			//systems[ps].npcs[0].ship.setorbit(systems[ps].planets[0], 32100, 0.215, 1);//this actually does work.
+			//systems[ps].npcs[1].ship.setorbit(systems[ps].planets[0], 32200, 0.215, 1);
+			//systems[ps].npcs[2].ship.setorbit(systems[ps].planets[0], 32300, 0.215, 1);
+			//systems[ps].npcs[3].ship.setorbit(systems[ps].planets[0], 32400, 0.215, 1);
+			//systems[ps].npcs[3].ai.behavior = "guardbot";//.setorbit(systems[ps].planets[0], 32400, 0.215, 1);
+			//systems[ps].npcs[3].ai.homeplanet = 2;//.setorbit(systems[ps].planets[0], 32400, 0.215, 1);
 			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
 			myplayer.storystate = 0;//adjust for testing of stuff, should be 0 on major releases.
 			myplayer.planetarychart = systems[ps].generateplanetlist();
@@ -413,7 +446,8 @@ function update() {
 			myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
 			var randdir = Math.random()*2*Math.PI;
 			xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
-			waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
+			waldo.x = 1000000;
+			waldo.vy = 10;
 			//waldo.setorbit(systems[ps].planets[0], 1500, randdir, -1);
 			//systems[ps].waldosize = 100000000;
 			console.log(myship.x);
@@ -543,7 +577,7 @@ function update() {
 		systems[ps].ships[i].active = systems[ps].planets[systems[ps].ships[i].parentid].active;
 		}
 
-///////////////////Drawing and updating/////////////////////////////////////////////////////////////////////////////////////
+///////////////////Drawing System/////////////////////////////////////////////////////////////////////////////////////
 	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
 	if (ps>0){//ps==0 is the menu system.  Hud looks dumb here, and I want room for other stuff.
 		if (supercompass%2==1){
@@ -554,13 +588,7 @@ function update() {
 			}
 		hud(myi);//myi is the player index.  
 		}
-	systems[ps].updateall(); //Updates everthing in system
-	systems[ps].gravitateall(); //gravitates everything in system
-	systems[ps].collideself(); //executes all collisions between objects in the system.
-	
-	
-	
-
+//////////////////updating moved to end of stack////////////////
 
 ////////////Autopilot behavior section//Formerly AI section, AI behavior moved to System.updateall()/////////////////////////////////////////////
 	if (myplayer.autopilot == 1){
@@ -598,64 +626,37 @@ function update() {
 //////////////////////////////////Weapon 6 in-loop code, its special like that.   Now handles any beam weapons.////////////////////////////////////////////////////////////////////////////////////
 	var qq = 0;
 	while(qq<systems[ps].players.length){
-		//console.log("trytoshoot2");
 		var aplayer = systems[ps].players[qq];
 		aship = systems[ps].players[qq].ship; //sus
-		//console.log(aplayer.mousestate+" "+aplayer.wep+" "+aplayer.energy);
 		if((aplayer.mousestate==1)&&(aplayer.blasters[aplayer.wep].type == "beam")&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){ 
-			//console.log("trytoshoot1");
+			var range = aplayer.blasters[aplayer.wep].timer+32;
 			var n1 = Math.floor(time/4)%6;
 			var n2 = Math.floor(time/4+1)%6;
 			var n3 = Math.floor(time/4+2)%6;
 			var beamcolor1 = rainbow(n1);
 			var beamcolor2 = rainbow(n2);
 			var beamcolor3 = rainbow(n3);
+			//var xog = canvas.width/2;//x origin
+			var xog = aship.x - vwx+canvas.width/2;
+			//var yog = canvas.height/2;//y origin
+			var yog = aship.y - vwy+canvas.height/2;
+			var cosd = Math.cos(aship.d);//cos of ship direction
+			var sind = Math.sin(aship.d);
 			var range = aplayer.blasters[aplayer.wep].timer+32;
-			context.beginPath();
-			context.lineWidth = 12; 
-			context.moveTo(canvas.width/2+Math.cos(aship.d)*32, canvas.height/2+Math.sin(aship.d)*32);
-			context.lineTo(canvas.width/2+Math.cos(aship.d)*range,canvas.height/2+Math.sin(aship.d)*range);
-			context.strokeStyle = beamcolor1;
-			context.stroke();	
-			context.beginPath();
-			context.lineWidth = 8; 
-			context.moveTo(canvas.width/2+Math.cos(aship.d)*32, canvas.height/2+Math.sin(aship.d)*32);
-			context.lineTo(canvas.width/2+Math.cos(aship.d)*range,canvas.height/2+Math.sin(aship.d)*range);
-			context.strokeStyle = beamcolor2;
-			context.stroke();
-			context.lineWidth = 4; 
-			context.moveTo(canvas.width/2+Math.cos(aship.d)*32, canvas.height/2+Math.sin(aship.d)*32);
-			context.lineTo(canvas.width/2+Math.cos(aship.d)*range,canvas.height/2+Math.sin(aship.d)*range);
-			context.strokeStyle = beamcolor3;
-			context.stroke();
+			var startx = xog+cosd*32;
+			var starty = yog+sind*32
+			var endx = xog+cosd*range;
+			var endy = yog+sind*range;
+			drawbeam(startx,starty,endx,endy,time);
 			aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
 			var i = systems[ps].ships.length;
-			while (i>1){//For all ships except 0
+			while (i>0){//For all ships 
 				i = i - 1; 
 				var targetdistance = aship.distance(systems[ps].ships[i]);
 				if (targetdistance<range){
 					var ptest = pointingat( aship.directionof(systems[ps].ships[i]), aship.d, aship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
 					if (ptest == 1){
 						systems[ps].ships[i].damage(aplayer.blasters[aplayer.wep].hurt);
-						//more visual flair
-						/*
-						//disabled all this because it doesn't look cool.  But it makes circles on hits successfully.
-						var hitx = canvas.width/2+Math.cos(aplayer.ship.d)*targetdistance;
-						var hity = canvas.height/2+Math.sin(aplayer.ship.d)*targetdistance;
-						context.strokeStyle=beamcolor1;
-						context.linewidth=4;
-						context.beginPath();
-						context.arc(hitx, hity, 20, 0, 2 * Math.PI, false); //draws the circle
-						context.stroke()
-						context.strokeStyle=beamcolor2;
-						context.beginPath();
-						context.arc(hitx, hity, 16, 0, 2 * Math.PI, false); //draws the circle
-						context.stroke()
-						context.strokeStyle=beamcolor3;
-						context.beginPath();
-						context.arc(hitx, hity, 12, 0, 2 * Math.PI, false); //draws the circle
-						context.stroke()
-						*/
 						if (systems[ps].ships[i].hp<0){
 							if (systems[ps].ships[i].ai=="enemy"){
 								var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
@@ -744,16 +745,7 @@ function update() {
 		qq++;
 		}
 //////////////////////////Bling regeneration stuff goes here///////////////////////
-if ((systems[ps].bling.length<256)&&(time%16==0)){
-	systems[ps].bling.push(new Bling(0,0,0,0,Math.floor(Math.random()*128)));
-	systems[ps].bling[systems[ps].bling.length-1].reset(systems[ps].planets);
-	if (ps==0){ systems[0].bling = []; }
-	}
-var i=0;
-while(i<systems[ps].bling.length){
-	if(systems[ps].bling[i].t>20000){systems[ps].bling[i].reset(systems[ps].planets);}
-	i++;
-	}
+if (ps>0){systems[ps].blingregen();}
 if ((ps==32)&&(time%600==0)){//Special asteroid arena stuff.  Randomly levels up a bot every 20 seconds
 	var lub = Math.floor(Math.random()*systems[ps].ships.length)//level up bot
 	systems[ps].levelup(lub,1);
@@ -773,20 +765,27 @@ if ((ps==32)&&(time%600==0)){//Special asteroid arena stuff.  Randomly levels up
 		i++;
 		}
 	}
+systems[ps].updateall(time); //Updates everthing in system
+systems[ps].gravitateall(); //gravitates everything in system
+systems[ps].collideself(); //executes all collisions between objects in the system.
 storycheck(0);//0 is player index
 if(time%2==0){
     var truetime = Date.now();
     var servertime = mytime+Math.floor(time*1000/FPS);
-    if (time%FPS==0){console.log("True time: "+truetime+"Server time: "+servertime+"dt: "+(truetime-servertime));}
+    if (time%(FPS*2)==0){console.log("True time: "+truetime+"Server time: "+servertime+" dt: "+(truetime-servertime));}
     var lagging = truetime-(servertime+1000/FPS);
-	if (lagging>1000){console.log("Lagging too far, not correcting "+(truetime-servertime)+" ms");}
+	if (lagging>1000){
+		//console.log("Lagging too far, not correcting "+(truetime-servertime)+" ms");
+		}
 	else if (lagging>0){
 	  update();
-      console.log("Running extra frame because server is behind "+(truetime-servertime)+" ms");
+      //console.log("Running extra frame because server is behind "+(truetime-servertime)+" ms");
       }
     }
 
-  }else{console.log("Extra loop skipped because server is ahead "+(servertime-truetime)+"ms");}
+  }else{
+	//console.log("Extra loop skipped because server is ahead "+(servertime-truetime)+"ms");
+	}
 
 }
 

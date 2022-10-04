@@ -9,6 +9,12 @@ class Player{
         this.name = "-";
         this.upgrades = freshupgrades(); //also figure that out better
         this.inventory = new Inventory(10); //for cargo?
+        this.emtrees = [bhstarttree()];
+        this.emg = 0;//emtree
+        this.emh = 0;//emodule
+        this.emi = 0;//quizblock
+        this.emj = 0;//quiz
+        this.emk = 0;//challenge
         this.thrustmultiplier = 1; //Adjusts thruster sensitivity
         this.navtarget = 0; // Compass points to planets[navtarget]
         this.navactive = 1; //nav computer starts off, 1 is planetary, 2 is for stations
@@ -21,7 +27,9 @@ class Player{
         this.journalitem = 0; //Used to use shopitem, now it has it's own variable.
         this.energy = 100;
 		this.energyregen = 0.5;
+		this.maxenergy = 100;
         this.thruster = 100;
+		this.maxthruster = 100;
 		this.thrustregen = 1;
 		this.sensor = 0;
 		this.thrustmode = false;//For mobile support, switch between click to shoot and click to thrust.
@@ -52,6 +60,8 @@ class Player{
 		this.solarpain = 0;
 		this.shieldbonus = "none";
 		this.planetarychart = [];//Must be filled by current system
+		this.emenu = 0; //0 off, 1 at tree level, 2 at mod level, 3 at block level, 4 at quiz level, 5 at challenge level
+		this.answer = "";
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;
@@ -102,6 +112,41 @@ class Player{
 		var almostthere = (installedvalue-prevlevelvalue)/levelupvalue;
 		return almostthere;
 		}
+	emodaward(theprize){
+		if (theprize[1]=="armor"){
+			console.log(theprize[0]+" "+theprize[1]);
+			this.ship.maxhp = this.ship.maxhp + theprize[0];
+			this.ship.hp = this.ship.maxhp;
+		}else if (theprize[1]=="maxshield"){
+			console.log(theprize[0]+" "+theprize[1]);
+			this.ship.maxshield = this.ship.maxshield + theprize[0];
+			this.ship.shield = this.ship.maxshield;
+		}else if (theprize[1]=="shieldregen"){
+			console.log(theprize[0]+" "+theprize[1]);
+			this.ship.shieldregen = this.ship.shieldregen + theprize[0];
+			this.ship.shield = this.ship.maxshield;
+		}else if (theprize[1]=="energy"){
+			this.maxenergy = this.maxenergy + theprize[0];
+			this.energy = this.maxenergy;
+			console.log(theprize[0]+" "+theprize[1]);
+		}else if (theprize[1]=="energyregen"){
+			this.energyregen = this.energyregen+theprize[0];
+			this.energy = this.maxenergy;
+			console.log(theprize[0]+" "+theprize[1]);
+		}else if (theprize[1]=="cargo"){
+			this.inventory.maxcargo = this.inventory.maxcargo+theprize[0];
+			console.log(theprize[0]+" "+theprize[1]);
+		}else if (theprize[1]=="radar"){
+			this.radarrange = this.radarrange + theprize[0];
+			console.log(theprize[0]+" "+theprize[1]);
+		}else if (theprize[1]=="thrustenergy"){
+			this.maxthruster = this.maxthruster + theprize[0];
+			console.log(theprize[0]+" "+theprize[1]);
+		}else if (theprize[1]=="thrustregen"){
+			this.thrustregen = this.thrustregen + theprize[0];
+			console.log(theprize[0]+" "+theprize[1]);
+			}
+		}
     loadblasters(theblasters){
         var i=0;
         while(i<theblasters.length){
@@ -136,12 +181,12 @@ class Player{
                 var dy = Math.abs(viewy-this.blasters[i].bombs[j].y);
                 if ((dx<xtol)&&(dy<ytol)){
                     this.blasters[i].bombs[j].drawbomb(viewx,viewy);
+                    }
+                    j++;
                 }
-                j++;
+                i++;
             }
-            i++;
         }
-    }
     savecharacter(){//returns a string with all saved character data
         var savestring = "";
         savestring = savestring+"name "+this.ship.name+" money "+this.money+" storystate "+this.storystate+" storytime "+this.storytime;

@@ -118,19 +118,19 @@ function hud(playerindex){
 			//if (mapactive == 1){drawmap(planets,256,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y);}
 			//planets[0].drawcompass(ships[0],canvas.width/2,canvas.height-48); //Nav computer compass for sun
 ///////////////Rest of HUD/////////////////////////////////////////////////////////////////////////////////////////////////	
-	var sbl = 150; //status bar length
+	var sbl = 150; //status bar base length
 	context.font='12px Arial';
 	context.fillStyle = "orange"; //thruster power bar 
     context.fillRect(4, 84,Math.floor(sbl*myplayer.thruster/100), 16);
 	context.strokeStyle = "orange";
 	context.beginPath();
-	context.rect(4,84,sbl,16);
+	context.rect(4,84,Math.floor(sbl*myplayer.maxthruster/100),16);
 	context.stroke();
 	context.fillStyle = "red"; //weapons energy bar
     context.fillRect(4, 64,Math.floor(sbl*myplayer.energy/100), 16);
 	context.strokeStyle = "red";
 	context.beginPath();
-	context.rect(4,64,sbl,16);
+	context.rect(4,64,Math.floor(sbl*myplayer.maxenergy/100),16);
 	context.stroke();
 	context.fillStyle = "purple"; //weapons energy bar
     context.fillRect(4, 44,Math.floor(sbl*myplayer.levelcheck()), 16);
@@ -139,16 +139,16 @@ function hud(playerindex){
 	context.rect(4,44,sbl,16);
 	context.stroke();
 	context.fillStyle = "blue"; //shield bar
-    context.fillRect(4, 24,Math.floor(sbl*myplayer.ship.shield/myplayer.ship.maxshield), 16);
+    context.fillRect(4, 24,Math.floor(sbl*myplayer.ship.shield/200), 16);
 	context.strokeStyle = "blue";
 	context.beginPath();
-	context.rect(4,24,sbl,16);
+	context.rect(4,24,Math.floor(sbl*myplayer.ship.maxshield/200),16);
 	context.stroke();
 	context.fillStyle = "green"; //health bar
-    context.fillRect(4, 4,Math.floor(sbl*myplayer.ship.hp/myplayer.ship.maxhp), 16);
+    context.fillRect(4, 4,Math.floor(sbl*myplayer.ship.hp/1000), 16);
 	context.strokeStyle = "green";
 	context.beginPath();
-	context.rect(4,4,sbl,16);
+	context.rect(4,4,Math.floor(sbl*myplayer.ship.maxhp/1000),16);
 	context.stroke();
 	context.fillStyle = "white";
 	myplayer.levelcheck();//Remove this to run this function less.
@@ -246,15 +246,45 @@ function hud(playerindex){
 		vkeys[24].active = true;
 		vkeys[25].display = true;
 		vkeys[25].active = true;		
-		
 	}
-	
+	myplayer.blasters[myplayer.wep].drawsights(myplayer,time);
 //Autopilot indicator
 	if (myplayer.autopilot>0){
 		context.fillStyle = "red";
 		context.font='32px Arial';
 		context.fillText("Autopilot on",canvas.width/2 - 80,canvas.height/2 - 100);
-	} 
+		}
+	if (myplayer.emenu>0){//engineering menu
+		//myplayer.emtrees[0].drawicons(myplayer,400,100);
+		//console.log(myplayer.emenu + " " +myplayer.emg+" "+myplayer.emh+" "+myplayer.emi+" "+myplayer.emj);
+		if (myplayer.emenu == 1){
+			//console.log(myplayer.emtrees.length);
+			if (myplayer.emtrees.length<2){ myplayer.emenu = 2; }
+			else{
+				//display all the trees
+				}
+			}
+		if (myplayer.emenu >= 2){
+			myplayer.emtrees[myplayer.emg].draw(myplayer,400,100);
+			}
+		//else if (myplayer.emenu == 3){
+		//	myplayer.emtrees[myplayer.emg].emods[myplayer.emh].draw(400,200);
+		////	}
+		//else if (myplayer.emenu == 4){
+		//	myplayer.emtrees[myplayer.emg].emods[myplayer.emh].quizblocks[myplayer.emi].draw(400,200);
+		//	}
+		//else if (myplayer.emenu == 5){
+		//	myplayer.emtrees[myplayer.emg].emods[myplayer.emh].quizblocks[myplayer.emi].quizzes[myplayer.emj].draw(400,200);
+		//	}
+		}
+		//var mytree = myplayer.emtrees[myplayer.emg];
+		//var mymod = mytree.emods[myplayer.emh];
+		//var myquiz = myplayer.emtrees[myplayer.emg].emods[myplayer.emh].quizblocks[myplayer.emi].quizzes[myplayer.emj];
+		
+		//if (myplayer.emenu==4){
+		//	myquiz.draw(500,200);
+		//testmodule.drawplots(700,400);
+		//}
 ////Shopping!//////////////////////////////////////////////////////
 	if ((myplayer.dockstate>=0)&&(myplayer.dockstate<systems[ps].shops.length)){
 		//console.log("itriedtodrawthebuymenu0");
@@ -303,7 +333,7 @@ function hud(playerindex){
 		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, playerinventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
-	myplayer.blasters[myplayer.wep].drawsights(myplayer,time); //Draws aiming guide
+	//myplayer.blasters[myplayer.wep].drawsights(myplayer,time); //Draws aiming guide
 	//}
 	
 	if (myplayer.planetmenu == 1){
@@ -337,8 +367,8 @@ function hud(playerindex){
 				context.font = "16px Ariel";
 				context.fillText(systems[ps].planets[myplayer.planetarychart[i][j]].name,x+dx,y+dy);
 				if (systems[ps].players[playerindex].navtarget == myplayer.planetarychart[i][j]){//indicate planet is targeted	
-					context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
-					context.rect(x+ystep*(j)-ystep*0.4, y-ystep*0.4+ystep*(i),ystep*0.8,ystep*0.8); //until linewidth of 1 is reached.
+					context.beginPath();  
+					context.rect(x+ystep*(j)-ystep*0.4, y-ystep*0.4+ystep*(i),ystep*0.8,ystep*0.8); 
 					context.lineWidth = 2;
 					context.strokeStyle = "white";
 					context.stroke();

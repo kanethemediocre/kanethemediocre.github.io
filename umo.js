@@ -379,6 +379,39 @@ class Umo { //Universal Moving Object
 		context.fillStyle = hpc; //health bar color depends on ship condition
 		context.fillRect(x-this.s/2, y+this.s, Math.floor(this.s*prop), 4);
 		}
+	drawbeam(viewx,viewy,time,start,range){//none of this works, not even the console.log
+		console.log("time = "+time);
+		console.log("range = "+range);
+		var n1 = Math.floor(time/4)%6;
+		var n2 = Math.floor(time/4+1)%6;
+		var n3 = Math.floor(time/4+2)%6;
+		var beamcolor1 = rainbow(n1);
+		var beamcolor2 = rainbow(n2);
+		var beamcolor3 = rainbow(n3);
+		var xog = this.x-viewx;//x origin
+		var yog = this.y-viewy;//y origin
+		var cosd = Math.cos(this.d);//cos of ship direction
+		var sind = Math.sin(this.d);
+		//var range = aplayer.blasters[aplayer.wep].timer+32;
+		//context.beginPath();
+		//context.lineWidth = 12; 
+		//context.moveTo(xog+cosd*32, yog+sind*32);
+		//context.lineTo(xog+cosd*range,yog+sind*range);
+		//context.strokeStyle = beamcolor1;
+		//context.stroke();	
+		//context.beginPath();
+		//context.lineWidth = 8; 
+		//context.moveTo(xog+cosd*32, yog+sind*32);
+		//context.lineTo(xog+cosd*range,yog+sind*range);
+		//context.strokeStyle = beamcolor2;
+		//context.stroke();
+		context.beginPath();
+		context.lineWidth = 4; 
+		context.moveTo(xog+cosd*32, yog+sind*32);
+		context.lineTo(xog+cosd*range,yog+sind*range);
+		context.strokeStyle = beamcolor3;
+		context.stroke();
+		}
 	drawplanet(viewx, viewy){ //input variables are player ship/camera position
 		var x = this.x - viewx + canvas.width/2; //this function draws object as a circle,
 		var y = this.y - viewy + canvas.height/2; //and labels it
@@ -559,6 +592,13 @@ class Umo { //Universal Moving Object
 		context.fillText(Math.floor(this.distance(targetship)),compassx-16,compassy + compasssize);
 		}// end compass stuff
 	updateship(theplanets){//Unfortunately I need access to the list of planets to handle ship respawning.
+		this.deadtime = this.deadtime - 1;
+		if ((this.deadtime < 0) && (this.hp == -1000)){
+			this.respawn(theplanets[this.parentid]); //maybe change how I handle this
+			if (this.name == "Cactus Fantastico"){//default/player umo name
+				respawn1.play();
+				}
+			}
 		if (this.thrust > 0){ //skips these calculations if no thrust
 			this.vx = this.vx + this.thrust*Math.cos(this.d);
 			this.vy = this.vy + this.thrust*Math.sin(this.d);
@@ -603,18 +643,11 @@ class Umo { //Universal Moving Object
 		this.y = this.y + this.vy;
 		this.d = this.d + this.vd;
 		if ((this.hp <= 0) && (this.hp !==-1000)){ this.killship(1800); }
-		this.deadtime = this.deadtime - 1;
 		if (this.thruster > 100){ this.thruster = 100; }
 		this.energy = this.energy + 1;
 		if (this.energy > 100){	this.energy = 100; }				
 		this.shield = this.shield + this.shieldregen;
 		if (this.shield > this.maxshield){ this.shield = this.maxshield; }			
-		if ((this.deadtime < 0) && (this.hp == -1000)){
-			this.respawn(theplanets[this.parentid]); //maybe change how I handle this
-			if (this.name == "Cactus Fantastico"){//default/player umo name
-				respawn1.play();
-				}
-			}
 		}
 	updatepivot(){//Not used yet.
 		if (this.damagestate>0){this.damagestate = this.damagestate-1;}

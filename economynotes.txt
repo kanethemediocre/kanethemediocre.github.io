@@ -1,0 +1,33 @@
+Notes on cargo pricing
+
+basic types:
+Mining-High demand for manufactured goods, medium demand for food
+water
+oxygen
+phosphorus
+iron
+
+Agriculture-High demand for manufactured goods
+weet
+cheese
+dank cheese
+
+Manufacturing-High demand for minerals, medium demand for food
+weet
+cheese
+dank cheese
+
+
+special types:
+creative - produces little or no cargo, has moderate demand for manufactured goods and food.
+research - produces little or no cargo, but has moderate demand for food, and has high demand for minerals and some manufactured goods
+
+cargos:
+weet
+cheese
+dank cheese
+water
+oxygen
+phosphorus
+iron
+tiny wizards

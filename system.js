@@ -6,7 +6,7 @@ class System{
 		this.name = name; //name of system for display
 		this.planets = []; //list of planets (to be generated)
 		this.ships = []; //list of ships (to be generated)
-		this.npc = []; //More ship umos, but not enemy ais.  Not yet used.
+		this.npcs = []; //More ship umos, but not enemy ais.  Not yet used.
 		this.botbombs = []; //list of bombs used in system
 		this.outposts = []; //list of outposts in system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
 		this.shops = []; //list of shops in the system.  1st (index 0) item is empty, correlates with dockstate == 0 which is undocked
@@ -134,6 +134,20 @@ class System{
 					}		
 				}		
 			this.players[i].drawbombs(viewx,viewy)
+			i++;
+			}
+		var i=0;
+		while  (i<this.npcs.length){
+			var xtol = canvas.width/2+this.npcs[i].ship.s;
+			var xdif = this.npcs[i].ship.x-viewx;
+			if ((xdif < xtol)&&(xdif > -1*xtol)){
+				var ytol = canvas.height/2+this.npcs[i].ship.s;
+				var ydif = this.npcs[i].ship.y-viewy;
+				if ((ydif < ytol)&&(ydif>-1*ytol)){
+					this.npcs[i].ship.drawship(viewx,viewy);
+					}
+				}
+			this.npcs[i].drawbombs(viewx,viewy)
 			i++;
 			}
 		var i=0;
@@ -441,7 +455,7 @@ class System{
 		console.log(actualplanets);
 		return actualplanets;
 		}
-	updateall(){
+	updateall(time){
 		if (this.wraps>0){ this.radialwrap(this.wraps); }
 		var i = 0; //update section////////////////////////////////////////////////////////////
 		while (i<this.ships.length){ //update ships
@@ -478,6 +492,17 @@ class System{
 				}
 			i++;
 			}
+		//new npc framework here, most stuff has been abstracted away
+		var i = 0;
+		//console.log("trytoupdatenpcs1");
+		while (i<this.npcs.length){
+			//console.log("npcs updated below");
+			this.npcs[i].update1(this,time);//Unsure if use of "this" is allowed like that.
+			i++;
+			}
+
+
+
 		var i=this.turrets.length;
 		while(i>0){
 			i=i-1;
@@ -606,7 +631,17 @@ class System{
 						k=k-1;
 						this.players[j].blasters[k].fall(systems[ps].planets[i]);
 						}
-					}		
+					}
+				j = this.npcs.length;
+				while (j>0){ //gravitate on each npc and npc blaster bombs
+					j=j-1;
+					this.planets[i].gravitate(this.npcs[j].ship);
+					var k = this.npcs[j].blasters.length;
+					while (k>0){ //For all blasters to each planet
+						k=k-1;
+						this.npcs[j].blasters[k].fall(systems[ps].planets[i]);
+						}
+					}
 				}
 			var i = this.outposts.length;
 			while (i>0){
@@ -619,6 +654,18 @@ class System{
 				this.planets[0].gravitate(this.planets[i]);//sun gravitates all
 				if (this.planets[i].parentid>0){ this.planets[this.planets[i].parentid].gravitate(this.planets[i]); } //others only affected by parent
 				}
+			}
+		}
+	blingregen(){
+		if ((this.bling.length<256)&&(time%16==0)){
+			this.bling.push(new Bling(0,0,0,0,Math.floor(Math.random()*128)));
+			this.bling[this.bling.length-1].reset(this.planets);
+			//if (ps==0){ systems[0].bling = []; }
+			}
+		var i=0;
+		while(i<systems[ps].bling.length){
+			if(systems[ps].bling[i].t>20000){systems[ps].bling[i].reset(systems[ps].planets);}
+			i++;
 			}
 		}
 	gravitateothers(umolist){//For gravitating Umos external to the system (playerbombs at the start) not used afaik
@@ -723,6 +770,7 @@ class System{
 				j=j-1;
 				this.planets[i].circlecollidesafe(this.bling[j]);
 			}
+
 			var j = this.players.length;
 			while(j>0){
 				j=j-1;
@@ -743,9 +791,35 @@ class System{
 						h=h-1;
 						//console.log("itried1");
 						this.planets[i].circlecollide(this.players[j].blasters[k].bombs[h]);
+						}
 					}
 				}
-			}
+
+			var j = this.npcs.length;
+			while(j>0){
+				j=j-1;
+				//console.log("itried3");
+				if (this.planets[i].collide(this.npcs[j].ship)){
+					var collidedamagebonus = 9;//9x bonus damage plus the normal damage done in circlecollide
+					if (this.npcs[j].shieldbonus != "impact"){
+						this.npcs[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+						}
+					}
+				this.planets[i].circlecollide(this.npcs[j].ship);
+				var k=this.npcs[j].blasters.length;
+				while(k>0){
+					k=k-1;
+					//console.log("itried2");
+					var h = this.npcs[j].blasters[k].bombs.length;//usually h=1
+					while(h>0){
+						h=h-1;
+						//console.log("itried1");
+						this.planets[i].circlecollide(this.npcs[j].blasters[k].bombs[h]);
+						}
+					}
+				}
+
+
 		}
 		//Intership collisions///////////////////////////////////////
 		var i = 0;//For each ship,
@@ -761,6 +835,11 @@ class System{
 				this.players[j].ship.circlecollide4(this.ships[i])
 				j++;
 				}
+			var j=0;
+			while(j<this.npcs.length){
+				this.npcs[j].ship.circlecollide4(this.ships[i])
+				j++;
+				}
 			i++;
 			}
 		var i = 0; //for each player (.ship)
@@ -769,6 +848,23 @@ class System{
 			j=i+1;
 			while(j<this.players.length){
 				this.players[j].ship.circlecollide2(this.players[i].ship);	
+				j++;
+				}
+			var j=0;
+			while(j<this.npcs.length){
+				this.npcs[j].ship.circlecollide2(this.players[i].ship);
+				j++;
+				}
+			i++;
+			}
+
+
+		var i = 0;//For each npc,
+		var j = 0; //to each other npc
+		while (i<this.npcs.length){
+			j = i+1; //avoids duplicate executions
+			while (j<this.npcs.length){
+				this.npcs[i].ship.circlecollide4(this.npcs[j].ship);
 				j++;
 				}
 			i++;
@@ -782,18 +878,29 @@ class System{
 				while(k<this.turrets[i].bombs.length){
 					this.turrets[i].bombs[k].bombcollide(this.ships[j])
 					k++;
-				}
+					}
 				j++;
 				}
-				var j=0;
-				while(j<this.players.length){
-					var k=0;
-					while(k<this.turrets[i].bombs.length){
-						this.turrets[i].bombs[k].bombcollide(this.players[j].ship);
-						k++;
-						}
-					j++;
+			var j=0;
+			while(j<this.players.length){
+				var k=0;
+				while(k<this.turrets[i].bombs.length){
+					this.turrets[i].bombs[k].bombcollide(this.players[j].ship);
+					k++;
 					}
+				j++;
+				}
+			var j=0;
+			while(j<this.npcs.length){
+				var k=0;
+				while(k<this.turrets[i].bombs.length){
+					this.turrets[i].bombs[k].bombcollide(this.npcs[j].ship);
+					k++;
+					}
+				j++;
+				}
+
+
 			i=i+1; 
 			}
 		var i=0;
@@ -811,13 +918,14 @@ class System{
 				}
 			i++;
 			}
-		var i=0;
+		var i=0;//////Rework/repeat this for npcs
 		while(i<this.players.length){
 			var j=0;
 			while(j<this.botbombs.length){
 				this.botbombs[j].bombcollide(this.players[i].ship);
 				j++;
-			}
+				}
+
 
 			var j = 0;
 			while (j<this.players[i].blasters.length){ 
@@ -848,8 +956,16 @@ class System{
 						m++;
 						}
 					var m = 0;
-					while (m<this.players.length){ //players hit other players
+					while (m<this.players.length){ //players bombs hit other players
 						this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
+						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
+						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
+						//	}
+						m++;
+						}
+					var m = 0;
+					while (m<this.npcs.length){ //players bombs hit npcs
+						this.players[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
 						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
 						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
 						//	}
@@ -869,6 +985,66 @@ class System{
 				}
 			i++;
 			}
+
+
+
+		var i=0;//////Rework/repeat this for npcs
+		while(i<this.npcs.length){
+			var j=0;
+			while(j<this.botbombs.length){
+				this.botbombs[j].bombcollide(this.npcs[i].ship);
+				j++;
+				}
+
+
+			var j = 0;
+			while (j<this.npcs[i].blasters.length){
+				var k = 0;
+				while (k<this.npcs[i].blasters[j].bombs.length){
+					var m = 0;
+					while (m<this.ships.length){//npcs hit other ships
+						if (this.ships[m].hp>0){
+							this.npcs[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
+							}
+						m++;
+						}
+					var m = 0;
+					while (m<this.npcs.length){ //npcs hit other npcs
+						this.npcs[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
+						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
+						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
+						//	}
+						m++;
+						}
+					var m = 0;
+					while (m<this.players.length){ //npcs hit players
+						this.npcs[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
+						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
+						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
+						//	}
+						m++;
+						}
+					var m=0;
+					while (m<this.turrets.length){
+						this.npcs[i].blasters[j].bombs[k].bombcollide(this.turrets[m].pivot);
+						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
+						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
+						//	}
+						m++;
+						}
+					k++;
+					}
+				j++;
+				}
+			i++;
+			}
+
+
+
+
+
+
+
 		var i=0;
 		while (i<this.bling.length){
 			var j = 0;
@@ -1904,7 +2080,7 @@ class System{
 		this.randomplanets();
 		this.enemypopulate(gangsize,minlevel,maxlevel);
 		this.addrandombling(bling);
-	}
+		}
 	generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
 		this.planetarycollisions = true;
 		this.planets.push( new Umo(this.x,this.y,sunsize, "orange") ); //make the sun 
@@ -1989,9 +2165,14 @@ class System{
 			}
 		this.enemypopulate(gangsize,1,8);	
 		console.log(this.shops);
-		this.addsuperboss(96,5,4000,1000,320,80,1);
-		this.addsuperboss(96,6,4000,1000,320,80,2);
-		this.addsuperboss(96,8,4000,1000,320,80,3);
+		var i = 1;
+		while(i<numsuperboss){
+			this.addsuperboss(96,5,4000,1000,320,80,i);
+			i++;
+			}
+		//this.addsuperboss(96,5,4000,1000,320,80,1);
+		//this.addsuperboss(96,6,4000,1000,320,80,2);
+		//this.addsuperboss(96,8,4000,1000,320,80,3);
 		}
 	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops,heat){
 		this.planetarycollisions = true;
