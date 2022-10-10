@@ -14,40 +14,36 @@ class Quiz{
 		this.examples = [];
 		}
 	addaddquestion(digits,addendnum,allownegative){
-		var newchallenge = new Challenge("arithmatic");
+		var newchallenge = new Challenge("+");
 		newchallenge.makeaddquestion(digits,addendnum,allownegative);
-		newchallenge.addnumline();
+		//newchallenge.addnumline();
 		this.challenges.push(newchallenge);
-		//console.log(this.challenges.length);
 		}
 	addsubquestion(digits,addendnum,allownegative,allownegativeanswer){
-		var newchallenge = new Challenge("arithmatic");
+		var newchallenge = new Challenge("-");
 		newchallenge.makesubquestion(digits,addendnum,allownegative,allownegativeanswer);
 		//newchallenge.addnumline();
 		this.challenges.push(newchallenge);	
-		//console.log(this.challenges.length);
 		}
 	addmultquestion(digits,addendnum,allownegative){
-		var newchallenge = new Challenge("arithmatic");
+		var newchallenge = new Challenge("*");
 		newchallenge.makemultquestion(digits,addendnum,allownegative);
-		newchallenge.multplot();
+		//newchallenge.multplot();
 		this.challenges.push(newchallenge);
-		//console.log(this.challenges.length);
 		}
 	adddivquestion(digits,forceintegers,decimals,remainder,allownegative){
-		var newchallenge = new Challenge("arithmatic");
+		var newchallenge = new Challenge("/");
 		newchallenge.makedivquestion(digits,forceintegers,decimals,remainder,allownegative);
 		//newchallenge.multplot();
 		this.challenges.push(newchallenge);
-		//console.log(this.challenges.length);
 		}
 	addarithmaticquestion(addends,operator){
-		var newchallenge = new Challenge("arithmatic");
+		var newchallenge = new Challenge(operator);
 		newchallenge.makearithmaticquestion(addends,operator)//addarithmaticquestion(addends,operator){
 		this.challenges.push(newchallenge);
 		}
 	addarithmaticquestionpr(alloweddigits,allowedaddends,allowedallownegative, overrides, operator){//overrides is a set equal or less than the minimum length of addends, -999 indicates no override for that addend, all else indicates override to the specified values
-		var newchallenge = new Challenge("arithmatic");
+		var newchallenge = new Challenge(operator);
 		var addends = []; //Not really addends necessarily
 		var digitnum = alloweddigits[ Math.floor( Math.random()*alloweddigits.length ) ];//This randomly picks one of the acceptable values and applies it
 		var addendnum = allowedaddends[ Math.floor( Math.random()*allowedaddends.length ) ];
@@ -66,7 +62,7 @@ class Quiz{
 		this.challenges.push(newchallenge);
 		}
 	makesimplealgebraquestion(addends,vindex,operator,vlabel){
-		var newchallenge = new Challenge("arithmatic");
+		var newchallenge = new Challenge("algebra");
 		newchallenge.addarithmaticquestion(addends,operator)//addsimplealgebraquestion(addends, vindex, operator, vlabel){
 		this.challenges.push(newchallenge);
 		}
@@ -116,6 +112,11 @@ class Quiz{
 		if (myrating>this.rating){this.rating = myrating;}	
 		if (this.topscore<myscore){this.topscore = myscore;}
 		console.log(myrating);
+		var i=0;
+		while(i<this.challenges.length){
+			this.challenges[i].regenerate();
+			i++;
+			}
 		}
 	drawformenu(x,y){
 		var color1 = "red";
@@ -128,12 +129,10 @@ class Quiz{
 		context.fillText(this.topscore+"/"+this.challenges.length,x+200,y);
 		} 
 	draw(x,y){
-		//console.log(this.challenges.length);
 		this.challenges[this.q].draw(x,y);
 		//this.challenges[this.q].drawplots(x+200,y+250);
 		var i=1;
 		while((this.q-i>=0)&&(i<8)){
-			//console.log("itried");
 			this.challenges[this.q-i].draw(x,y+24*(i));
 			i++
 			}
@@ -142,7 +141,6 @@ class Quiz{
 		this.challenges[this.q].drawplots(x,y);
 		}
 	drawexamples(x,y){
-		//console.log(this.challenges.length);
 		var i=0;
 		while(i<this.examples.length){
 			context.fillStyle = "white";

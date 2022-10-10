@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 471 by Andrew Kane </title>
+    <title>Bling Hustle 477 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -14,6 +14,10 @@
 <script type="text/javascript" src="upgrades.js"></script>	
 <script type="text/javascript" src="blasters.js"></script>	
 <script type="text/javascript" src="cargo.js"></script>
+<script type="text/javascript" src="bhcargos.js"></script>
+
+<script type="text/javascript" src="inventory.js"></script>
+<script type="text/javascript" src="shopitem.js"></script>
 <script type="text/javascript" src="shop.js"></script>
 <script type="text/javascript" src="bhshops.js"></script>
 <script type="text/javascript" src="texthandling.js"></script>
@@ -61,6 +65,7 @@
 <script type="text/javascript" src="npc.js"></script>
 <script type="text/javascript" src="npcai.js"></script>
 
+<script type="text/javascript" src="economy.js"></script>
 <script>
 //var blastersound1 = new Audio("./sounds/bubble4_short2.mp3");
 var blastersound1 = new Audio("./sounds/w11s1.mp3");
@@ -156,6 +161,7 @@ var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2
 var playerselect = 0;
 var playerweapon9superbomb = new Superbomb("orbitalsystem");
 var firsttree = bhstarttree();//from bhstarttree.js
+//var allcargos = bhcargos();
 
 
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
@@ -165,9 +171,8 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	while (dd < -1*Math.PI){dd = dd + 2*Math.PI;}
 	while (as > Math.PI){as = as - 2*Math.PI;} //This reduces the angle difference to within +- Math.PI
 	while (as < -1*Math.PI){as = as + 2*Math.PI;}
-	if ((dd<as)&&(dd>-1*as)){//-1*anglesize < deltadir < anglesize
-		return 1;
-		}else {return 0;}
+	if ((dd<as)&&(dd>-1*as)){ return 1;	}//-1*anglesize < deltadir < anglesize
+	else {return 0;}
 	}
 ////////Declarations//////////////////////////////////////////////////////////////////////////////////
 ////////This is basically the game world/////////////////////////////////////////////////////////////////
@@ -202,7 +207,7 @@ let testsystem28 = new System(29,randname(4),0,0);
 let testsystem29 = new System(30,randname(4),0,0);
 let testsystem30 = new System(31,randname(4),0,0);
 let asteroidarena = new System(32,randname(4),0,0);
-asteroidarena.generateasteroidarena(1400,160,320,8000,20000,30000,40000,200,2,63,16);//generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
+asteroidarena.generateasteroidarena(1400,160,320,8000,20000,30000,40000,200,2,12,16);//generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
 let bubbleparty1 = new System(33,randname(4),0,0);
 bubbleparty1.generatebubbleparty(160,320,12000,12000,160,2,3,16,0);//	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops, heat){
 bubbleparty1.wraps = 13000;
@@ -314,6 +319,8 @@ while(i<systems.length){
 	systems[i].players.push(aplayer);
 	i++;
 }
+aplayer.ship.x = 0;
+aplayer.ship.y = -100;
 //var testboom = new Bubblesplosion(3,30,"red",systems[ps].players[0].ships);
 var testturret = new Turret("friendly",systems[1].planets[4],0,150);
 testturret.anchorvisible = false;
@@ -342,8 +349,13 @@ var npc2 = new NPC(2);
 var npc3 = new NPC(3);
 var testnpcs = [npc0,npc1,npc2,npc3];
 testai = new NPCAI("tradeguild","trader",systems[1].planets[3])
+
+var testeco = new Economy();
+
+
 //npc0.update1(systems[1],time);//just a test
-systems[1].npcs = testnpcs;
+
+//systems[1].npcs = testnpcs; //disabled for release
 
 ///GAMELOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -389,16 +401,18 @@ function update() {
 	//testmodule.draw(400,400);
 	//Menu system handling///////////////////////////////////////////////
 	if (ps==0){
-		myship.x = 0;
-		myship.y = -100;
+		//myship.x = 0;
+		//myship.y = -100;
 		myship.vx = 0;
 		myship.vy = 0;
 		context.font = "160px Ariel";
 		context.fillStyle = "yellow";
 		context.fillText("BLING   HUSTLE",canvas.width/2-550,120);	
 		if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[0])){
-			menuabout = true;
-			menucontrols = false;
+			//menuabout = true;
+			//menucontrols = false;
+			myship.x = -10000;
+			myship.y = -100;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
@@ -482,6 +496,30 @@ function update() {
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
 			myplayer.planetarychart = systems[ps].generateplanetlist();
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[8])){
+			myship.x = 0;
+			myship.y = -100;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[9])){
+			myship.x = 10000;
+			myship.y = -100;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[10])){
+			myship.x = 0;
+			myship.y = -100;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[11])){
+			//myship.x = 0;
+			//myship.y = -100;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[12])){
+			menuabout = true;
+			menucontrols = false;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[13])){
+			//menuabout = true;
+			//menucontrols = false;
 			}
 		else if (menuabout){
 			context.fillStyle = "white";

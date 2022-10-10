@@ -8,6 +8,7 @@ class Challenge{
 		this.parameters2=[];
 		this.parameters3=[];
 		this.parameters4=[];
+		this.metaparameters = [];
 		this.dps = [];
 		this.das = [];
 		this.dls = [];
@@ -16,6 +17,7 @@ class Challenge{
 		this.playeriscorrect = false;
 		}
 	makeaddquestion(digits,addendnum,allownegative){
+		this.metaparameters = [digits,addendnum,allownegative];
 		var addends = [];
 		var i=0;
 		while(i<addendnum){
@@ -40,6 +42,7 @@ class Challenge{
 		return [thequestion,theanswer];
 		}
 	makesubquestion(digits,addendnum,allownegative,allownegativeanswer){
+		this.metaparameters = [digits,addendnum,allownegative,allownegativeanswer];
 		var notdone = true;
 		while(notdone){
 			var addends = []; //Not really addends
@@ -69,6 +72,7 @@ class Challenge{
 		return [thequestion,theanswer];
 		}
 	makemultquestion(digits,addendnum,allownegative){
+		this.metaparameters = [digits,addendnum,allownegative];
 		var addends = []; //Not really addends
 		var i=0;
 		while(i<addendnum){
@@ -92,6 +96,7 @@ class Challenge{
 		return [thequestion,theanswer];
 		}
 	makedivquestion(digits,forceintegers,decimals,remainder,allownegative){
+		this.metaparameters = [digits,forceintegers,decimals,remainder,allownegative];
 		var num1 = Math.floor(Math.random()*10**digits);//currently assumes forceintegers is true, decimals is 0, and remainder is false.
 		var num2 = Math.floor(Math.random()*10**digits);
 		if (allownegative==true){
@@ -173,6 +178,21 @@ class Challenge{
 		// ax-cx = d-b
 		// (a-c)x = d-b
 		// x = (d-b) / (a-c)
+		}
+	regenerate(){
+		if (this.type == "+"){
+			this.makeaddquestion(this.metaparameters[0],this.metaparameters[1],this.metaparameters[2]);
+			}
+		if (this.type == "-"){
+			this.makesubquestion(this.metaparameters[0],this.metaparameters[1],this.metaparameters[2],this.metaparameters[3]);
+			}
+		if (this.type == "*"){
+			this.makemultquestion(this.metaparameters[0],this.metaparameters[1],this.metaparameters[2]);
+			}
+		if (this.type == "/"){
+			this.makedivquestion(this.metaparameters[0],this.metaparameters[1],this.metaparameters[2],this.metaparameters[3],this.metaparameters[4]);
+			}
+		this.playeranswer = "";
 		}
 	addnumline(){
 		var scalemod = 1;
@@ -257,10 +277,4 @@ class Challenge{
 			}
 		}
 	}
-var testmodule = new Challenge("arithmatic");
-//console.log(testmodule.makeaddquestion(1,2,true));
-//testmodule.addnumline();
-//console.log(testmodule.makesubquestion(2,2,true,true));
-console.log(testmodule.makemultquestion(1,2,false));
-testmodule.multplot();
-//testmodule.draw(400,400);
+

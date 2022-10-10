@@ -11,7 +11,6 @@ class Quizblock{
 		this.rating = 0; //float 0 to 4, a players "score" with 0 being all minimum pass or incomplete, 4 being all perfect pass
 		this.prizetype = "armor";//Describes what statistic will be upgraded by passing the quiz
 		this.prizesize = 10; //Describes amount statistic will be upgraded with a rating of 1.
-		
 		}
 	addaddquiz(alloweddigits,allowedaddends,allowedallownegative,size){//Arguments are arrays equal to the set of all acceptable values
 		var thequiz = new Quiz("arithmatic","+++ Quiz +++");
@@ -147,7 +146,6 @@ class Quizblock{
 
 
 	mergequizzes(){//Combines all member quizzes into a single quiz
-		//var omniquiz =new Quiz("arithmatic","+-* Quiz *-+");
 		var allchallenges = this.quizzes[0].challenges;
 		console.log(allchallenges);
 		var i=1;
@@ -173,18 +171,14 @@ class Quizblock{
 		if (this.rating == 2){ color1 = "yellow"; }
 		if (this.rating == 3){ color1 = "green"; }			
 		if (this.rating == 4){ color1 = "blue"; }
-		//if (this.rating == 4){color1 = "blue";}
 		context.fillStyle = color1;
 		context.fillText(this.title,x,y);
 		context.fillText(this.qc+"/"+this.quizzes.length,x+200,y);
+		context.fillText(this.prizetype+" + "+this.prizesize,x+300,y);
 		} 
 	draw(x,y){
-		//console.log(this.challenges.length);
-		//this.challenges[this.q].draw(x,y);
-		//this.challenges[this.q].drawplots(x+200,y+250);
 		var i=0;
 		while(i<this.quizzes.length){
-			//console.log("itried");
 			var mycolor = "red";
 			if (this.quizzes[i].rating == 1){ mycolor = "orange"; }
 			if (this.quizzes[i].rating == 2){ mycolor = "yellow"; }

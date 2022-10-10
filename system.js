@@ -1612,8 +1612,9 @@ class System{
 						aplayer.shopitem = aplayer.shopitem - 1;
 						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 0))
 							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].inv.length-1;}
-						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 1))
-							{aplayer.shopitem = allcargos.length-2;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
+						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 1)&&(aplayer.inventory.cargotypes()>0)){
+							aplayer.shopitem = aplayer.inventory.cargotypes()-1;
+							}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
 						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 2))
 							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].missions.length-1;}
 						}
@@ -1635,8 +1636,8 @@ class System{
 						aplayer.shopitem++;
 						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].inv.length-1)&&(aplayer.shopmode == 0))
 							{aplayer.shopitem = 0;}
-						if ((aplayer.shopitem>allcargos.length-2)&&(aplayer.shopmode == 1))
-							{aplayer.shopitem = 0;}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
+						if ((aplayer.shopitem>aplayer.inventory.cargotypes-1)&&(aplayer.shopmode == 1))
+							{aplayer.shopitem = 0;}
 						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].missions.length-1)&&(aplayer.shopmode == 2))
 							{aplayer.shopitem = 0;}
 						}
@@ -1714,11 +1715,29 @@ class System{
 						}		 
 					}else if (aplayer.shopmode == 1){
 						//if (playerinventory.cargo.length <= shopitem){shopitem = 0;}
-						if (aplayer.inventory.cargo[aplayer.shopitem]>0){
-							aplayer.inventory.cargo[aplayer.shopitem]=aplayer.inventory.cargo[aplayer.shopitem]-1;
-							aplayer.money = aplayer.money + Math.floor(allcargos[aplayer.shopitem].baseprice*systems[ps].shops[aplayer.dockstate].cargoprices[aplayer.shopitem]);
-							menubuy1.play();
-						}
+						var item = 0;
+						var i=0;
+						while(i<aplayer.inventory.cargo.length-1){
+							if (aplayer.inventory.cargo[i]>0){
+								if (item==aplayer.shopitem){
+									aplayer.inventory.cargo[i]=aplayer.inventory.cargo[i]-1;
+									aplayer.money = aplayer.money + Math.floor(allcargos[i].baseprice*systems[ps].shops[aplayer.dockstate].cargoprices[i]);
+									menubuy1.play();
+									i = aplayer.inventory.cargo.length;//exits loop
+									}
+								else{
+									item++;
+									}
+								}
+							
+							i++;
+							}
+						
+						//if (aplayer.inventory.cargo[aplayer.shopitem]>0){
+						//	aplayer.inventory.cargo[aplayer.shopitem]=aplayer.inventory.cargo[aplayer.shopitem]-1;
+						//	aplayer.money = aplayer.money + Math.floor(allcargos[aplayer.shopitem].baseprice*systems[ps].shops[aplayer.dockstate].cargoprices[aplayer.shopitem]);
+						//	menubuy1.play();
+						//}
 					}else if (aplayer.shopmode == 2){
 						if (systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].taken == false){//I shouldn't have to comment this if condition.  Side effect is that players can re-take a mission in progress, respawning the bot if it's a destroy mission.  Maybe useful if a bot gets lost just inside the return radius.
 							systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].take(systems[ps].ships,systems[ps].planets,aplayer);

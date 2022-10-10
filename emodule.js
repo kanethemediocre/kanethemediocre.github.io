@@ -82,7 +82,6 @@ class Emodule{
 			}
 		}
 	drawasicon(x,y){
-		
 		var outlinecolor = "grey";
 		var tickcolor = "grey";
 		var accessible = this.accessible;
@@ -110,6 +109,32 @@ class Emodule{
 			context.moveTo(x+48,y+tickyoffset);
 			context.lineTo(x+40,y+tickyoffset);
 			context.stroke()
+			
+			/*
+			var j=0; //This basically works, but doesn't look good at icon scale.
+			while(j<this.quizblocks[i].quizzes.length){
+				var minitickyoffset = tickyoffset +((j+1)/(this.quizblocks[i].quizzes.length+1)*tickspacing);
+				var minitickcolor = "grey";
+				if (accessible==true){
+					minitickcolor = "red"
+					if (this.quizblocks[i].quizzes[j].rating==1){minitickcolor = "orange";}
+					if (this.quizblocks[i].quizzes[j].rating==2){minitickcolor = "yellow";}
+					if (this.quizblocks[i].quizzes[j].rating==3){minitickcolor = "green";}
+					if (this.quizblocks[i].quizzes[j].rating==4){minitickcolor = "blue";}
+					}
+				//console.log(minitickcolor);
+				//console.log(minitickyoffset);
+				context.strokeStyle = minitickcolor;
+				context.beginPath();
+				context.moveTo(x,y+minitickyoffset);
+				context.lineTo(x+6,y+minitickyoffset);
+				context.moveTo(x+48,y+minitickyoffset);
+				context.lineTo(x+42,y+minitickyoffset);
+				context.stroke()
+				j++;
+				}
+			*/
+			
 			i++;
 			}
 		//console.log("triedtodrawanicon"+x+","+y);

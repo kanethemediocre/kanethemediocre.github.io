@@ -330,7 +330,7 @@ function hud(playerindex){
 		context.fillStyle = "teal";
 		context.font='12px Arial';
 		var titles = ["Armor",    "Max Armor",    "Shield",       "Max Shield",      "Shield Regen",      "Radar Range","Cargo Max",             ];
-		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, playerinventory.maxcargo ];
+		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, myplayer.inventory.maxcargo ];
 		showchart([titles,values], 80, 16, canvas.width-200,400);
 	}
 	//myplayer.blasters[myplayer.wep].drawsights(myplayer,time); //Draws aiming guide
