@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 477 by Andrew Kane </title>
+    <title>Bling Hustle 484 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -15,7 +15,7 @@
 <script type="text/javascript" src="blasters.js"></script>	
 <script type="text/javascript" src="cargo.js"></script>
 <script type="text/javascript" src="bhcargos.js"></script>
-
+<script type="text/javascript" src="economy.js"></script>
 <script type="text/javascript" src="inventory.js"></script>
 <script type="text/javascript" src="shopitem.js"></script>
 <script type="text/javascript" src="shop.js"></script>
@@ -57,6 +57,8 @@
 <script type="text/javascript" src="starfield.js"></script>
 <script type="text/javascript" src="about.js"></script>
 <script type="text/javascript" src="controls.js"></script>
+<script type="text/javascript" src="links.js"></script>
+<script type="text/javascript" src="mods.js"></script>
 <script type="text/javascript" src="turrets.js"></script>
 <script type="text/javascript" src="virtualkey.js"></script>
 <script type="text/javascript" src="bhvirtualkeys.js"></script>
@@ -65,7 +67,6 @@
 <script type="text/javascript" src="npc.js"></script>
 <script type="text/javascript" src="npcai.js"></script>
 
-<script type="text/javascript" src="economy.js"></script>
 <script>
 //var blastersound1 = new Audio("./sounds/bubble4_short2.mp3");
 var blastersound1 = new Audio("./sounds/w11s1.mp3");
@@ -155,6 +156,8 @@ let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
 var pz = 0;
 var menuabout = false;
 var menucontrols = false;
+var menulinks = false;
+var menumods = false;
 var upgradesavestring="";
 var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
@@ -162,8 +165,6 @@ var playerselect = 0;
 var playerweapon9superbomb = new Superbomb("orbitalsystem");
 var firsttree = bhstarttree();//from bhstarttree.js
 //var allcargos = bhcargos();
-
-
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
 	var dd = dir - objdir; //How much off the actual direction are you pointing?
@@ -231,6 +232,12 @@ systems[0].planets = loadmenusystem();
 systems[1].planets = loadhomesystem();
 systems[1].outposts = loadhomeoutposts();
 systems[1].shops = allshops;  //Defined in bhshops.js, "allshops" actually is just all shops in the home system.
+var i=0;
+while(i<50){
+	systems[1].ecobalance(.05);
+	i++;
+	}
+systems[1].addcargosales(cargoitems);
 systems[1].addrandomgang(1,2,16);//These addrandomgang statements allow me to define how difficult and how many bots are at each planet
 systems[1].addrandomgang(2,3,3);
 systems[1].addrandomgang(3,4,2);
@@ -251,6 +258,7 @@ systems[1].addrandomgang(23,4,4);
 //no tune bots
 systems[1].addrandomgang(25,5,16);
 systems[1].addrandomtraders([5,11,16], 8, 4);
+
 systems[1].addcargomissions(4);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////now a simple randomly generated system////////////////////////////////
@@ -451,8 +459,10 @@ function update() {
 			myplayer.planetarychart = systems[ps].generateplanetlist();
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[4])){
-			menucontrols = true;
 			menuabout = false;
+			menucontrols = true;
+			menulinks = false;
+			menumods = false;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
 			ps = 32;
@@ -510,28 +520,52 @@ function update() {
 			myship.y = -100;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[11])){
-			//myship.x = 0;
-			//myship.y = -100;
+			menuabout = false;
+			menucontrols = false;
+			menulinks = true;
+			menumods = false;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[12])){
 			menuabout = true;
 			menucontrols = false;
+			menulinks = false;
+			menumods = false;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[13])){
-			//menuabout = true;
-			//menucontrols = false;
+			menuabout = false;
+			menucontrols = false;
+			menulinks = false;
+			menumods = true;
 			}
 		else if (menuabout){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
-			fillwrappedtext(abouttext,128,16, 420,canvas.height-200);
+			fillwrappedtext(abouttext,128,16, 240,canvas.height-280);//y this different?
 			}//display stuff here.
 		else if (menucontrols){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
 			var i=0;
 			while (i<controltext.length){ //controltext is an array of strings
-				fillwrappedtext(controltext[i],200,16, 420,canvas.height-200+i*16);
+				fillwrappedtext(controltext[i],200,16, 240,canvas.height-280+i*16);
+				i=i+1;
+				}
+			}
+		else if (menulinks){
+			context.fillStyle = "white";
+			context.font = "12px Verdana";
+			var i=0;
+			while (i<linktext.length){ //controltext is an array of strings
+				fillwrappedtext(linktext[i],200,16, 240,canvas.height-280+i*16);
+				i=i+1;
+				}
+			}
+		else if (menumods){
+			context.fillStyle = "white";
+			context.font = "12px Verdana";
+			var i=0;
+			while (i<modtext.length){ //controltext is an array of strings
+				fillwrappedtext(modtext[i],200,16, 240,canvas.height-280+i*16);
 				i=i+1;
 				}
 			}

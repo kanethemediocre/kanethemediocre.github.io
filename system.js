@@ -925,8 +925,6 @@ class System{
 				this.botbombs[j].bombcollide(this.players[i].ship);
 				j++;
 				}
-
-
 			var j = 0;
 			while (j<this.players[i].blasters.length){ 
 				var k = 0;
@@ -985,18 +983,13 @@ class System{
 				}
 			i++;
 			}
-
-
-
-		var i=0;//////Rework/repeat this for npcs
+		var i=0;//////Reworked/repeated for npcs
 		while(i<this.npcs.length){
 			var j=0;
 			while(j<this.botbombs.length){
 				this.botbombs[j].bombcollide(this.npcs[i].ship);
 				j++;
 				}
-
-
 			var j = 0;
 			while (j<this.npcs[i].blasters.length){
 				var k = 0;
@@ -1038,13 +1031,6 @@ class System{
 				}
 			i++;
 			}
-
-
-
-
-
-
-
 		var i=0;
 		while (i<this.bling.length){
 			var j = 0;
@@ -1703,10 +1689,10 @@ class System{
 				 if ((aplayer.dockstate >= 0)&&(aplayer.dockstate<systems[ps].shops.length)){//check if docked and shop exists
 					if (aplayer.shopmode == 0){
 						 if (aplayer.shopitem < systems[ps].shops[aplayer.dockstate].inv.length){//check for shopitem exists
-							if (systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer) <= aplayer.money){ //check if player has enough money
+							if (systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco) <= aplayer.money){ //check if player has enough money
 								if (systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].available(aplayer)){ //check if player has prerequisites / doesn't already own item
-									if (aplayer.money > systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer)){
-										aplayer.money = aplayer.money - systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer);
+									if (aplayer.money > systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco)){
+										aplayer.money = aplayer.money - systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco);
 										menubuy1.play();
 										systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].buy(aplayer);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 									}
@@ -1721,7 +1707,7 @@ class System{
 							if (aplayer.inventory.cargo[i]>0){
 								if (item==aplayer.shopitem){
 									aplayer.inventory.cargo[i]=aplayer.inventory.cargo[i]-1;
-									aplayer.money = aplayer.money + Math.floor(allcargos[i].baseprice*systems[ps].shops[aplayer.dockstate].cargoprices[i]);
+									aplayer.money = aplayer.money + cargoitems[i].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco);
 									menubuy1.play();
 									i = aplayer.inventory.cargo.length;//exits loop
 									}
@@ -1976,6 +1962,56 @@ class System{
 				k=k+1;
 				}// Destroy missions can't be added here (they are added in enemypopulate function), because normally the enemy ships haven't been added to the system yet when randomoutposts() (this function) is run.
 			i=i+1;
+			}
+		var i=0;
+		while(i<50){
+			this.ecobalance(.05);
+			i++;
+			}
+		this.addcargosales(cargoitems);	//shady global scope used here
+		}
+	ecobalance(magnitude){//magnitude is 0<x<1, normally .01 ish
+		var distances = [];//a set of sets containing shop economy distances to each other shop economy
+		var minunit = 2000; //This is the treated as the minimum possible distance between shops.  Getting closer has no effect.
+		var i=0;
+		while(i<this.outposts.length){
+			var somedistances = [];
+			var j=0;
+			while(j<this.outposts.length){
+				var thedistance = this.outposts[i].distance(this.outposts[j])+minunit;//this is bad, need to use a distance metric like the missions
+				//var fakemission = new Mission("cargo",)//constructor(missiontype, morigin, mtarget,mmessage,mreward,mstory){
+				somedistances.push(thedistance);
+				var k=0;
+				while(k<this.shops[j].eco.supplies.length){
+					var pricedifference = this.shops[i].eco.prices[k]-this.shops[j].eco.prices[k];
+					var distancecoefficient = thedistance/minunit;//thedistance wont be less than minunit
+					var pricechange = magnitude*pricedifference/distancecoefficient;
+					//if ((this.shops[i].eco.forsale[k])&&(pricechange>0)){
+						this.shops[j].eco.prices[k] = this.shops[j].eco.prices[k] + pricechange;
+					//	}
+					//else if ((this.shops[i].eco.forbuy[k])&&(pricechange<0)){
+						this.shops[j].eco.prices[k] = this.shops[j].eco.prices[k] + pricechange;
+					//	}
+					k++;
+					}
+				j++;
+				}
+			distances.push(somedistances);
+			i++;
+			}
+		
+		}
+	addcargosales(cargoshopitems){
+		var i=0;
+		while(i<this.shops.length){
+			var j=0;
+			while(j<this.shops[i].eco.prices.length){
+				if (this.shops[i].eco.forsale[j]==true){
+					this.shops[i].inv.push(cargoitems[j]);//from global scope, not passed by referebce, because maybe it fixes something?
+					}
+				j++;
+				}
+			i++;
 			}
 		}
 	addcargomissions(n){

@@ -40,12 +40,12 @@ class Shopitem{
 		}
 		return thisdescribe;
 	}
-	itemprice(theplayer){
+	itemprice(theplayer,theeco){
 		var thisprice = "Undefined Item"; //error handling by default
 		if (this.type == "blaster"){
 			thisprice = theplayer.blasters[this.i].nextupcost();
 		}else if (this.type == "cargo"){
-			thisprice = Math.floor(allcargos[this.i].baseprice*1);//allshops[theplayer.dockstate].cargoprices[this.i]);//fix use of allshops here, so prices are proper random in random systems
+			thisprice = Math.floor(theeco.prices[this.i]);//allshops[theplayer.dockstate].cargoprices[this.i]);//fix use of allshops here, so prices are proper random in random systems
 		}else if (this.type == "upgrade"){
 			thisprice = theplayer.upgrades[this.i].price*2**(theplayer.upgrades[this.i].tier);
 		}else if (this.type == "booster"){

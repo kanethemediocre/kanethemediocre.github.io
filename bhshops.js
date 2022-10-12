@@ -142,6 +142,11 @@ let buycargo5 = new Shopitem("cargo",5,"buy",1);
 let buycargo6 = new Shopitem("cargo",6,"buy",1);
 let buycargo7 = new Shopitem("cargo",7,"buy",1);
 let buycargo8 = new Shopitem("cargo",8,"buy",1);
+let buycargo9 = new Shopitem("cargo",9,"buy",1);
+let buycargo10 = new Shopitem("cargo",10,"buy",1);
+let buycargo11 = new Shopitem("cargo",11,"buy",1);
+let buycargo12 = new Shopitem("cargo",12,"buy",1);
+var cargoitems = [buycargo0,buycargo1,buycargo2,buycargo3,buycargo4,buycargo5,buycargo6,buycargo7,buycargo8,buycargo9,buycargo10,buycargo11,buycargo12];
 
 let uprepairitem = new Shopitem("upgrade",0,"repair",0);
 let uparmoritem = new Shopitem("upgrade",1,"armor",0);
@@ -156,15 +161,15 @@ let upimpactitem = new Shopitem("upgrade",9,"impact",0);
 //let brandchassisitem = new Shopitem("chassis",0,"brand",0);
 let randomchassisitem = new Shopitem("chassis",0,"random",0);
 
-let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buycargo0,buycargo1,buycargo2,buyw0item];
+let merzianshopitems = [repairshopitem,buyw2item,buyw3item,buyw4item,remotew1item,booster1,buyw0item];
 let merrymerz = new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
-let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,uparmoritem,buycargo2,buycargo3]
+let billshopitems = [repairshopitem,buyw2item,buyw3item,upw1damage,upw3damage,uparmoritem]
 let billbits = new Shop("Bills Billion Bits", 0, "Welcome to Earf", billshopitems);
-let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,uparmoritem,upshielditem,upradaritem,buycargo2,buycargo5];
+let jojoshopitems = [repairshopitem,buyw5item,buyw6item,buyw9item,remotew2item,uparmoritem,upshielditem,upradaritem];
 let jojocheese = new Shop("JoJo's House of Cheese", 2, "Jupe Fantastico", jojoshopitems);
-let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5n,upw1damage,upshieldregenitem,buycargo1,buycargo6,buycargo0];
+let dangshopitems = [repairshopitem,buyw4item,buyw7item,buyw8item,upw4speed,upw5n,upw1damage,upshieldregenitem];
 let dangustown = new Shop("Dangustown", 3, "It's YOUR Anus!", dangshopitems);
-let sharonshopitems = [repairshopitem,buyw2item,buyw0item,upw0speed,upw0timer,upsensoritem,buycargo1,buycargo6,buycargo0];
+let sharonshopitems = [repairshopitem,buyw2item,buyw0item,upw0speed,upw0timer,upsensoritem];
 let sharons = new Shop("Sharon's Scientific Supplies", 4, "wubbasomethinggoeshere", sharonshopitems);
 let randshopitems1 = [];
 var i = 0;
@@ -179,18 +184,18 @@ let upgradeshop = new Shop("All Upgrades Testing Shop",6, "Upgrades", upgradesho
 
 let allshops = [billbits,merrymerz,jojocheese,dangustown,sharons,randoshop1,upgradeshop];//"all" meaning home system
 
-let dadashopitems = [uprepairitem,buyw2item,buyw3item,buyw4item,upw1damage,upw4damage,uparmoritem,buycargo0,buycargo6,buycargo5];
+let dadashopitems = [uprepairitem,buyw2item,buyw3item,buyw4item,upw1damage,upw4damage,uparmoritem];
 let dadashop = new Shop("Ye Olde Space Shoppe",0,"The Gentleman's Outfitter",dadashopitems);
-let hijoshopitems = [uprepairitem,buyw5item,buyw6item,buyw8item,remotew2item,upw3damage,upw5n,buycargo1,buycargo2,buycargo4];
+let hijoshopitems = [uprepairitem,buyw5item,buyw6item,buyw8item,remotew2item,upw3damage,upw5n];
 let hijoshop = new Shop("Not Your Dada's Spaceport",1,"Welcome to our new location",hijoshopitems);
-let fantshopitems = [uprepairitem,buyw2item,buyw7item,buyw0item,upw2boom,upw5damage,upw8damage,buycargo3,buycargo7,buycargo8];
+let fantshopitems = [uprepairitem,buyw2item,buyw7item,buyw0item,upw2boom,upw5damage,upw8damage];
 let fantshop = new Shop("Want-Fant",2,"You want it, Fant has it.",fantshopitems);
-let stanshopitems = [uprepairitem,buyw3item,buyw6item,buyw9item,upw6timer,upw8boom,buycargo6,buycargo7,buycargo8];
+let stanshopitems = [uprepairitem,buyw3item,buyw6item,buyw9item,upw6timer,upw8boom];
 let stanshop = new Shop("Shifty Steve's Questionable Commodities",3,"Everything your legitimate business needs.",stanshopitems);
 let trinidadshops = [dadashop,hijoshop,fantshop,stanshop];
 
 let arisshopitems = [uprepairitem,buyw4item,buyw6item,buyw7item,upw4speed,upw4timer,upw6damage,upw5n,buycargo1,buycargo2,buycargo4];
 let arisshop = new Shop("The Foob",0,"yaaaaa",arisshopitems);
-let luxeshopitems = [uprepairitem,buyw2item,buyw5item,buyw8item,upw5damage,upw5boom,upw5n,buycargo1,buycargo2,buycargo4];
+let luxeshopitems = [uprepairitem,buyw2item,buyw5item,buyw8item,upw5damage,upw5boom,upw5n];
 let luxeshop = new Shop("The Luxemburger",1,"mmmmmm",luxeshopitems);
 let napashops = [arisshop,luxeshop];
