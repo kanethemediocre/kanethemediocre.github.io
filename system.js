@@ -1598,8 +1598,9 @@ class System{
 						aplayer.shopitem = aplayer.shopitem - 1;
 						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 0))
 							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].inv.length-1;}
-						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 1)&&(aplayer.inventory.cargotypes()>0)){
-							aplayer.shopitem = aplayer.inventory.cargotypes()-1;
+						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 1)){
+							if (aplayer.inventory.cargotypes>0){aplayer.shopitem = aplayer.inventory.cargotypes()-1;}
+							aplayer.shopitem = 0;//aplayer.inventory.cargotypes()-1;
 							}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
 						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 2))
 							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].missions.length-1;}
@@ -1622,7 +1623,7 @@ class System{
 						aplayer.shopitem++;
 						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].inv.length-1)&&(aplayer.shopmode == 0))
 							{aplayer.shopitem = 0;}
-						if ((aplayer.shopitem>aplayer.inventory.cargotypes-1)&&(aplayer.shopmode == 1))
+						if ((aplayer.shopitem>aplayer.inventory.cargotypes()-1)&&(aplayer.shopmode == 1))
 							{aplayer.shopitem = 0;}
 						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].missions.length-1)&&(aplayer.shopmode == 2))
 							{aplayer.shopitem = 0;}

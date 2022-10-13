@@ -128,7 +128,25 @@ class Shop{
 		context.fillText("Sell",x,y-24);
 		context.fillStyle = "white";
 		context.font='12px Arial';
-		if (allcargos.length>0){fillwrappedtext(allcargos[item].description,86,16,x,y+236+128);}
+		if (theplayer.inventory.cargotypes()>0){
+			//fillwrappedtext(allcargos[item].description,86,16,x,y+236+128);
+			var flavortext = "";
+			var realindex = -1;
+			var localindex = -1
+			var i=0;
+			while(i<theplayer.inventory.cargo.length){
+				if (theplayer.inventory.cargo[i]>0){localindex++;}
+				if (theplayer.shopitem==localindex){
+					realindex = i;
+					i = theplayer.inventory.cargo.length;
+					}
+				i++;
+				}
+			console.log("localindex = "+localindex+" shopitem = "+theplayer.shopitem+" realindex = "+realindex);
+			if (realindex>=0){
+				fillwrappedtext(this.eco.cargos[realindex].description,86,16,x,y+236+128);
+				}
+			}
 		context.beginPath(); //This colored rectangle will show which item is selected.
 		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c;//Global scope here, very bad, also in drawpolarpoly
 		context.rect(x-12,y+20+item*16,400,16);
@@ -139,7 +157,7 @@ class Shop{
 		while(i<theplayer.inventory.cargo.length-2){
 			if (theplayer.inventory.cargo[i]>0){
 				context.fillText(allcargos[i].name.slice(0,16),x,y+32+yoffset);
-				context.fillText(allcargos[i].description.slice(0,16),x+80,y+32+yoffset);//this.inv[i].itemprice(theplayer,this.eco)
+				//context.fillText(allcargos[i].description.slice(0,16),x+80,y+32+yoffset);//this.inv[i].itemprice(theplayer,this.eco)
 				//context.fillText(Math.floor(allcargos[i].baseprice*allshops[systems[ps].players[0].dockstate].cargoprices[i]),x+200,y+32+16*i); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
 				context.fillText(Math.floor(cargoitems[i].itemprice(theplayer,this.eco)),x+200,y+32+yoffset); //duplicate to itemprice() function, but this is indexed by allcargos instead of shopitem.
 				yoffset = yoffset + 16;
