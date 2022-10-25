@@ -1781,10 +1781,10 @@ class System{
 				// Start file download.
 				document.getElementById("dwn-btn").addEventListener("click", function(){
 					// Generate download of hello.txt file with some content
-					var upgradestring = "";
+					var upgradestring = "";//unnecessary?
 					var i=0;
-					while(i<allupgrades.length){
-						upgradestring=upgradestring+allupgrades[i].tier+" ";
+					while(i<aplayer.upgrades.length){
+						upgradestring=upgradestring+aplayer.upgrades[i].tier+" ";
 						i++;
 						}
 					var savetext = aplayer.saveupgrades()+"|"+aplayer.saveblasters()+"|"+aplayer.savecharacter()+"test junk data yo"; //document.getElementById("text-val").value;
@@ -1795,6 +1795,7 @@ class System{
 				  break;	
 			
 				   case "l": 
+				   aplayer.initialize(1000,200,1);
 					var i=0;
 					var stopindexes = [];
 					while(i<loadgamestring.length){

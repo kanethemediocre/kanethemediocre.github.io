@@ -7,7 +7,7 @@ class Player{
         this.input = "";
         this.money = 100;
         this.name = "-";
-        this.upgrades = freshupgrades(); //also figure that out better
+        this.upgrades = freshupgrades(); //
         this.inventory = new Inventory(10); //for cargo?
         this.emtrees = [bhstarttree()];
         this.emg = 0;//emtree
@@ -70,6 +70,8 @@ class Player{
 		this.ship.maxshield=shield;
 		this.thrustmultiplier=thrustmultiplier;
 		this.blasters = bhblasters();
+        this.upgrades = freshupgrades(); //
+        this.inventory = new Inventory(10); //for cargo?
 		var i = 0;
 		while (i<this.blasters.length){
 			this.blasters[i].origin = this;
@@ -147,7 +149,8 @@ class Player{
 			console.log(theprize[0]+" "+theprize[1]);
 			}
 		}
-    loadblasters(theblasters){
+    loadblasters(theblasters){//obselete?
+		console.log("obselete function player.loadblasters was executed");
         var i=0;
         while(i<theblasters.length){
             this.blasters.push(baseblastercopy(theblasters[i]));
@@ -199,6 +202,8 @@ class Player{
             savestring=savestring+" b"+i+" "+this.blasters[i].savetierstring();
             i++;
             }
+		savestring = savestring + " ";
+		console.log(savestring);
         return savestring;
         }
     saveupgrades(){
@@ -211,6 +216,7 @@ class Player{
 		console.log(upgradestring);
         return upgradestring;
     }
+	
     loadcharacter(playerstring){
 		var i = 0;
 		var lastword = "";
@@ -236,18 +242,37 @@ class Player{
         this.storytime = 0;// parseInt(values[7]);      
         }
     loadblastertiers(blasterstring){
+		this.blasters = bhblasters();
         var i=0; //blaster index
         var j = 3; //string index
         var bstart = 0; //blaster string start index;
         var bend = 0; //blaster string end index
-        while (i<this.blasters.length){//Normally 10.  
+        while (i<10){//this.blasters.length){//Normally 10.  
             var ablaster = blasterstring.slice(j,j+18);//blasterstring slice magic goes here
             this.blasters[i].loadtierstring(ablaster);
             j=j+21;
             i++;
-            }     
+            }   
+		j++;
+		while (i<this.blasters.length){//20 blasters last count.  		
+            var ablaster = blasterstring.slice(j,j+18);//blasterstring slice magic goes here
+            this.blasters[i].loadtierstring(ablaster);
+            j=j+22;
+            i++;
+            }   
         }
     loadupgrades(upgradestring){
+		console.log(this.upgrades[2].tier);//Reduce this nonsense.  Sense wasn't working at first.
+		this.upgrades = freshupgrades();
+		console.log(this.upgrades[2].tier);
+		var ug = freshupgrades();
+		console.log(ug[2].tier);
+		this.upgrades = ug;
+		console.log(this.upgrades[2].tier);
+		//this.upgrades = freshupgrades();
+		//console.log(this.upgrades);
+		//this.upgrades = ug;
+		//console.log(this.upgrades);
         var i = 0;
         var lastword = "";
         var values = [];
@@ -266,7 +291,7 @@ class Player{
          while(i<values.length){
              var j=0;
              while(j<values[i]){
-                 this.upgrades[i].apply(this);
+                 this.upgrades[i].apply(this);////hhhhhhhhhhwwwwwwwwat
                  j++;
                  }
              i++;

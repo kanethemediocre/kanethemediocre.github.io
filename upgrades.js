@@ -38,7 +38,9 @@ class Upgrade{
 			}
 		}
 	}
-allupgrades = [];
+	
+/*	
+var allupgrades = [];
 allupgrades.push(new Upgrade("Repair","Repairs any damage to your ship.",20,"repair",0));
 allupgrades.push(new Upgrade("Armor","Improves your ship's armor.",800,"armor",0));
 allupgrades.push(new Upgrade("Shield","Improves your ship's shield.",2000,"shield",0));
@@ -49,6 +51,8 @@ allupgrades.push(new Upgrade("Thrust","Improves your ship's thruster power",4000
 allupgrades.push(new Upgrade("Sensor","Improves your ship's navigation and targeting sensors",5000,"sensor",0));
 allupgrades.push(new Upgrade("Solar Shield","Improves your shield's resistance to solar radiation.",3000,"solar",0));
 allupgrades.push(new Upgrade("Impact Shield","Improves your shield's resistance to collisions.",3000,"impact",0));
+*/
+
 //allupgrades.push(new Upgrade("Thrust Adjust","Adds adjustibility to your ship's thrusters",3000,"thrustadjust",0));
 //allupgrades.push(new Upgrade("Efficient Thrusters","Improves thruster efficiency",3000,"thrusteff",0));
 function freshupgrades(){
@@ -65,3 +69,12 @@ function freshupgrades(){
 	newupgrades.push(new Upgrade("Impact Shield","Improves your shield's resistance to collisions.",3000,"impact",0));
 	return newupgrades
 }
+var allupgrades = freshupgrades();
+console.log(allupgrades[2].tier);
+allupgrades[2].tier = 99;
+console.log(allupgrades[2].tier);
+var totallyunrelatedupgrades = freshupgrades();
+console.log(totallyunrelatedupgrades[2].tier);
+
+allupgrades = freshupgrades();
+console.log(allupgrades[2].tier);

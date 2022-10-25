@@ -35,9 +35,9 @@ class Shop{
 		var utypes = [];
 		var i=0;
 		while (i<this.inv.length-1){//-1 hack might or might not fix something, might or might not break something
-			console.log(i);
-			console.log(this.inv.length);
-			console.log( this.inv[i].namestring() );
+			//console.log(i);
+			//console.log(this.inv.length);
+			//console.log( this.inv[i].namestring() );
 
 			names.push(this.inv[i].namestring().slice(0,20));
 			descriptions.push(this.inv[i].describestring().slice(0,20));
