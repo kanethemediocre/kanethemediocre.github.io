@@ -5,12 +5,12 @@ class Inventory{
 		this.blasters = [];
 		this.upgrades = [];//not sure if/how this will be used
 		var i=0;
-		while (i<allcargos.length){
+		while (i<allcargos.length){//creepy global scope happening
 			this.cargo.push(0);//establishes 0 cargo in inventory for all possible cargo items
 			i=i+1;
 		}
 		this.linenumbers = 0;
-	}
+		}
 	totalcargo(){ //this also updates linenumbers as well as the total quantity of cargo.
 		var total = 0;
 		var lines = 0; //lines and linenumbers refers to the diversity of cargo types and their needed spacing.
@@ -37,6 +37,36 @@ class Inventory{
 		}
 	givecargo(cargoi, quantity){
 		this.cargo[cargoi] = this.cargo[cargoi]-quantity;		
+		}
+	savecargo(){
+		var cargostring = "";
+		var i=0;
+		while(i<this.cargo.length){
+			cargostring = cargostring + this.cargo[i]+ " ";
+			i++
+			}
+		return cargostring;
+		}
+	loadcargo(cargostring){
+		var i = 0;
+		var lastword = "";
+		var values = [];
+		while(i<cargostring.length){//This loop parses the string into space separated words
+			var thechar = cargostring[i];
+			if (thechar!=" "){
+				lastword=lastword+thechar;
+				}
+			else {
+				values.push(lastword)
+				lastword = "";
+				}
+			i++;
+			}
+		var i=0;
+		while (i<values.length){
+			this.cargo[i] = parseInt(values[i]);
+			i++;
+			}
 		}
 	draw(xpos,ypos){
 		context.fillStyle = "yellow";

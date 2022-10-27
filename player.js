@@ -192,8 +192,9 @@ class Player{
         }
     savecharacter(){//returns a string with all saved character data
         var savestring = "";
-        savestring = savestring+"name "+this.ship.name+" money "+this.money+" storystate "+this.storystate+" storytime "+this.storytime;
-        return savestring;
+        savestring = savestring+"name "+this.ship.name+" money "+this.money+" storystate "+this.storystate+" storytime "+this.storytime+" color1 "+this.ship.c+" color2 "+this.ship.c2+" ";
+        console.log(savestring);
+		return savestring;
         }
     saveblasters(){
         var savestring = "";
@@ -215,9 +216,21 @@ class Player{
 			}
 		console.log(upgradestring);
         return upgradestring;
-    }
+		}
+	savepolygon(){
+		var polygonstring = "";
+		var i = 0;
+		while (i<this.ship.polytheta.length){
+			var morestuff = this.ship.polytheta[i] + " " + this.ship.polyradius[i] + " ";
+			polygonstring = polygonstring + morestuff;
+			i++;
+			}
+		polygonstring = polygonstring + " END ";
+		return polygonstring;
+		}
 	
     loadcharacter(playerstring){
+		console.log(playerstring);
 		var i = 0;
 		var lastword = "";
 		var values = [];
@@ -239,7 +252,11 @@ class Player{
         if (values[4]!="storystate"){console.log("Format error on index 4");}
         this.storystate = parseInt(values[5]);      
         if (values[6]!="storytime"){console.log("Format error on index 6");}
-        this.storytime = 0;// parseInt(values[7]);      
+        this.storytime = parseInt(values[7]);  
+        if (values[8]!="color1"){console.log("Format error on index 8");}
+        this.ship.c = values[9];//This assignment is working,
+        if (values[10]!="color2"){console.log("Format error on index 10");}
+        this.ship.c2 = values[11];//but this assignment is not working
         }
     loadblastertiers(blasterstring){
 		this.blasters = bhblasters();
@@ -297,6 +314,38 @@ class Player{
              i++;
              }
         }
+	loadpolygon(polygonstring){
+		var i = 0;
+        var lastword = "";
+        var values = [];
+        while(i<polygonstring.length){//This loop parses the string into space separated words
+            var thechar = polygonstring[i];
+            if (thechar!=" "){
+                lastword=lastword+thechar;
+                }
+            else {
+                values.push(lastword)
+                lastword = "";
+                }
+            i++;
+            }
+		var i=0;
+		var pt = [];
+		var pr = [];
+		while (i<values.length){
+			if (values[i] == "END"){//This allows the function to accept oversnipped data
+				i = values.length;
+				}
+			else{
+				if (i%2==0){pt.push(parseFloat(values[i]));}
+				if (i%2==1){pr.push(parseFloat(values[i]));}
+				i++;
+				}
+			}
+		this.ship.polyradius = pr;
+		this.ship.polytheta = pt;
+		}
+	
 	cyclewep(n){
 		if (n>0){
 			var newwep = (this.wep + n)%this.blasters.length;//+n blasters, rolling over.  % instead of subtraction prevents errors from unreasonable values of n.
