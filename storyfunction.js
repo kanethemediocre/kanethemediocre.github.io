@@ -2,6 +2,7 @@
 function storycheck(playerindex){
 var myplayer = systems[ps].players[playerindex];
 var dstory = time - myplayer.storytime;
+//console.log(dstory);
 if ((myplayer.storywarn < 1)&&(myplayer.upgrades[7].tier>0)){
 	myplayer.storyreturn = myplayer.storystate;
 	myplayer.storystate = 1000;

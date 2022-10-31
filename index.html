@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 490 by Andrew Kane </title>
+    <title>Bling Hustle 499 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -37,6 +37,8 @@
 <script type="text/javascript" src="emtree.js"></script>
 <script type="text/javascript" src="bhstarttree.js"></script>
 
+
+<script type="text/javascript" src="notification.js"></script>
 <script type="text/javascript" src="player.js"></script>
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
@@ -57,6 +59,7 @@
 <script type="text/javascript" src="starfield.js"></script>
 <script type="text/javascript" src="about.js"></script>
 <script type="text/javascript" src="controls.js"></script>
+<script type="text/javascript" src="mousecontrols.js"></script>
 <script type="text/javascript" src="links.js"></script>
 <script type="text/javascript" src="mods.js"></script>
 <script type="text/javascript" src="turrets.js"></script>
@@ -66,6 +69,7 @@
 <script type="text/javascript" src="superbomb.js"></script>
 <script type="text/javascript" src="npc.js"></script>
 <script type="text/javascript" src="npcai.js"></script>
+
 
 <script>
 //var blastersound1 = new Audio("./sounds/bubble4_short2.mp3");
@@ -130,7 +134,34 @@ var respawn1 = new Audio("./sounds/respawn.mp3");
 var boost1 =  new Audio("./sounds/boingpowerup1.mp3");
 var missioncomplete1 = new Audio("./sounds/JazzStab1.mp3");
 var testsong = new Audio("./sounds/business2.mp3");
-testsong.volume = 0.25;
+//testsong.volume = 0;
+var asteroidsong1 = new Audio("./sounds/goodstart3.mp3");
+asteroidsong1.loop = true;
+//asteroidsong1.volume = 0;
+var bubblesong1 = new Audio("./sounds/dungeony1short2.mp3");
+bubblesong1.loop = true;
+//bubblesong1.volume = 0;
+var bubblesong2 = new Audio("./sounds/DangerCheese3.mp3");
+bubblesong2.loop = true;
+//bubblesong2.volume = 0;
+var menusong1 = new Audio("./sounds/positivesong1.mp3");
+menusong1.loop = true
+var musicvolume = 0;
+function setmusicvolume(newvolume){
+	testsong.volume = newvolume;
+	asteroidsong1.volume = newvolume;
+	bubblesong1.volume = newvolume;
+	bubblesong2.volume = newvolume;
+	menusong1.volume = newvolume;
+	}
+setmusicvolume(musicvolume);
+function pausemusic(){
+	testsong.pause();
+	asteroidsong1.pause();
+	bubblesong1.pause();
+	bubblesong2.pause();
+	menusong1.pause();
+	}
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
 const FPS = 60;
@@ -158,12 +189,18 @@ var menuabout = false;
 var menucontrols = false;
 var menulinks = false;
 var menumods = false;
+var menumousecontrols = false;
 var upgradesavestring="";
 var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 var playerselect = 0;
 var playerweapon9superbomb = new Superbomb("orbitalsystem");
 var firsttree = bhstarttree();//from bhstarttree.js
+var testsavetree = firsttree.savestring();
+console.log(testsavetree);
+firsttree.loadstring(testsavetree);
+var testsavetree2 = firsttree.savestring();
+console.log(testsavetree2);
 //var allcargos = bhcargos();
 function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	var as = Math.atan2(size,distance); //how much angle does the thing occupy?
@@ -372,6 +409,8 @@ var testeco = new Economy();
 
 //systems[1].npcs = testnpcs; //disabled for release
 
+menusong1.play();
+
 ///GAMELOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -431,6 +470,7 @@ function update() {
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
+			pausemusic();
 			systems[ps].npcs = testnpcs;
 			//var testpolysave = myplayer.savepolygon();
 			//myplayer.loadpolygon(testpolysave);
@@ -449,6 +489,7 @@ function update() {
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;
+			pausemusic();
 			myship.setorbit(systems[ps].planets[0], 32000, 0.215, 1);
 			myplayer.storystate = 999;
 			myplayer.money = 2000;
@@ -457,6 +498,7 @@ function update() {
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[3])){
 			ps = 7;
+			pausemusic();
 			myship.setorbit(systems[ps].planets[3], 1000, 0.4, 1);
 			var randdir = Math.random()*2*Math.PI;
 			xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
@@ -472,9 +514,13 @@ function update() {
 			menucontrols = true;
 			menulinks = false;
 			menumods = false;
+			menumousecontrols = false;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[5])){
 			ps = 32;
+			myplayer.mapscale = 64;
+			pausemusic();
+			asteroidsong1.play();
 			console.log(systems[ps].planets[0].x);
 			myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
 			var randdir = Math.random()*2*Math.PI;
@@ -491,6 +537,9 @@ function update() {
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[6])){
 			ps = 33;
+			myplayer.mapscale = 32;
+			pausemusic();
+			bubblesong1.play();
 			//console.log(systems[ps].planets[0].x);
 			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
 			systems[ps].placenear(myplayer.ship,12000,0);
@@ -504,6 +553,9 @@ function update() {
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[7])){
 			ps = 34;
+			myplayer.mapscale = 32;
+			pausemusic();
+			bubblesong2.play();
 			systems[ps].placenear(myplayer.ship,3000,0);
 			//console.log(systems[ps].planets[0].x);
 			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
@@ -533,30 +585,63 @@ function update() {
 			menucontrols = false;
 			menulinks = true;
 			menumods = false;
+			menumousecontrols = false;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[12])){
 			menuabout = true;
 			menucontrols = false;
 			menulinks = false;
 			menumods = false;
+			menumousecontrols = false;
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[13])){
 			menuabout = false;
 			menucontrols = false;
 			menulinks = false;
 			menumods = true;
+			menumousecontrols = false;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[14])){
+			myship.x = 0;
+			myship.y = -100;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[15])){
+			if (myplayer.blasters[1].bombs[0].timer>6){	
+				musicvolume = musicvolume + 0.1;
+				if (musicvolume>1){musicvolume = 1;}
+				setmusicvolume(musicvolume);
+				}
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[16])){
+			if (myplayer.blasters[1].bombs[0].timer>6){
+				musicvolume = musicvolume - 0.1;
+				if (musicvolume<0){musicvolume = 0;}
+				setmusicvolume(musicvolume);
+				}
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[17])){
+			myship.x = -20000;
+			myship.y = -100;
+			menusong1.play();
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[18])){
+			menuabout = false;
+			menucontrols = false;
+			menulinks = false;
+			menumods = false;
+			menumousecontrols = true;
 			}
 		else if (menuabout){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
-			fillwrappedtext(abouttext,128,16, 240,canvas.height-280);//y this different?
+			fillwrappedtext(abouttext,128,16, 240,canvas.height-240);//y this different?
 			}//display stuff here.
 		else if (menucontrols){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
 			var i=0;
 			while (i<controltext.length){ //controltext is an array of strings
-				fillwrappedtext(controltext[i],200,16, 240,canvas.height-280+i*16);
+				fillwrappedtext(controltext[i],200,16, 240,canvas.height-240+i*16);
 				i=i+1;
 				}
 			}
@@ -565,7 +650,7 @@ function update() {
 			context.font = "12px Verdana";
 			var i=0;
 			while (i<linktext.length){ //controltext is an array of strings
-				fillwrappedtext(linktext[i],200,16, 240,canvas.height-280+i*16);
+				fillwrappedtext(linktext[i],200,16, 240,canvas.height-240+i*16);
 				i=i+1;
 				}
 			}
@@ -574,9 +659,14 @@ function update() {
 			context.font = "12px Verdana";
 			var i=0;
 			while (i<modtext.length){ //controltext is an array of strings
-				fillwrappedtext(modtext[i],200,16, 240,canvas.height-280+i*16);
+				fillwrappedtext(modtext[i],200,16, 240,canvas.height-240+i*16);
 				i=i+1;
 				}
+			}
+		else if (menumousecontrols){
+			context.fillStyle = "white";
+			context.font = "12px Verdana";
+			fillwrappedtext(mousecontroltext,128,16, 240,canvas.height-240);//
 			}
 		}//done with menu system handling///////////////////////////////////////////
 //Outpost stuff all handled here.....

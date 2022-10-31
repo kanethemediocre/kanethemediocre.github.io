@@ -59,7 +59,7 @@ let upw5speed = new Shopitem("blaster",5,"speed",1);
 let upw7speed = new Shopitem("blaster",7,"speed",1); 
 let upw8speed = new Shopitem("blaster",8,"speed",1); 
 let upw9speed = new Shopitem("blaster",9,"speed",1); 
-let upw10speed = new Shopitem("blaster",10,"speed",1); //speed  upgrades increase projectile speed
+//let upw10speed = new Shopitem("blaster",10,"speed",1); //speed  upgrades increase projectile speed
 let upw11speed = new Shopitem("blaster",11,"speed",1); 
 let upw12speed = new Shopitem("blaster",12,"speed",1); 
 let upw13speed = new Shopitem("blaster",13,"speed",1); 
@@ -110,10 +110,9 @@ let upw15boom = new Shopitem("blaster",15,"boom",1);
 let upw17boom = new Shopitem("blaster",15,"boom",1);
 let upw18boom = new Shopitem("blaster",18,"boom",1);
 let upw19boom = new Shopitem("blaster",19,"boom",1);
-//Only w5 and w8 get n upgrades (more projectiles). 
+//Only a few blasters get n upgrades (more projectiles). 
 let upw3n = new Shopitem("blaster",3,"n",1);
 let upw5n = new Shopitem("blaster",5,"n",1);
-//let upw8n = new Shopitem("blaster",8,"n",1);
 let upw9n = new Shopitem("blaster",9,"n",1);
 let upw11n = new Shopitem("blaster",11,"n",1);
 let upw12n = new Shopitem("blaster",12,"n",1);
@@ -125,7 +124,7 @@ let upw17n = new Shopitem("blaster",17,"n",1);
 let blasterupgradeitems = [ //broken up into lines for readability, this is all a single 1 dimensional array.
 remotew1item,remotew2item,remotew5item,remotew9item,remotew12item,
 upw1damage,upw2damage,upw3damage,upw4damage,upw5damage,upw6damage,upw7damage,upw8damage,upw9damage,upw11damage,upw12damage,upw13damage,upw14damage,upw15damage,upw16damage,upw17damage,upw18damage,upw19damage,
-upw0speed,upw1speed,upw2speed,upw3speed,upw4speed,upw5speed,upw7speed,upw8speed,upw9speed,upw10speed,upw11speed,upw12speed,upw13speed,upw14speed,upw15speed,upw17speed,upw18speed,upw19speed,
+upw0speed,upw1speed,upw2speed,upw3speed,upw4speed,upw5speed,upw7speed,upw8speed,upw9speed,upw11speed,upw12speed,upw13speed,upw14speed,upw15speed,upw17speed,upw18speed,upw19speed,
 //upw1bounce,upw2bounce,upw4bounce,upw5bounce,upw8bounce,upw9bounce,//bounce upgrades nonfunctional, removed
 upw0timer,upw1timer,upw2timer,upw3timer,upw4timer,upw5timer,upw6timer,upw7timer,upw8timer,upw9timer,upw11timer,upw12timer,upw13timer,upw14timer,upw15timer,upw16timer,upw17timer,upw18timer,upw19timer,
 upw1boom,upw2boom,upw3boom,upw5boom,upw8boom,upw9boom,upw11boom,upw12boom,upw13boom,upw15boom,upw17boom,upw18boom,upw19boom,

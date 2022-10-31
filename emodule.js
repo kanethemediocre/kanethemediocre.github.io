@@ -58,6 +58,38 @@ class Emodule{
 		this.perfected = perfect;
 		return newprize;
 		}
+	savestring(){
+		var scores = "";
+		var i=0;
+		while(i<this.quizblocks.length){
+			scores = scores + " "+this.quizblocks[i].savestring();
+			i++;
+			}
+		return scores+" ";
+		}
+	loadstring(emscorestring){
+		var i = 0;
+		var lastword = "";
+		var values = [];
+		while(i<emscorestring.length){//This loop parses the string into space separated words
+			var thechar = emscorestring[i];
+			if (thechar!=" "){
+				lastword=lastword+thechar;
+				}
+			else {
+				if (lastword!=""){values.push(lastword);}
+				lastword = "";
+				}
+			i++;
+			}
+		if (values.length!=this.quizblocks.length){console.log("error values.length = "+values.length+" this.quizblocks.length = "+this.quizblocks.length);}
+		var i=0;
+		while (i<values.length){
+			this.quizblocks[i].loadstring(values[i]);
+			i++;
+			}
+		
+		}
 	setids(){
 		var i=0;
 		while(i<this.quizblocks.length){
@@ -71,6 +103,7 @@ class Emodule{
 		if (this.completed == true){color1 = "green";}
 		if (this.perfected == true){color1 = "blue";}
 		context.fillStyle = color1;
+		context.font = "16px Arial";
 		context.fillText(this.title,x,y);
 		context.fillText(this.qc+"/"+this.quizblocks.length,x+200,y);
 		} 

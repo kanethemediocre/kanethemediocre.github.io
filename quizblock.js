@@ -143,8 +143,24 @@ class Quizblock{
 		this.qc = qc;
 		return [prizepool,this.prizetype];
 		}
-
-
+	savestring(){
+		var scores = "";
+		var i=0;
+		while(i<this.quizzes.length){
+			scores = scores + this.quizzes[i].rating;
+			i++;
+			}
+		return scores;
+		}
+	loadstring(qbscorestring){
+		console.log(qbscorestring);
+		if (qbscorestring.length!=this.quizzes.length){console.log("error qbscorestring.length = "+qbscorestring.length+" this.quizzes.length = "+this.quizzes.length);}
+		var i=0;
+		while(i<qbscorestring.length){
+			this.quizzes[i].rating = parseInt(qbscorestring[i]);
+			i++;
+			}
+		}
 	mergequizzes(){//Combines all member quizzes into a single quiz
 		var allchallenges = this.quizzes[0].challenges;
 		console.log(allchallenges);
@@ -172,6 +188,7 @@ class Quizblock{
 		if (this.rating == 3){ color1 = "green"; }			
 		if (this.rating == 4){ color1 = "blue"; }
 		context.fillStyle = color1;
+		context.font = "16px Arial";
 		context.fillText(this.title,x,y);
 		context.fillText(this.qc+"/"+this.quizzes.length,x+200,y);
 		context.fillText(this.prizetype+" + "+this.prizesize,x+300,y);
@@ -185,6 +202,7 @@ class Quizblock{
 			if (this.quizzes[i].rating == 3){ mycolor = "green"; }			
 			if (this.quizzes[i].rating == 4){ mycolor = "blue"; }
 			context.fillStyle = mycolor;
+			context.font = "16px Arial";
 			context.fillText(this.quizzes[i].title,x,y+24*i);
 			i++
 			}

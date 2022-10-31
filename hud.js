@@ -255,9 +255,14 @@ function hud(playerindex){
 		context.fillText("Autopilot on",canvas.width/2 - 80,canvas.height/2 - 100);
 		}
 	if (myplayer.emenu>0){//engineering menu
+			context.fillStyle = "lightblue";
+			context.font = '24px Arial';
+			context.fillText("Press E to Exit",400,50);
 		//myplayer.emtrees[0].drawicons(myplayer,400,100);
 		//console.log(myplayer.emenu + " " +myplayer.emg+" "+myplayer.emh+" "+myplayer.emi+" "+myplayer.emj);
 		if (myplayer.emenu == 1){
+			context.fillStyle = "lightblue";
+			context.font = '24px Arial';
 			//console.log(myplayer.emtrees.length);
 			if (myplayer.emtrees.length<2){ myplayer.emenu = 2; }
 			else{

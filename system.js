@@ -1787,7 +1787,7 @@ class System{
 						upgradestring=upgradestring+aplayer.upgrades[i].tier+" ";
 						i++;
 						}
-					var savetext = aplayer.saveupgrades()+"|"+aplayer.saveblasters()+"|"+aplayer.savecharacter()+"|"+aplayer.savepolygon()+"|"+aplayer.inventory.savecargo()+"|"; //document.getElementById("text-val").value;
+					var savetext = aplayer.saveupgrades()+"|"+aplayer.saveblasters()+"|"+aplayer.savecharacter()+"|"+aplayer.savepolygon()+"|"+aplayer.inventory.savecargo()+"|"+aplayer.emtrees[0].savestring()+"|"; //document.getElementById("text-val").value;
 					var filename = "blinghustlesave.txt";
 					
 					download(filename, savetext);
@@ -1804,19 +1804,26 @@ class System{
 							}
 						i++;
 						}
-					if(stopindexes.length!=5){console.log("bad save file");}
+					if(stopindexes.length!=6){console.log("bad save file");}
 					else{
 						var savedupgrades = loadgamestring.slice(0,stopindexes[0]);
 						var savedblasters = loadgamestring.slice(stopindexes[0]+1,stopindexes[1]);
 						console.log(savedblasters);
 						var savedcharacter = loadgamestring.slice(stopindexes[1]+1,stopindexes[2]);
 						var savedpolygon = loadgamestring.slice(stopindexes[2]+1,stopindexes[3]);
-						var savedcargo = loadgamestring.slice(stopindexes[3]+1,loadgamestring.length);
+						var savedcargo = loadgamestring.slice(stopindexes[3]+1,stopindexes[4].length);
+						var savedemtree = loadgamestring.slice(stopindexes[4]+1,loadgamestring.length);
 						aplayer.loadblastertiers(savedblasters);
 						aplayer.loadcharacter(savedcharacter);
 						aplayer.loadupgrades(savedupgrades);
 						aplayer.loadpolygon(savedpolygon);
 						aplayer.inventory.loadcargo(savedcargo);
+						aplayer.emtrees[0].loadstring(savedemtree);
+						var i=0;
+						while(i<aplayer.emtrees[0].emods.length){
+							aplayer.emtrees[0].emods[i].grade();
+							i++;
+							}
 						}
 				  break;	  	  
 				default:

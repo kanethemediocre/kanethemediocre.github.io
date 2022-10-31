@@ -4,6 +4,7 @@ class Quiz{
 		this.instructions = "Instructions might go here eventually.  They can be a few sentences, and eventually might include images and audio options.  For now it's just text."
 		this.challenges = [];
 		this.passtolerance = 1;
+		this.timer = 0;//Can be set >0 to enable timed quizzes.  Rating will be relative to timer value.
 		this.completed = false; //player has passed all quizzes
 		this.perfected = false; //player has achieved a perfect score on all quizzes
 		this.topscore = 0;
@@ -125,6 +126,7 @@ class Quiz{
 		if (this.rating == 3){color1 = "green";}
 		if (this.rating == 4){color1 = "blue";}
 		context.fillStyle = color1;
+		context.font = "16px Arial";
 		context.fillText(this.title,x,y);
 		context.fillText(this.topscore+"/"+this.challenges.length,x+200,y);
 		} 

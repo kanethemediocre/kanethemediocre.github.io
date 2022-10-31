@@ -10,6 +10,7 @@ class Player{
         this.upgrades = freshupgrades(); //
         this.inventory = new Inventory(10); //for cargo?
         this.emtrees = [bhstarttree()];
+		this.notifications = [];//Notifications are things that will be flashed at the player in the middle of their screen.
         this.emg = 0;//emtree
         this.emh = 0;//emodule
         this.emi = 0;//quizblock
@@ -168,6 +169,17 @@ class Player{
             this.blasters[i].update1();
             i++;
 			}
+		var i=0;
+		while(i<this.notifications.length){
+			var nx = canvas.width/2-this.notifications[i].text.length*5;
+			var ny = canvas.height/2-32-i*32;
+			this.notifications[i].display(nx,ny);
+			if (time-this.notifications[i].starttime>this.howlong){
+				console.log("need to delete notification "+i+" "+this.notifications[i].text);
+				//remove this expired notification
+				}
+			i++;
+			}
 		}
     drawship(viewx,viewy){
         this.ship.drawship(viewx,viewy);
@@ -251,12 +263,12 @@ class Player{
         this.money = parseInt(values[3]);
         if (values[4]!="storystate"){console.log("Format error on index 4");}
         this.storystate = parseInt(values[5]);      
-        if (values[6]!="storytime"){console.log("Format error on index 6");}
-        this.storytime = parseInt(values[7]);  
+        if (values[6]!="storytime"){console.log("Format error on index 6");}//In hindsight, not actually the variable we want to pass.
+        this.storytime = time;//parseInt(values[7]);  //This is overridden to prevent errors between game modes.//global scope used here;
         if (values[8]!="color1"){console.log("Format error on index 8");}
-        this.ship.c = values[9];//This assignment is working,
+        this.ship.c = values[9];
         if (values[10]!="color2"){console.log("Format error on index 10");}
-        this.ship.c2 = values[11];//but this assignment is not working
+        this.ship.c2 = values[11];
         }
     loadblastertiers(blasterstring){
 		this.blasters = bhblasters();

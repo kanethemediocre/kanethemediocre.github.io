@@ -6,7 +6,7 @@
 	 //weapon1.etier = 1; //testing bounce stuff
 	  weapon1.recoil = -0.15;
 	 let weapon2 = new Blaster("Mine","Powerful but very slow moving bomb.  This blaster needs to be used in conjunction with some combination of thrusters and clever planning.",500,"plain",                                 
-	 40,10,10,0.5,0,0,2,0.4,10,1,0,0,1800,300,10,40,"purple","ID not implemented");
+	 40,10,10,0.5,0,0,2,0.5,10,1,0,0,1800,300,10,40,"purple","ID not implemented");
 	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"fixedspread",
 	 8,4,10,12,2,10,1.2,0.2,10,3,1,10,16,8,10,25,"green","ID not implemented");
 	 weapon3.recoil = -0.3;
@@ -33,12 +33,12 @@
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
 	 weapon10.recoil = -0.3;
 	 let weapon11 = new Blaster("Multibanger","Similar to the standard banger, but fires a row of bombs instead of a single bomb.  A great value as-is with even greater upgrade potential.",800,"multiplex",                            
-	 12,6,10,12,2,10,0.75,0.25,10,2,1,10,40,8,10,24,"pink","ID not implemented");
+	 12,6,10,12,3,10,0.75,0.25,10,2,1,10,40,8,10,24,"pink","ID not implemented");
 	 weapon11.recoil = -0.3;
 	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row.  About half as much damage for a single mine, but four times as many mines BEFORE upgrades.",2500,"multiplex",                            
 	 20,10,10,0.5,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
 	 let weapon13 = new Blaster("Nova","Fires bombs in all directions.  For the times when you feel like you don't have any friends, and the world is out to get you.",1600,"fixedspread",                            
-	 12,6,10,12,2,10,0.75,0.25,10,24,12,10,40,8,10,48,"tan","ID not implemented");
+	 12,6,10,15,3,10,1,0.25,10,16,8,10,24,8,10,60,"tan","ID not implemented");
 	 weapon13.special1 = 4*Math.PI/2;
 	 weapon13.special2 = 8*Math.PI/4;
 	 let weapon14 = new Blaster("Fast Railgun","The new dank cheese.  Fast flying long range bombs, every time you tap the trigger, at a much smaller energy cost than the standard railgun.",2000,"semirapid",                            

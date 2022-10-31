@@ -34,6 +34,37 @@ class Emtree{
 			i++;
 			}
 		}
+	savestring(){
+		var scores = "";
+		var i=0;
+		while(i<this.emods.length){
+			scores = scores + this.emods[i].savestring()+"q";
+			i++;
+			}
+		return scores;
+		}
+	loadstring(emtscorestring){
+		var i = 0;
+		var lastword = "";
+		var values = [];
+		while(i<emtscorestring.length){//This loop parses the string into space separated words
+			var thechar = emtscorestring[i];
+			if (thechar!="q"){
+				lastword=lastword+thechar;
+				}
+			else {
+				values.push(lastword)
+				lastword = "";
+				}
+			i++;
+			}
+		if (values.length!=this.emods.length){console.log("error values.length = "+values.length+" this.emods.length = "+this.emods.length);}
+		var i=0;
+		while (i<values.length){
+			this.emods[i].loadstring(values[i]);
+			i++;
+			}
+		}
 	isaccessible(){
 		//console.log("triedtocheckaccess");
 		if (this.emods.length>0){this.emods[0].accessible = true;}

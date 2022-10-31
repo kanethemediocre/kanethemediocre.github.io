@@ -15,8 +15,8 @@ function loadmenusystem(){
 	playrandom.name = "Random play";
 	playrandom.c2 = "green";
 	playrandom.m = 0;
-	let controls = new Umo(-10000, -400, 100, "blue"); //4
-	controls.name = "Controls";
+	let controls = new Umo(-10000, -400, 80, "blue"); //4
+	controls.name = "Keyboard Controls";
 	controls.c2 = "teal";
 	controls.m = 0;
 	let aatest = new Umo(10000-250, -300, 70, "purple"); //5
@@ -39,11 +39,14 @@ function loadmenusystem(){
 	menu2.name = "Special Game Modes";
 	menu2.c2 = "teal";
 	menu2.m = 0;
+	
+	
+	
 	//let menu3 = new Umo(360, 0, 100, "violet"); //3
 	//menu3.name = "About";
 	//menu3.c2 = "teal";
 	//menu3.m = 0;
-	let menu3 = new Umo(-10000+400, 0, 100, "orange"); //10
+	let menu3 = new Umo(-10000+320, 0, 100, "orange"); //10
 	menu3.name = "Main Menu";
 	menu3.c2 = "red";
 	menu3.m = 0;
@@ -51,7 +54,7 @@ function loadmenusystem(){
 	links.name = "links";
 	links.c2 = "red";
 	links.m = 0;
-	let whatis = new Umo(-10000+280, -300, 90, "purple"); //12
+	let whatis = new Umo(-10000+600, -250, 80, "purple"); //12
 	whatis.name = "What is Bling Hustle?";
 	whatis.c2 = "violet";
 	whatis.m = 0;
@@ -59,7 +62,33 @@ function loadmenusystem(){
 	modding.name = "Modding Bling Hustle";
 	modding.c2 = "green";
 	modding.m = 0;
-	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest,bp1test,bp2test,menu1,menu2,menu3,links,whatis,modding];
+	
+	let menu4 = new Umo(-20000+400, -100, 100, "orange"); //14
+	menu4.name = "Main Menu";
+	menu4.c2 = "red";
+	menu4.m = 0;
+	let morejams = new Umo(-20000-280, -300, 85, "green"); //15
+	morejams.name = "More jams";
+	morejams.c2 = "red";
+	morejams.m = 0;
+	let lessjams = new Umo(-20000+280, -300, 90, "purple"); //16
+	lessjams.name = "Less jams";
+	lessjams.c2 = "violet";
+	lessjams.m = 0;
+	let options1 = new Umo(0, 250, 100, "violet"); //17
+	options1.name = "Options";
+	options1.c2 = "teal";
+	options1.m = 0;	
+	
+	let mousecontrols = new Umo(-10000+320, -400, 80, "violet"); //18
+	mousecontrols.name = "Mouse Controls";
+	mousecontrols.c2 = "teal";
+	mousecontrols.m = 0;	
+	
+	
+	
+	
+	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest,bp1test,bp2test,menu1,menu2,menu3,links,whatis,modding,menu4,morejams,lessjams,options1,mousecontrols];
 	var i = 0; //This randomizes planetary dots for home system.
 	while (i<menuplanets.length){
 		var j=0;
