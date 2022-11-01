@@ -249,10 +249,16 @@ function hud(playerindex){
 	}
 	myplayer.blasters[myplayer.wep].drawsights(myplayer,time);
 //Autopilot indicator
-	if (myplayer.autopilot>0){
+	if (myplayer.autopilot==1){
 		context.fillStyle = "red";
 		context.font='32px Arial';
 		context.fillText("Autopilot on",canvas.width/2 - 80,canvas.height/2 - 100);
+		}
+	else if (myplayer.autopilot==2){
+		context.fillStyle = "orange";
+		context.font='32px Arial';
+		context.fillText("Autobrake on",canvas.width/2 - 80,canvas.height/2 - 100);
+
 		}
 	if (myplayer.emenu>0){//engineering menu
 			context.fillStyle = "lightblue";

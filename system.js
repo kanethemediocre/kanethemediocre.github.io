@@ -1663,8 +1663,12 @@ class System{
 					//	testcluster = new Clusterbomb(time,ships[0].x+mdx,ships[0].y+mdy,ships[0].vx,ships[0].vy,12,6,32,0.9,clustercolor,233,0.3);
 					//	}
 				  break;   //handled in detail elsewhere
-				case "z":
+				case "d":
 					if (diagnostic == 3){diagnostic=0;}else {diagnostic=diagnostic+1;}
+			
+				  break;
+				case "z":
+					if (aplayer.autopilot == 2){aplayer.autopilot = 0;}else {aplayer.autopilot = 2;}
 			
 				  break;
 				 case "v":

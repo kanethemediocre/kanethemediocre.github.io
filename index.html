@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 499 by Andrew Kane </title>
+    <title>Bling Hustle 500 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -767,7 +767,8 @@ function update() {
 		if (myplayer.navactive==2){myship.seek3(systems[ps].outposts[myplayer.navtarget],20,30,time, 1500);}
 		}
 	if (myplayer.autopilot == 2){
-		myship.hold(systems[ps].planets[myplayer.navtarget],20,time);
+		if (myplayer.navactive==1){ myship.hold(systems[ps].planets[myplayer.navtarget],30,time); }
+		if (myplayer.navactive==2){ myship.hold(systems[ps].outposts[myplayer.navtarget],30,time); }
 		}
 	if (myplayer.autopilot == 3){
 		var orbitr = 1000;

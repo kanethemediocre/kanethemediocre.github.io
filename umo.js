@@ -134,7 +134,7 @@ class Umo { //Universal Moving Object
 	hold(target,period,gametime){
 		var dv = this.deltav2(target); 
 		this.d = dv[1];
-		if (gametime%period == 0){
+		if ((gametime%period == 0)&&(Math.abs(dv[0])>1)){
 			this.thrust = 2;
 			}
 		}
