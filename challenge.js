@@ -128,7 +128,7 @@ class Challenge{
 		return [this.question,this.answer];
 		}
 	makerithmaticquestionpr(alloweddigits,allowedaddends,allowedallownegative, overrides, operator){//overrides is a set equal or less than the minimum length of addends, -999 indicates no override for that addend, all else indicates override to the specified values
-		this.metaparameters = alloweddigits,allowedaddends,allowedallownegative, overrides, operator
+		this.metaparameters = [alloweddigits,allowedaddends,allowedallownegative, overrides, operator];
 		this.type = "makearithmaticquestionpr";
 		var newchallenge = new Challenge(operator);
 		var addends = []; //Not really addends necessarily
