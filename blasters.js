@@ -44,6 +44,7 @@ class Blaster{
 		this.xtier = 0; //special upgrade slot
 		this.recoil = 0;
 		this.bombs = []; 
+		var ioffset = Math.floor(Math.random()*6);
 		var i = 0;
 		while(i<this.n){ //sets up an array of n bombs needed for the blaster, most often n=1.
 			this.bombs.push(new Umo(0,0,0,this.c));
@@ -54,8 +55,8 @@ class Blaster{
 			this.bombs[i].boombuff = this.boom;
 			this.bombs[i].hp = 1;
 			this.bombs[i].shield = 1;
-			if (this.type == "rapidmultiplex"){			
-				var cnum = i%6;
+			if ((this.type == "rapidmultiplex")||(this.type == "multiplex")){	//this whole thing may not be needed		
+				var cnum = (i+ioffset)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
 					this.bombs[i].c2 = "orange";
@@ -140,6 +141,7 @@ class Blaster{
 		this.levelcalc();
 		}
 	fire(theplayer,thetime){ //
+		var ioffset = Math.floor(Math.random()*6);
 		var i=0; 
 		while (i<this.bombs.length){//first set/verify weapon properties on bomb
 			//this.bombs[i].c=this.c;
@@ -152,7 +154,7 @@ class Blaster{
 				this.bombs[i].shield = 1;
 			}
 			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")||(this.type == "semirapid")){
-				var cnum = (thetime+i)%6;
+				var cnum = (ioffset+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
 					this.bombs[i].c2 = "orange";

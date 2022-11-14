@@ -56,7 +56,7 @@
 	 weapon17.special2 = 7*Math.PI/4;
 	 weapon17.recoil = 8;
 	 let weapon18 = new Blaster("wangus","A rapid-firing blaster akin to the Disintigrator with greatly improved range, but worse energy efficiency and damage. Hold the left mouse button down instead of tapping it.",10000,"rapid",                            
-	 10,5,10,12,2,10,0.8,0.2,10,24,0,0,64,8,10,15,"olive","ID not implemented");
+	 10,5,10,12,3,10,0.8,0.2,10,24,0,0,64,8,10,15,"olive","ID not implemented");
 	 weapon18.recoil = -0.25;
 	 let weapon19 = new Blaster("Denier","Great walls of fire.",42069,"rapidmultiplex",                            
 	 6,3,10,4,2,10,0.8,0.2,10,84,24,10,160,8,10,10,"skyblue","ID not implemented");
@@ -68,5 +68,55 @@ let allblasters = bhblasters(); //Sort of legacy support
 	let tempblaster = new Blaster(old.name,old.description,old.price,old.type,                                                            
 	old.bhurt,old.uphurt,old.maxhurt,old.bspeed,old.upspeed,old.maxspeed,old.bboom,old.upboom,old.maxboom,old.bn,old.upn,old.maxn,
 	old.btimer,old.uptimer,old.maxtimer,old.ecost,old.c,old.id);
+	tempblaster.special1 = old.special1;
+	tempblaster.special2 = old.special2;
 	return tempblaster;
- }
+	}
+ function fullblastercopy(old){//Creates a new Blaster with same base stats as old Blaster.  Upgrades are not copied.
+	let tempblaster = new Blaster(old.name,old.description,old.price,old.type,                                                            
+	old.bhurt,old.uphurt,old.maxhurt,old.bspeed,old.upspeed,old.maxspeed,old.bboom,old.upboom,old.maxboom,old.bn,old.upn,old.maxn,
+	old.btimer,old.uptimer,old.maxtimer,old.ecost,old.c,old.id);
+	var i=0;
+	while(i<old.dtier){
+		tempblaster.plusdamage();
+		i++;
+		}
+	var i=0;
+	while(i<old.rtier){
+		tempblaster.plusremote();
+		i++;
+		}
+	var i=0;
+	while(i<old.etier){
+		tempblaster.plusbounce();
+		i++;
+		}
+	var i=0;
+	while(i<old.stier){
+		tempblaster.plusspeed();
+		i++;
+		}
+	var i=0;
+	while(i<old.btier){
+		tempblaster.plusboom();
+		i++;
+		}
+	var i=0;
+	while(i<old.ntier){
+		tempblaster.plusn();
+		i++;
+		}
+	var i=0;
+	while(i<old.ttier){
+		tempblaster.plustimer();
+		i++;
+		}
+	var i=0;
+	while(i<old.xtier){
+		tempblaster.plusx();
+		i++;
+		}
+	tempblaster.special1 = old.special1;
+	tempblaster.special2 = old.special2;
+	return tempblaster;
+	}

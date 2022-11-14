@@ -67,6 +67,9 @@ class Inventory{
 			this.cargo[i] = parseInt(values[i]);
 			i++;
 			}
+		console.log(this.cargo);
+		console.log(values);
+		console.log(cargostring);
 		}
 	draw(xpos,ypos){
 		context.fillStyle = "yellow";

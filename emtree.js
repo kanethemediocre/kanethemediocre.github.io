@@ -43,6 +43,84 @@ class Emtree{
 			}
 		return scores;
 		}
+	handleinput(myplayer,thekey){
+		var myquiz = this.emods[myplayer.emh].quizblocks[myplayer.emi].quizzes[myplayer.emj];
+		if ((thekey=="Enter")&&(myplayer.emenu==5)){
+			myquiz.challenges[myquiz.q].playerhasanswered = true;
+			myquiz.q++;
+			if (myquiz.q>=myquiz.challenges.length){
+				//myquiz.grade();
+				var prize = this.emods[myplayer.emh].grade();
+				console.log(prize);
+				if (prize[0]>0){myplayer.emodaward(prize);}
+				
+				console.log("complete");
+				myquiz.q=0;
+				myplayer.emenu = 4;
+				myplayer.emj++
+				if (myplayer.emj>=this.emods[myplayer.emh].quizblocks[myplayer.emi].quizzes.length){
+					this.emods[myplayer.emh].quizblocks[myplayer.emi].grade();
+					myplayer.emenu = 3;
+					myplayer.emj=0;
+					myplayer.emi++;
+					if (myplayer.emi>=this.emods[myplayer.emh].quizblocks.length){
+						myplayer.emenu = 2;
+						myplayer.emi=0;
+						myplayer.emh++;
+						if(myplayer.emh>=myplayer.emi>this.emods.length){
+							myplayer.emenu = 1;
+							myplayer.emh = 0;
+							myplayer.emg++;
+							if (myplayer.emg>=myplayer.emtrees.length){
+								myplayer.emg=0;
+								}
+							}
+						}
+					}
+				}
+		}else if (thekey=="ArrowLeft"){	
+				//console.log("tryingleft");		
+				myplayer.emenu--;
+				if (myplayer.emenu<1){myplayer.emenu = 1;}
+		}else if (thekey=="ArrowRight"){
+			//console.log("tryingright");
+				myplayer.emenu++;
+				if (myplayer.emenu>5){myplayer.emenu = 5;}
+		}else if (thekey=="ArrowUp"){	
+			console.log("tryingup");
+			if ((myplayer.emenu==4)&&(myplayer.emj>0)){ myplayer.emj--; }
+			if ((myplayer.emenu==3)&&(myplayer.emi>0)){ myplayer.emi--; }	
+			if ((myplayer.emenu==2)&&(myplayer.emh>0)){ myplayer.emh--; }
+			if ((myplayer.emenu==1)&&(myplayer.emg>0)){ myplayer.emg--; }
+		}else if (thekey=="ArrowDown"){
+			console.log("tryingdown");
+			if ((myplayer.emenu==4)
+				&&(this.emods[myplayer.emh].quizblocks[myplayer.emi].quizzes[myplayer.emj].completed==true)
+				&&(myplayer.emj<this.emods[myplayer.emh].quizblocks[myplayer.emi].quizzes.length-1)){ myplayer.emj++; }
+			if ((myplayer.emenu==3)
+				&&(this.emods[myplayer.emh].quizblocks[myplayer.emi].completed==true)
+				&&(myplayer.emi<this.emods[myplayer.emh].quizblocks.length-1)){ myplayer.emi++; }
+			if ((myplayer.emenu==2)
+				&&(this.emods[myplayer.emh].completed==true)
+				&&(myplayer.emh<this.emods.length-1)){ myplayer.emh++; }
+			if ((myplayer.emenu==1)	
+				&&(myplayer.emg<myplayer.emtrees.length-1)){ myplayer.emg++; }//not really implemented, just one tree and the menu is bypassed.
+		}else if ((thekey=="Backspace")&&(myplayer.emenu==5)){
+			console.log("tryingbackspace");
+			if (myquiz.challenges[myquiz.q].playeranswer.length>0){
+				console.log("tryingbackspacehard");
+				myquiz.challenges[myquiz.q].playeranswer=myquiz.challenges[myquiz.q].playeranswer.slice(0,-1);//(myquiz.challenges[myquiz.q].playeranswer.length-1, 1);
+				}
+			//systems[ps].players[myi].emenu=0;
+			//console.log("etriedtoclose")
+		}else if (thekey=="e"){
+			myplayer.emenu=0;
+			//console.log("etriedtoclose")
+		}else if (myplayer.emenu==5){
+			myquiz.challenges[myquiz.q].playeranswer=myquiz.challenges[myquiz.q].playeranswer+thekey;
+			console.log(myquiz.challenges[myquiz.q].playeranswer);
+			}
+		}
 	loadstring(emtscorestring){
 		var i = 0;
 		var lastword = "";

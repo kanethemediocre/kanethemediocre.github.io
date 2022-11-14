@@ -1,4 +1,3 @@
-
 /////////////////////////////Begin system class///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class System{
 	constructor(index, name, x, y){
@@ -38,11 +37,11 @@ class System{
 			i++;
 			}
 		var i=0;
-		while(i<this.ships.length){
-			if ( (dummy.collide(this.ships[i])) && (target!==this.ships[i]) ){
+		while(i<this.npcs.length){
+			if ( (dummy.collide(this.npcs[i].ship)) && (target!==this.npcs[i].ship) ){
 				clear = false; 
-				//problem = this.ships[i];
-				//console.log("Collided with ship "+i);
+		//		//problem = this.ships[i];
+		//		//console.log("Collided with npc "+i);
 				}
 			i++;
 			}
@@ -55,14 +54,7 @@ class System{
 				}
 			i++;
 			}
-		while(i<this.botbombs.length){
-			if ( (dummy.collide(this.botbombs[i])) && (target!==this.botbombs[i]) ){
-				clear = false; 
-				//problem this.botbombs[i];
-				//console.log("Collided with botbomb "+i);
-				}
-			i++;
-			}
+
 		return clear;
 		}
 	placenear(target,x,y){
@@ -83,11 +75,6 @@ class System{
 		//console.log("placednear");
 		}
 	draw(viewx,viewy){ //no filter draws everything, sort of obselete
-		var i= this.ships.length;
-		while  (i>0){
-			i=i-1;
-			this.ships[i].drawship(viewx,viewy);
-			}
 		var i= this.planets.length;
 		if (this.planets[this.planets.length-1].name=="Waldo"){
 			console.log("dontdrawwaldoyo");
@@ -97,11 +84,6 @@ class System{
 			i=i-1;
 			this.planets[i].drawplanet(viewx,viewy);
 			}
-		var i= this.botbombs.length;
-		while  (i>0){
-			i=i-1;
-			this.botbombs[i].drawbomb(viewx,viewy);
-			}
 		var i= this.players.length;
 		while  (i>0){
 			i=i-1;
@@ -109,19 +91,6 @@ class System{
 			}
 		}
 	draw2(viewx,viewy){ //linear filtered instead of by distance, maybe computationally cheaper?
-		var i=0;
-		while  (i<this.ships.length){
-			var xtol = canvas.width/2+this.ships[i].s;
-			var xdif = this.ships[i].x-viewx;
-			if ((xdif < xtol)&&(xdif > -1*xtol)){
-				var ytol = canvas.height/2+this.ships[i].s;
-				var ydif = this.ships[i].y-viewy;
-				if ((ydif < ytol)&&(ydif>-1*ytol)){
-					this.ships[i].drawship(viewx,viewy);	
-					}		
-				}		
-			i++;
-			}
 		var i=0;
 		while  (i<this.players.length){
 			var xtol = canvas.width/2+this.players[i].ship.s;
@@ -138,16 +107,18 @@ class System{
 			}
 		var i=0;
 		while  (i<this.npcs.length){
-			var xtol = canvas.width/2+this.npcs[i].ship.s;
-			var xdif = this.npcs[i].ship.x-viewx;
-			if ((xdif < xtol)&&(xdif > -1*xtol)){
-				var ytol = canvas.height/2+this.npcs[i].ship.s;
-				var ydif = this.npcs[i].ship.y-viewy;
-				if ((ydif < ytol)&&(ydif>-1*ytol)){
-					this.npcs[i].ship.drawship(viewx,viewy);
+			if (this.npcs[i].ship.deadtime<=0){
+				var xtol = canvas.width/2+this.npcs[i].ship.s;
+				var xdif = this.npcs[i].ship.x-viewx;
+				if ((xdif < xtol)&&(xdif > -1*xtol)){
+					var ytol = canvas.height/2+this.npcs[i].ship.s;
+					var ydif = this.npcs[i].ship.y-viewy;
+					if ((ydif < ytol)&&(ydif>-1*ytol)){
+						this.npcs[i].ship.drawship(viewx,viewy);
+						}
 					}
+				this.npcs[i].drawbombs(viewx,viewy)
 				}
-			this.npcs[i].drawbombs(viewx,viewy)
 			i++;
 			}
 		var i=0;
@@ -185,19 +156,6 @@ class System{
 				}		
 			i++;
 			}	
-		var i= 0;
-		while  (i<this.botbombs.length){
-			var xtol = canvas.width/2+this.botbombs[i].s;
-			var xdif = this.botbombs[i].x-viewx;
-			if ((xdif < xtol)&&(xdif > -1*xtol)){
-				var ytol = canvas.height/2+this.botbombs[i].s;
-				var ydif = this.botbombs[i].y-viewy;
-				if ((ydif < ytol)&&(ydif>-1*ytol)){
-					this.botbombs[i].drawbomb(viewx,viewy);	
-					}		
-				}		
-			i++;
-			}
 		var i=0;
 		while  (i<this.outposts.length){
 			var xtol = canvas.width/2+this.outposts[i].s;
@@ -242,8 +200,8 @@ class System{
 	drawplanetfinder(playerindex,radius){
 		var viewx = this.players[playerindex].ship.x;
 		var viewy = this.players[playerindex].ship.y;
-		var maxnavtarget = systems[ps].planets.length-1;
-		if ((aplayer.sensor<1)&&(systems[ps].planets[systems[ps].planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
+		var maxnavtarget = this.planets.length-1;
+		if ((aplayer.sensor<1)&&(this.planets[this.planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
 		context.font = '20px Ariel';
 		context.fillStyle = "yellow";
 		context.fillText("Navigation Compass Active", canvas.width/2-80, 24);
@@ -299,15 +257,15 @@ class System{
 		var cx = canvas.width/2;//center
 		var cy = canvas.height/2;
 		var i=0;
-		while(i<this.ships.length){
-			var inddist = this.players[playerindex].ship.distance(this.ships[i]);
+		while(i<this.npcs.length){
+			var inddist = this.players[playerindex].ship.distance(this.npcs[i].ship);//indicated distance
 			if (inddist<this.players[playerindex].radarrange){
-				var inddir = this.players[playerindex].ship.directionof(this.ships[i]);//indicated direction
+				var inddir = this.players[playerindex].ship.directionof(this.npcs[i].ship);//indicated direction
 				var indc = "white";
-				if (this.ships[i].ai == "enemy"){indc = "red";}
-				else if (this.ships[i].ai == "trader") {indc = "blue";}
+				if (this.npcs[i].ai.playerhostile == true){indc = "red";}
+				else if (this.npcs[i].ai.team == 2) {indc = "blue";}
 				//var inddist = this.players[playerindex].ship.distance(this.ships[i]);
-				var indsize = (this.ships[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
+				var indsize = (this.npcs[i].ship.s/inddist)*radius;//maybe a cpu saving hack vs trig?
 				if (indsize>32){indsize=32;}
 				var indx = cx + radius*Math.cos(inddir);
 				var indy = cy + radius*Math.sin(inddir);
@@ -336,11 +294,11 @@ class System{
 		while(i<this.players.length){
 			var inddist = this.players[playerindex].ship.distance(this.players[i].ship);
 			if ((inddist<this.players[playerindex].radarrange)&&(i!=playerindex)){
-				var inddir = this.players[playerindex].ship.directionof(this.ships[i]);//indicated direction
+				var inddir = this.players[playerindex].ship.directionof(this.npcs[i].ship);//indicated direction
 				var indc = this.players[playerindex].ship.c;
 				var indc2 = this.players[playerindex].ship.c;
 				//var inddist = this.players[playerindex].ship.distance(this.ships[i]);
-				var indsize = (this.ships[i].s/inddist)*radius;//maybe a cpu saving hack vs trig?
+				var indsize = (this.npcs[i].ship.s/inddist)*radius;//maybe a cpu saving hack vs trig?
 				var indx = cx + (radius-8)*Math.cos(inddir);
 				var indy = cy + (radius-8)*Math.sin(inddir);
 				var pointerx = cx + (radius+indsize*2)*Math.cos(inddir); 
@@ -457,41 +415,41 @@ class System{
 		}
 	updateall(time){
 		if (this.wraps>0){ this.radialwrap(this.wraps); }
-		var i = 0; //update section////////////////////////////////////////////////////////////
-		while (i<this.ships.length){ //update ships
-			this.ships[i].updateship(this.planets); //basic ship updates
+		//var i = 0; //update section////////////////////////////////////////////////////////////
+		//while (i<this.ships.length){ //update ships
+		//	this.ships[i].updateship(this.planets); //basic ship updates
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////AI section/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////
-			if (this.ships[i].ai == "enemy"){
-				if ( (  this.ships[i].distance(this.planets[this.ships[i].parentid]) > 10000  )&&(this.ships[i].hp>0) ){//If this bot got lost....
-					var savedhp = this.ships[i].hp; //remember it's hitpoints... 
-					this.ships[i].respawn(this.planets[this.ships[i].parentid]); //Respawn...
-					this.ships[i].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
-					}
-				var thetargetdistance = this.players[0].ship.distance(this.ships[i]);	
-				if (thetargetdistance < 5000){ //Don't do anything if player is far
-					var theparentdistance = this.ships[i].distance(this.planets[this.ships[i].parentid]);
-					if (this.ships[i].s<50){ this.ships[i].fasttrack(this.players[0].ship);  }//Bots point towards player
-					else { this.ships[i].track(this.players[0].ship,1/this.ships[i].s); }
-					if ((Math.random()>0.95) && (this.botbombs[i].timer < 1)){  //Bots fire occasionally, if bomb isn't out
-					if ((!this.ships[i].ispointingat(this.planets[this.ships[i].parentid]))||(thetargetdistance<theparentdistance)){  //Don't shoot if your parent planet is between bot and player (the target)
-							this.ships[i].launchbomb(this.botbombs[i], 12, 80); 
-							}
-						}
-					}
-				}
-			if (this.ships[i].ai == "trader"){
-				var targetplanet = this.ships[i].aitargets[this.ships[i].aistate];
-				this.ships[i].seek3(this.planets[targetplanet],20,30,time,1000);
-				//money = money + 1;//test
-				if (this.ships[i].distance(this.planets[targetplanet])<1500){ 
-					this.ships[i].aistate = this.ships[i].aistate+1;
-					if (this.ships[i].aistate>this.ships[i].aitargets.length-1){ this.ships[i].aistate = 0;}
-					}
-				}
-			i++;
-			}
+		//	if (this.ships[i].ai == "enemy"){
+		//		if ( (  this.ships[i].distance(this.planets[this.ships[i].parentid]) > 10000  )&&(this.ships[i].hp>0) ){//If this bot got lost....
+		//			var savedhp = this.ships[i].hp; //remember it's hitpoints... 
+		//			this.ships[i].respawn(this.planets[this.ships[i].parentid]); //Respawn...
+		//			this.ships[i].hp = savedhp; //re-apply hitpoints so it doesn't get a free heal out of it.
+		//			}
+		//		var thetargetdistance = this.players[0].ship.distance(this.ships[i]);	
+		//		if (thetargetdistance < 5000){ //Don't do anything if player is far
+		//			var theparentdistance = this.ships[i].distance(this.planets[this.ships[i].parentid]);
+		//			if (this.ships[i].s<50){ this.ships[i].fasttrack(this.players[0].ship);  }//Bots point towards player
+		//			else { this.ships[i].track(this.players[0].ship,1/this.ships[i].s); }
+		//			if ((Math.random()>0.95) && (this.botbombs[i].timer < 1)){  //Bots fire occasionally, if bomb isn't out
+		//			if ((!this.ships[i].ispointingat(this.planets[this.ships[i].parentid]))||(thetargetdistance<theparentdistance)){  //Don't shoot if your parent planet is between bot and player (the target)
+		//					this.ships[i].launchbomb(this.botbombs[i], 12, 80); 
+		//					}
+		//				}
+		//			}
+		//		}
+		//	if (this.ships[i].ai == "trader"){
+		//		var targetplanet = this.ships[i].aitargets[this.ships[i].aistate];
+		//		this.ships[i].seek3(this.planets[targetplanet],20,30,time,1000);
+		//		//money = money + 1;//test
+		//		if (this.ships[i].distance(this.planets[targetplanet])<1500){ 
+		//			this.ships[i].aistate = this.ships[i].aistate+1;
+		//			if (this.ships[i].aistate>this.ships[i].aitargets.length-1){ this.ships[i].aistate = 0;}
+		//			}
+		//		}
+		//	i++;
+		//	}
 		//new npc framework here, most stuff has been abstracted away
 		var i = 0;
 		//console.log("trytoupdatenpcs1");
@@ -500,13 +458,9 @@ class System{
 			this.npcs[i].update1(this,time);//Unsure if use of "this" is allowed like that.
 			i++;
 			}
-
-
-
 		var i=this.turrets.length;
 		while(i>0){
 			i=i-1;
-
 			if ((this.turrets[i].pivot.ai == "enemy")&&(this.turrets[i].active==true)){
 				var j=0;
 				var closestdistance=9999;
@@ -526,20 +480,20 @@ class System{
 		while(i>0){
 			i=i-1;
 			if ((this.turrets[i].pivot.ai == "friendly")&&(this.turrets[i].active==true)){
-				var j=this.ships.length;
+				var j=this.npcs.length;
 				var closest = j;
 				var closestdistance = 1000000;
 				while(j>0){
 					j--;
-					if (this.ships[j].ai == "enemy"){
-						var tempdistance = this.ships[j].distance(this.turrets[i].pivot);
+					if (this.npcs[j].ai.playerhostile == "true"){
+						var tempdistance = this.npcs[j].ship.distance(this.turrets[i].pivot);
 						if (tempdistance < closestdistance){
 							closest=j;
 							closestdistance = tempdistance;
-						}
-					}	
+							}
+						}	
 					if (closestdistance < 3000){ //Don't do anything if closest enemy is far
-					this.turrets[i].ai3(this.ships[closest],this.players); //friendly turrets point towards closest enemy, shoot if clear	
+						this.turrets[i].ai3(this.npcs[closest].ship,this.players); //friendly turrets point towards closest enemy, shoot if clear	
 						}
 					}
 				}
@@ -552,12 +506,12 @@ class System{
 			i=i-1;
 			this.planets[i].update1();
 			}
-		var i = this.botbombs.length; //update bot bombs
-		while (i>0){
-			i=i-1;
-			this.botbombs[i].update1();
-			this.botbombs[i].updatebomb();
-			}
+		//var i = this.botbombs.length; //update bot bombs
+		//while (i>0){
+		//	i=i-1;
+		//	this.botbombs[i].update1();
+		//	this.botbombs[i].updatebomb();
+		//	}
 		var i = this.outposts.length; 
 		while (i>0){
 			i=i-1;
@@ -607,16 +561,16 @@ class System{
 			var i = this.planets.length;
 			while (i>0){ //Planet on ships and bombs
 				i=i-1;
-				var j = this.ships.length;
-				while (j>0){ //gravitate on each ship
-					j=j-1;
-					this.planets[i].gravitate(this.ships[j]);
-					}
-				j = this.botbombs.length;
-				while (j>0){ //gravitate on each bot bomb
-					j=j-1;
-					this.planets[i].gravitate(this.botbombs[j]);
-					}				
+				//var j = this.ships.length;
+				//while (j>0){ //gravitate on each ship
+				//	j=j-1;
+				//	this.planets[i].gravitate(this.ships[j]);
+				//	}
+				//j = this.botbombs.length;
+				//while (j>0){ //gravitate on each bot bomb
+				//	j=j-1;
+				//	this.planets[i].gravitate(this.botbombs[j]);
+				//	}				
 				j = this.bling.length;
 				while (j>0){ //gravitate on each bling
 					j=j-1;
@@ -629,7 +583,7 @@ class System{
 					var k = this.players[j].blasters.length;
 					while (k>0){ //For all blasters to each planet
 						k=k-1;
-						this.players[j].blasters[k].fall(systems[ps].planets[i]);
+						this.players[j].blasters[k].fall(this.planets[i]);
 						}
 					}
 				j = this.npcs.length;
@@ -639,7 +593,7 @@ class System{
 					var k = this.npcs[j].blasters.length;
 					while (k>0){ //For all blasters to each planet
 						k=k-1;
-						this.npcs[j].blasters[k].fall(systems[ps].planets[i]);
+						this.npcs[j].blasters[k].fall(this.planets[i]);
 						}
 					}
 				}
@@ -663,8 +617,8 @@ class System{
 			//if (ps==0){ systems[0].bling = []; }
 			}
 		var i=0;
-		while(i<systems[ps].bling.length){
-			if(systems[ps].bling[i].t>20000){systems[ps].bling[i].reset(systems[ps].planets);}
+		while(i<this.bling.length){
+			if(this.bling[i].t>20000){this.bling[i].reset(this.planets);}
 			i++;
 			}
 		}
@@ -714,27 +668,18 @@ class System{
 				while(j<this.players[i].blasters.length){
 					var k=0;
 					while(k<this.players[i].blasters[j].bombs.length){
-						var h=0;
-						while(h<this.botbombs.length){
-							if ((this.botbombs[h].timer>6)||(this.players[i].blasters[j].bombs[k].timer>6)){
-								if (this.botbombs[h].collide(this.players[i].blasters[j].bombs[k])){
-									this.botbombs[h].timer = 6;
-									this.players[i].blasters[j].bombs[k].timer = 6;
-									}
-								}
-							h++;
-							}
+						//var h=0;
+						//while(h<this.botbombs.length){
+						//	if ((this.botbombs[h].timer>6)||(this.players[i].blasters[j].bombs[k].timer>6)){
+						//		if (this.botbombs[h].collide(this.players[i].blasters[j].bombs[k])){
+						//			this.botbombs[h].timer = 6;
+						//			this.players[i].blasters[j].bombs[k].timer = 6;
+						//			}
+						//		}
+						//	h++;
+						//	}
 						k++;
 						}
-					j++;
-					}
-				i++;
-				}
-			var i=1;
-			while (i<this.planets.length){
-				var j=i+1;
-				while (j<this.planets.length){
-					this.planets[i].circlecollide4(this.planets[j]);
 					j++;
 					}
 				i++;
@@ -744,17 +689,17 @@ class System{
 		while (i>0){
 			//For all planets+other collisions/////////////////////////////////
 			i=i-1;
-			var j = this.ships.length;
-			while (j>0){ //For all ships to each planet
-				j=j-1;
-				this.planets[i].circlecollide(this.ships[j]);
-				
-				}
-			var j = this.botbombs.length;
-			while (j>0){ //For all bombs to each planet
-				j=j-1; 
-				this.planets[i].circlecollide(this.botbombs[j]);
-				}
+			//var j = this.ships.length;
+			//while (j>0){ //For all ships to each planet
+			//	j=j-1;
+			//	this.planets[i].circlecollide(this.ships[j]);
+			//	
+			//	}
+			//var j = this.botbombs.length;
+			//while (j>0){ //For all bombs to each planet
+			//	j=j-1; 
+			//	this.planets[i].circlecollide(this.botbombs[j]);
+			//	}
 			var j = this.turrets.length;
 			while(j>0){
 				j = j-1;
@@ -776,12 +721,14 @@ class System{
 				j=j-1;
 				//console.log("itried3");
 				if (this.planets[i].collide(this.players[j].ship)){
+					
 					var collidedamagebonus = 9;//9x bonus damage plus the normal damage done in circlecollide
 					if (this.players[j].shieldbonus != "impact"){
 						this.players[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
 						}
 					}
 				this.planets[i].circlecollide(this.players[j].ship);
+				//this.players[j].ship.damagewithsound(1);
 				var k=this.players[j].blasters.length;
 				while(k>0){
 					k=k-1;
@@ -822,26 +769,26 @@ class System{
 
 		}
 		//Intership collisions///////////////////////////////////////
-		var i = 0;//For each ship,
-		var j = 0; //to each other ship
-		while (i<this.ships.length){
-			j = i+1; //avoids duplicate executions 
-			while (j<this.ships.length){
-				this.ships[i].circlecollide4(this.ships[j]);
-				j++;
-				}
-			var j=0;
-			while(j<this.players.length){
-				this.players[j].ship.circlecollide4(this.ships[i])
-				j++;
-				}
-			var j=0;
-			while(j<this.npcs.length){
-				this.npcs[j].ship.circlecollide4(this.ships[i])
-				j++;
-				}
-			i++;
-			}
+		//var i = 0;//For each ship,
+		//var j = 0; //to each other ship
+		//while (i<this.ships.length){
+		//	j = i+1; //avoids duplicate executions 
+		//	while (j<this.ships.length){
+		//		this.ships[i].circlecollide4(this.ships[j]);
+		//		j++;
+		//		}
+		//	var j=0;
+		//	while(j<this.players.length){
+		//		this.players[j].ship.circlecollide4(this.ships[i])
+		//		j++;
+		//		}
+		//	var j=0;
+		//	while(j<this.npcs.length){
+		//		this.npcs[j].ship.circlecollide4(this.ships[i])
+		//		j++;
+		//		}
+		//	i++;
+		//	}
 		var i = 0; //for each player (.ship)
 		var j = 0;
 		while (i<this.players.length){
@@ -857,8 +804,6 @@ class System{
 				}
 			i++;
 			}
-
-
 		var i = 0;//For each npc,
 		var j = 0; //to each other npc
 		while (i<this.npcs.length){
@@ -873,14 +818,14 @@ class System{
 		var i=0;
 		while (i<this.turrets.length){
 			var j=0;
-			while(j<this.ships.length){
-				var k=0;
-				while(k<this.turrets[i].bombs.length){
-					this.turrets[i].bombs[k].bombcollide(this.ships[j])
-					k++;
-					}
-				j++;
-				}
+			//while(j<this.ships.length){
+			//	var k=0;
+			//	while(k<this.turrets[i].bombs.length){
+			//		this.turrets[i].bombs[k].bombcollide(this.ships[j])
+			//		k++;
+			//		}
+			//	j++;
+			//	}
 			var j=0;
 			while(j<this.players.length){
 				var k=0;
@@ -903,56 +848,56 @@ class System{
 
 			i=i+1; 
 			}
-		var i=0;
-		while (i<this.ships.length){
-			if (this.ships[i].hp>0){ //don't check dead ships
-				var j=0;
-				while (j<this.botbombs.length){  //Bots can kill each other again
-					this.botbombs[j].bombcollide(this.ships[i]);
-					j++;
-					}
-				if (this.ships[i].hp<=0){
-					this.explosions.push(new Bubblesplosion(7,0.375,"red",this.ships[i]));
-					this.bling.push(new Bling(this.ships[i].x,this.ships[i].y,this.ships[i].vx,this.ships[i].vy,this.ships[i].level*5));
-					}
-				}
-			i++;
-			}
+		//var i=0;
+		//while (i<this.ships.length){
+		//	if (this.ships[i].hp>0){ //don't check dead ships
+		//		var j=0;
+		//		while (j<this.botbombs.length){  //Bots can kill each other again
+		//			this.botbombs[j].bombcollide(this.ships[i]);
+		//			j++;
+		//			}
+		//		if (this.ships[i].hp<=0){
+		//			this.explosions.push(new Bubblesplosion(7,0.375,"red",this.ships[i]));
+		//			this.bling.push(new Bling(this.ships[i].x,this.ships[i].y,this.ships[i].vx,this.ships[i].vy,this.ships[i].level*5));
+		//			}
+		//		}
+		//	i++;
+		//	}
 		var i=0;//////Rework/repeat this for npcs
 		while(i<this.players.length){
-			var j=0;
-			while(j<this.botbombs.length){
-				this.botbombs[j].bombcollide(this.players[i].ship);
-				j++;
-				}
+			//var j=0;
+			//while(j<this.botbombs.length){
+			//	this.botbombs[j].bombcollide(this.players[i].ship);
+			//	j++;
+			//	}
 			var j = 0;
 			while (j<this.players[i].blasters.length){ 
 				var k = 0;
 				while (k<this.players[i].blasters[j].bombs.length){ 
-					var m = 0;
-					while (m<this.ships.length){//Players hit other ships
-						if (this.ships[m].hp>0){
-							this.players[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
-							if (this.ships[m].hp<0){ 
-								if (this.ships[m].ai=="enemy"){
-									var getcash = Math.floor(Math.random()*21+10)*this.ships[m].level;
-									this.players[i].money = this.players[i].money + getcash;
-									this.players[i].gotmoney = [30,getcash];
+					//var m = 0;
+					//while (m<this.ships.length){//Players hit other ships
+					//	if (this.ships[m].hp>0){
+					//		this.players[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
+					//		if (this.ships[m].hp<0){ 
+					//			if (this.ships[m].ai=="enemy"){
+					//				var getcash = Math.floor(Math.random()*21+10)*this.ships[m].level;
+					//				this.players[i].money = this.players[i].money + getcash;
+					//				this.players[i].gotmoney = [30,getcash];
 	//////////////////////////////////explosion stuff///////////////
-									var boomstages = Math.floor(4+this.ships[m].level/2);
-									this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ships[m]));
-									this.bling.push(new Bling(this.ships[m].x,this.ships[m].y,this.ships[m].vx,this.ships[m].vy,this.ships[m].level*5));
-									cashsound1.play();
-								}else if (this.ships[m].ai=="trader"){
-									this.explosions.push(new Bubblesplosion(4,0.375,"red",this.ships[m]));
-									this.players[i].money = this.players[i].money - 1000;
-									this.players[i].gotmoney = [30, -1000];
-									//somebadsound.play();
-									}
-								}
-							}
-						m++;
-						}
+					//				var boomstages = Math.floor(4+this.ships[m].level/2);
+					//				this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ships[m]));
+					//				this.bling.push(new Bling(this.ships[m].x,this.ships[m].y,this.ships[m].vx,this.ships[m].vy,this.ships[m].level*5));
+					//				cashsound1.play();
+					//			}else if (this.ships[m].ai=="trader"){
+					//				this.explosions.push(new Bubblesplosion(4,0.375,"red",this.ships[m]));
+					//				this.players[i].money = this.players[i].money - 1000;
+					//				this.players[i].gotmoney = [30, -1000];
+					//				//somebadsound.play();
+					//				}
+					//			}
+					//		}
+					//	m++;
+					//	}
 					var m = 0;
 					while (m<this.players.length){ //players bombs hit other players
 						this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
@@ -963,20 +908,55 @@ class System{
 						}
 					var m = 0;
 					while (m<this.npcs.length){ //players bombs hit npcs
-						this.players[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
-						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
-						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
-						//	}
+						if (this.npcs[m].ship.hp>0){	
+							this.players[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
+							if (this.npcs[m].ship.hp<0){ 
+								if (this.npcs[m].ai.playerhostile==true){
+									var getcash = Math.floor(Math.random()*21+10)*this.npcs[m].ship.level;
+									this.players[i].money = this.players[i].money + getcash;
+									this.players[i].gotmoney = [30,getcash];
+	//////////////////////////////////explosion stuff///////////////
+									var boomstages = Math.floor(4+this.npcs[m].ship.level/2);
+									this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.npcs[m].ship));
+									this.bling.push(new Bling(this.npcs[m].ship.x,this.npcs[m].ship.y,this.npcs[m].ship.vx,this.npcs[m].ship.vy,this.npcs[m].ship.level*5));
+									cashsound1.play();
+								}else if (this.npcs[m].ai.playerhostile==false){
+									this.explosions.push(new Bubblesplosion(4,0.375,"red",this.npcs[m].ship));
+									this.players[i].money = this.players[i].money - 1000;
+									this.players[i].gotmoney = [30, -1000];
+									//somebadsound.play();
+									}
+								}
+							}
 						m++;
 						}
 					var m=0;
 					while (m<this.turrets.length){
-						this.players[i].blasters[j].bombs[k].bombcollide(this.turrets[m].pivot);
-						//if ((this.players[m].ship.hp<0)&&(this.players[m].ship.hp!=-1000)) {
-						//	this.explosions.push(new Bubblesplosion(7,0.375,"red",this.players[m].ship));
-						//	}
+						
+						if (this.turrets[m].pivot.hp>0){	
+							this.players[i].blasters[j].bombs[k].bombcollide(this.turrets[m].pivot);
+							if (this.turrets[m].pivot.hp<0){ 
+								if (this.turrets[m].pivot.ai=="enemy"){//Ai handled old way for turrets
+									var getcash = Math.floor(Math.random()*21+10)*this.turrets[m].pivot.level;
+									this.players[i].money = this.players[i].money + getcash;
+									this.players[i].gotmoney = [30,getcash];
+	//////////////////////////////////explosion stuff///////////////
+									var boomstages = 6;//Math.floor(4+this.turrets[m].pivot.level/2);
+									this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.turrets[m].pivot));
+									this.bling.push(new Bling(this.turrets[m].pivot.x,this.turrets[m].pivot.y,this.turrets[m].pivot.vx,this.turrets[m].pivot.vy,this.turrets[m].pivot.level*5));
+									cashsound1.play();
+								}else if (this.turrets[m].pivot.ai=="friendly"){
+									this.explosions.push(new Bubblesplosion(4,0.375,"red",this.turrets[m].pivot));
+									this.players[i].money = this.players[i].money - 1000;
+									this.players[i].gotmoney = [30, -1000];
+									//somebadsound.play();
+									}
+								}
+							}
 						m++;
 						}
+						
+						
 					k++;
 					}
 				j++;
@@ -985,22 +965,22 @@ class System{
 			}
 		var i=0;//////Reworked/repeated for npcs
 		while(i<this.npcs.length){
-			var j=0;
-			while(j<this.botbombs.length){
-				this.botbombs[j].bombcollide(this.npcs[i].ship);
-				j++;
-				}
+			//var j=0;
+			//while(j<this.botbombs.length){
+			//	this.botbombs[j].bombcollide(this.npcs[i].ship);
+			//	j++;
+			//	}
 			var j = 0;
 			while (j<this.npcs[i].blasters.length){
 				var k = 0;
 				while (k<this.npcs[i].blasters[j].bombs.length){
-					var m = 0;
-					while (m<this.ships.length){//npcs hit other ships
-						if (this.ships[m].hp>0){
-							this.npcs[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
-							}
-						m++;
-						}
+					//var m = 0;
+					//while (m<this.ships.length){//npcs hit other ships
+					//	if (this.ships[m].hp>0){
+					//		this.npcs[i].blasters[j].bombs[k].bombcollide(this.ships[m]);
+					//		}
+					//	m++;
+					//	}
 					var m = 0;
 					while (m<this.npcs.length){ //npcs hit other npcs
 						this.npcs[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
@@ -1052,22 +1032,22 @@ class System{
 		}
 	radialwrap(wrapr){
 		var wrapr2 = wrapr*wrapr;
-		var i=0;
+		//var i=0;
 		//console.log("triedtowrap");
-		while (i<this.ships.length){
-			var tested = this.ships[i]
-			var rad2 = tested.x*tested.x+tested.y*tested.y;
-			if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
-				var overshoot = (wrapr/Math.sqrt(rad2));
-				tested.x = tested.x* overshoot;
-				tested.y = tested.y* overshoot;
-				//console.log("trying to place a ship");
-				this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
-				//tested.x = -0.99*tested.x;
-				//tested.y = -0.99*tested.y;
-				}
-			i++;
-			}
+		//while (i<this.ships.length){
+		//	var tested = this.ships[i]
+		//	var rad2 = tested.x*tested.x+tested.y*tested.y;
+		//	if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
+		//		var overshoot = (wrapr/Math.sqrt(rad2));
+		//		tested.x = tested.x* overshoot;
+		//		tested.y = tested.y* overshoot;
+		//		//console.log("trying to place a ship");
+		//		this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
+		//		//tested.x = -0.99*tested.x;
+		//		//tested.y = -0.99*tested.y;
+		//		}
+		//	i++;
+		//	}
 		var i=0;
 		while (i<this.players.length){
 			var tested = this.players[i].ship;
@@ -1113,21 +1093,21 @@ class System{
 				}
 			i++;
 			}
-		var i=0;
-		while (i<this.botbombs.length){//Let waldo and xxxx do their thing and not be involved.
-			var tested = this.botbombs[i];
-			var rad2 = tested.x*tested.x+tested.y*tested.y;
-			if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
-				var overshoot = (wrapr/Math.sqrt(rad2));
-				tested.x = tested.x* overshoot;
-				tested.y = tested.y* overshoot;
-				//console.log("trying to place an outpost");
-				this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
-				//tested.x = -0.98*tested.x;//Planets get moved further inwards to prevent ships from spawing inside planets.
-				//tested.y = -0.98*tested.y;
-				}
-			i++;
-			}
+		//var i=0;
+		//while (i<this.botbombs.length){//Let waldo and xxxx do their thing and not be involved.
+		//	var tested = this.botbombs[i];
+		//	var rad2 = tested.x*tested.x+tested.y*tested.y;
+		//	if ( (rad2>wrapr2) && (rad2<wrapr2*4) ){
+		//		var overshoot = (wrapr/Math.sqrt(rad2));
+		//		tested.x = tested.x* overshoot;
+		//		tested.y = tested.y* overshoot;
+		//		//console.log("trying to place an outpost");
+		//		this.placenear(tested,-0.99*tested.x,-0.99*tested.y)
+		//		//tested.x = -0.98*tested.x;//Planets get moved further inwards to prevent ships from spawing inside planets.
+		//		//tested.y = -0.98*tested.y;
+		//		}
+		//	i++;
+		//	}
 		//console.log("finishedwrap");
 		}
 	planetsmpsummary(){//For onboarding new system
@@ -1233,132 +1213,132 @@ class System{
 			i++;
 			}
 		}
-	shipsmpsummary(){//For onboarding new system
-		var supdate = [];
-		//var i=0;
-		//while(i<this.players.length){
-		//	var p = this.players[i];
-			var j=0;
-			while(j<this.ships.length){
-				var s = this.ships[j];
-				supdate.push([Math.floor(s.x), Math.floor(s.y), s.vx, s.vy, s.name, s.c, s.c2, s.s, s.polyradius, s.polytheta, s.parentid,s.maxhp,s.maxshield]);
-				j++;
-				}
-			//i++;
-			//}
-		console.log("Shipsmpsummary ship 0 X "+supdate[0][0]+" Y "+supdate[0][1])
-		return supdate;
-		}
-	shipsmpload(supdate){
-		var i=0;
-		this.ships = [];
-		while (i<supdate.length){
-			this.ships.push(new Umo(supdate[i][0],supdate[i][1],supdate[i][7],supdate[i][5]));
-			//this.ships[i].x = supdate[i][0];
-			//this.ships[i].y = supdate[i][1];
-			this.ships[i].vx = supdate[i][2];
-			this.ships[i].vy = supdate[i][3];
-			this.ships[i].name = supdate[i][4];
-			//this.ships[i].c = supdate[i][5];
-			this.ships[i].c2 = supdate[i][6];
-			//this.ships[i].s = supdate[i][7];
-			this.ships[i].polyradius = supdate[i][8];
-			this.ships[i].polytheta = supdate[i][9];
-			this.ships[i].parentid = supdate[i][10]
-			this.ships[i].maxhp = supdate[i][11];
-			this.ships[i].maxshield = supdate[i][12]
-			i++;
-			}
-		}
-	shipsmpupdate(){//Personalized updates for ships in radar range.  Each player gets their own array of ship update arrays within the total supdate array.
-		var supdate = [];
-		var i=0;
-		while(i<this.players.length){
-			var p = this.players[i];
-			var j = 0;
-			while (j<this.ships.length){
-				var s = this.ships[j];
-				if (p.ship.distance(s)<p.radarrange){
-					supdate.push([Math.floor(s.x), Math.floor(s.y), s.vx, s.vy, s.d, s.hp, s.shield, j]);	//j needed to identify ship to update
-					}
-				j++;
-				}
-			i++;
-			}
-		return supdate;
-		}
-	shipsmpcorrect(supdate){//This supdate is one element from theshipsmp supdate, to be passed by server to each client individually.
-		var i=0; //Its used to continuously update rather than correct.
-		while (i<supdate.length){
-			var shipindex = supdate[i][7];
-			this.ships[shipindex].x = supdate[i][0];
-			this.ships[shipindex].y = supdate[i][1];
-			this.ships[shipindex].vx = supdate[i][2];
-			this.ships[shipindex].vy = supdate[i][3];
-			this.ships[shipindex].d = supdate[i][4];
-			this.ships[shipindex].hp = supdate[i][5];
-			this.ships[shipindex].shield = supdate[i][6];
-			i++;
-			}
-		}
-	botbombsmpsummary(){//For onboarding new system
-		var bupdate = [];
-		var j=0;
-		while(j<this.botbombs.length){
-			var b = this.botbombs[j];
-			console.log("b.x "+b.x);
-			bupdate.push([Math.floor(b.x), Math.floor(b.y), b.vx, b.vy, b.c, b.s, b.boombuff, b.hurt]);
-			j++;
-			}
-
-		console.log("Botbombsmpsummary botbomb 0 X "+bupdate[0][0]+" Y "+bupdate[0][1])
-		return bupdate;
-		}
-	botbombsmpload(bupdate){
-		var i=0;
-		this.botbombs = [];
-		while (i<bupdate.length){
-			this.botbombs.push(new Umo(bupdate[i][0],bupdate[i][1],bupdate[i][5],bupdate[i][4]));
-			//this.botbombs[i].x = bupdate[i][0];
-			//this.botbombs[i].y = bupdate[i][1];
-			this.botbombs[i].vx = bupdate[i][2];
-			this.botbombs[i].vy = bupdate[i][3];
-			//this.botbombs[i].c = bupdate[i][4];
-			//this.botbombs[i].s = bupdate[i][5];
-			this.botbombs[i].boombuff = bupdate[i][6];
-			this.botbombs[i].hurt = bupdate[i][7];
-			i++;
-			}
-		}
-	botbombsmpupdate(){//Personalized updates for ships in radar range.  Each player gets their own array of ship update arrays within the total supdate array.
-		var bupdate = [];
-		var i=0;
-		while(i<this.players.length){
-			var p = this.players[i];
-			var j = 0;
-			while (j<this.botbombs.length){
-				var b = this.botbombs[j];
-				if (p.ship.distance(b)<p.radarrange){
-					bupdate.push([Math.floor(b.x), Math.floor(b.y), b.vx, b.vy, b.timer, j]);	
-					}
-				j++;
-				}
-			i++;
-			}
-		return bupdate;
-		}
-	botbombsmpcorrect(bupdate){//This bupdate is one element from thebotbombsmp bupdate, to be passed by server to each client individually.
-		var i=0; //Its used to continuously update rather than correct, same with shipsmpcorrect
-		while (i<bupdate.length){
-			var bombindex = bupdate[i][5];
-			this.botbombs[bombindex].x = bupdate[i][0];
-			this.botbombs[bombindex].y = bupdate[i][1];
-			this.botbombs[bombindex].vx = bupdate[i][2];
-			this.botbombs[bombindex].vy = bupdate[i][3];
-			this.botbombs[bombindex].timer = bupdate[i][4];
-			i++;
-			}
-		}
+	//shipsmpsummary(){//For onboarding new system
+	//	var supdate = [];
+	//	//var i=0;
+	//	//while(i<this.players.length){
+	//	//	var p = this.players[i];
+	//		var j=0;
+	//		while(j<this.ships.length){
+	//			var s = this.ships[j];
+	//			supdate.push([Math.floor(s.x), Math.floor(s.y), s.vx, s.vy, s.name, s.c, s.c2, s.s, s.polyradius, s.polytheta, s.parentid,s.maxhp,s.maxshield]);
+	//			j++;
+	//			}
+	//		//i++;
+	//		//}
+	//	console.log("Shipsmpsummary ship 0 X "+supdate[0][0]+" Y "+supdate[0][1])
+	//	return supdate;
+	//	}
+	//shipsmpload(supdate){
+	//	var i=0;
+	//	this.ships = [];
+	//	while (i<supdate.length){
+	//		this.ships.push(new Umo(supdate[i][0],supdate[i][1],supdate[i][7],supdate[i][5]));
+	//		//this.ships[i].x = supdate[i][0];
+	//		//this.ships[i].y = supdate[i][1];
+	//		this.ships[i].vx = supdate[i][2];
+	//		this.ships[i].vy = supdate[i][3];
+	//		this.ships[i].name = supdate[i][4];
+	//		//this.ships[i].c = supdate[i][5];
+	//		this.ships[i].c2 = supdate[i][6];
+	//		//this.ships[i].s = supdate[i][7];
+	//		this.ships[i].polyradius = supdate[i][8];
+	//		this.ships[i].polytheta = supdate[i][9];
+	//		this.ships[i].parentid = supdate[i][10]
+	//		this.ships[i].maxhp = supdate[i][11];
+	//		this.ships[i].maxshield = supdate[i][12]
+	//		i++;
+	//		}
+	//	}
+	//shipsmpupdate(){//Personalized updates for ships in radar range.  Each player gets their own array of ship update arrays within the total supdate array.
+	//	var supdate = [];
+	//	var i=0;
+	//	while(i<this.players.length){
+	//		var p = this.players[i];
+	//		var j = 0;
+	//		while (j<this.ships.length){
+	//			var s = this.ships[j];
+	//			if (p.ship.distance(s)<p.radarrange){
+	//				supdate.push([Math.floor(s.x), Math.floor(s.y), s.vx, s.vy, s.d, s.hp, s.shield, j]);	//j needed to identify ship to update
+	//				}
+	//			j++;
+	//			}
+	//		i++;
+	//		}
+	//	return supdate;
+	//	}
+	//shipsmpcorrect(supdate){//This supdate is one element from theshipsmp supdate, to be passed by server to each client individually.
+	//	var i=0; //Its used to continuously update rather than correct.
+	//	while (i<supdate.length){
+	//		var shipindex = supdate[i][7];
+	//		this.ships[shipindex].x = supdate[i][0];
+	//		this.ships[shipindex].y = supdate[i][1];
+	//		this.ships[shipindex].vx = supdate[i][2];
+	//		this.ships[shipindex].vy = supdate[i][3];
+	//		this.ships[shipindex].d = supdate[i][4];
+	//		this.ships[shipindex].hp = supdate[i][5];
+	//		this.ships[shipindex].shield = supdate[i][6];
+	//		i++;
+	//		}
+	//	}
+	//botbombsmpsummary(){//For onboarding new system
+	//	var bupdate = [];
+	//	var j=0;
+	//	while(j<this.botbombs.length){
+	//		var b = this.botbombs[j];
+	//		console.log("b.x "+b.x);
+	//		bupdate.push([Math.floor(b.x), Math.floor(b.y), b.vx, b.vy, b.c, b.s, b.boombuff, b.hurt]);
+	//		j++;
+	//		}
+	//
+	//	console.log("Botbombsmpsummary botbomb 0 X "+bupdate[0][0]+" Y "+bupdate[0][1])
+	//	return bupdate;
+	//	}
+	//botbombsmpload(bupdate){
+	//	var i=0;
+	//	this.botbombs = [];
+	//	while (i<bupdate.length){
+	//		this.botbombs.push(new Umo(bupdate[i][0],bupdate[i][1],bupdate[i][5],bupdate[i][4]));
+	//		//this.botbombs[i].x = bupdate[i][0];
+	//		//this.botbombs[i].y = bupdate[i][1];
+	//		this.botbombs[i].vx = bupdate[i][2];
+	//		this.botbombs[i].vy = bupdate[i][3];
+	//		//this.botbombs[i].c = bupdate[i][4];
+	//		//this.botbombs[i].s = bupdate[i][5];
+	//		this.botbombs[i].boombuff = bupdate[i][6];
+	//		this.botbombs[i].hurt = bupdate[i][7];
+	//		i++;
+	//		}
+	//	}
+	//botbombsmpupdate(){//Personalized updates for ships in radar range.  Each player gets their own array of ship update arrays within the total supdate array.
+	//	var bupdate = [];
+	//	var i=0;
+	//	while(i<this.players.length){
+	//		var p = this.players[i];
+	//		var j = 0;
+	//		while (j<this.botbombs.length){
+	//			var b = this.botbombs[j];
+	//			if (p.ship.distance(b)<p.radarrange){
+	//				bupdate.push([Math.floor(b.x), Math.floor(b.y), b.vx, b.vy, b.timer, j]);	
+	//				}
+	//			j++;
+	//			}
+	//		i++;
+	//		}
+	//	return bupdate;
+	//	}
+	//botbombsmpcorrect(bupdate){//This bupdate is one element from thebotbombsmp bupdate, to be passed by server to each client individually.
+	//	var i=0; //Its used to continuously update rather than correct, same with shipsmpcorrect
+	//	while (i<bupdate.length){
+	//		var bombindex = bupdate[i][5];
+	//		this.botbombs[bombindex].x = bupdate[i][0];
+	//		this.botbombs[bombindex].y = bupdate[i][1];
+	//		this.botbombs[bombindex].vx = bupdate[i][2];
+	//		this.botbombs[bombindex].vy = bupdate[i][3];
+	//		this.botbombs[bombindex].timer = bupdate[i][4];
+	//		i++;
+	//		}
+	//	}
 	playermice(){
 		var qq = 0;
 		while (qq<this.players.length){
@@ -1411,7 +1391,7 @@ class System{
 				
 			else if (((aplayer.mousestate==2)&&(aplayer.thrustmode==false))||((aplayer.mousestate==1)&&(aplayer.thrustmode==true))){ //if it's the left button
 				if (aplayer.dockstate>=0){
-					systems[ps].outposts[aplayer.dockstate].undock(aplayer.ship);//undock function sets relative position and velocity.  Maybe other stuff.
+					this.outposts[aplayer.dockstate].undock(aplayer.ship);//undock function sets relative position and velocity.  Maybe other stuff.
 					aplayer.dockstate = -1;
 					}
 				if (aplayer.thruster>0){
@@ -1535,10 +1515,10 @@ class System{
 				case "n": 
 					if (aplayer.navactive == 0){
 						aplayer.navactive = 1;
-						if (aplayer.navtarget>systems[ps].planets.length-2){aplayer.navtarget=0;}
+						if (aplayer.navtarget>this.planets.length-2){aplayer.navtarget=0;}
 					} else if (aplayer.navactive == 1) {
 						aplayer.navactive = 2;
-						if (aplayer.navtarget > systems[ps].outposts.length-2){aplayer.navtarget=0;}
+						if (aplayer.navtarget > this.outposts.length-2){aplayer.navtarget=0;}
 					} else if (aplayer.navactive == 2){aplayer.navactive = 0;}
 					  break;
 				case "m": 
@@ -1556,29 +1536,29 @@ class System{
 					if (aplayer.mapscale>64){aplayer.mapscale = Math.floor(aplayer.mapscale);}
 					  break;	  
 				case ".": 
-					var maxnavtarget = systems[ps].planets.length-1;
-					if ((aplayer.sensor<1)&&(systems[ps].planets[systems[ps].planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
+					var maxnavtarget = this.planets.length-1;
+					if ((aplayer.sensor<1)&&(this.planets[this.planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
 					if (aplayer.navactive == 1){
 						aplayer.navtarget++;
 						if (aplayer.navtarget > maxnavtarget){ aplayer.navtarget = 0; }//Waldo is now excluded
 					}else if (aplayer.navactive == 2){
 						aplayer.navtarget++;
-						if (aplayer.navtarget > systems[ps].outposts.length-1){aplayer.navtarget = 0; }
+						if (aplayer.navtarget > this.outposts.length-1){aplayer.navtarget = 0; }
 						}
 					  break;
 				case ",": 
-					var maxnavtarget = systems[ps].planets.length-1;
-					if ((aplayer.sensor<1)&&(systems[ps].planets[systems[ps].planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
+					var maxnavtarget = this.planets.length-1;
+					if ((aplayer.sensor<1)&&(this.planets[this.planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
 					if (aplayer.navactive == 1){
 						aplayer.navtarget--;
 						if (aplayer.navtarget == -1){ aplayer.navtarget = maxnavtarget; }
 					}else if (aplayer.navactive == 2){
 						aplayer.navtarget--;
-						if (aplayer.navtarget == -1){ aplayer.navtarget = systems[ps].outposts.length-1; }
+						if (aplayer.navtarget == -1){ aplayer.navtarget = this.outposts.length-1; }
 						}
 					break;		  
 				case "w": 
-				if (cheatmode ==1){	aplayer.ship.respawn(systems[ps].planets[aplayer.navtarget]); }
+				if (cheatmode ==1){	aplayer.ship.respawn(this.planets[aplayer.navtarget]); }
 					  break;
 				case "]": 
 					if (aplayer.shiptarget == aplayer.shipsinrange.length-1){ aplayer.shiptarget = 0; }
@@ -1597,13 +1577,13 @@ class System{
 						menuclick1.play();
 						aplayer.shopitem = aplayer.shopitem - 1;
 						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 0))
-							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].inv.length-1;}
+							{aplayer.shopitem = this.shops[aplayer.dockstate].inv.length-1;}
 						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 1)){
 							if (aplayer.inventory.cargotypes>0){aplayer.shopitem = aplayer.inventory.cargotypes()-1;}
 							aplayer.shopitem = 0;//aplayer.inventory.cargotypes()-1;
 							}//-2 instead of -1 because the last item is mission cargo, which shouldn't be bought or sold.
 						if ((aplayer.shopitem<0)&&(aplayer.shopmode == 2))
-							{aplayer.shopitem = systems[ps].shops[aplayer.dockstate].missions.length-1;}
+							{aplayer.shopitem = this.shops[aplayer.dockstate].missions.length-1;}
 						}
 					else if (aplayer.journalactive==1){
 						aplayer.journalitem--;
@@ -1621,11 +1601,11 @@ class System{
 					if (aplayer.dockstate>=0){
 						menuclick1.play();
 						aplayer.shopitem++;
-						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].inv.length-1)&&(aplayer.shopmode == 0))
+						if ((aplayer.shopitem>this.shops[aplayer.dockstate].inv.length-1)&&(aplayer.shopmode == 0))
 							{aplayer.shopitem = 0;}
 						if ((aplayer.shopitem>aplayer.inventory.cargotypes()-1)&&(aplayer.shopmode == 1))
 							{aplayer.shopitem = 0;}
-						if ((aplayer.shopitem>systems[ps].shops[aplayer.dockstate].missions.length-1)&&(aplayer.shopmode == 2))
+						if ((aplayer.shopitem>this.shops[aplayer.dockstate].missions.length-1)&&(aplayer.shopmode == 2))
 							{aplayer.shopitem = 0;}
 						}
 					else if (aplayer.journalactive==1){
@@ -1681,7 +1661,7 @@ class System{
 					var randdir = Math.random()*2*Math.PI;
 					xxxx.setorbit(this.planets[0], 320000, randdir+Math.PI, -1);//Global scope here is bad, but setorbiting previous system is worse.
 					waldo.setorbit(this.planets[0], 320000, randdir, -1);
-					aplayer.planetarychart = systems[ps].generateplanetlist();
+					aplayer.planetarychart = this.generateplanetlist();
 					aplayer.ship.vx = 0; //Otherwise players inherit the momentum acquired in descent.
 					aplayer.ship.vy = 0;
 					//myplayer.planetarychart = systems[ps].generateplanetlist();
@@ -1691,15 +1671,15 @@ class System{
 				  if (starmode == 0){starmode = 1;}else{starmode = 0;}
 				  break;
 				 case "Enter": //The enter key purchases the currently selected shop item
-				 if ((aplayer.dockstate >= 0)&&(aplayer.dockstate<systems[ps].shops.length)){//check if docked and shop exists
+				 if ((aplayer.dockstate >= 0)&&(aplayer.dockstate<this.shops.length)){//check if docked and shop exists
 					if (aplayer.shopmode == 0){
-						 if (aplayer.shopitem < systems[ps].shops[aplayer.dockstate].inv.length){//check for shopitem exists
-							if (systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco) <= aplayer.money){ //check if player has enough money
-								if (systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].available(aplayer)){ //check if player has prerequisites / doesn't already own item
-									if (aplayer.money > systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco)){
-										aplayer.money = aplayer.money - systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco);
+						 if (aplayer.shopitem < this.shops[aplayer.dockstate].inv.length){//check for shopitem exists
+							if (this.shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,this.shops[aplayer.dockstate].eco) <= aplayer.money){ //check if player has enough money
+								if (this.shops[aplayer.dockstate].inv[aplayer.shopitem].available(aplayer)){ //check if player has prerequisites / doesn't already own item
+									if (aplayer.money > this.shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,this.shops[aplayer.dockstate].eco)){
+										aplayer.money = aplayer.money - this.shops[aplayer.dockstate].inv[aplayer.shopitem].itemprice(aplayer,this.shops[aplayer.dockstate].eco);
 										menubuy1.play();
-										systems[ps].shops[aplayer.dockstate].inv[aplayer.shopitem].buy(aplayer);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
+										this.shops[aplayer.dockstate].inv[aplayer.shopitem].buy(aplayer);//the buy function is supposed to handle the money transaction as well, but i dont think it can by itself.
 									}
 								} 
 							}
@@ -1712,7 +1692,7 @@ class System{
 							if (aplayer.inventory.cargo[i]>0){
 								if (item==aplayer.shopitem){
 									aplayer.inventory.cargo[i]=aplayer.inventory.cargo[i]-1;
-									aplayer.money = aplayer.money + cargoitems[i].itemprice(aplayer,systems[ps].shops[aplayer.dockstate].eco);
+									aplayer.money = aplayer.money + cargoitems[i].itemprice(aplayer,this.shops[aplayer.dockstate].eco);
 									menubuy1.play();
 									i = aplayer.inventory.cargo.length;//exits loop
 									}
@@ -1730,8 +1710,8 @@ class System{
 						//	menubuy1.play();
 						//}
 					}else if (aplayer.shopmode == 2){
-						if (systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].taken == false){//I shouldn't have to comment this if condition.  Side effect is that players can re-take a mission in progress, respawning the bot if it's a destroy mission.  Maybe useful if a bot gets lost just inside the return radius.
-							systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].take(systems[ps].ships,systems[ps].planets,aplayer);
+						if (this.shops[aplayer.dockstate].missions[aplayer.shopitem].taken == false){//I shouldn't have to comment this if condition.  Side effect is that players can re-take a mission in progress, respawning the bot if it's a destroy mission.  Maybe useful if a bot gets lost just inside the return radius.
+							this.shops[aplayer.dockstate].missions[aplayer.shopitem].take(this.npcs,this.planets,aplayer);
 							//aplayer.job = systems[ps].shops[aplayer.dockstate].missions[aplayer.shopitem].message;//moved to take()
 							menuclick3.play();
 							}
@@ -1815,7 +1795,7 @@ class System{
 						console.log(savedblasters);
 						var savedcharacter = loadgamestring.slice(stopindexes[1]+1,stopindexes[2]);
 						var savedpolygon = loadgamestring.slice(stopindexes[2]+1,stopindexes[3]);
-						var savedcargo = loadgamestring.slice(stopindexes[3]+1,stopindexes[4].length);
+						var savedcargo = loadgamestring.slice(stopindexes[3]+1,stopindexes[4]);
 						var savedemtree = loadgamestring.slice(stopindexes[4]+1,loadgamestring.length);
 						aplayer.loadblastertiers(savedblasters);
 						aplayer.loadcharacter(savedcharacter);
@@ -1829,6 +1809,7 @@ class System{
 							i++;
 							}
 						}
+					aplayer.inventory.cargo[aplayer.inventory.cargo.length-1] = 0;//Purges mission cargo, which is will be the last index. 
 				  break;	  	  
 				default:
 				  break;
@@ -1967,25 +1948,78 @@ class System{
 				randshopitems3.push(upgradeshopitems[randupgrade]);
 				j=j+1;
 				}
-			while (j<12){ //And 3 cargo items
-				var randcargo = Math.floor(Math.random()*(allcargos.length-1));
-				randshopitems3.push(new Shopitem("cargo",randcargo,"buy",1));
-				j=j+1;
-				}
+			//while (j<12){ //And 3 cargo items
+			//	var randcargo = Math.floor(Math.random()*(allcargos.length-1));
+			//	randshopitems3.push(new Shopitem("cargo",randcargo,"buy",1));
+			//	j=j+1;
+			//	}
 			this.shops.push(new Shop("XXXXXXXXXX",i, "whaaaaaaaaaaaaaat", randshopitems3)); //should fix this to reflect outpost name/description
 			var k = 0;
 			while (k<4){ //This adds 4 cargo missions to the shop.  
-				this.shops[i].addcargomission(this.ships,this.planets,this.outposts);
+				this.shops[i].addcargomission(this.npcs,this.planets,this.outposts);
 				k=k+1;
 				}// Destroy missions can't be added here (they are added in enemypopulate function), because normally the enemy ships haven't been added to the system yet when randomoutposts() (this function) is run.
 			i=i+1;
 			}
+		}
+	randomoutpostat(opx,opy){
+		this.outposts.push( new Umo(0,0,128, randcolor()));
+		var lastindex = this.outposts.length-1;
+		this.outposts[lastindex].c2 = randcolor();
+		this.outposts[lastindex].parentid = 0;
+		this.outposts[lastindex].name = randname(8)+"'s "+randname(7)+" "+randname(5);
+		var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
+		var toradii = [1,1,1,1]; //rectangle
+		this.outposts[lastindex].polytheta = totheta;
+		this.outposts[lastindex].polyradius = toradii;
+		//var pickedplanet = Math.floor(Math.random()*(this.planets.length-2))+1;//station will be in a solar following orbit to the chosen planet
+		//while ((this.planets[pickedplanet].parentid !== 0)&&(alreadypickedplanets.includes(pickedplanet))){//No outpost generated if planet is actually a moon or already picked
+		//	pickedplanet = Math.floor(Math.random()*(this.planets.length-2))+1;//tries again to find a not-moon
+		//	}
+		//var orbitdistance = this.planets[0].distance(this.planets[pickedplanet]);
+		//var orbitposition = this.planets[0].directionof(this.planets[pickedplanet]);
+		//this.outposts[lastindex].setorbit(this.planets[0], orbitdistance, orbitposition+0.2+Math.random()*0.3, 1);//This properly sets orbital distance, maybe properly sets orbit position.
+		this.outposts[lastindex].x = opx;
+		this.outposts[lastindex].y = opy;
+		var numberofsides = Math.floor(Math.random()*6+7)*2;
+		this.outposts[lastindex].makeemblem(numberofsides,0.1); //randomly generates a shop logo
+		//Now add the shop...  Tons of global scope used here.
+		var randshopitems3 = [];  
+		randshopitems3.push(repairshopitem);//First 2 items are always the same, repair item and booster item.
+		randshopitems3.push(booster1);
+		var j=2;
+		while(j<6){ //Next4 items will be random blasters for sale
+			var buyableblaster = Math.floor(Math.random()*blasterbuyitems.length);
+			randshopitems3.push(blasterbuyitems[buyableblaster]);
+			j=j+1;
+			}
+		while (j<10){ //Next 4 items will be random blaster upgrades
+			var theitem = Math.floor(Math.random()*blasterupgradeitems.length);
+			randshopitems3.push(blasterupgradeitems[theitem]);
+			j=j+1;
+		}
+		while (j<14){ //Next 4 items will be random ship upgrades.
+			var randupgrade = Math.floor(Math.random()*upgradeshopitems.length);
+			randshopitems3.push(upgradeshopitems[randupgrade]);
+			j=j+1;
+			}
+		//while (j<12){ //And 3 cargo items
+		//	var randcargo = Math.floor(Math.random()*(allcargos.length-1));
+		//	randshopitems3.push(new Shopitem("cargo",randcargo,"buy",1));
+		//	j=j+1;
+		//	}
+		this.shops.push(new Shop("XXXXXXXXXX",lastindex, "whaaaaaaaaaaaaaat", randshopitems3)); //should fix this to reflect outpost name/description
+		var k = 0;
+		while (k<4){ //This adds 4 cargo missions to the shop.  
+			//this.shops[i].addcargomission(this.npcs,this.planets,this.outposts);//skipped for weird use cases
+			k=k+1;
+			}// Destroy missions can't be added here (they are added in enemypopulate function), because normally the enemy ships haven't been added to the system yet when randomoutposts() (this function) is run.
 		var i=0;
 		while(i<50){
 			this.ecobalance(.05);
 			i++;
 			}
-		this.addcargosales(cargoitems);	//shady global scope used here
+		//this.addcargosales(cargoitems);	//shady global scope used here
 		}
 	ecobalance(magnitude){//magnitude is 0<x<1, normally .01 ish
 		var distances = [];//a set of sets containing shop economy distances to each other shop economy
@@ -2025,6 +2059,7 @@ class System{
 			while(j<this.shops[i].eco.prices.length){
 				if (this.shops[i].eco.forsale[j]==true){
 					this.shops[i].inv.push(cargoitems[j]);//from global scope, not passed by referebce, because maybe it fixes something?
+					console.log(i+" "+j+":::");
 					}
 				j++;
 				}
@@ -2036,7 +2071,7 @@ class System{
 		while(i<this.shops.length){
 			var j=0;
 			while (j<n){
-				this.shops[i].addcargomission(this.ships,this.planets,this.outposts);
+				this.shops[i].addcargomission(this.npcs,this.planets,this.outposts);
 				j++;
 				}
 			i++;
@@ -2046,25 +2081,44 @@ class System{
 		var i = levels;
 		while(i>0){
 			i=i-1;
-			var bonus = Math.floor(Math.random()*5);//Picks a number to select which bonus the bot gets
+			var bonus = Math.floor(Math.random()*8);//Picks a number to select which bonus the bot gets
 			if (bonus==0){ //extra health
-				this.ships[botindex].maxhp = this.ships[botindex].maxhp+100;
-				this.ships[botindex].hp = this.ships[botindex].hp+100;
+				this.npcs[botindex].ship.maxhp = this.npcs[botindex].ship.maxhp+100;
+				this.npcs[botindex].ship.hp = this.npcs[botindex].ship.hp+100;
 				}
 			if (bonus==1){ //extra shield
-				this.ships[botindex].maxshield = this.ships[botindex].maxshield+50;
-				this.ships[botindex].shield = this.ships[botindex].shield+50;
+				this.npcs[botindex].ship.maxshield = this.npcs[botindex].ship.maxshield+50;
+				this.npcs[botindex].ship.shield = this.npcs[botindex].ship.shield+50;
 				}
 			if (bonus==2){ //extra shield regen
-				this.ships[botindex].shieldregen = this.ships[botindex].shieldregen+0.25;
+				this.npcs[botindex].ship.shieldregen = this.npcs[botindex].ship.shieldregen+0.25;
 				}			
 			if (bonus==3){ //extra bomb damage
-				this.botbombs[botindex].hurt = this.botbombs[botindex].hurt+8;
+				this.npcs[botindex].blasters[0].plusdamage();
 				}						
 			if (bonus==4){ //extra bomb blast
-				this.botbombs[botindex].boombuff = this.botbombs[botindex].boombuff+0.25;//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
-				}			
-			this.ships[botindex].level = this.ships[botindex].level+1;
+					this.npcs[botindex].blasters[0].plusboom();//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
+					}
+			if (bonus==5){ //extra bomb speed
+				this.npcs[botindex].blasters[0].plusspeed();//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
+				}		
+			if (bonus==6){ //extra bomb timer
+				this.npcs[botindex].blasters[0].plustimer();//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
+				}
+			if (bonus==7){ //extra bomb n and 
+				if (this.npcs[botindex].blasters[0].type == "multiplex"){
+					this.npcs[botindex].blasters[0].type = "fixedspread";
+					this.npcs[botindex].blasters[0].plusn();
+					this.npcs[botindex].blasters[0].special1 = 0.125*Math.PI/2+0.375*Math.random()*Math.PI/2;//Default spread 
+					this.npcs[botindex].blasters[0].special2 = this.npcs[botindex].blasters[0].special1/2
+					}
+				else if (this.npcs[botindex].blasters[0].type == "fixedspread"){
+					this.npcs[botindex].blasters[0].type = "multiplex";
+					this.npcs[botindex].blasters[0].plusn();
+					}
+				
+				}					
+			this.npcs[botindex].ship.level = this.npcs[botindex].ship.level +1;
 			}
 		}
 	addrandomgang(planetindex, num,level){ //Adds a gang of enemy ships, level describes difficulty (not used yet)
@@ -2080,27 +2134,29 @@ class System{
 		var i = gangsize;
 		while (i>0){
 			i=i-1;
-			this.ships.push(new Umo(-600,32000,32,gangcolor));
-			var botindex = this.ships.length-1;
-			this.ships[botindex].c2 = gangcolor2;
-			this.ships[botindex].parentid = gangparent; 
-			this.ships[botindex].respawn(this.planets[this.ships[botindex].parentid]);
-			this.ships[botindex].name = randname(5);
-			this.ships[botindex].hp = 150;
-			this.ships[botindex].maxhp = 150;
-			this.ships[botindex].polytheta = gangpolytheta;
-			this.ships[botindex].polyradius = gangpolyradius;
-			this.ships[botindex].ai = "enemy";
-			this.botbombs.push( new Umo(0,0,0,"red"));
-			this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
-			this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
-			this.botbombs[this.botbombs.length-1].shield=0;  
+			var botindex = this.npcs.length;
+			this.npcs.push(new NPC(botindex));
+			this.npcs[botindex].ship.c2 = gangcolor2;
+			this.npcs[botindex].ai.homeplanet = gangparent;; 
+			this.npcs[botindex].ship.setorbit(this.planets[gangparent], this.planets[gangparent].s+300, Math.random()*6, 1);
+			this.npcs[botindex].ship.name = randname(5);
+			this.npcs[botindex].ship.hp = 150;
+			this.npcs[botindex].ship.maxhp = 150;
+			this.npcs[botindex].ship.polytheta = gangpolytheta;
+			this.npcs[botindex].ship.polyradius = gangpolyradius;
+			this.npcs[botindex].ai.behavior = "guardbot";
+			this.npcs[botindex].ai.playerhostile = true;
+			
+			//this.botbombs.push( new Umo(0,0,0,"red"));
+			//this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
+			//this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
+			//this.botbombs[this.botbombs.length-1].shield=0;  
 			this.levelup(botindex,level);
 			}
 		}
 	addrandomtraders(destinations, num, level){
 		var fleetsize = num;
-		var fleetcolor = randcolor();
+		var fleetcolor1 = randcolor();
 		var fleetcolor2 = randcolor();
 		var fleetparent = destinations[0];
 		var randomsides = Math.floor(Math.random()*8)*2+8; //randomized side number
@@ -2111,23 +2167,25 @@ class System{
 		var i = fleetsize;
 		while (i>0){
 			i=i-1;
-			this.ships.push(new Umo(-600,32000,32,fleetcolor));
-			var botindex = this.ships.length-1;
-			this.ships[botindex].c2 = fleetcolor2;
-			this.ships[botindex].parentid = fleetparent; 
-			this.ships[botindex].respawn(this.planets[fleetparent]);
-			this.ships[botindex].name = randname(5);
-			this.ships[botindex].hp = 150;
-			this.ships[botindex].maxhp = 150;
-			this.ships[botindex].polytheta = fleetpolytheta;
-			this.ships[botindex].polyradius = fleetpolyradius;
-			this.ships[botindex].ai = "trader";
-			this.ships[botindex].aistate = 0;
-			this.ships[botindex].aitargets = destinations;
-			this.botbombs.push( new Umo(0,0,0,"red"));
-			this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
-			this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
-			this.botbombs[this.botbombs.length-1].shield=0;  
+			var botindex = this.npcs.length;
+			this.npcs.push(new NPC(botindex));
+			this.npcs[botindex].ship.c = fleetcolor1;
+			this.npcs[botindex].ship.c2 = fleetcolor2;
+			this.npcs[botindex].ship.parentid = fleetparent; 
+			this.npcs[botindex].ship.respawn(this.planets[fleetparent]);
+			this.npcs[botindex].ship.name = randname(5);
+			this.npcs[botindex].ship.hp = 150;
+			this.npcs[botindex].ship.maxhp = 150;
+			this.npcs[botindex].ship.polytheta = fleetpolytheta;
+			this.npcs[botindex].ship.polyradius = fleetpolyradius;
+			this.npcs[botindex].ai.team = "trader";
+			//this.npcs[botindex].ship.aistate = 0;
+			this.npcs[botindex].ai.route = destinations;
+			this.npcs[botindex].ai.behavior = "inertpatrol";
+			//this.botbombs.push( new Umo(0,0,0,"red"));
+			//this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
+			//this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
+			//this.botbombs[this.botbombs.length-1].shield=0;  
 			this.levelup(botindex,level);
 			}
 		}
@@ -2142,16 +2200,19 @@ class System{
 		while (i<this.shops.length){
 			var k = 0;
 			while (k<4){
-				this.shops[i].addkillmission(this.ships,this.planets,this.outposts);
+				this.shops[i].addkillmission(this.npcs,this.planets,this.outposts);
 				k=k+1;
 				}
 			i=i+1;
 			}
+		
 		}
 	generatebasicsystem(gangsize,minlevel,maxlevel,bling){
 		this.randomplanets();
 		this.enemypopulate(gangsize,minlevel,maxlevel);
 		this.addrandombling(bling);
+		this.addsuperboss(96,4,1000+minlevel*128,500+minlevel*32,320,80,1+Math.floor((this.planets.length-2)*Math.random()));
+		this.addsuperboss(96,6,1000+maxlevel*128,500+maxlevel*32,320,80,1+Math.floor((this.planets.length-2)*Math.random()));
 		}
 	generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
 		this.planetarycollisions = true;
@@ -2304,40 +2365,98 @@ class System{
 			}
 		this.enemypopulate(gangsize,1,8);	
 		console.log(this.planets.length);
-		console.log(this.ships.length);
+		console.log(this.npcs.length);
 		//this.addsuperboss(96,4,4000,1000,320,80,1);
 		//this.addsuperboss(96,4,4000,1000,320,80,2);
 		//this.addsuperboss(96,4,4000,1000,320,80,3);
 		}
+	generatepocket(nout,nin,sizeout,minsizein,maxsizein){//sizeout is really a radial distance from center.  Actual size adjusted to fit.
+		if (nout<3){nout = 3;}
+		this.waldosize = 0;
+		this.gravity = false;
+		this.planetarycollisions = false;
+		this.planets.push(new Umo(-999999,0,1,"black"));//sun doesn't matter, it's hidden away
+		this.planets[0].name = " ";
+		var i=0;
+		while(i<nout){
+			var bdir = i * 2*Math.PI/nout
+			var bx = Math.cos(bdir)*sizeout;
+			var by = Math.sin(bdir)*sizeout;
+			var borderplanet = new Umo(bx,by,sizeout,randcolor());
+			borderplanet.name = randname(10);
+			borderplanet.c2 = borderplanet.c1;
+			this.planets.push(borderplanet);
+			i++;
+			}
+		var interdistance = this.planets[1].distance(this.planets[2]);
+		var i=1;
+		while(i<nout+1){//+1 because fake sun takes up a slot
+			this.planets[i].s = Math.floor(interdistance/2);
+			i++;
+			}
+		var i=0;
+		while(i<nin){
+			var er = 600; //exclusion radius in center
+			var tpos = Math.random()*Math.PI*2;
+			var rpos = er + Math.random()*(sizeout-er)*0.3;//fudge factor at end optimized for triangle systems leaving corner space
+			var xpos = Math.floor(Math.cos(tpos)*rpos);
+			var ypos = Math.floor(Math.sin(tpos)*rpos);
+			var psize = Math.floor(minsizein+(maxsizein-minsizein)*Math.random());
+			var aplanet = new Umo(xpos,ypos,psize,randcolor());
+			if (this.isclear(aplanet,xpos,ypos)){
+				aplanet.c2 = randcolor();
+				aplanet.name = randname(4);
+				this.planets.push(aplanet);
+				i++;
+				}
+			}
+		this.enemypopulate(2,1,12);
+		var i=0;
+		while(i<nout){
+			var opdir = (i+0.5) * 2*Math.PI/nout
+			var opr = sizeout*0.35;
+			var opx = Math.cos(opdir)*opr;
+			var opy = Math.sin(opdir)*opr;
+			this.randomoutpostat(opx,opy)
+			i++;
+			}
+		}
 	addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
-		var superboss = new Umo(0, 0, size, randcolor() ); //Superboss is a test capital ship
-		superboss.c2 = randcolor();
-		superboss.hp = hp;
-		superboss.maxhp = hp;
-		superboss.shield = shield;
-		superboss.maxshield = shield;
-		superboss.shieldregen = 2;
-		superboss.parentid = parentid; 
-		superboss.respawn(this.planets[superboss.parentid]);
-		superboss.name = randname(5);
-		superboss.level = 8*turretnum+Math.floor(superboss.hp/400)+Math.floor(superboss.shield/100);
+		//var superboss = new Umo(0, 0, size, randcolor() ); //Superboss is a test capital ship
+		var botindex = this.npcs.length;
+		var superboss = new NPC(botindex);
+		superboss.blasters = [ new Blaster("Boss Blaster","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          
+	 8,4,10,6,1,10,0.25,0.5,10,4,1,10,64,8,10,50,"white","ID not implemented")];
+	 	superboss.blasters[0].special1 = Math.PI/4;//Default spread 
+		superboss.blasters[0].special2 = 1*Math.PI/8;//default spread start
+		if (Math.random()>0.5){superboss.blasters[0].type = "multiplex";}
+		superboss.ship.c1 = randcolor();
+		superboss.ship.c2 = randcolor();
+		superboss.ship.hp = hp;
+		superboss.ship.maxhp = hp;
+		superboss.ship.shield = shield;
+		superboss.ship.maxshield = shield;
+		superboss.ship.shieldregen = 2;
+		superboss.ai.homeplanet = parentid; 
+		superboss.ship.respawn(this.planets[superboss.ai.homeplanet]);
+		superboss.ship.name = randname(5);
+		superboss.ship.level = 8*turretnum+Math.floor(superboss.ship.hp/400)+Math.floor(superboss.ship.shield/100);
+		superboss.ship.s = size;
 		var sides = 20;
 		if (turretnum>4){sides = turretnum*4+4; }
 		var randomplayerverts = randpolarpoly(sides, 0.5);//sides,  minimum radius
 		normalizepoly(randomplayerverts);
-		superboss.polytheta = randomplayerverts[0];
-		superboss.polyradius = randomplayerverts[1];
+		superboss.ship.polytheta = randomplayerverts[0];
+		superboss.ship.polyradius = randomplayerverts[1];
 		//var sbpi = [3,6,13,16];
 		//superboss.polyradius[3] = superboss.polyradius[3]+.75
 		//superboss.polyradius[superboss.polyradius.length-4] = superboss.polyradius[superboss.polyradius.length-4]+.75
 		//superboss.polyradius[6] = superboss.polyradius[6]+.75
 		//superboss.polyradius[superboss.polyradius.length-7] = superboss.polyradius[superboss.polyradius.length-7]+.75
-		superboss.ai = "enemy";
-		this.botbombs.push( new Umo(0,0,0,"red"));
-		this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
-		this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
-		this.botbombs[this.botbombs.length-1].shield=0;  
-		this.ships.push(superboss);
+		superboss.ai.playerhostile = true;
+		superboss.ai.behavior = "guardbot2";
+		this.npcs.push(superboss);
+		this.levelup(botindex,12);//levelup(botindex,levels){//adds "levels" to make bots tougher, is a system function for some reason.
 		var randomturretverts = randpolarpoly(sides, 0.5);//sides,  minimum radius
 		normalizepoly(randomturretverts);
 		var tc1 = randcolor();
@@ -2345,10 +2464,10 @@ class System{
 		var i=0;
 		while(i<turretnum){
 			if (i<(turretnum-1)/2){ var polygoni = (i+1)*4-1; }
-			else if (i>(turretnum-1)/2){ var polygoni = superboss.polyradius.length-(turretnum - i)*4; }
-			else {polygoni = Math.floor(superboss.polyradius.length/2);}
-			superboss.polyradius[polygoni] = 1.4;
-			var newturret = new Turret("enemy",superboss,superboss.polytheta[polygoni],superboss.s*superboss.polyradius[polygoni]);
+			else if (i>(turretnum-1)/2){ var polygoni = superboss.ship.polyradius.length-(turretnum - i)*4; }
+			else {polygoni = Math.floor(superboss.ship.polyradius.length/2);}
+			superboss.ship.polyradius[polygoni] = 1.4;
+			var newturret = new Turret("enemy",superboss.ship,superboss.ship.polytheta[polygoni],superboss.ship.s*superboss.ship.polyradius[polygoni]);
 			newturret.pivot.hp = turrethp;
 			newturret.pivot.maxhp = turrethp;
 			newturret.pivot.shield = turretshield;
@@ -2361,26 +2480,6 @@ class System{
 			this.turrets.push(newturret);
 			i++;
 			}
-		//var sbturret1 = new Turret("enemy",superboss,superboss.polytheta[3],superboss.s*superboss.polyradius[3]);
-		//var sbturret2 = new Turret("enemy",superboss,superboss.polytheta[6],superboss.s*superboss.polyradius[6]);
-		//var sbturret3 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-7],superboss.s*superboss.polyradius[superboss.polyradius.length-7]);   
-		//var sbturret4 = new Turret("enemy",superboss,superboss.polytheta[superboss.polytheta.length-4],superboss.s*superboss.polyradius[superboss.polyradius.length-4]); 
-		//var sbturrets = [sbturret1,sbturret2,sbturret3,sbturret4];
-		//var i=0;
-		//while (i<sbturrets.length){
-		//	sbturrets[i].pivot.hp = turrethp;
-		//	sbturrets[i].pivot.maxhp = turrethp;
-		//	sbturrets[i].pivot.shield = turretshield;
-		//	sbturrets[i].pivot.maxshield = turretshield;
-		//	sbturrets[i].anchorvisible = false;
-		//	sbturrets[i].pivot.c = sbturrets[0].pivot.c;
-		//	sbturrets[i].pivot.c2 = sbturrets[0].pivot.c2;
-		//	sbturrets[i].pivot.polyradius = sbturrets[0].pivot.polyradius
-		//	sbturrets[i].pivot.polytheta = sbturrets[0].pivot.polytheta
-		//	this.turrets.push(sbturrets[i]);
-		//	i++;
-		//	}
-		//this.turrets.pushsbturrets;
 	}
 	addbling(parent,basevalue,bonusvalue,num){//adds bling to 1 planet
 		var i=0;

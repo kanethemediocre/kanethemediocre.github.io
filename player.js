@@ -10,6 +10,7 @@ class Player{
         this.upgrades = freshupgrades(); //
         this.inventory = new Inventory(10); //for cargo?
         this.emtrees = [bhstarttree()];
+		this.deadtree = bhdeademtree();
 		this.notifications = [];//Notifications are things that will be flashed at the player in the middle of their screen.
         this.emg = 0;//emtree
         this.emh = 0;//emodule
@@ -63,6 +64,7 @@ class Player{
 		this.planetarychart = [];//Must be filled by current system
 		this.emenu = 0; //0 off, 1 at tree level, 2 at mod level, 3 at block level, 4 at quiz level, 5 at challenge level
 		this.answer = "";
+		this.deaths = 0;
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;

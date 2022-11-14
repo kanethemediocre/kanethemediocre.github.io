@@ -56,7 +56,7 @@ class Shop{
 		var i=0;
 		while (i<this.inv.length){
 			context.fillStyle = "grey";
-			if (this.inv[i].available(systems[ps].players[0])){//Used global variable instead of reference
+			if (this.inv[i].available(theplayer)){//Used global variable instead of reference
 				context.fillStyle = "white";
 				}
 			var utypewithstats = this.inv[i].utype.slice(0,16);
@@ -221,7 +221,7 @@ class Shop{
 				missionlocation = systems[ps].planets[this.missions[i].target].name;
 				}
 			if (this.missions[i].type == "destroy"){
-				missionlocation = systems[ps].planets[systems[ps].ships[this.missions[i].target].parentid].name;
+				missionlocation = systems[ps].planets[systems[ps].npcs[this.missions[i].target].ai.homeplanet].name;
 				}
 			context.fillText(missionlocation,x+80,y+40+16*i);
 			context.fillText(missionlocation,x+80,y+40+16*i);
@@ -244,13 +244,13 @@ class Shop{
 		this.missions[this.missions.length-1].calcdistance(theships,theplanets,theoutposts);
 		this.missions[this.missions.length-1].calcdanger(theships,theplanets);
 		}
-	addkillmission(theships,theplanets,theoutposts){
-		var missiontarget = 1+Math.floor(Math.random()*(theships.length-2));
-		var missiondistance = theoutposts[this.home].distance(theships[missiontarget]);
+	addkillmission(thenpcs,theplanets,theoutposts){
+		var missiontarget = 1+Math.floor(Math.random()*(thenpcs.length-2));
+		var missiondistance = theoutposts[this.home].distance(thenpcs[missiontarget].ship);
 		var missionpay = Math.floor(500 + missiondistance/40);
-		var missionmessage = "Destroy "+theships[missiontarget].name + ".  It can be found near "+theplanets[theships[missiontarget].parentid].name;
+		var missionmessage = "Destroy "+thenpcs[missiontarget].ship.name + ".  It can be found near "+theplanets[thenpcs[missiontarget].ai.homeplanet].name;
 		this.missions.push(new Mission("destroy",this.home,missiontarget,missionmessage,missionpay,0));//missiontype, morigin, mtarget,mmessage,mreward,mstory
-		this.missions[this.missions.length-1].calcdistance(theships,theplanets,theoutposts);
-		this.missions[this.missions.length-1].calcdanger(theships,theplanets);
+		this.missions[this.missions.length-1].calcdistance(thenpcs,theplanets,theoutposts);
+		this.missions[this.missions.length-1].calcdanger(thenpcs,theplanets);
 		}
 	}

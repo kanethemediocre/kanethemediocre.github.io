@@ -155,6 +155,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			}
 	break;			
 	case 16:
+	console.log(dstory);
 		if (dstory>playerradio.msgtime){
 			var themsg =  "Not every ship out there is an enemy.  Use your radar and your targeting computer to tell friend from foe.  Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].ships[9].name+", it should be near Merz.  ";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)

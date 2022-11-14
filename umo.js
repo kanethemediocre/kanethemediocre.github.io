@@ -97,6 +97,22 @@ class Umo { //Universal Moving Object
 			this.damagestate = 3;//Displays as damaged for 3 frames after being hit
 			}
 		}
+	damagewithsound(dmg){ //Automatically applies damage to shield and hitpoints as appropriate
+		this.shielddamagestate = 3;
+		var shielddamagesounds = [shieldhit0,shieldhit1,shieldhit2,shieldhit3];
+		var shielddamagei = Math.floor(Math.random()*shielddamagesounds.length);
+		shielddamagesounds[shielddamagei].play();
+		if (this.shield > dmg){
+			this.shield = this.shield - Math.floor(dmg);
+		}else{
+			this.hp = this.hp - Math.floor(dmg) + this.shield;
+			this.shield = 0;
+			this.damagestate = 3;//Displays as damaged for 3 frames after being hit
+			var armordamagesounds = [armorhit0];
+			var armordamagei = Math.floor(Math.random()*armordamagesounds.length);
+			armordamagesounds[armordamagei].play();
+			}
+		}
 	collide(that){ //circular collision function
 		if (this.distance(that) < (this.s + that.s)) {return true; }else{return false;} 
 		} //Doesn't bounce or damage, just returns 1 if a collision is occuring.
@@ -521,11 +537,12 @@ class Umo { //Universal Moving Object
 		dship.d = this.d;
 		dship.push(2,this.d);
 		}
-	drawreticle(viewx, viewy){ //input variables are player ship / camera position
+	drawreticle(viewx, viewy, rcolor){ //input variables are player ship / camera position
 		var x = this.x - viewx + canvas.width/2; //draws reticle around object
 		var y = this.y - viewy + canvas.height/2; //circular reticle.
-		if (this.ai == "enemy"){ context.strokeStyle = "red"; }
-		if (this.ai == "trader"){ context.strokeStyle = "blue"; }
+		context.strokeStyle = rcolor;
+		//if (this.ai.playerhostile == true){ context.strokeStyle = "red"; }
+		//if (this.ai.team == "trader"){ context.strokeStyle = "blue"; }
 		var dx = this.s+12;
 		var dy = this.s+12;
 		var tick = 12;
@@ -547,7 +564,7 @@ class Umo { //Universal Moving Object
 		context.lineTo(x-dx,y-dy+tick);		
 		context.lineWidth = 2;
 		context.stroke();	
-	}
+		}
 	drawcompass(targetship, compassx, compassy, compasssize){  //Draws a triangle pointing in direction of targetship
 		var de = targetship.directionof(this); //targetship doesn't actually have to be a ship
 		var tipx = Math.cos(de)*compasssize + compassx; //triangle points

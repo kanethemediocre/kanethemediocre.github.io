@@ -111,6 +111,8 @@ class Challenge{
 		return [this.question,this.answer];
 		}
 	makearithmaticquestion(addends,operator){
+		this.metaparameters = [addends,operator];
+		this.type = "makearithmaticquestion";
 		this.answer = addends[0];
 		this.parameters1 = addends;
 		this.question = addends[0]+" "+operator+" ";
@@ -124,6 +126,27 @@ class Challenge{
 			}
 		this.question = this.question+" = ???";
 		return [this.question,this.answer];
+		}
+	makerithmaticquestionpr(alloweddigits,allowedaddends,allowedallownegative, overrides, operator){//overrides is a set equal or less than the minimum length of addends, -999 indicates no override for that addend, all else indicates override to the specified values
+		this.metaparameters = alloweddigits,allowedaddends,allowedallownegative, overrides, operator
+		this.type = "makearithmaticquestionpr";
+		var newchallenge = new Challenge(operator);
+		var addends = []; //Not really addends necessarily
+		var digitnum = alloweddigits[ Math.floor( Math.random()*alloweddigits.length ) ];//This randomly picks one of the acceptable values and applies it
+		var addendnum = allowedaddends[ Math.floor( Math.random()*allowedaddends.length ) ];
+		var allownegative = allowedallownegative[ Math.floor( Math.random()*allowedallownegative.length ) ];
+		var i=0;
+		while(i<addendnum){
+			if (overrides[i]==-999){
+				var addend = Math.floor(Math.random()*10**digitnum);
+				if ((allownegative)&&(Math.random()>0.5)){addend = addend*-1;}
+				}
+			else { var addend = overrides[i]; }
+			addends.push(addend);
+			i++;
+			}
+		this.makearithmaticquestion(addends,operator)//addarithmaticquestion(addends,operator){
+		this.challenges.push(newchallenge);
 		}
 	makesimplealgebraquestion(addends, vindex, operator, vlabel){
 		if (vindex==0){	this.question = vlabel; }
@@ -191,6 +214,12 @@ class Challenge{
 			}
 		if (this.type == "/"){
 			this.makedivquestion(this.metaparameters[0],this.metaparameters[1],this.metaparameters[2],this.metaparameters[3],this.metaparameters[4]);
+			}
+		if (this.type == "makearithmaticquestion"){
+			this.makearithmaticquestion(this.metaparameters[0],this.metaparameters[1]);
+			}
+		if (this.type == "makearithmaticquestion"){
+			this.makerithmaticquestionpr(this.metaparameters[0],this.metaparameters[1],this.metaparameters[2],this.metaparameters[3],this.metaparameters[4]);
 			}
 		this.playeranswer = "";
 		}

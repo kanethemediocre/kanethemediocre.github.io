@@ -27,7 +27,7 @@ class NPCAI{
 		this.attacksfirst = true;
 		this.followattackers = false;
 		this.fleeattackers = false;
-		this.playerhostile = true;
+		this.playerhostile = false;
 		this.traderhostile = true;
 		this.coward = 1; //Will run away from matchup where the enemy level * this.coward  > npc level
 		this.aitype = "na";
@@ -148,13 +148,20 @@ class NPCAI{
 		}
 	behave(thesystem,time){//Bots decide and act in the current frame
 		if (this.behavenow == "gotoinert"){
-			thesystem.npcs[this.id].ship.seek3(thesystem.planets[this.nowtargetplanet]);
-			if (thesystem.npcs[this.id].ship.distance(thesystem.planets[this.nowtargetplanet])>(this.navslop+thesystem.planets[this.nowtargetplanet].s)){
-				this.routei++;
-				if (this.routei>this.route.length){ this.routei=0; }
-				this.nowtargetplanet = this.route[this.routei];
-				}
+			//seek3(target,closingvelocity,period,gametime,stopradius){
+				//myship.seek3(systems[ps].planets[myplayer.navtarget],20,30,time, 1500);}
+				//console.log(this.routei);
+				//console.log(this.route);
+				//console.log(this.nowtargetplanet);
+				//console.log(thesystem.planets[this.nowtargetplanet].name);
+			thesystem.npcs[this.id].ship.seek3(thesystem.planets[this.nowtargetplanet],20,30,time,1500);
+			//if (thesystem.npcs[this.id].ship.distance(thesystem.planets[this.nowtargetplanet])>(this.navslop+thesystem.planets[this.nowtargetplanet].s)){
+			//	this.routei++;
+			//	if (this.routei>this.route.length){ this.routei=0; }
+			//	this.nowtargetplanet = this.route[this.routei];
+			//	}
 			//basic autopilotoid 
+			//console.log("gotoinert behavin");
 			}
 		if (this.behavenow == "loiter"){
 			if (time%20==0){
@@ -235,7 +242,19 @@ class NPCAI{
 			else {this.behavenow = "loiter";}
 			}
 
-		else if (this.behavior == "inertpatrol"){}//check if near current target planet, if so cycle target planet
+		else if (this.behavior == "inertpatrol"){
+			//console.log("inertpatrollin");
+			var me = thesystem.npcs[this.id];
+			var mytargetplanet = thesystem.planets[this.route[this.routei]];
+			var closeenough = mytargetplanet.s*3+1250;
+			if (mytargetplanet.distance(me.ship)<closeenough){
+				this.routei++;
+				if (this.routei>=this.route.length){this.routei = 0;}
+				}
+			//console.log(asdfasdfawf);
+			this.behavenow = "gotoinert";
+			this.nowtargetplanet = this.route[this.routei];
+			}//check if near current target planet, if so cycle target planet
 		else if (this.behavior == "soldier"){}//check for nearby enemies, select best target
 		else if (this.behavior == "assassin"){}//Goto or attack target
 		//Adjust this.behavenow according to this.behavior

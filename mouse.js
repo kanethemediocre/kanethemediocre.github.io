@@ -18,6 +18,7 @@ function mouseDownHandler(e) {
 	myplayer.mousestate = e.buttons;
 	myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
 	myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
+	console.log(e.clientX+ " " +e.clientY);
 	var i=0;
 	while(i<vkeys.length){
 		if (vkeys[i].inside(e.clientX,e.clientY)){

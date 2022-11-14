@@ -39,13 +39,6 @@ function loadmenusystem(){
 	menu2.name = "Special Game Modes";
 	menu2.c2 = "teal";
 	menu2.m = 0;
-	
-	
-	
-	//let menu3 = new Umo(360, 0, 100, "violet"); //3
-	//menu3.name = "About";
-	//menu3.c2 = "teal";
-	//menu3.m = 0;
 	let menu3 = new Umo(-10000+320, 0, 100, "orange"); //10
 	menu3.name = "Main Menu";
 	menu3.c2 = "red";
@@ -84,11 +77,23 @@ function loadmenusystem(){
 	mousecontrols.name = "Mouse Controls";
 	mousecontrols.c2 = "teal";
 	mousecontrols.m = 0;	
+
+	let slomo = new Umo(-20000+150, 250, 100, "violet"); //19
+	slomo.name = "Slow Mode 30FPS";
+	slomo.c2 = "teal";
+	slomo.m = 0;
 	
+	let fastmo = new Umo(-20000-150, 250, 100, "violet"); //20
+	fastmo.name = "Fast Mode 60FPS";
+	fastmo.c2 = "teal";
+	fastmo.m = 0;		
 	
-	
-	
-	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest,bp1test,bp2test,menu1,menu2,menu3,links,whatis,modding,menu4,morejams,lessjams,options1,mousecontrols];
+	let pocket1 = new Umo(10000, 250, 100, "violet"); //21
+	pocket1.name = "Pocket Arena";
+	pocket1.c2 = "teal";
+	pocket1.m = 0;		
+		
+	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest,bp1test,bp2test,menu1,menu2,menu3,links,whatis,modding,menu4,morejams,lessjams,options1,mousecontrols,slomo,fastmo,pocket1];
 	var i = 0; //This randomizes planetary dots for home system.
 	while (i<menuplanets.length){
 		var j=0;

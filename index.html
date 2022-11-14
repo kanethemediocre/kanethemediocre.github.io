@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 500 by Andrew Kane </title>
+    <title>Bling Hustle 531 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -36,7 +36,7 @@
 <script type="text/javascript" src="emodule.js"></script>
 <script type="text/javascript" src="emtree.js"></script>
 <script type="text/javascript" src="bhstarttree.js"></script>
-
+<script type="text/javascript" src="bhdeademtree.js"></script>
 
 <script type="text/javascript" src="notification.js"></script>
 <script type="text/javascript" src="player.js"></script>
@@ -123,6 +123,12 @@ var blastersound18x4 = new Audio("./sounds/w18s4.mp3");
 var blastersound18x5 = new Audio("./sounds/w18s5.mp3");
 var blastersound19 = new Audio("./sounds/shortburp.mp3");
 
+var armorhit0 = new Audio("./sounds/armorhit0.mp3");
+var shieldhit0 = new Audio("./sounds/shieldhit0.mp3");
+var shieldhit1 = new Audio("./sounds/shieldhit1.mp3");
+var shieldhit2 = new Audio("./sounds/shieldhit2.mp3");
+var shieldhit3 = new Audio("./sounds/shieldhit3.mp3");
+
 var enginesound1 = new Audio("./sounds/engine26.mp3");
 var damagesound1 = new Audio("./sounds/engine3.mp3");
 var cashsound1 = new Audio("./sounds/cash_register_2.mp3");
@@ -164,13 +170,28 @@ function pausemusic(){
 	}
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
-const FPS = 60;
+FPS = 60;
 setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
 canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
 context = canvas.getContext("2d");
 context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 established in html.
 context.canvas.height = window.innerHeight-24;
+
+
+
+/* When the openFullscreen() function is executed, open the video in fullscreen.
+Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
+function openFullscreen() {
+  if (canvas.requestFullscreen) {
+    canvas.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    canvas.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    canvas.msRequestFullscreen();
+  }
+}
+
 var vkeys = allvkeys(canvas.width,canvas.height);
 var comfy = false;
 if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
@@ -180,7 +201,7 @@ var mdx = 0; //I think these were for the mouse?  Not sure if used.
 var mdy = 0;
 var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
 var cheatmode = 0; //0 = not a cheater
-var ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
+var ps = 0; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
 var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
 var starmode = 1; //0 for no starfield.
 let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
@@ -254,12 +275,18 @@ let bubbleparty2 = new System(34,randname(4),0,0);
 bubbleparty2.generatebubbleparty(160,240,12000,12000,160,1,3,16,2);//	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops, heat){
 bubbleparty2.wraps = 13000;
 bubbleparty2.addrandombling(32);
+let pocketarena1 = new System(35,randname(4),0,0);
+pocketarena1.generatepocket(3,64,32000,32,400);//	generatepocketsystem(nout,nin,sizeout,minsizein,maxsizein){
+pocketarena1.addsuperboss(96,5,4000,1000,320,80,6);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
+pocketarena1.addsuperboss(64,3,2500,800,320,80,7);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
+pocketarena1.addsuperboss(80,4,3200,1000,320,80,8);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
+pocketarena1.addsuperboss(128,7,5000,1200,320,80,9);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
 let playerradio = new Radio(" ");
 let home = new System(1,"Sool",0,0);
 let menu = new System(0,"Main Menu",0,0);
 let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
 				testsystem15,testsystem16,testsystem17,testsystem18,testsystem19,testsystem20,testsystem21,testsystem22,testsystem23,testsystem24,testsystem25,testsystem26,
-				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena,bubbleparty1,bubbleparty2];
+				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena,bubbleparty1,bubbleparty2,pocketarena1];
 systems[0].planets = loadmenusystem();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////Home System/////////////////////////////////////////////////////////////////////////////
@@ -333,7 +360,7 @@ var i = 0;
 while (i<4){
 	var j = 0;
 	while (j<systems[1].shops.length){
-		systems[1].shops[j].addkillmission(systems[1].ships,systems[1].planets,systems[1].outposts);
+		systems[1].shops[j].addkillmission(systems[1].npcs,systems[1].planets,systems[1].outposts);
 		j=j+1;
 		}
 	i=i+1
@@ -349,11 +376,9 @@ waldo.setorbit(systems[1].planets[0], 400000, Math.PI, -1);
 waldo.parentid = 0;
 systems[1].planets.push(waldo);
 var i = 2;
-while (i<systems.length){
+while (i<35){//systems.length){
 	systems[i].planets.push(xxxx);
 	systems[i].planets.push(waldo);
-	//systems[i].addrandomgang(systems[i].planets.length-2,8+i,32+i);
-	//above causes hangup, not sure why.
 	i=i+1;
 	}
 ps = 0;
@@ -366,7 +391,6 @@ while(i<systems.length){
 }
 aplayer.ship.x = 0;
 aplayer.ship.y = -100;
-//var testboom = new Bubblesplosion(3,30,"red",systems[ps].players[0].ships);
 var testturret = new Turret("friendly",systems[1].planets[4],0,150);
 testturret.anchorvisible = false;
 testturret.pivotvisible = false;
@@ -395,21 +419,6 @@ systems[1].addsuperboss(128,7,5000,1200,320,80,26);//addsuperboss(size,turretnum
 //systems[1].addbling(systems[1].planets[5],20,50,10);
 systems[1].addrandombling(50);
 ////////////////////////////////testing NPC class/////////////////////////
-var npc0 = new NPC(0);
-var npc1 = new NPC(1);
-var npc2 = new NPC(2);
-var npc3 = new NPC(3);
-var testnpcs = [npc0,npc1,npc2,npc3];
-testai = new NPCAI("tradeguild","trader",systems[1].planets[3])
-
-var testeco = new Economy();
-
-
-//npc0.update1(systems[1],time);//just a test
-
-//systems[1].npcs = testnpcs; //disabled for release
-
-menusong1.play();
 
 ///GAMELOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -431,8 +440,8 @@ function update() {
 			context.fillStyle = "white";
 			context.fillText("Map is off.",16,canvas.height-16);
 			}
-		if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].ships,myplayer);}//centered map
-		if (myplayer.mapactive == 2){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].ships,myplayer);//corner map c 
+		if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
+		if (myplayer.mapactive == 2){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
 			context.fillStyle = "black";//Background is black
 			context.fillRect(0, 0, canvas.width, canvas.height-300); //erase non-corner map area
 			context.fillRect(400, canvas.height-300, canvas.width,canvas.height); //erase non-corner map area
@@ -471,7 +480,7 @@ function update() {
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[1])){//systems[ps].players[0].blasters[1].bombs[0].collide(systems[ps].planets[0])
 			ps = 1;
 			pausemusic();
-			systems[ps].npcs = testnpcs;
+			//systems[ps].npcs = testnpcs;
 			//var testpolysave = myplayer.savepolygon();
 			//myplayer.loadpolygon(testpolysave);
 			//systems[ps].npcs[0].ship.setorbit(systems[ps].planets[0], 32100, 0.215, 1);//this actually does work.
@@ -485,7 +494,7 @@ function update() {
 			myplayer.planetarychart = systems[ps].generateplanetlist();
 			//testsong.volume = 0.25;
 			//testsong.play();
-			
+			console.log("npcs: "+systems[ps].npcs.length)
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[2])){
 			ps = 1;
@@ -504,6 +513,7 @@ function update() {
 			xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			//special system stuff
+			myplayer.blasters[5].phas = true;
 			myplayer.storystate = 999;
 			myplayer.money = 2000;
 			myplayer.task = "Profit";
@@ -530,6 +540,8 @@ function update() {
 			//waldo.setorbit(systems[ps].planets[0], 1500, randdir, -1);
 			//systems[ps].waldosize = 100000000;
 			console.log(myship.x);
+			myplayer.blasters[5].phas = true;
+			myplayer.blasters[14].phas = true;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -546,6 +558,8 @@ function update() {
 			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
+			myplayer.blasters[5].phas = true;
+			myplayer.blasters[14].phas = true;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -563,6 +577,8 @@ function update() {
 			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
+			myplayer.blasters[5].phas = true;
+			myplayer.blasters[14].phas = true;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -631,6 +647,41 @@ function update() {
 			menumods = false;
 			menumousecontrols = true;
 			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[19])){
+			FPS = 30;
+			mytime = Date.now();
+			time = 0;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[20])){
+			FPS = 60;
+			mytime = Date.now();
+			time = 0;
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[21])){
+			ps = 35;
+			myplayer.mapscale = 32;
+			pausemusic();
+			bubblesong1.play();
+			//console.log(systems[ps].planets[0].x);
+			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
+			
+			//systems[ps].placenear(myplayer.ship,0,0);
+			myplayer.ship.x = systems[ps].outposts[0].x-100;
+			
+			myplayer.ship.y = systems[ps].outposts[0].y;
+			myplayer.ship.hp = 99999;
+			
+			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
+			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
+			console.log(myship.x);
+			myplayer.blasters[5].phas = true;
+			myplayer.blasters[14].phas = true;
+			myplayer.storystate = 999;
+			myplayer.money = 3001;
+			myplayer.task = "Collect Bling";
+			myplayer.planetarychart = systems[ps].generateplanetlist();
+
+			}
 		else if (menuabout){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
@@ -684,7 +735,7 @@ function update() {
 		while (j<systems[ps].shops[i].missions.length){//for all missions (j) from shop at outpost (i)
 			var k = 0;
 			while (k<systems[ps].players.length){
-				var mischeck = systems[ps].shops[i].missions[j].check(systems[ps].players[k],systems[ps].ships,systems[ps].planets,playerradio);//theships,theplanets,theradio
+				var mischeck = systems[ps].shops[i].missions[j].check(systems[ps].players[k],systems[ps].npcs,systems[ps].planets,playerradio);//theships,theplanets,theradio
 				if (mischeck[0]>0){
 					systems[ps].players[k].money = systems[ps].players[k].money + mischeck[0];
 					if (mischeck[1]>0){systems[ps].players[k].storystate = mischeck[1];}
@@ -696,10 +747,35 @@ function update() {
 		i++;
 		}
 ////////////////////////waldo stuff, special planet/maybe wormhole////////////////////////////
-	if (myship.distance(waldo)>100){
-		waldo.s = systems[ps].waldosize / ((myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo))/1000000);// hz * hz / dist * dist
-		}//Size should be inversely related to the distance from event horizon
-	else {waldo.s = 100;}
+	
+	if (systems[ps].waldosize>0){
+		if (myship.distance(waldo)>100){
+			waldo.s = systems[ps].waldosize / ((myship.distance(waldo)*myship.distance(waldo)*myship.distance(waldo))/1000000);// hz * hz / dist * dist
+			}//Size should be inversely related to the distance from event horizon
+		else {waldo.s = 100;}
+		waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
+		waldo.gravitate(myship); //pull only player ship
+		waldo.c = randcolor(); //groovy
+		systems[ps].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
+		waldo.update1();
+		waldo.drawplanet(vwx,vwy);
+		if (waldo.collide(myship)){
+			ps = ps+1;
+			if (ps > systems.length-1){
+				ps = 1;
+				}
+			pz = 0;
+			var randdir = Math.random()*2*Math.PI;
+			xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
+			waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
+			myship.vx = 0;
+			myship.vy = 0;
+			myplayer.navtarget = 0;
+			myplayer.shiptarget = 0;
+			myplayer.planetarychart = systems[ps].generateplanetlist();
+			}
+		}
+
 	var solarignore = 0;
 	var solarresist = 1;
 	if (myplayer.shieldbonus == "solar"){
@@ -709,28 +785,6 @@ function update() {
 	myplayer.solarpain = .025*systems[ps].planets[0].m/(myship.distance(systems[ps].planets[0])*myship.distance(systems[ps].planets[0]))*solarresist;
 	if ( myplayer.solarpain>(1.125+solarignore) ) { myplayer.ship.damage(Math.floor(8*myplayer.solarpain)/8-1-solarignore); }//Once this is settled it should move to the system update sequence.
 	//console.log(myplayer.solarpain);
-	waldo.m = waldo.s*waldo.s*waldo.s;//Update mass according to size
-	waldo.gravitate(myship); //pull only player ship
-	waldo.c = randcolor(); //groovy
-	systems[ps].planets[0].gravitate(waldo);//waldo orbits sun, nothing else affects it.
-	waldo.update1();
-	waldo.drawplanet(vwx,vwy);
-	if (waldo.collide(myship)){
-		ps = ps+1;
-		if (ps > systems.length-1){
-			ps = 1;
-			}
-		pz = 0;
-		var randdir = Math.random()*2*Math.PI;
-		xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
-		waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
-		myship.vx = 0;
-		myship.vy = 0;
-		myplayer.navtarget = 0;
-		myplayer.shiptarget = 0;
-		myplayer.planetarychart = systems[ps].generateplanetlist();
-		}
-
 /////////////////Determine which planets are close enough to be "active", and activate relevant ships.  Not used yet.///////////////////////////////////////////////////
 	var i = systems[ps].planets.length;
 	while (i>0){//For all planets...
@@ -875,21 +929,20 @@ function update() {
 			}
 	///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
 		if (aplayer.wep==0){//wep == 11 to disable, wep should ==0
-			var j = systems[ps].ships.length;
+			var j = systems[ps].npcs.length;
 			while (j>1){ //for all ships...
 				j=j-1;
-				if (aplayer.blasters[0].bombs[0].collide(systems[ps].ships[j])){//Checks for collision only
+				if (aplayer.blasters[0].bombs[0].collide(systems[ps].npcs[j].ship)){//Checks for collision only
 					if (aplayer.probemode == 0){//clones color
-						aship.c = systems[ps].ships[j].c;
-						aship.c2 = systems[ps].ships[j].c2;
+						aship.c = systems[ps].npcs[j].ship.c;
+						aship.c2 = systems[ps].npcs[j].ship.c2;
 					}else if (aplayer.probemode == 1){//clones shape
-						aship.polytheta = systems[ps].ships[j].polytheta;//Applies enemy polygon to player
-						aship.polyradius = systems[ps].ships[j].polyradius;
+						aship.polytheta = systems[ps].npcs[j].ship.polytheta;//Applies enemy polygon to player
+						aship.polyradius = systems[ps].npcs[j].ship.polyradius;
 					}else if (aplayer.probemode == 2){
 					//	constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,bombcolor,ID){
-						var bb = systems[ps].botbombs[j];
-						aplayer.blasters[10] = new Blaster(""+systems[ps].ships[j].name+"s blaster","The Pclone takes the properties of the weapon used by the last probed enemy.",5000,"plain",
-						bb.hurt,0,0,12,0,0,bb.boombuff,0,0,1,0,0,80,0,0,25,bb.c,"ID not used");//Sadly not many properties to pull, bot weapons are not varied enough.
+						//var bb = systems[ps].botbombs[j];
+						aplayer.blasters[10] = fullblastercopy(systems[ps].npcs[j].blasters[0]);
 						aplayer.blasters[10].phas = true;
 						}
 					}
@@ -937,9 +990,11 @@ if ((ps==32)&&(time%600==0)){//Special asteroid arena stuff.  Randomly levels up
 		i++;
 		}
 	}
+context.save();
+context.restore();
 systems[ps].updateall(time); //Updates everthing in system
 systems[ps].gravitateall(); //gravitates everything in system
-systems[ps].collideself(); //executes all collisions between objects in the system.
+systems[ps].collideself(myi); //executes all collisions between objects in the system.
 storycheck(0);//0 is player index
 if(time%2==0){
     var truetime = Date.now();

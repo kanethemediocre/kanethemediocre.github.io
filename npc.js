@@ -13,7 +13,8 @@ class NPC{
 		this.id = npcid;
 		this.umotype = "ship"; //options bigship, planet, station
 		this.ship = new Umo(0,0,32,randcolor());
-		this.blasters = [baseblastercopy(allblasters[0])];//allblasters is defined in bhblasters.js
+		this.blasters = [new Blaster("Bot Multibanger","n has veen set to 1.  Should still be upgradeable.",800,"multiplex",                            
+	 8,4,10,8,2,10,0.6,0.2,10,1,1,10,25,5,10,24,"pink","ID not implemented")];
 		this.planetarylocation = -1; //Indexes for npcs that are tied to a planet umo
 		this.stationlocation = -1; //Indexes for npcs that are tied to a station umo
 		//options: "cargoroute","loiter","attackmission","blockade", 
@@ -58,10 +59,15 @@ class NPC{
 		else {
 			//this.ship.update1();
 			this.ship.updateship(thesystem.planets);
-			if (time%15==0){this.ai.ponder(thesystem);}
+			//console.log(time)
+			if (time%15==0){
+				//console.log(time);
+				this.ai.ponder(thesystem);
+				}
 			if (this.ship.hp!=-1000){this.ai.behave(thesystem,time);}
-			this.blasters[0].update1();
+			//this.blasters[0].update1();
 			}
+		this.blasters[0].update1();
 		}
 	setguardbot(homeindex,hometype,myteam,enemyteams){
 		this.ai.enemyteams = enemyteams;

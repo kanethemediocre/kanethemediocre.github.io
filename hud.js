@@ -6,11 +6,11 @@ function hud(playerindex){
 	var closestdistance = 999999;//needs to be larger than radarrange 
 	var closestindex = 0; //defaults to self-targeting if no ships in range
 	var i=0;
-	while (i<systems[ps].ships.length){ //this loop makes the short list
-		var tdistance = Math.floor(myplayer.ship.distance(systems[ps].ships[i]));
+	while (i<systems[ps].npcs.length){ //this loop makes the short list
+		var tdistance = Math.floor(myplayer.ship.distance(systems[ps].npcs[i].ship));
 		if (tdistance<myplayer.radarrange){
 			shipsinrange.push(i);
-			if (myplayer.ship.pointingat(systems[ps].ships[i])){
+			if (myplayer.ship.pointingat(systems[ps].npcs[i].ship)){
 				myplayer.shiptarget = i;	
 				}
 			if (tdistance<closestdistance){
@@ -20,9 +20,11 @@ function hud(playerindex){
 			}
 		i++;
 		}
-	if (myplayer.ship.distance(systems[ps].ships[myplayer.shiptarget])>myplayer.radarrange){
-		myplayer.shiptarget=0;
-		closestindex = 0;
+	if (closestdistance!=999999){
+		if (myplayer.ship.distance(systems[ps].npcs[myplayer.shiptarget].ship)>myplayer.radarrange){
+			myplayer.shiptarget=0;
+			closestindex = 0;
+			}
 		}
 	var i=0;
 	if (nmeactive == 1){//if targeting computer is on...
@@ -32,10 +34,10 @@ function hud(playerindex){
 			while(i<shipsinrange.length){
 				var cellposx = canvas.width-300;
 				var cellposy = 16+i*16;
-				context.fillStyle = systems[ps].ships[shipsinrange[i]].c;
-				context.fillText(systems[ps].ships[shipsinrange[i]].name,cellposx,cellposy);
+				context.fillStyle = systems[ps].npcs[shipsinrange[i]].ship.c;
+				context.fillText(systems[ps].npcs[shipsinrange[i]].ship.name,cellposx,cellposy);
 				var cellposx = canvas.width-300+64;
-				var shipdistance = myplayer.ship.distance(systems[ps].ships[shipsinrange[i]]);
+				var shipdistance = myplayer.ship.distance(systems[ps].npcs[shipsinrange[i]].ship);
 				context.fillText(shipdistance,cellposx,cellposy);
 				i=i+1;
 				}
@@ -45,13 +47,16 @@ function hud(playerindex){
 			context.fillStyle = "red";
 			context.fillText("No targets in range", canvas.width-160, 24);
 			}
+			
 	//if (myplayer.shiptarget>shipsinrange.length-1){myplayer.shiptarget = 0;}
 	//else if (myplayer.shiptarget<0){myplayer.shiptarget = 0;}
 	if (shipsinrange.length>0){
 		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
-		myplayer.ship.drawcompass2(systems[ps].ships[myplayer.shiptarget],canvas.width-64, 96, 64); //Targeting computer compass
-		systems[ps].ships[myplayer.shiptarget].drawreticle(myplayer.ship.x,myplayer.ship.y); //Targeting reticle
-		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].ships[myplayer.shiptarget].name, systems[ps].ships[myplayer.shiptarget].level, systems[ps].ships[myplayer.shiptarget].hp,  systems[ps].ships[myplayer.shiptarget].shield,  systems[ps].botbombs[myplayer.shiptarget].hurt, systems[ps].botbombs[myplayer.shiptarget].boombuff,systems[ps].ships[myplayer.shiptarget].shieldregen,systems[ps].ships[myplayer.shiptarget].ai]];
+		var reticlecolor = "blue";
+		if (systems[ps].npcs[myplayer.shiptarget].ai.playerhostile==true){reticlecolor = "red";}
+		myplayer.ship.drawcompass2(systems[ps].npcs[myplayer.shiptarget].ship,canvas.width-64, 96, 64); //Targeting computer compass
+		systems[ps].npcs[myplayer.shiptarget].ship.drawreticle(myplayer.ship.x,myplayer.ship.y,reticlecolor); //Targeting reticle
+		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].npcs[myplayer.shiptarget].ship.name, systems[ps].npcs[myplayer.shiptarget].ship.level, systems[ps].npcs[myplayer.shiptarget].ship.hp,  systems[ps].npcs[myplayer.shiptarget].ship.shield, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].hurt, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].boombuff,systems[ps].npcs[myplayer.shiptarget].ship.shieldregen,systems[ps].npcs[myplayer.shiptarget].ai.behavior]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 
 		context.rect(canvas.width-304,4+16*closestindex, 160, 16); //This is the item selection indicator
@@ -197,9 +202,11 @@ function hud(playerindex){
 	if (myplayer.ship.hp==-1000){//This is the death screen.
 		context.fillStyle = "red";
 		context.font='24px Arial';
-		context.fillText("u ded bruh.  Maybe take a break for "+myplayer.ship.deadtime+" frames.",canvas.width/2,canvas.height/2);
+		context.fillText("Your ship was destroyed.  It will be repaired in "+myplayer.ship.deadtime+" frames.",canvas.width/2,canvas.height/2-64);
+		context.fillText("Help the repair computer to finish faster.",canvas.width/2,canvas.height/2-32);
 		context.fillStyle = "white";
 		context.font='12px Arial';
+		myplayer.deadtree.emods[0].quizblocks[0].quizzes[0].draw(400,100);
 	}
 	context.fillStyle = "white";
 	context.font='12px Arial';
@@ -260,7 +267,7 @@ function hud(playerindex){
 		context.fillText("Autobrake on",canvas.width/2 - 80,canvas.height/2 - 100);
 
 		}
-	if (myplayer.emenu>0){//engineering menu
+	if ((myplayer.emenu>0)&&(myplayer.ship.hp>0)){//engineering menu
 			context.fillStyle = "lightblue";
 			context.font = '24px Arial';
 			context.fillText("Press E to Exit",400,50);

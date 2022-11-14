@@ -130,7 +130,7 @@ function drawbeam(startx,starty,endx,endy,time){
 	context.stroke();
 	}	
 	
-function drawmap(mplanets, mstations,scale,xx,yy, px, py, radar, mships,theplayer){//scale of -1 indicates autozoom?  xx,yy are screen coords
+function drawmap(mplanets, mstations,scale,xx,yy, px, py, radar, mnpcs,theplayer){//scale of -1 indicates autozoom?  xx,yy are screen coords
 	var i = mplanets.length; //px, py are perspective x and y
 	if ((theplayer.sensor<1)&&(mplanets[i-1].s<50)){i--;}//Ignores last planet in stack if sensor level isnt at least 1.  This is waldo.
 	var x = 0;
@@ -183,20 +183,20 @@ function drawmap(mplanets, mstations,scale,xx,yy, px, py, radar, mships,theplaye
 		context.fillRect(x, y, 4, 4); 
 		context.fill();
 		}
-	var i = mships.length; //px, py are perspective x and y
+	var i = mnpcs.length; //px, py are perspective x and y
 	var x = 0;
 	var y = 0;
 	var size = 1;
 	while (i>0){
 		i = i-1;
-		if (mships[i].distance(theplayer.ship)<radar){
-			x = xx + mships[i].x/scale - px/scale ;
-			y = yy + mships[i].y/scale - py/scale;
-			size = 1+ Math.floor(mships[i].s/scale);
-			//context.fillStyle = mships[i].c; 
-			if (mships[i].ai == "enemy"){context.fillStyle = "red";} 
-			else if (mships[i].ai == "trader"){context.fillStyle = "blue";} 
-			else {context.fillStyle = "white";} 
+		if (mnpcs[i].ship.distance(theplayer.ship)<radar){
+			x = xx + mnpcs[i].ship.x/scale - px/scale ;
+			y = yy + mnpcs[i].ship.y/scale - py/scale;
+			size = 1+ Math.floor(mnpcs[i].ship.s/scale);
+			context.fillStyle = "white"; 
+			if (mnpcs[i].ai.playerhostile == true){context.fillStyle = "red";} 
+			else if (mnpcs[i].ai.team == "trader"){context.fillStyle = "blue";}//team isnt actually implemented yet 
+			//else {context.fillStyle = "white";} 
 			context.fillRect(x, y, 3, 3); 
 			context.fill();
 			}
