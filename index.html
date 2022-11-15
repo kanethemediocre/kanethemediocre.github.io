@@ -434,14 +434,7 @@ function update() {
 	var myship = systems[ps].players[myi].ship; 
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
-	if (ps>0){
-		if (myplayer.mapactive == 0){
-			context.font = "20px Ariel";
-			context.fillStyle = "white";
-			context.fillText("Map is off.",16,canvas.height-16);
-			}
-		if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
-		}
+
 	if (starmode == 1){	
 		if (ps==0){//ONLY affects menu system
 			pz=pz+.01;
@@ -658,7 +651,7 @@ function update() {
 			//systems[ps].placenear(myplayer.ship,0,0);
 			myplayer.ship.x = systems[ps].outposts[0].x-100;
 			myplayer.ship.y = systems[ps].outposts[0].y;
-			
+			myplayer.ship.parentid = 5;
 			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
@@ -978,22 +971,29 @@ if ((ps==32)&&(time%600==0)){//Special asteroid arena stuff.  Randomly levels up
 		i++;
 		}
 	}
-context.save();
-context.beginPath();
-context.rect(0,canvas.height-300,400,300)
-context.clip();
+if (ps>0){
+	if (myplayer.mapactive == 0){
+		context.font = "20px Ariel";
+		context.fillStyle = "white";
+		context.fillText("Map is off.",16,canvas.height-16);
+		}
+	if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
 	if (myplayer.mapactive == 2){
-		context.fillStyle = "black";//Background is black
-		context.fillRect(0,canvas.height-300,400,300);//cornerrner map area		
+		context.save();
+		context.beginPath();
+		context.rect(0,canvas.height-300,400,300)
+		context.clip();
+		//context.fillStyle = "black";//Background is black
+		//context.fillRect(0,canvas.height-300,400,300);//cornerrner map area		
 		drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
 		context.beginPath(); //Border of map rectangle
 		context.rect(0,canvas.height-300,400,300); //2*this.s wide
 		context.lineWidth = 4; 
 		context.strokeStyle = "blue";
 		context.stroke();	
+		context.restore();
 		}
-
-context.restore();
+	}
 systems[ps].updateall(time); //Updates everthing in system
 systems[ps].gravitateall(); //gravitates everything in system
 systems[ps].collideself(myi); //executes all collisions between objects in the system.
