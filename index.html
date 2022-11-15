@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 531 by Andrew Kane </title>
+    <title>Bling Hustle 533 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -441,16 +441,6 @@ function update() {
 			context.fillText("Map is off.",16,canvas.height-16);
 			}
 		if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
-		if (myplayer.mapactive == 2){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
-			context.fillStyle = "black";//Background is black
-			context.fillRect(0, 0, canvas.width, canvas.height-300); //erase non-corner map area
-			context.fillRect(400, canvas.height-300, canvas.width,canvas.height); //erase non-corner map area
-			context.beginPath(); //Border of map rectangle
-			context.rect(0,canvas.height-300,400,300); //2*this.s wide
-			context.lineWidth = 4; 
-			context.strokeStyle = "blue";
-			context.stroke();	
-			}
 		}
 	if (starmode == 1){	
 		if (ps==0){//ONLY affects menu system
@@ -989,6 +979,20 @@ if ((ps==32)&&(time%600==0)){//Special asteroid arena stuff.  Randomly levels up
 		}
 	}
 context.save();
+context.beginPath();
+context.rect(0,canvas.height-300,400,300)
+context.clip();
+	if (myplayer.mapactive == 2){
+		context.fillStyle = "black";//Background is black
+		context.fillRect(0,canvas.height-300,400,300);//cornerrner map area		
+		drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
+		context.beginPath(); //Border of map rectangle
+		context.rect(0,canvas.height-300,400,300); //2*this.s wide
+		context.lineWidth = 4; 
+		context.strokeStyle = "blue";
+		context.stroke();	
+		}
+
 context.restore();
 systems[ps].updateall(time); //Updates everthing in system
 systems[ps].gravitateall(); //gravitates everything in system

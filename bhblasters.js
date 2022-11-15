@@ -27,7 +27,7 @@
 	 16,8,10,12,2,10,0.5,0.25,10,8,1,10,1000,8,10,99,"white","ID not implemented");
 	  weapon9.recoil = -2;
 	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"plain",                      
-	 10,4,10,12,4,10,1,0.25,10,1,0,0,32,16,10,11,"white","ID not implemented");
+	 10,4,10,12,4,10,0.25,0.5,10,1,0,0,32,16,10,11,"white","ID not implemented");
 	 weapon0.recoil = -0.15;
 	 let weapon10 = new Blaster("P-Clone","This blaster takes characteristics from probe data, and basically copies the blaster of the last bot that it hit.",300,"plain",                            
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
