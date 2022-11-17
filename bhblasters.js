@@ -21,7 +21,7 @@
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          
 	 10,5,10,10,0,0,0.3,0,0,12,4,10,64,8,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Spectral Disintegrator","Short range, rapid-firing blaster with great damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",
-	 12,6,10,12,2,4,0.2,0.2,10,6,0,0,24,6,4,10,"white","ID not implemented");
+	 12,6,10,12,2,4,0.25,0.25,10,6,0,0,24,6,4,10,"white","ID not implemented");
 	 weapon8.recoil = -0.25;
 	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.  Beepapop boowopendongle, prodoopsenboboompo bopopob.",20000,"spread",                                           
 	 16,8,10,12,2,10,0.5,0.25,10,8,1,10,1000,8,10,99,"white","ID not implemented");

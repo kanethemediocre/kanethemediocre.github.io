@@ -56,6 +56,17 @@ function hud(playerindex){
 		if (systems[ps].npcs[myplayer.shiptarget].ai.playerhostile==true){reticlecolor = "red";}
 		myplayer.ship.drawcompass2(systems[ps].npcs[myplayer.shiptarget].ship,canvas.width-64, 96, 64); //Targeting computer compass
 		systems[ps].npcs[myplayer.shiptarget].ship.drawreticle(myplayer.ship.x,myplayer.ship.y,reticlecolor); //Targeting reticle
+		var aimdir = myplayer.blasters[myplayer.wep].aim1(myplayer.ship,systems[ps].npcs[myplayer.shiptarget].ship);
+		if (aimdir!=999){
+			context.beginPath();
+			context.strokeStyle = reticlecolor;
+
+			context.moveTo(canvas.width/2+Math.cos(aimdir[0])*200,canvas.height/2+Math.sin(aimdir[0])*200);
+			context.lineTo(canvas.width/2+Math.cos(aimdir[0])*300,canvas.height/2+Math.sin(aimdir[0])*300);
+			context.moveTo(canvas.width/2+Math.cos(aimdir[1])*200,canvas.height/2+Math.sin(aimdir[1])*200);
+			context.lineTo(canvas.width/2+Math.cos(aimdir[1])*300,canvas.height/2+Math.sin(aimdir[1])*300);
+			context.stroke();
+			}
 		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].npcs[myplayer.shiptarget].ship.name, systems[ps].npcs[myplayer.shiptarget].ship.level, systems[ps].npcs[myplayer.shiptarget].ship.hp,  systems[ps].npcs[myplayer.shiptarget].ship.shield, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].hurt, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].boombuff,systems[ps].npcs[myplayer.shiptarget].ship.shieldregen,systems[ps].npcs[myplayer.shiptarget].ai.behavior]];
 		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		context.beginPath(); 

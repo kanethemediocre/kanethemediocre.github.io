@@ -186,15 +186,29 @@ class NPCAI{
 				}//gambling that i wont give npcs a weapon that actually uses the time value.
 			}
 		if (this.behavenow == "trackattackplayer"){
-			var thetargetdistance = thesystem.npcs[this.id].ship.distance(thesystem.players[this.nowtargetship].ship);
+			var me = thesystem.npcs[this.id];
+			var mytarget = thesystem.players[this.nowtargetship].ship;
+			var thetargetdistance = me.ship.distance(mytarget);
+			var maxrange = me.blasters[0].speed*me.blasters[0].timer+me.ship.s+mytarget.s+16;
 			thesystem.npcs[this.id].ship.fasttrack(thesystem.players[this.nowtargetship].ship);//point at target ship
-			if ((Math.random()>0.95) && (thesystem.npcs[this.id].blasters[0].bombs[0].timer < 1)){  //fire occasionally,
+			if ((Math.random()>0.95) && (thesystem.npcs[this.id].blasters[0].bombs[0].timer < 1) && (thetargetdistance<maxrange*1.5)){  //fire occasionally,
 				thesystem.npcs[this.id].blasters[0].fire(thesystem.npcs[this.id],0);//fire(theplayer,thetime){
 				//console.log("firing");
 				}//gambling that i wont give npcs a weapon that actually uses the time value.
 			}
-		if (this.behavenow == "leadattack"){
-			//aim better than basic track
+		if (this.behavenow == "leadattackplayer"){
+			var me = thesystem.npcs[this.id];
+			var mytarget = thesystem.players[this.nowtargetship].ship;
+			var thetargetdistance = me.ship.distance(mytarget);
+			var maxrange = me.blasters[0].speed*me.blasters[0].timer+me.ship.s+mytarget.s+16;
+			me.ship.d = me.blasters[0].aim1(me.ship,mytarget);
+			if ((Math.random()>0.95) && (me.blasters[0].bombs[0].timer < 1) && (thetargetdistance<maxrange*1.5)){  //fire occasionally,
+				me.blasters[0].fire(me,0);//fire(theplayer,thetime){
+				//console.log("firing");
+				}//gambling that i wont give npcs a weapon that actually uses the time value.
+			}
+		if (this.behavenow == "leadattack1"){
+			//var dv = thesystem.npcs[this.id].ship.deltav2()
 			}
 		if (this.behavenow == "gototrackattack"){
 			//basic autopilotoid 
@@ -241,7 +255,31 @@ class NPCAI{
 				}
 			else {this.behavenow = "loiter";}
 			}
+		else if (this.behavior == "guardbot3"){//Look for enemies in range, pick closest one and shoot at it
+			var me = thesystem.npcs[this.id];
+			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
+			//console.log(this.nearbyplayers);
+			//console.log(this.nearbynpcs);
+			//console.log(this.nearbyplanets);
+			var closestplayerdistance = 999999;
+			var closestplayer = -1;
+			var i=0;
+			while (i<this.nearbyplayers.length){
+				var playerdistance = thesystem.players[ this.nearbyplayers[i] ].ship.distance(me.ship);
+				if (playerdistance<closestplayerdistance){
+					closestplayer = this.nearbyplayers[i];
+					closestplayerdistance = playerdistance;
+					}
 
+				i++;
+				}
+			if (closestplayer>=0){
+				//console.log("found target "+closestplayer)
+				this.behavenow = "leadattackplayer";
+				this.nowtargetship = closestplayer;
+				}
+			else {this.behavenow = "loiter";}
+			}
 		else if (this.behavior == "inertpatrol"){
 			//console.log("inertpatrollin");
 			var me = thesystem.npcs[this.id];

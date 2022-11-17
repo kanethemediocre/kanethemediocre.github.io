@@ -277,6 +277,20 @@ class Blaster{
 			i=i+1;
 			}
 		}
+	aim1(origin,target){
+		var dv = origin.deltav2(target);
+		var distance = origin.distance(target)-16-origin.s-target.s;//-16 because launch offset
+		var dir = origin.directionof(target);//oof, this is always an issue.
+		var cosdv = Math.cos(dv[1])*dv[0];
+		var sindv = Math.sin(dv[1])*dv[0];
+		var totalspeed = this.speed + cosdv;//really just incoming speed
+		var btime = distance / totalspeed;
+		var drift = sindv*btime;
+		var correction = Math.atan2(drift,distance);//Intermittent sign error
+		if ((totalspeed<0)||(btime>this.timer)){return 999;}//Error code not possible from normal operation
+		else {return [dir-correction,dir+correction]; }
+		
+	}
 	drawsights(myplayer,time){
 		var aimcolors = ["purple","blue","lime","yellow","orange","red"];
 		var aimdirection = 0;
@@ -379,7 +393,7 @@ class Blaster{
 			context.moveTo(barstartx,barstarty);
 			context.lineTo(barendx,barendy);
 			context.stroke();
-			}	
+			}
 		}
 	update1(){
 		var i=0;

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 533 by Andrew Kane </title>
+    <title>Bling Hustle 534 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -179,7 +179,8 @@ context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 esta
 context.canvas.height = window.innerHeight-24;
 
 
-
+//mississippi
+//mississippi institute special science in space service inventions pioneering properties incorporated.
 /* When the openFullscreen() function is executed, open the video in fullscreen.
 Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
 function openFullscreen() {
@@ -276,7 +277,7 @@ bubbleparty2.generatebubbleparty(160,240,12000,12000,160,1,3,16,2);//	generatebu
 bubbleparty2.wraps = 13000;
 bubbleparty2.addrandombling(32);
 let pocketarena1 = new System(35,randname(4),0,0);
-pocketarena1.generatepocket(3,64,32000,32,400);//	generatepocketsystem(nout,nin,sizeout,minsizein,maxsizein){
+pocketarena1.generatepocket(3,64,24000,32,400);//	generatepocketsystem(nout,nin,sizeout,minsizein,maxsizein){
 pocketarena1.addsuperboss(96,5,4000,1000,320,80,6);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
 pocketarena1.addsuperboss(64,3,2500,800,320,80,7);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
 pocketarena1.addsuperboss(80,4,3200,1000,320,80,8);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
@@ -497,6 +498,7 @@ function update() {
 			waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			//special system stuff
 			myplayer.blasters[5].phas = true;
+			myplayer.wep = 5;
 			myplayer.storystate = 999;
 			myplayer.money = 2000;
 			myplayer.task = "Profit";
@@ -523,8 +525,8 @@ function update() {
 			//waldo.setorbit(systems[ps].planets[0], 1500, randdir, -1);
 			//systems[ps].waldosize = 100000000;
 			console.log(myship.x);
-			myplayer.blasters[5].phas = true;
 			myplayer.blasters[14].phas = true;
+			myplayer.wep = 14;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -542,7 +544,8 @@ function update() {
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
 			myplayer.blasters[5].phas = true;
-			myplayer.blasters[14].phas = true;
+			myplayer.blasters[11].phas = true;
+			myplayer.wep = 5;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -561,7 +564,8 @@ function update() {
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
 			myplayer.blasters[5].phas = true;
-			myplayer.blasters[14].phas = true;
+			myplayer.blasters[15].phas = true;
+			myplayer.wep = 15;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -656,7 +660,9 @@ function update() {
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
 			myplayer.blasters[5].phas = true;
-			myplayer.blasters[14].phas = true;
+			myplayer.blasters[0].phas = true;
+			myplayer.blasters[11].phas = true;
+			myplayer.wep = 5;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -856,25 +862,27 @@ function update() {
 			var endy = yog+sind*range;
 			drawbeam(startx,starty,endx,endy,time);
 			aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
-			var i = systems[ps].ships.length;
-			while (i>0){//For all ships 
+			var i = systems[ps].npcs.length;
+			console.log(i);
+			while (i>0){//For all npcs 
 				i = i - 1; 
-				var targetdistance = aship.distance(systems[ps].ships[i]);
+				var ptarget = systems[ps].npcs[i].ship;
+				var targetdistance = aship.distance(ptarget);
 				if (targetdistance<range){
-					var ptest = pointingat( aship.directionof(systems[ps].ships[i]), aship.d, aship.distance(systems[ps].ships[i]), systems[ps].ships[i].s)
+					var ptest = pointingat( aship.directionof(ptarget), aship.d, aship.distance(ptarget), ptarget.s)
 					if (ptest == 1){
-						systems[ps].ships[i].damage(aplayer.blasters[aplayer.wep].hurt);
-						if (systems[ps].ships[i].hp<0){
-							if (systems[ps].ships[i].ai=="enemy"){
-								var getcash = Math.floor(Math.random()*21+10)*systems[ps].ships[i].level;
+						ptarget.damage(aplayer.blasters[aplayer.wep].hurt);
+						if (ptarget.hp<0){
+							if (systems[ps].npcs[i].ai.playerhostile==true){
+								var getcash = Math.floor(Math.random()*21+10)*ptarget.level;
 								aplayer.money = aplayer.money + getcash;
 								aplayer.gotmoney = [30,getcash];
 								cashsound1.play();
-								var boomstages = Math.floor(4+systems[ps].ships[i].level/2);
-								systems[ps].explosions.push(new Bubblesplosion(boomstages,0.375,"red",systems[ps].ships[i]));
-								systems[ps].bling.push(new Bling(systems[ps].ships[i].x,systems[ps].ships[i].y,systems[ps].ships[i].vx,systems[ps].ships[i].vy,systems[ps].ships[i].level*5));
-							}else if (systems[ps].ships[i].ai=="trader"){
-								systems[ps].explosions.push(new Bubblesplosion(4,0.375,"red",systems[ps].ships[i]));
+								var boomstages = Math.floor(4+ptarget.level/2);
+								systems[ps].explosions.push(new Bubblesplosion(boomstages,0.375,"red",ptarget));
+								systems[ps].bling.push(new Bling(ptarget.x,ptarget.y,ptarget.vx,ptarget.vy,ptarget.level*5));
+							}else if (systems[ps].npcs[i].ai.playerhostile==false){
+								systems[ps].explosions.push(new Bubblesplosion(4,0.375,"red",ptarget));
 								aplayer.money = aplayer.money - 1000;
 								aplayer.gotmoney = [30, -1000];
 								//somebadsound.play();

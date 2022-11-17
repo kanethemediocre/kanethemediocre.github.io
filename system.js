@@ -2144,7 +2144,8 @@ class System{
 			this.npcs[botindex].ship.maxhp = 150;
 			this.npcs[botindex].ship.polytheta = gangpolytheta;
 			this.npcs[botindex].ship.polyradius = gangpolyradius;
-			this.npcs[botindex].ai.behavior = "guardbot";
+			this.npcs[botindex].ai.behavior = "guardbot2";
+			if (i==(gangsize-1)){this.npcs[botindex].ai.behavior = "guardbot2";}
 			this.npcs[botindex].ai.playerhostile = true;
 			
 			//this.botbombs.push( new Umo(0,0,0,"red"));
@@ -2394,9 +2395,14 @@ class System{
 			this.planets[i].s = Math.floor(interdistance/2);
 			i++;
 			}
-		var i=0;
+		var aplanet = new Umo(0,0,300,randcolor());	
+		aplanet.c2 = randcolor();
+		aplanet.name = "CNDY";
+		this.planets.push(aplanet);
+		this.addbling(this.planets.length-1,100,400,100);//addbling(parent,basevalue,bonusvalue,num){//adds bling to 1 planet
+		var i=1;
 		while(i<nin){
-			var er = 600; //exclusion radius in center
+			var er = 1200; //exclusion radius in center
 			var tpos = Math.random()*Math.PI*2;
 			var rpos = er + Math.random()*(sizeout-er)*0.3;//fudge factor at end optimized for triangle systems leaving corner space
 			var xpos = Math.floor(Math.cos(tpos)*rpos);
@@ -2490,8 +2496,8 @@ class System{
 			this.bling[this.bling.length-1].setorbit(parent,tempdistance,Math.random()*2*Math.PI,1);
 			this.bling[this.bling.length-1].t = this.bling[this.bling.length-1].t +i*600;
 			i++;
+			}
 		}
-	}
 	addrandombling(spread){
 		var i=0;
 		while (i<this.planets.length){
