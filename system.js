@@ -16,6 +16,7 @@ class System{
 		this.difficulty = 1; //Scales ship generation attributes
 		this.planetarycollisions = false;
 		this.gravity = true;
+		this.solardamage = true;
 		this.x = x;
 		this.y = y;
 		this.wraps = 0; //0 for off, >0 for wrapping at that radius.
@@ -1561,15 +1562,19 @@ class System{
 				if (cheatmode ==1){	aplayer.ship.respawn(this.planets[aplayer.navtarget]); }
 					  break;
 				case "]": 
-					if (aplayer.shiptarget == aplayer.shipsinrange.length-1){ aplayer.shiptarget = 0; }
-					else {aplayer.shiptarget++;}	                                          
+					//if (aplayer.shiptarget == aplayer.shipsinrange.length-1){ aplayer.shiptarget = 0; }
+					//else {aplayer.shiptarget++;}	                                          
 				  break;
 				case "[": 
-					if (aplayer.shiptarget == 0){ aplayer.shiptarget = aplayer.shipsinrange.length-1; }
-					else {aplayer.shiptarget--;}	                                          
+					//if (aplayer.shiptarget == 0){ aplayer.shiptarget = aplayer.shipsinrange.length-1; }
+					//else {aplayer.shiptarget--;}	                                          
+				  break;
+				case "v": 
+					if (aplayer.vkactive == true ) {aplayer.vkactive = false;} 
+					else {aplayer.vkactive = true;}
 				  break;
 				case "t": 
-					//aplayer.shiptarget = closestindex;                                         
+					aplayer.targetlock = aplayer.shiptarget;//This can be more efficient and exclude other calculations around here                                      
 				  break;
 				case "ArrowUp":
 					console.log("ihearya")
@@ -2217,6 +2222,7 @@ class System{
 		}
 	generateasteroidarena(sunsize,minroidsize,maxroidsize,minradius,maxradius,shopradius,rodiradius,numroids,gangsize,numsuperboss,numshops){
 		this.planetarycollisions = true;
+		this.solardamage = false;
 		this.planets.push( new Umo(this.x,this.y,sunsize, "orange") ); //make the sun 
 		this.planets[0].name = this.name; // Star name is same as system name
 		let decoy = new Umo(0, 0, 300, randcolor); //4
@@ -2297,7 +2303,7 @@ class System{
 			this.outposts[i].setorbit(this.planets[0],shopradius,i*(2/outpostnum)*Math.PI,1);
 			i++;
 			}
-		this.enemypopulate(gangsize,1,8);	
+		this.enemypopulate(gangsize,4,16);	
 		console.log(this.shops);
 		var i = 1;
 		while(i<numsuperboss){
@@ -2311,6 +2317,7 @@ class System{
 	generatebubbleparty(minroidsize,maxroidsize,maxroidradius,shopradius,numroids,gangsize,numsuperboss,numshops,heat){
 		this.planetarycollisions = true;
 		this.gravity = false;
+		this.solardamage = false;
 		var i=0;
 		while(i<numroids){
 			var asize = minroidsize + Math.floor((maxroidsize-minroidsize)*Math.random());
@@ -2376,6 +2383,7 @@ class System{
 		this.waldosize = 0;
 		this.gravity = false;
 		this.planetarycollisions = false;
+		this.solardamage = false;
 		this.planets.push(new Umo(-999999,0,1,"black"));//sun doesn't matter, it's hidden away
 		this.planets[0].name = " ";
 		var i=0;
@@ -2385,7 +2393,7 @@ class System{
 			var by = Math.sin(bdir)*sizeout;
 			var borderplanet = new Umo(bx,by,sizeout,randcolor());
 			borderplanet.name = randname(10);
-			borderplanet.c2 = borderplanet.c1;
+			borderplanet.c2 = randcolor();
 			this.planets.push(borderplanet);
 			i++;
 			}

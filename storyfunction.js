@@ -157,10 +157,10 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 16:
 	console.log(dstory);
 		if (dstory>playerradio.msgtime){
-			var themsg =  "Not every ship out there is an enemy.  Use your radar and your targeting computer to tell friend from foe.  Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].ships[9].name+", it should be near Merz.  ";
+			var themsg =  "Not every ship out there is an enemy.  Use your radar and your targeting computer to tell friend from foe.  Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].npcs[9].ship.name+", it should be near Merz.  ";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
-			myplayer.task = "Destroy ship "+systems[ps].ships[9].name+" near Merz";
-			systems[ps].ships[9].respawn(systems[ps].planets[systems[ps].ships[9].parentid]);
+			myplayer.task = "Destroy ship "+systems[ps].npcs[9].ship.name+" near Merz";
+			systems[ps].npcs[9].ship.respawn(systems[ps].planets[systems[ps].npcs[9].ai.homeplanet]);
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -174,7 +174,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
-		else if (systems[ps].ships[9].hp==-1000){
+		else if (systems[ps].npcs[9].ship.hp==-1000){
 			var themsg =  "Alright good job.  Now before you get carried away come back to the station and I'll fit your ship with something a little more powerful.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Return to the Merry Merzian";
@@ -369,8 +369,6 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.task = "Go to Earf and meet Bill";
 			myplayer.storystate = 35;
 			myplayer.storytime = time;
-			testsong.volume = 0.3;
-			testsong.play();
 			}
 	break;
 	case 35:
@@ -885,6 +883,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.task = "Go forth and profit";
 			myplayer.storystate++;
 			myplayer.storytime = time;
+			testsong.play();
 			}
 	break;
 	case 129:

@@ -65,6 +65,9 @@ class Player{
 		this.emenu = 0; //0 off, 1 at tree level, 2 at mod level, 3 at block level, 4 at quiz level, 5 at challenge level
 		this.answer = "";
 		this.deaths = 0;
+		this.targetlock = -1;
+		this.vkactive = true; //virtual keys state
+		this.vkvisible = true;
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;

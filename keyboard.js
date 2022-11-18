@@ -57,10 +57,10 @@ window.addEventListener("keydown", function (event) {
 		if (myi >=systems[ps].players.length){ myi = 0; }
 		console.log("there are now "+systems[ps].players.length+" players.");
 	}else if (event.key=='e'){
-		//console.log("etriedtoopen");
 		if (systems[ps].players[myi].emenu==0){systems[ps].players[myi].emenu=1;}	
 	}else if (event.key=='f'){
-		openFullscreen();
+		openFullscreen(); //No fullscreen exit.  Javascript feels defective, fullscreen exit code doesn't work.
+		systems[ps].players[myi].vkactive = false; 
 	}else{
 		var theplayer = systems[ps].players[myi];
 		theplayer.input = event.key;

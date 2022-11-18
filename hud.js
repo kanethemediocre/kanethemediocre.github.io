@@ -2,28 +2,47 @@ function hud(playerindex){
 	var myplayer = systems[ps].players[playerindex];
 	context.font='12px Arial';
 	context.fillStyle = "white"; 
-	var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
-	var closestdistance = 999999;//needs to be larger than radarrange 
-	var closestindex = 0; //defaults to self-targeting if no ships in range
-	var i=0;
-	while (i<systems[ps].npcs.length){ //this loop makes the short list
-		var tdistance = Math.floor(myplayer.ship.distance(systems[ps].npcs[i].ship));
-		if (tdistance<myplayer.radarrange){
-			shipsinrange.push(i);
-			if (myplayer.ship.pointingat(systems[ps].npcs[i].ship)){
-				myplayer.shiptarget = i;	
-				}
-			if (tdistance<closestdistance){
-				closestdistance = tdistance;
-				closestindex = shipsinrange.length-1;
-				}
+	if(myplayer.targetlock>=0){
+		if (myplayer.ship.distance(systems[ps].npcs[myplayer.targetlock].ship)>myplayer.radarrange){
+			myplayer.targetlock = -1;
+			var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
+			var closestdistance = 999999;//needs to be larger than radarrange 
+			var closestindex = 0; 
 			}
-		i++;
+		else{
+			var shipsinrange = [myplayer.targetlock];//simulates targeting computer finding only this ship
+			var closestdistance = myplayer.ship.distance(systems[ps].npcs[myplayer.targetlock].ship);
+			var closestindex = myplayer.targetlock; 
+			}
 		}
-	if (closestdistance!=999999){
-		if (myplayer.ship.distance(systems[ps].npcs[myplayer.shiptarget].ship)>myplayer.radarrange){
-			myplayer.shiptarget=0;
-			closestindex = 0;
+		
+	else {
+		var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
+		var closestdistance = 999999;//needs to be larger than radarrange 
+		var closestindex = 0; 
+		var i=0;
+		while (i<systems[ps].npcs.length){ //this loop makes the short list
+			var tdistance = Math.floor(myplayer.ship.distance(systems[ps].npcs[i].ship));
+			if (tdistance<myplayer.radarrange){
+				shipsinrange.push(i);
+				if ((myplayer.ship.pointingat(systems[ps].npcs[i].ship))&&(myplayer.targetlock<0)){
+					myplayer.shiptarget = i;	
+					}
+				else if (myplayer.targetlock>0){
+					myplayer.shiptarget = myplayer.targetlock;//This can be more efficient and exclude other calculations around here
+					}
+				if (tdistance<closestdistance){
+					closestdistance = tdistance;
+					closestindex = shipsinrange.length-1;
+					}
+				}
+			i++;
+			}
+		if (closestdistance!=999999){
+			if (myplayer.ship.distance(systems[ps].npcs[myplayer.shiptarget].ship)>myplayer.radarrange){
+				myplayer.shiptarget=0;
+				closestindex = 0;
+				}
 			}
 		}
 	var i=0;
@@ -57,10 +76,9 @@ function hud(playerindex){
 		myplayer.ship.drawcompass2(systems[ps].npcs[myplayer.shiptarget].ship,canvas.width-64, 96, 64); //Targeting computer compass
 		systems[ps].npcs[myplayer.shiptarget].ship.drawreticle(myplayer.ship.x,myplayer.ship.y,reticlecolor); //Targeting reticle
 		var aimdir = myplayer.blasters[myplayer.wep].aim1(myplayer.ship,systems[ps].npcs[myplayer.shiptarget].ship);
-		if (aimdir!=999){
+		if (aimdir!=999){//This is the lead indicator
 			context.beginPath();
 			context.strokeStyle = reticlecolor;
-
 			context.moveTo(canvas.width/2+Math.cos(aimdir[0])*200,canvas.height/2+Math.sin(aimdir[0])*200);
 			context.lineTo(canvas.width/2+Math.cos(aimdir[0])*300,canvas.height/2+Math.sin(aimdir[0])*300);
 			context.moveTo(canvas.width/2+Math.cos(aimdir[1])*200,canvas.height/2+Math.sin(aimdir[1])*200);
@@ -76,14 +94,20 @@ function hud(playerindex){
 		context.stroke();	
 		}
 	}
-	var i=0;
-	while (i<vkeys.length){
-		vkeys[i].draw();
-		i++;
+	if (myplayer.vkvisible == true){
+		var i=0;
+		while (i<vkeys.length){
+			vkeys[i].draw();
+			i++;
+			}
 		}
+	if (myplayer.vkactive == false){
+		context.font = '20px Ariel';
+		context.fillStyle = "yellow";
+		context.fillText("Virtual keys are off.  Press V reactivate", canvas.width/2-160, 16);
+		} 
 ///////////////Navigation hud///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (myplayer.navactive > 0){
-
 		var thenavtarget=0;
 		if (myplayer.navactive==1){
 			thenavtarget=systems[ps].planets[myplayer.navtarget];

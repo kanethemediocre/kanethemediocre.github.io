@@ -22,7 +22,7 @@ class NPCAI{
 		this.route = [];
 		this.routei = 0;
 		this.navslop = 512;
-		this.hardtether = 10000;
+		this.hardtether = 20000;
 		this.softtether = 2000;
 		this.attacksfirst = true;
 		this.followattackers = false;

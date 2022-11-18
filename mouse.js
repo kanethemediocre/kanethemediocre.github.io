@@ -19,16 +19,19 @@ function mouseDownHandler(e) {
 	myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
 	myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
 	console.log(e.clientX+ " " +e.clientY);
-	var i=0;
-	while(i<vkeys.length){
-		if (vkeys[i].inside(e.clientX,e.clientY)){
-			myplayer.input = vkeys[i].key;
-			systems[ps].playerkeys();
-			i=vkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
+	if (myplayer.vkactive == true){
+		var i=0;
+		while(i<vkeys.length){
+			if (vkeys[i].inside(e.clientX,e.clientY)){
+				myplayer.input = vkeys[i].key;
+				systems[ps].playerkeys();
+				i=vkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
+				}
+			i++;
 			}
-		i++;
+		if (i==vkeys.length){ systems[ps].playermice(); } //If loop exited without vkeys trigger, meaning no buttons were clicked
 		}
-	if (i==vkeys.length){ systems[ps].playermice(); } //If loop exited without vkeys trigger, meaning no buttons were clicked
+	else { systems[ps].playermice();}
 	}
 document.addEventListener("mouseup", mouseUpHandler, false);
 function mouseUpHandler(e) {
