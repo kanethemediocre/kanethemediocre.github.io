@@ -1,14 +1,14 @@
 //constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,bombcolor,ID){
  function bhblasters(){
 	 let weapon1 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done and has great upgrade potential.",300,"plain",                            
-	 12,6,10,12,4,10,0.8,0.2,10,1,0,0,40,8,10,12,"red","ID not implemented");
+	 12,6,10,12,4,10,0.5,0.5,10,1,0,0,40,8,10,12,"red","ID not implemented");
 	 weapon1.phas = true; //this is the starter blaster
 	 //weapon1.etier = 1; //testing bounce stuff
 	  weapon1.recoil = -0.15;
 	 let weapon2 = new Blaster("Mine","Powerful but very slow moving bomb.  This blaster needs to be used in conjunction with some combination of thrusters and clever planning.",500,"plain",                                 
-	 40,10,10,0.5,0,0,2,0.5,10,1,0,0,1800,300,10,40,"purple","ID not implemented");
+	 50,25,10,0.5,0,0,2,0.75,10,1,0,0,1800,300,10,40,"purple","ID not implemented");
 	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"fixedspread",
-	 8,4,10,12,2,10,1.2,0.2,10,3,1,10,16,8,10,25,"green","ID not implemented");
+	 8,4,10,12,2,10,1.2,0.3,10,3,2,10,16,8,10,25,"green","ID not implemented");
 	 weapon3.recoil = -0.3;
 	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
 	 48,16,10,20,4,4,0.2,0,0,1,0,0,80,20,10,90,"blue","ID not implemented");
@@ -27,8 +27,8 @@
 	 16,8,10,12,2,10,0.5,0.25,10,8,1,10,1000,8,10,99,"white","ID not implemented");
 	  weapon9.recoil = -2;
 	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"plain",                      
-	 10,4,10,12,4,10,0.25,0.5,10,1,0,0,32,16,10,11,"white","ID not implemented");
-	 weapon0.recoil = -0.15;
+	 10,4,10,12,4,10,0.25,0.5,10,1,0,0,80,80,10,11,"white","ID not implemented");
+	 weapon0.recoil = -0.05;
 	 let weapon10 = new Blaster("P-Clone","This blaster takes characteristics from probe data, and basically copies the blaster of the last bot that it hit.",300,"plain",                            
 	 12,6,10,12,2,10,0.8,0.2,10,2,0,0,40,8,10,12,"pink","ID not implemented");
 	 weapon10.recoil = -0.3;

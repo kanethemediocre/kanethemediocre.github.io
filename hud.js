@@ -233,6 +233,7 @@ function hud(playerindex){
 	context.fillText("probemode: "+myplayer.probemode,8,368);
 	context.fillText("autopilot: "+myplayer.autopilot,8,384);
 	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
+	context.fillText("ps: "+ps,8,416);
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
 	if (myplayer.ship.hp==-1000){//This is the death screen.
 		context.fillStyle = "red";

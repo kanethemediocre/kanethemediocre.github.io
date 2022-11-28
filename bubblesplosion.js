@@ -10,6 +10,8 @@ class Bubblesplosion{
         this.core.match(origin);
         this.core.timer = 8;
         this.core.boombuff = this.s;
+		this.x = this.core.x;
+		this.y = this.core.y;
         this.bubbles = [[this.core]];///this.core is the only member of the first stage.
         var bubblesize = this.s;
         var bubbleradius = this.s;
@@ -50,9 +52,12 @@ class Bubblesplosion{
                 this.bubbles[i][j].updatebomb();
                 j++;
             }
-            
             i++;
         }
+		if (this.core.timer>0){
+			this.x = this.core.x;
+			this.y = this.core.y;
+			}
     }
     draw(viewx,viewy){//Need to handle timed expansion/contraction.
         var i=0;

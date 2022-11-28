@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 538 by Andrew Kane </title>
+    <title>Bling Hustle 544 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -57,6 +57,7 @@
 <script type="text/javascript" src="storyfunction.js"></script>
 <script type="text/javascript" src="hud.js"></script>
 <script type="text/javascript" src="starfield.js"></script>
+<script type="text/javascript" src="dustfield.js"></script>
 <script type="text/javascript" src="about.js"></script>
 <script type="text/javascript" src="controls.js"></script>
 <script type="text/javascript" src="mousecontrols.js"></script>
@@ -69,9 +70,10 @@
 <script type="text/javascript" src="superbomb.js"></script>
 <script type="text/javascript" src="npc.js"></script>
 <script type="text/javascript" src="npcai.js"></script>
-
+<script type="text/javascript" src="supersystem.js"></script>
 
 <script>
+
 //var blastersound1 = new Audio("./sounds/bubble4_short2.mp3");
 var blastersound1 = new Audio("./sounds/w11s1.mp3");
 var blastersound2 = new Audio("./sounds/close_door_12.mp3");
@@ -174,9 +176,14 @@ FPS = 60;
 setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
 canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
+canvas.style.cursor = "crosshair";
 context = canvas.getContext("2d");
 context.canvas.width  = window.innerWidth-24; //This overrides the 1600x900 established in html.
 context.canvas.height = window.innerHeight-24;
+var windowmousexoffset = -8;
+var windowmouseyoffset = -8;
+var fullscreenmousexoffset = -12;
+var fullscreenmouseyoffset = -68;
 
 
 //mississippi
@@ -205,7 +212,9 @@ var cheatmode = 0; //0 = not a cheater
 var ps = 0; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
 var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
 var starmode = 1; //0 for no starfield.
+var dustmode = 0;
 let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
+var testdustfield1 = new Dustfield(8000,8000,0,2.25,24000);
 var pz = 0;
 var menuabout = false;
 var menucontrols = false;
@@ -288,7 +297,7 @@ let home = new System(1,"Sool",0,0);
 let menu = new System(0,"Main Menu",0,0);
 let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
 				testsystem15,testsystem16,testsystem17,testsystem18,testsystem19,testsystem20,testsystem21,testsystem22,testsystem23,testsystem24,testsystem25,testsystem26,
-				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena,bubbleparty1,bubbleparty2,pocketarena1];
+				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena,bubbleparty1,bubbleparty2];
 systems[0].planets = loadmenusystem();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////Home System/////////////////////////////////////////////////////////////////////////////
@@ -383,9 +392,19 @@ while (i<35){//systems.length){
 	systems[i].planets.push(waldo);
 	i=i+1;
 	}
+
+var bubbleuniverse = new Supersystem("3bubble",7,6,16,48,100,400,0,3);//constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax){
+var i=0;
+while(i<bubbleuniverse.systems.length){
+	systems.push(bubbleuniverse.systems[i]);
+	i++;
+	}
+console.log(i);
 ps = 0;
 var aplayer = new Player();
 aplayer.initialize(1000,200,1);
+aplayer.mousexoffset = windowmousexoffset;
+aplayer.mouseyoffset = windowmouseyoffset;
 var i=0;
 while(i<systems.length){
 	systems[i].players.push(aplayer);
@@ -420,7 +439,8 @@ systems[1].addsuperboss(128,7,5000,1200,320,80,26);//addsuperboss(size,turretnum
 
 //systems[1].addbling(systems[1].planets[5],20,50,10);
 systems[1].addrandombling(50);
-////////////////////////////////testing NPC class/////////////////////////
+
+//
 
 ///GAMELOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -434,10 +454,14 @@ function update() {
 	var vwy = systems[ps].players[myi].ship.y;
 	var myplayer = systems[ps].players[myi];
 	var myship = systems[ps].players[myi].ship; 
+	if ((myplayer.probemode == 3)&&(myplayer.blasters[0].bombs[0].timer>0)){//Probe camera functionality has to go here before vwx,vwy start drawing things
+		vwx = myplayer.blasters[0].bombs[0].x;
+		vwy = myplayer.blasters[0].bombs[0].y
+		}
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
 
-	if (starmode == 1){	
+	if ((starmode == 1)&&(dustmode == 0)){	
 		if (ps==0){//ONLY affects menu system
 			pz=pz+.01;
 			if (pz>64){pz=0;}
@@ -445,6 +469,9 @@ function update() {
 			pz = (ps-1)*4+(waldo.s/4400);
 			}
 		testfield2.draw(vwx,vwy,pz);
+		}
+	else if ((starmode==1)&&(dustmode==1)){
+		testdustfield1.drawstatic(systems[ps].players[myi].ship.x,systems[ps].players[myi].ship.y);
 		}
 	//testmodule.draw(400,400);
 	//Menu system handling///////////////////////////////////////////////
@@ -648,22 +675,25 @@ function update() {
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[21])){
 			ps = 35;
 			myplayer.mapscale = 32;
+			dustmode = 1;
+			supercompass = 2;
 			pausemusic();
 			bubblesong1.play();
+			testdustfield1.clearhidden(systems[ps]);
 			//console.log(systems[ps].planets[0].x);
 			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
 			
 			//systems[ps].placenear(myplayer.ship,0,0);
-			myplayer.ship.x = systems[ps].outposts[0].x-100;
-			myplayer.ship.y = systems[ps].outposts[0].y;
-			myplayer.ship.parentid = 5;
+			myplayer.ship.x = systems[ps].outposts[2].x-100;
+			myplayer.ship.y = systems[ps].outposts[2].y;
+			myplayer.ship.hp = 999999;
+			myplayer.ship.parentid = 0;//oof @respawn
 			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
 			console.log(myship.x);
-			myplayer.blasters[5].phas = true;
 			myplayer.blasters[0].phas = true;
 			myplayer.blasters[11].phas = true;
-			myplayer.wep = 5;
+			myplayer.wep = 11;
 			myplayer.storystate = 999;
 			myplayer.money = 3001;
 			myplayer.task = "Collect Bling";
@@ -919,7 +949,7 @@ function update() {
 			playerweapon9superbomb.maintainorbitbomb();
 			}
 	///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
-		if (aplayer.wep==0){//wep == 11 to disable, wep should ==0
+		if ((aplayer.wep==0)&&(aplayer.blasters[0].bombs[0].timer>0)){//wep == 11 to disable, wep should ==0
 			var j = systems[ps].npcs.length;
 			while (j>1){ //for all ships...
 				j=j-1;
@@ -939,7 +969,7 @@ function update() {
 					}
 				}
 			var j = systems[ps].turrets.length;
-			while (j>1){ //for all ships...
+			while (j>1){ //for all turrets...
 				j=j-1;
 				if (aplayer.blasters[0].bombs[0].collide(systems[ps].turrets[j].pivot)){//Checks for collision only
 					if (aplayer.probemode == 0){//clones color
@@ -1030,6 +1060,13 @@ if (ps>0){
 		context.restore();
 		}
 	}
+if (ps>34){
+	//if (myplayer.nowarp == false){
+		var newps = bubbleuniverse.checktrans(0,ps-35);
+		if (newps>=0){ps = newps+35;}
+	//	}
+	}
+systems[ps].respawnall(); //Updates everthing in system
 systems[ps].updateall(time); //Updates everthing in system
 systems[ps].gravitateall(); //gravitates everything in system
 systems[ps].collideself(myi); //executes all collisions between objects in the system.

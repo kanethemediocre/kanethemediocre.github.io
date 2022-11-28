@@ -66,8 +66,14 @@ class Player{
 		this.answer = "";
 		this.deaths = 0;
 		this.targetlock = -1;
+		this.alive = true;
+		this.deadtime = -1; //Timer is set to this.respawntime on death.  Values>0 indicate player is dead.
+		this.respawntime = 3000; //number of frames delay between death and respawn
 		this.vkactive = true; //virtual keys state
 		this.vkvisible = true;
+		this.mouseyoffset = 0;
+		this.mousexoffset = 0;
+		this.nowarp = false;
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;
@@ -164,11 +170,20 @@ class Player{
 			}
 		}
     update1(theplanets){
-        if (this.energy<100){ this.energy=this.energy+this.energyregen; }
-        else {this.energy = 100;}
-        if (this.thruster<100){ this.thruster=this.thruster+this.thrustregen; }
-        else {this.thruster = 100;}
-        this.ship.updateship(theplanets);//maybe needs planets?
+		if (this.alive==false){
+			if (this.deadtime>=0){this.deadtime--;}
+			else{
+				this.alive = true;
+				//do a respawn here?
+				}
+			}
+		else{
+			if (this.energy<100){ this.energy=this.energy+this.energyregen; }
+			else {this.energy = 100;}
+			if (this.thruster<100){ this.thruster=this.thruster+this.thrustregen; }
+			else {this.thruster = 100;}
+			this.ship.updateship(theplanets);//maybe needs planets?
+			}
         var i = 0;
         while (i<this.blasters.length){
             this.blasters[i].update1();
