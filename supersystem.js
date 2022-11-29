@@ -14,6 +14,9 @@ class Supersystem{
 				var numplanets = Math.floor(this.ppopmin+Math.random()*(this.ppopmax-this.ppopmin));
 				var asystem = new System(i,"sys1",0,0);
 				asystem.generatepocket(3,numplanets,this.systemsize,psizemin,psizemax);//generatepocket(nout,nin,sizeout,minsizein,maxsizein){
+				asystem.planets[1].name = asystem.planets[1].name +"1";
+				asystem.planets[2].name = asystem.planets[2].name +"2";
+				asystem.planets[3].name = asystem.planets[3].name +"3";
 				asystem.planets[1].s = asystem.planets[1].s - clearance;
 				asystem.planets[2].s = asystem.planets[2].s - clearance;
 				asystem.planets[3].s = asystem.planets[3].s - clearance;
@@ -27,6 +30,89 @@ class Supersystem{
 				this.systems.push(asystem);
 				i++;
 				}
+			//now connect the bubbles
+			//var qq = 0;
+			//while (qq<2){
+				var i=0;
+				while(i<this.systems.length){
+					if (i%2==0){
+						var mplanet1 = this.systems[i].planets[1];
+						var mplanet2 = this.systems[i].planets[2];
+						var mplanet3 = this.systems[i].planets[3];
+						//console.log(mplanet1.c);
+						var dir1index = (i+1);
+						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
+						dir1index = dir1index % (this.n*this.m);
+						console.log(dir1index);
+						this.systems[dir1index].planets[3].name = mplanet1.name;
+						this.systems[dir1index].planets[3].c = mplanet1.c;
+						this.systems[dir1index].planets[3].c2 = mplanet1.c2;
+						console.log(this.systems[dir1index].planets[3].c2);
+						this.systems[dir1index].planets[1].name = mplanet2.name;
+						this.systems[dir1index].planets[1].c = mplanet2.c;
+						this.systems[dir1index].planets[1].c2 = mplanet2.c2;					
+						dir1index = (i-1);
+						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
+						dir1index = dir1index % (this.n*this.m);
+						console.log(dir1index);
+						this.systems[dir1index].planets[2].name = mplanet1.name;
+						this.systems[dir1index].planets[2].c = mplanet1.c;
+						this.systems[dir1index].planets[2].c2 = mplanet1.c2;
+						this.systems[dir1index].planets[1].name = mplanet3.name;
+						this.systems[dir1index].planets[1].c = mplanet3.c;
+						this.systems[dir1index].planets[1].c2 = mplanet3.c2;						
+						dir1index = (i-this.n);
+						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
+						dir1index = dir1index % (this.n*this.m);
+						console.log(dir1index);
+						this.systems[dir1index].planets[3].name = mplanet3.name;
+						this.systems[dir1index].planets[3].c = mplanet3.c;
+						this.systems[dir1index].planets[3].c2 = mplanet3.c2;
+						this.systems[dir1index].planets[2].name = mplanet2.name;
+						this.systems[dir1index].planets[2].c = mplanet2.c;
+						this.systems[dir1index].planets[2].c2 = mplanet2.c2;						
+						}
+					if (i%2==1){
+						var mplanet1 = this.systems[i].planets[1];
+						var mplanet2 = this.systems[i].planets[2];
+						var mplanet3 = this.systems[i].planets[3];
+						//console.log(mplanet1.c);
+						var dir1index = (i+1);
+						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
+						dir1index = dir1index % (this.n*this.m);
+						console.log(dir1index);
+						this.systems[dir1index].planets[3].name = mplanet1.name;
+						this.systems[dir1index].planets[3].c = mplanet1.c;
+						this.systems[dir1index].planets[3].c2 = mplanet1.c2;
+						console.log(this.systems[dir1index].planets[3].c2);
+						this.systems[dir1index].planets[1].name = mplanet2.name;
+						this.systems[dir1index].planets[1].c = mplanet2.c;
+						this.systems[dir1index].planets[1].c2 = mplanet2.c2;					
+						dir1index = (i-1);
+						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
+						dir1index = dir1index % (this.n*this.m);
+						console.log(dir1index);
+						this.systems[dir1index].planets[2].name = mplanet1.name;
+						this.systems[dir1index].planets[2].c = mplanet1.c;
+						this.systems[dir1index].planets[2].c2 = mplanet1.c2;
+						this.systems[dir1index].planets[1].name = mplanet3.name;
+						this.systems[dir1index].planets[1].c = mplanet3.c;
+						this.systems[dir1index].planets[1].c2 = mplanet3.c2;						
+						dir1index = (i+this.n);
+						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
+						dir1index = dir1index % (this.n*this.m);
+						console.log(dir1index);
+						this.systems[dir1index].planets[3].name = mplanet3.name;
+						this.systems[dir1index].planets[3].c = mplanet3.c;
+						this.systems[dir1index].planets[3].c2 = mplanet3.c2;
+						this.systems[dir1index].planets[2].name = mplanet2.name;
+						this.systems[dir1index].planets[2].c = mplanet2.c;
+						this.systems[dir1index].planets[2].c2 = mplanet2.c2;						
+						}
+					i++;
+					}
+				//qq++;
+				//}
 			}
 		}
 	checktrans(playerindex,systemindex){
@@ -77,10 +163,12 @@ class Supersystem{
 							}
 						this.systems[systemindex].players[playerindex].navtarget = 0;
 						this.systems[systemindex].players[playerindex].shiptarget = 0;
-						this.systems[systemindex].players[playerindex].planetarychart = systems[ps].generateplanetlist();
 						console.log(newsystem);
 						if (newsystem<0){newsystem = newsystem+this.n*this.m;}
 						newsystem = newsystem % (this.n*this.m);
+						this.systems[systemindex].players[playerindex].navtarget = 0;
+						this.systems[systemindex].players[playerindex].shiptarget = 0;
+						this.systems[systemindex].players[playerindex].planetarychart = this.systems[newsystem].generateplanetlist();
 						console.log(dirnum+" "+newsystem);
 						}
 					}				

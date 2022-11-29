@@ -411,15 +411,16 @@ function hud(playerindex){
 					dx = 8+ystep*(j-0.5);
 					dy = ystep*(i-0.3);
 					}
+				var theplanet = systems[ps].planets[myplayer.planetarychart[i][j]];
 				context.beginPath();  //So instead of not rendering, it will render at most recent thickness (often max)
-				context.arc(x+ystep*(j), y+ystep*(i), systems[ps].planets[myplayer.planetarychart[i][j]].s/scale, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.
+				context.arc(x+ystep*(j), y+ystep*(i), theplanet.s /scale, 0, 2 * Math.PI, false); //until linewidth of 1 is reached.
 				context.lineWidth = 4;
 				//console.log("i = "+i+" j = "+j);
-				context.strokeStyle = systems[ps].planets[myplayer.planetarychart[i][j]].c;
+				context.strokeStyle = theplanet.c;
 				context.stroke();
 				context.fillStyle = "white";
 				context.font = "16px Ariel";
-				context.fillText(systems[ps].planets[myplayer.planetarychart[i][j]].name,x+dx,y+dy);
+				context.fillText(theplanet.name,x+dx,y+dy);
 				if (systems[ps].players[playerindex].navtarget == myplayer.planetarychart[i][j]){//indicate planet is targeted	
 					context.beginPath();  
 					context.rect(x+ystep*(j)-ystep*0.4, y-ystep*0.4+ystep*(i),ystep*0.8,ystep*0.8); 
