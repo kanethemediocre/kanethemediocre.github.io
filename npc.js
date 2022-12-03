@@ -28,6 +28,10 @@ class NPC{
 		this.homestation = 0;
 		this.gang = 0;
 		this.ai = new NPCAI(0,"none",this.homeplanet,npcid);
+		this.alive = true;
+		this.respawntime = 1000;
+		this.deadtime = -1;
+		this.respawning = false;
 		}
 	whatisnear(thesystem,threshhold){
 		var nearbyplanets = [];
@@ -55,7 +59,24 @@ class NPC{
 		this.ai.nearbyplayers = nearbyplayers;
 		}
 	update1(thesystem,time){
-		if (this.ship.deadtime>0){ this.ship.deadtime--; }
+		if ((this.ship.hp<=0)&&(this.alive==true)){
+			this.alive = false;
+			this.deadtime = this.respawntime;
+			this.ship.x = 100000000;
+			}
+		if (this.alive==false){
+			if (this.deadtime>=0){
+				this.deadtime--;
+				//console.log(this.deadtime);
+				}
+			else{
+				this.alive = true;
+				this.ship.hp = this.ship.maxhp;
+				this.ship.shield = this.ship.maxshield;
+				this.respawning = true;
+				//respawn location will be handled in system update function
+				}
+			}
 		else {
 			//this.ship.update1();
 			this.ship.updateship(thesystem.planets);
@@ -64,7 +85,7 @@ class NPC{
 				//console.log(time);
 				this.ai.ponder(thesystem);
 				}
-			if (this.ship.hp!=-1000){this.ai.behave(thesystem,time);}
+			if (this.alive == true){this.ai.behave(thesystem,time);}
 			//this.blasters[0].update1();
 			}
 		this.blasters[0].update1();

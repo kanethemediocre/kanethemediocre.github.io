@@ -46,7 +46,9 @@ class Dustfield{
 			i++;
 			}
 		}
-	clearhidden(thesystem){
+	clearhidden(thesystem,lastcheckplanet){//clears planets 0-lastcheckplanet
+		var lcp = lastcheckplanet;
+		if ((lcp>=thesystem.planets.length)||(lcp==0)){lcp = thesystem.planets.length-1;}//0 or a too-high value will default to checking all planets
 		var i=0;
 		while(i<this.dust.length){
 			var dummy = new Umo(0,0,1,"pink");
@@ -55,7 +57,7 @@ class Dustfield{
 			var clear = true;
 			//var problems = 0;
 			var j=0;
-			while(j<thesystem.planets.length){
+			while((j<thesystem.planets.length)&&(j<lcp)){
 				if (dummy.collide(thesystem.planets[j])){
 					clear = false; 
 					j=thesystem.planets.length;//exits planet checking loop, it dont care if it collides with multiple.

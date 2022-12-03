@@ -1,5 +1,5 @@
 class Supersystem{
-	constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax){
+	constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax,difficulty){
 		this.systems = []
 		this.ppopmin = ppopmin;//max/min number of planets
 		this.ppopmax = ppopmax;
@@ -13,7 +13,8 @@ class Supersystem{
 			while(i<this.n*this.m){
 				var numplanets = Math.floor(this.ppopmin+Math.random()*(this.ppopmax-this.ppopmin));
 				var asystem = new System(i,"sys1",0,0);
-				asystem.generatepocket(3,numplanets,this.systemsize,psizemin,psizemax);//generatepocket(nout,nin,sizeout,minsizein,maxsizein){
+				var localdifficulty = difficulty+Math.floor((this.n*this.m/2)-Math.abs(i-this.n*this.m/2)); //Attempts to vary difficulty by region
+				asystem.generatepocket(3,numplanets,this.systemsize,psizemin,psizemax,localdifficulty);//generatepocket(nout,nin,sizeout,minsizein,maxsizein,difficulty){
 				asystem.planets[1].name = asystem.planets[1].name +"1";
 				asystem.planets[2].name = asystem.planets[2].name +"2";
 				asystem.planets[3].name = asystem.planets[3].name +"3";
@@ -24,6 +25,17 @@ class Supersystem{
 					var j=0;
 					while(j<asystem.planets.length){
 						asystem.planets[j].x = -1*asystem.planets[j].x;
+						j++;
+						}
+					var j=0;
+					while(j<asystem.outposts.length){
+						asystem.outposts[j].x = -1*asystem.outposts[j].x;
+						asystem.playerspawnx = -1*asystem.playerspawnx;
+						j++;
+						}
+					var j=0;
+					while(j<localdifficulty/5){
+						asystem.addsuperboss(84+12*j,2+j,1600+400*j,800+200*j,100+50*j,64+32*j,0);//addsuperboss(size,turretnum,hp,shield,turrethp,turretshield,parentid){
 						j++;
 						}
 					}

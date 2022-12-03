@@ -24,7 +24,7 @@ class System{
 		this.waldosize = 100000000000;
 		this.playerspawnx = 0;
 		this.playerspawny = 0;
-		this.playerspawnplanet = 1;//planet ID where player is to be spawned in orbit.  -1 for XY spawn.
+		this.playerspawnplanet = 5;//planet ID where player is to be spawned in orbit.  -1 for XY spawn.
 		}
 	isclear(target,x,y){
 		var dummy = new Umo(0,0,target.s,"pink");
@@ -111,7 +111,7 @@ class System{
 			}
 		var i=0;
 		while  (i<this.npcs.length){
-			if (this.npcs[i].ship.deadtime<=0){
+			if (this.npcs[i].alive==true){
 				var xtol = canvas.width/2+this.npcs[i].ship.s;
 				var xdif = this.npcs[i].ship.x-viewx;
 				if ((xdif < xtol)&&(xdif > -1*xtol)){
@@ -121,8 +121,8 @@ class System{
 						this.npcs[i].ship.drawship(viewx,viewy);
 						}
 					}
-				this.npcs[i].drawbombs(viewx,viewy)
 				}
+			this.npcs[i].drawbombs(viewx,viewy);//this ought to have some filter, or it executes for every npc bomb regardless of distance from player view
 			i++;
 			}
 		var i=0;
@@ -423,6 +423,20 @@ class System{
 		while (i<this.npcs.length){
 			//console.log("npcs updated below");
 			this.npcs[i].update1(this,time);//Unsure if use of "this" is allowed like that.
+			if (this.npcs[i].respawning == true){
+				var parentplanet = this.planets[this.npcs[i].ai.homeplanet];
+				console.log(this.npcs[i].ai.homeplanet)
+				console.log(i);
+				console.log(parentplanet);
+				var rdir = Math.random()*Math.PI*2; //random direction from planet
+				var rdist = parentplanet.s+this.npcs[i].ship.s+12+Math.random()*2*parentplanet.s; //random ish distance
+				var rcw = Math.floor(Math.random()*2)*2 - 1; //random orbit direction (-1 or 1);
+				this.npcs[i].ship.setorbit(parentplanet, rdist, rdir, rcw);
+				this.npcs[i].ship.hp = this.npcs[i].ship.maxhp;
+				this.npcs[i].alive = true;
+				this.npcs[i].respawning = false;
+				//console.log(this.npcs[i].ship.x);
+				}
 			i++;
 			}
 		var i=this.turrets.length;
@@ -452,7 +466,7 @@ class System{
 				var closestdistance = 1000000;
 				while(j>0){
 					j--;
-					if (this.npcs[j].ai.playerhostile == "true"){
+					if (this.npcs[j].ai.playerhostile == true){
 						var tempdistance = this.npcs[j].ship.distance(this.turrets[i].pivot);
 						if (tempdistance < closestdistance){
 							closest=j;
@@ -488,6 +502,26 @@ class System{
 		while (i>0){
 			i=i-1;
 			this.players[i].update1(this.planets);
+			
+			if (this.players[i].respawning == true){
+				if (this.playerspawnplanet>=0){
+					var parentplanet = this.planets[this.playerspawnplanet];
+					var rdir = Math.random()*Math.PI*2; //random direction from planet
+					var rdist = parentplanet.s+this.players[i].ship.s+12+Math.random()*2*parentplanet.s; //random ish distance
+					var rcw = Math.floor(Math.random()*2)*2 - 1; //random orbit direction (-1 or 1);
+					this.players[i].ship.setorbit(parentplanet, rdist, rdir, rcw);
+					this.players[i].respawning = false;
+					console.log(this.players[i].ship.hp);
+					}
+				else{
+
+					this.players[i].ship.x = this.playerspawnx;
+					this.players[i].ship.y = this.playerspawny;
+					this.players[i].ship.vx = 0;
+					this.players[i].ship.vy = 0;
+					this.players[i].respawning = false;
+					}
+				}
 			}					
 //update explosions///////////////////////////////////////////////////
 		var i=0;
@@ -1798,31 +1832,31 @@ class System{
 		var i = levels;
 		while(i>0){
 			i=i-1;
-			var bonus = Math.floor(Math.random()*8);//Picks a number to select which bonus the bot gets
+			var bonus = Math.floor(Math.random()*12);//Picks a number to select which bonus the bot gets
 			if (bonus==0){ //extra health
 				this.npcs[botindex].ship.maxhp = this.npcs[botindex].ship.maxhp+100;
 				this.npcs[botindex].ship.hp = this.npcs[botindex].ship.hp+100;
 				}
-			if (bonus==1){ //extra shield
+			else if (bonus==1){ //extra shield
 				this.npcs[botindex].ship.maxshield = this.npcs[botindex].ship.maxshield+50;
 				this.npcs[botindex].ship.shield = this.npcs[botindex].ship.shield+50;
 				}
-			if (bonus==2){ //extra shield regen
+			else if (bonus==2){ //extra shield regen
 				this.npcs[botindex].ship.shieldregen = this.npcs[botindex].ship.shieldregen+0.25;
 				}			
-			if (bonus==3){ //extra bomb damage
+			else if (bonus==3){ //extra bomb damage
 				this.npcs[botindex].blasters[0].plusdamage();
 				}						
-			if (bonus==4){ //extra bomb blast
+			else if (bonus==4){ //extra bomb blast
 					this.npcs[botindex].blasters[0].plusboom();//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
 					}
-			if (bonus==5){ //extra bomb speed
+			else if (bonus==5){ //extra bomb speed
 				this.npcs[botindex].blasters[0].plusspeed();//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
 				}		
-			if (bonus==6){ //extra bomb timer
+			else if (bonus==6){ //extra bomb timer
 				this.npcs[botindex].blasters[0].plustimer();//I think botbombs needs -1 because it does not include a bomb for ships[0] (player)
 				}
-			if (bonus==7){ //extra bomb n and 
+			else if (bonus==7){ //extra bomb n and 
 				if (this.npcs[botindex].blasters[0].type == "multiplex"){
 					this.npcs[botindex].blasters[0].type = "fixedspread";
 					this.npcs[botindex].blasters[0].plusn();
@@ -1833,7 +1867,34 @@ class System{
 					this.npcs[botindex].blasters[0].type = "multiplex";
 					this.npcs[botindex].blasters[0].plusn();
 					}
-				
+				}
+				//Repeat 0 and 1 to pad out the probability of a defensive bonus
+			else if (bonus==8){ //extra health
+				this.npcs[botindex].ship.maxhp = this.npcs[botindex].ship.maxhp+100;
+				this.npcs[botindex].ship.hp = this.npcs[botindex].ship.hp+100;
+				}
+			else if (bonus==9){ //extra shield
+				this.npcs[botindex].ship.maxshield = this.npcs[botindex].ship.maxshield+50;
+				this.npcs[botindex].ship.shield = this.npcs[botindex].ship.shield+50;
+				}	
+			else if (bonus==10){ //Get smaller!
+				this.npcs[botindex].ship.s = this.npcs[botindex].ship.s--;//Smaller by 1...
+				if (this.npcs[botindex].ship.s>24){this.npcs[botindex].ship.s--;}//By two if the ship isn't already smol	
+				if (this.npcs[botindex].ship.s<16){
+					this.npcs[botindex].ship.s = 16;
+					this.npcs[botindex].ship.maxhp = this.npcs[botindex].ship.maxhp+100;
+					}//By two if the ship isn't already smol	
+				}
+			else if (bonus==11){ //Get bigger and beefier!
+				this.npcs[botindex].ship.s = this.npcs[botindex].ship.s++;//Bigger by 1...
+				if (this.npcs[botindex].ship.s>24){this.npcs[botindex].ship.s++;}//By two if the ship isn't already smol	
+				if (this.npcs[botindex].ship.s>50){
+					this.npcs[botindex].ship.s = 50;
+					this.npcs[botindex].ship.maxhp = this.npcs[botindex].ship.maxhp+100;
+					this.npcs[botindex].ship.hp = this.npcs[botindex].ship.hp+100;
+					this.npcs[botindex].ship.maxshield = this.npcs[botindex].ship.maxshield+50;
+					this.npcs[botindex].ship.shield = this.npcs[botindex].ship.shield+50;
+					}//By two if the ship isn't already smol							
 				}					
 			this.npcs[botindex].ship.level = this.npcs[botindex].ship.level +1;
 			}
@@ -2090,8 +2151,10 @@ class System{
 		//this.addsuperboss(96,4,4000,1000,320,80,2);
 		//this.addsuperboss(96,4,4000,1000,320,80,3);
 		}
-	generatepocket(nout,nin,sizeout,minsizein,maxsizein){//sizeout is really a radial distance from center.  Actual size adjusted to fit.
+	generatepocket(nout,nin,sizeout,minsizein,maxsizein,difficulty){//sizeout is really a radial distance from center.  Actual size adjusted to fit.
 		if (nout<3){nout = 3;}
+		this.playerspawnplanet = -1;
+		
 		this.waldosize = 0;
 		this.gravity = false;
 		this.planetarycollisions = false;
@@ -2128,7 +2191,7 @@ class System{
 		while(i<nin){
 			var er = 1200; //exclusion radius in center
 			var tpos = Math.random()*Math.PI*2;
-			var rpos = er + Math.random()*(sizeout-er)*0.275;//fudge factor at end optimized for triangle systems leaving corner space
+			var rpos = er + Math.random()*(sizeout-er)*0.25;//fudge factor at end optimized for triangle systems leaving corner space
 			var xpos = Math.floor(Math.cos(tpos)*rpos);
 			var ypos = Math.floor(Math.sin(tpos)*rpos);
 			var psize = Math.floor(minsizein+(maxsizein-minsizein)*Math.random());
@@ -2138,16 +2201,21 @@ class System{
 				aplanet.name = randname(4);
 				aplanet.parentid = 1; //Just to prevent the minimap from rendering orbits.
 				this.planets.push(aplanet);
-				i++;
+				i++;//sketchy that theres no guaranteed speed of execution here.
 				}
 			}
-		this.enemypopulate(2,1,12);
+		this.enemypopulate(2,1+difficulty,4+difficulty*2);
 		var i=0;
 		while(i<nout){
 			var opdir = (i+0.5) * 2*Math.PI/nout
 			var opr = sizeout*0.35;
 			var opx = Math.cos(opdir)*opr;
 			var opy = Math.sin(opdir)*opr;
+			if (i==0){//Player should spawn just inward of outpost 0.
+				this.playerspawnx = opx*0.95;
+				this.playerspawny = opy*0.95;
+				}
+			
 			this.randomoutpostat(opx,opy)
 			i++;
 			}

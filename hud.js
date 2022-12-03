@@ -235,10 +235,10 @@ function hud(playerindex){
 	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
 	context.fillText("ps: "+ps,8,416);
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
-	if (myplayer.ship.hp==-1000){//This is the death screen.
+	if (myplayer.alive == false){//This is the death screen.
 		context.fillStyle = "red";
 		context.font='24px Arial';
-		context.fillText("Your ship was destroyed.  It will be repaired in "+myplayer.ship.deadtime+" frames.",canvas.width/2,canvas.height/2-64);
+		context.fillText("Your ship was destroyed.  It will be repaired in "+myplayer.deadtime+" frames.",canvas.width/2,canvas.height/2-64);
 		context.fillText("Help the repair computer to finish faster.",canvas.width/2,canvas.height/2-32);
 		context.fillStyle = "white";
 		context.font='12px Arial';

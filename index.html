@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 546 by Andrew Kane </title>
+    <title>Bling Hustle 548 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -214,7 +214,9 @@ var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
 var starmode = 1; //0 for no starfield.
 var dustmode = 0;
 let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
+var testdustfield0 = new Dustfield(8000,8000,0,2.25,24000);
 var testdustfield1 = new Dustfield(8000,8000,0,2.25,24000);
+
 var pz = 0;
 var menuabout = false;
 var menucontrols = false;
@@ -393,7 +395,7 @@ while (i<35){//systems.length){
 	i=i+1;
 	}
 
-var bubbleuniverse = new Supersystem("3bubble",7,6,16,48,100,400,0,3);//constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax){
+var bubbleuniverse = new Supersystem("3bubble",7,6,16,48,100,400,0,3,0);//constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax,difficulty){
 var i=0;
 while(i<bubbleuniverse.systems.length){
 	systems.push(bubbleuniverse.systems[i]);
@@ -471,7 +473,13 @@ function update() {
 		testfield2.draw(vwx,vwy,pz);
 		}
 	else if ((starmode==1)&&(dustmode==1)){
-		testdustfield1.drawstatic(systems[ps].players[myi].ship.x,systems[ps].players[myi].ship.y);
+		if (ps%2==1){
+			testdustfield0.drawstatic(systems[ps].players[myi].ship.x,systems[ps].players[myi].ship.y);
+			}
+		else 
+			{
+			testdustfield1.drawstatic(systems[ps].players[myi].ship.x,systems[ps].players[myi].ship.y);
+			}
 		}
 	//testmodule.draw(400,400);
 	//Menu system handling///////////////////////////////////////////////
@@ -674,19 +682,21 @@ function update() {
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[21])){
 			ps = 35;
+			testdustfield0.clearhidden(bubbleuniverse.systems[0],3);
+			testdustfield1.clearhidden(bubbleuniverse.systems[1],3);
 			myplayer.mapscale = 32;
 			dustmode = 1;
 			supercompass = 2;
 			pausemusic();
 			bubblesong1.play();
-			testdustfield1.clearhidden(systems[ps]);
+			//testdustfield1.clearhidden(systems[ps]);
 			//console.log(systems[ps].planets[0].x);
 			//myship.setorbit(systems[ps].planets[0], 21000, 0, 1);
 			
 			//systems[ps].placenear(myplayer.ship,0,0);
-			myplayer.ship.x = systems[ps].outposts[2].x-100;
+			myplayer.ship.x = systems[ps].outposts[2].x-150;
 			myplayer.ship.y = systems[ps].outposts[2].y;
-			myplayer.ship.hp = 999999;
+			//myplayer.ship.hp = 999999;
 			myplayer.ship.parentid = 0;//oof @respawn
 			//xxxx.setorbit(systems[ps].planets[0], 400000, randdir+Math.PI, -1);
 			//waldo.setorbit(systems[ps].planets[0], 400000, randdir, -1);
@@ -1021,43 +1031,53 @@ if (ps>0){
 	if (myplayer.mapactive == 2){
 		context.save();
 		context.beginPath();
-		context.rect(0,canvas.height-307,407,307)
+		context.rect(0,canvas.height-313,414,314)
 		context.clip();
 		//context.fillStyle = "black";//Background is black
 		//context.fillRect(0,canvas.height-300,400,300);//cornerrner map area		
 		drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
 		context.beginPath(); //Border of map rectangle
 		context.rect(0,canvas.height-300,400,300); //2*this.s wide
-		context.lineWidth = 1; 
+		context.lineWidth = 2; 
 		context.strokeStyle = "blue";
-		context.stroke();	
-		
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-301,401,301); //2*this.s wide
-		context.lineWidth = 1; 
-		context.strokeStyle = "purple";
 		context.stroke();	
 		
 		context.beginPath(); //Border of map rectangle
 		context.rect(0,canvas.height-302,402,302); //2*this.s wide
-		context.strokeStyle = "red";
-		context.stroke();	
-		
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-303,403,303); //2*this.s wide
-		context.strokeStyle = "brown";
+		context.lineWidth = 2; 
+		context.strokeStyle = "purple";
 		context.stroke();	
 		
 		context.beginPath(); //Border of map rectangle
 		context.rect(0,canvas.height-304,404,304); //2*this.s wide
+		context.strokeStyle = "red";
+		context.stroke();	
+		
+		context.beginPath(); //Border of map rectangle
+		context.rect(0,canvas.height-306,406,306); //2*this.s wide
+		context.strokeStyle = "orange";
+		context.stroke();	
+
+		context.beginPath(); //Border of map rectangle
+		context.rect(0,canvas.height-308,408,308); //2*this.s wide
+		context.strokeStyle = "yellow";
+		context.stroke();
+
+
+		
+		context.beginPath(); //Border of map rectangle
+		context.rect(0,canvas.height-310,410,310); //2*this.s wide
 		context.strokeStyle = "green";
 		context.stroke();
 		
 		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-305,405,305); //2*this.s wide
+		context.rect(0,canvas.height-312,412,312); //2*this.s wide
 		context.strokeStyle = "blue";
 		context.stroke();
+		
+		
 		context.restore();
+
 		}
 	}
 if (ps>34){

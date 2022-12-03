@@ -68,7 +68,8 @@ class Player{
 		this.targetlock = -1;
 		this.alive = true;
 		this.deadtime = -1; //Timer is set to this.respawntime on death.  Values>0 indicate player is dead.
-		this.respawntime = 3000; //number of frames delay between death and respawn
+		this.respawntime = 500; //number of frames delay between death and respawn
+		this.respawning = false;
 		this.vkactive = true; //virtual keys state
 		this.vkvisible = true;
 		this.mouseyoffset = 0;
@@ -170,11 +171,23 @@ class Player{
 			}
 		}
     update1(theplanets){
+		//console.log(this.ship.hp);
+		//console.log(this.alive);
+		if ((this.ship.hp<=0)&&(this.alive==true)){
+			this.alive = false;
+			this.deadtime = this.respawntime;
+			this.ship.x = -1000000;//this keeps getting ignored
+			}
 		if (this.alive==false){
+			console.log(this.deadtime);
 			if (this.deadtime>=0){this.deadtime--;}
 			else{
 				this.alive = true;
-				//do a respawn here?
+				this.ship.hp = this.ship.maxhp;
+				console.log(this.ship.hp);
+				this.ship.shield = this.ship.maxshield;
+				this.respawning = true;
+				//respawn location will be handled in system update function
 				}
 			}
 		else{
