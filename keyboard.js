@@ -3,6 +3,11 @@ window.addEventListener("keydown", function (event) {
   if (event.defaultPrevented) {
     return; // Do nothing if the event was already processed
   }
+	if (event.key=="\\");{
+		console.log("asdfasdf");
+		if (vkeys[vkeys.length-2].x ==99999){vkeys[vkeys.length-2].x = 420;}
+		else {vkeys[vkeys.length-2].x=99999;}//disables button by hiding it.
+		}
 	var myplayer = systems[ps].players[myi];
 	if((myplayer.emenu>0)&&(myplayer.ship.hp>0)){
 		myplayer.emtrees[0].handleinput(myplayer,event.key);

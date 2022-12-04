@@ -713,14 +713,14 @@ function update() {
 		else if (menuabout){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
-			fillwrappedtext(abouttext,128,16, 240,canvas.height-240);//y this different?
+			fillwrappedtext(abouttext,128,16, 240,canvas.height-230);//y this different?
 			}//display stuff here.
 		else if (menucontrols){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
 			var i=0;
 			while (i<controltext.length){ //controltext is an array of strings
-				fillwrappedtext(controltext[i],200,16, 240,canvas.height-240+i*16);
+				fillwrappedtext(controltext[i],200,16, 240,canvas.height-230+i*16);
 				i=i+1;
 				}
 			}
@@ -729,7 +729,7 @@ function update() {
 			context.font = "12px Verdana";
 			var i=0;
 			while (i<linktext.length){ //controltext is an array of strings
-				fillwrappedtext(linktext[i],200,16, 240,canvas.height-240+i*16);
+				fillwrappedtext(linktext[i],200,16, 240,canvas.height-230+i*16);
 				i=i+1;
 				}
 			}
@@ -738,14 +738,14 @@ function update() {
 			context.font = "12px Verdana";
 			var i=0;
 			while (i<modtext.length){ //controltext is an array of strings
-				fillwrappedtext(modtext[i],200,16, 240,canvas.height-240+i*16);
+				fillwrappedtext(modtext[i],200,16, 240,canvas.height-230+i*16);
 				i=i+1;
 				}
 			}
 		else if (menumousecontrols){
 			context.fillStyle = "white";
 			context.font = "12px Verdana";
-			fillwrappedtext(mousecontroltext,128,16, 240,canvas.height-240);//
+			fillwrappedtext(mousecontroltext,128,16, 240,canvas.height-230);//
 			}
 		}//done with menu system handling///////////////////////////////////////////
 //Outpost stuff all handled here.....
