@@ -3,7 +3,7 @@ window.addEventListener("keydown", function (event) {
   if (event.defaultPrevented) {
     return; // Do nothing if the event was already processed
   }
-	if (event.key=="\\");{
+	if (event.key=="\\"){
 		console.log("asdfasdf");
 		if (vkeys[vkeys.length-2].x ==99999){vkeys[vkeys.length-2].x = 420;}
 		else {vkeys[vkeys.length-2].x=99999;}//disables button by hiding it.
@@ -84,6 +84,7 @@ window.addEventListener("keydown", function (event) {
 		//systems[ps].players[myi].vkactive = false; 
 		systems[ps].players[myi].mousexoffset = fullscreenmousexoffset;
 		systems[ps].players[myi].mouseyoffset = fullscreenmouseyoffset; 
+		//if (vkeys[vkeys.length-2].x == 420){vkeys[vkeys.length-2].x = 99999;}//Disables mobile support
 	}else{
 		var theplayer = systems[ps].players[myi];
 		theplayer.input = event.key;
