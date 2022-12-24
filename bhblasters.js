@@ -17,7 +17,7 @@
 	 8,4,10,9,3,5,0.75,0.25,5,6,2,10,80,16,10,50,"white","ID not implemented");
 	 weapon5.recoil = -1.25;
 	 let weapon6 = new Blaster("Blazor","Beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
-	 8,4,10,1,0,0,1,0,0,1,0,0,384,64,10,2,"white","ID not implemented");
+	 6,3,10,1,0,0,1,0,0,1,0,0,320,80,10,2,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires an absurd spread of damaging projectiles.",5000,"fixedspread",          
 	 10,5,10,10,0,0,0.3,0,0,12,4,10,64,8,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Spectral Disintegrator","Short range, rapid-firing blaster with great damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",
@@ -45,7 +45,7 @@
 	 24,8,10,20,4,4,0.3,0,0,6,0,0,64,16,10,25,"grey","ID not implemented");
 	 weapon14.recoil = -0.4;
 	 let weapon15 = new Blaster("Gemini Cutter","Hold down the trigger to repeatedly fire pairs of bombs. Good damage, projectile speed, and energy efficiency compensates for a somewhat slow rate of fire.",5000,"rapidmultiplex",                            
-	 16,8,10,16,4,10,0.5,0.25,10,24,0,0,50,10,10,15,"white","ID not implemented");
+	 16,8,10,16,4,10,0.5,0.25,10,24,0,0,50,10,10,20,"white","ID not implemented");
 	 weapon15.special1 = 24; //e g a b d e
 	 weapon15.recoil = -0.25;
 	 let weapon16 = new Blaster("Pulse Blazor","Beam weapon damages everything in it's path.  Unlike the Blazor, this fires a powerful, instantaneous pulse on click.",3500,"beam",                            

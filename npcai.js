@@ -4,6 +4,7 @@ class NPCAI{
 		//options: "gotoplanet","gotoship","gotoplayer","gotostation","attackship","attackplayer","loiter"
 		this.behavior = "none"; //Describes overall motivation to choose different behavenows and targets
 		//options: "cargoroute","loiter","attackmission","blockade", 
+		this.career = "none";//Describes motivation to choose different behaviors, switching between unrelated tasks
 		this.team = 0;
 		this.nearbynpcs=[];
 		this.nearbyplanets=[];
@@ -13,9 +14,10 @@ class NPCAI{
 		this.friendlyteams =[];
 		this.nowtargetplanet = 0;
 		this.alltargetplanets = [];
-		this.alltargetships = [];
+		this.alltargetnpcs = [];
 		this.alltargetplayers = [];
 		this.nowtargetship = 0;
+		this.nowtargetplayer = 0;
 		this.homeplanet = 0;
 		this.homestation = 0;
 		this.gang = 0;
@@ -148,20 +150,13 @@ class NPCAI{
 		}
 	behave(thesystem,time){//Bots decide and act in the current frame
 		if (this.behavenow == "gotoinert"){
-			//seek3(target,closingvelocity,period,gametime,stopradius){
-				//myship.seek3(systems[ps].planets[myplayer.navtarget],20,30,time, 1500);}
-				//console.log(this.routei);
-				//console.log(this.route);
-				//console.log(this.nowtargetplanet);
-				//console.log(thesystem.planets[this.nowtargetplanet].name);
 			thesystem.npcs[this.id].ship.seek3(thesystem.planets[this.nowtargetplanet],20,30,time,1500);
-			//if (thesystem.npcs[this.id].ship.distance(thesystem.planets[this.nowtargetplanet])>(this.navslop+thesystem.planets[this.nowtargetplanet].s)){
-			//	this.routei++;
-			//	if (this.routei>this.route.length){ this.routei=0; }
-			//	this.nowtargetplanet = this.route[this.routei];
-			//	}
-			//basic autopilotoid 
-			//console.log("gotoinert behavin");
+			}
+		if (this.behavenow == "gotoplayer"){
+			thesystem.npcs[this.id].ship.seek3(thesystem.players[this.nowtargetplayer].ship,200,30,time,100);//seek3(target,closingvelocity,period,gametime,stopradius){
+			}
+		if (this.behavenow == "gotonpc"){
+			thesystem.npcs[this.id].ship.seek3(thesystem.npcs[this.nowtargetship].ship,200,30,time,100);//seek3(target,closingvelocity,period,gametime,stopradius){
 			}
 		if (this.behavenow == "loiter"){
 			if (time%20==0){
@@ -294,9 +289,45 @@ class NPCAI{
 			this.nowtargetplanet = this.route[this.routei];
 			}//check if near current target planet, if so cycle target planet
 		else if (this.behavior == "soldier"){}//check for nearby enemies, select best target
-		else if (this.behavior == "assassin"){}//Goto or attack target
+		else if (this.behavior == "bassassin"){//Bot assassin
+			console.log("helpimbeingexecuted");
+			var me = thesystem.npcs[this.id];
+			var myrange = me.blasters[0].timer*me.blasters[0].speed+64;
+			var mytarget = thesystem.npcs[this.alltargetnpcs[0]].ship;
+			var mydistance =  me.ship.distance(mytarget);
+			if (mydistance<myrange){//If in range
+				this.behavenow = "trackattackplayer";//target the player
+				this.nowtargetship = this.alltargetplayers[0];
+				console.log("targeting npc");
+				}
+			else{
+				this.behavenow = "gotonpc";//Goto the player!
+				this.nowtargetship = this.alltargetplayers[0];//0 because at this point in dev there will be 1 element in array
+				console.log("going to npc");
+				}
+			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
+			}//Seek and destroy a particular npc
+		else if (this.behavior == "passassin"){//player assassin
+			//console.log("helpimbeingexecuted");
+			var me = thesystem.npcs[this.id];
+			var myrange = me.blasters[0].timer*me.blasters[0].speed+64;
+			var mytarget = thesystem.players[this.alltargetplayers[0]].ship;
+			var mydistance =  me.ship.distance(mytarget);
+			if (mydistance<myrange){//If in range
+				this.behavenow = "trackattackplayer";//target the player
+				this.nowtargetship = this.alltargetplayers[0];
+				//console.log("targeting player");
+				}
+			else{
+				this.behavenow = "gotoplayer";//Goto the player!
+				this.nowtargetship = this.alltargetplayers[0];//0 because at this point in dev there will be 1 element in array
+				//console.log("going to player");
+				}
+			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
+			}//Seek and destroy a particular player
 		//Adjust this.behavenow according to this.behavior
 		}
+	
 	setuptrader(newroute,howclose){}
 }
 //testai = new NPCAI("tradeguild","trader",systems[1].planets[3])

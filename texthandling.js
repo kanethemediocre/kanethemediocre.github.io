@@ -154,7 +154,7 @@
 				context.fillText(this.sender+":",this.senderx,this.sendery);
 				//function fillwrappedtext(text,textlength,textheight,x,y){
 				var starty = Math.floor(canvas.height*5/6 - 24); //allotting bottom 1/6 of screen + 24 px fudge factor
-				var startx = 408;
+				var startx = 412;
 				context.fillStyle = "white";
 				fillwrappedtext(this.msgnow.slice(0, (thetime-this.msgstart)*1 ),100,20,startx,starty,);
 				}

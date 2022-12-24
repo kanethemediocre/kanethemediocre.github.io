@@ -68,7 +68,7 @@ class Economy{
 			i++;
 			}
 		var i = 0;
-		console.log(this.prices)
+		//console.log(this.prices)
 		while (i<thecargos.length){
 			if (this.netsupply[i]>0.25){this.forsale.push(true);}
 			else{this.forsale.push(false);}

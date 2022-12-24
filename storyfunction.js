@@ -26,6 +26,9 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
+		else if ((myplayer.mousestate>0)||(myplayer.input!="")){
+			myplayer.task = "Don't touch anything (failed)";
+			}
 		break;
 	case 2:
 		if ((myplayer.navtarget==5)&&(myplayer.navactive==1)){
@@ -93,7 +96,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	break;
 	case 9:
 		if (dstory>playerradio.msgtime){
-			var themsg = "No one knows where they came from, or why they suddenly started appearing 30 years ago.  But life off-world has changed dramatically since they came.  Most of your ships systems are made from Bling technology, and a whole new industry has developed around both fighting and studying the 'bots";
+			var themsg = "No one knows where they came from, or why they suddenly started appearing 30 years ago.  But life off-world has changed dramatically since they came.  Most of your ships systems are made from Bling technology, and the Mississippi Institute of Science Services Inside Sool Space Including Protection, Profit, and Intelligence built a whole new industry around both fighting and studying the bots.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Read the tutorial";
 			myplayer.storystate++;
@@ -157,10 +160,13 @@ switch(myplayer.storystate){//Tutorial missions so far.
 	case 16:
 	console.log(dstory);
 		if (dstory>playerradio.msgtime){
-			var themsg =  "Not every ship out there is an enemy.  Use your radar and your targeting computer to tell friend from foe.  Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+systems[ps].npcs[9].ship.name+", it should be near Merz.  ";
+			var themsg =  "Not every ship out there is an enemy.  Use your radar and your targeting computer to tell friend from foe.  Speaking of which, why don't you do me a favor and destroy a particular bot?  The name is "+
+			systems[ps].npcs[9].ship.name+", it should be near Merz.  ";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Destroy ship "+systems[ps].npcs[9].ship.name+" near Merz";
 			systems[ps].npcs[9].ship.respawn(systems[ps].planets[systems[ps].npcs[9].ai.homeplanet]);
+			systems[ps].npcs[9].deadtime = -1;
+			systems[ps].npcs[9].alive = true;
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
@@ -174,7 +180,7 @@ switch(myplayer.storystate){//Tutorial missions so far.
 			myplayer.storystate++;
 			myplayer.storytime = time;
 			}
-		else if (systems[ps].npcs[9].ship.hp==-1000){
+		else if (systems[ps].npcs[9].alive==false){
 			var themsg =  "Alright good job.  Now before you get carried away come back to the station and I'll fit your ship with something a little more powerful.";
 			playerradio.newmsg("Tutorial Dude",themsg,time);//newmsg(sndr, msg, thetime)
 			myplayer.task = "Return to the Merry Merzian";

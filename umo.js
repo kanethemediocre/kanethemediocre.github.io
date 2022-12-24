@@ -98,6 +98,7 @@ class Umo { //Universal Moving Object
 			}
 		}
 	damagewithsound(dmg){ //Automatically applies damage to shield and hitpoints as appropriate
+		//This is maybe obselete with global damage state checks
 		this.shielddamagestate = 3;
 		var shielddamagesounds = [shieldhit0,shieldhit1,shieldhit2,shieldhit3];
 		var shielddamagei = Math.floor(Math.random()*shielddamagesounds.length);

@@ -822,6 +822,8 @@ class System{
 									var boomstages = Math.floor(4+this.npcs[m].ship.level/2);
 									this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.npcs[m].ship));
 									this.bling.push(new Bling(this.npcs[m].ship.x,this.npcs[m].ship.y,this.npcs[m].ship.vx,this.npcs[m].ship.vy,this.npcs[m].ship.level*5));
+									if(!cashsound1.paused) cashsound1.pause();
+									cashsound1.currentTime = 0;
 									cashsound1.play();
 								}else if (this.npcs[m].ai.playerhostile==false){
 									this.explosions.push(new Bubblesplosion(4,0.375,"red",this.npcs[m].ship));
@@ -847,6 +849,8 @@ class System{
 									var boomstages = 6;//Math.floor(4+this.turrets[m].pivot.level/2);
 									this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.turrets[m].pivot));
 									this.bling.push(new Bling(this.turrets[m].pivot.x,this.turrets[m].pivot.y,this.turrets[m].pivot.vx,this.turrets[m].pivot.vy,this.turrets[m].pivot.level*5));
+									if(!cashsound1.paused) cashsound1.pause();
+									cashsound1.currentTime = 0;
 									cashsound1.play();
 								}else if (this.turrets[m].pivot.ai=="friendly"){
 									this.explosions.push(new Bubblesplosion(4,0.375,"red",this.turrets[m].pivot));
@@ -901,6 +905,9 @@ class System{
 					this.players[j].money = this.players[j].money + this.bling[i].value;
 					this.players[j].gotmoney = [30,this.bling[i].value];
 					this.bling.splice(i, 1);
+					//cashsound1.stop();
+					if(!cashsound1.paused) cashsound1.pause();
+					cashsound1.currentTime = 0;
 					cashsound1.play();
 					//i=this.bling.length;
 					}
@@ -1530,7 +1537,6 @@ class System{
 				  break;	
 			
 				   case "l": //Loading game
-				   aplayer.initialize(1000,200,1);
 					var i=0;
 					var stopindexes = [];
 					while(i<loadgamestring.length){
@@ -1539,8 +1545,10 @@ class System{
 							}
 						i++;
 						}
-					if(stopindexes.length!=6){console.log("bad save file");}
+					if (stopindexes.length!=6) {console.log("bad save file");}
 					else{
+						console.log("good save file");
+						aplayer.initialize(1000,200,1);
 						var savedupgrades = loadgamestring.slice(0,stopindexes[0]);
 						var savedblasters = loadgamestring.slice(stopindexes[0]+1,stopindexes[1]);
 						console.log(savedblasters);
@@ -1559,10 +1567,11 @@ class System{
 							aplayer.emtrees[0].emods[i].grade();
 							i++;
 							}
+						aplayer.inventory.cargo[aplayer.inventory.cargo.length-1] = 0;//Purges mission cargo, which is will be the last index.
+						loadgamestring = "";//Disables loadgamestring to prevent accidentally re-loading the file more than once.
 						}
-					aplayer.inventory.cargo[aplayer.inventory.cargo.length-1] = 0;//Purges mission cargo, which is will be the last index. 
-				  break;	  	  
-				default:
+				//  break;	  	  
+			//	default:
 				  break;
 					//return; // Quit when this doesn't handle the key event.
 			  } //end event key handling switch
