@@ -614,7 +614,7 @@ class System{
 			i++;	
 			}
 		}
-	blingregen(){
+	blingregensolar(){
 		if ((this.bling.length<256)&&(time%16==0)){
 			this.bling.push(new Bling(0,0,0,0,Math.floor(Math.random()*128)));
 			this.bling[this.bling.length-1].reset(this.planets);
@@ -623,6 +623,35 @@ class System{
 		var i=0;
 		while(i<this.bling.length){
 			if(this.bling[i].t>20000){this.bling[i].reset(this.planets);}
+			i++;
+			}
+		}
+	blingregenpocket(){
+		if ((this.bling.length<256)&&(time%16==0)){
+			var bspeed = 1;//This stuff should be abstracted into a bling function
+			var bdir = Math.random()*2*Math.PI;
+			var bdist = this.planets[0].s+16;
+			var bx = this.planets[0].x+bdist*Math.cos(bdir);//planets[0] should be at 0,0 anyways
+			var by = this.planets[0].y+bdist*Math.sin(bdir);
+			var bvx = bspeed*(Math.random()-0.5);
+			var bvy = bspeed*(Math.random()-0.5);
+			this.bling.push(new Bling(bx,by,bvx,bvy,Math.floor(Math.random()*128)));
+			}	
+		var i=0;
+		while(i<this.bling.length){
+			if ((this.bling[i].t>20000)&&(Math.random()<0.01)){
+				var bspeed = 1;
+				var bdir = Math.random()*2*Math.PI;
+				var bdist = this.planets[0].s+16;
+				var bx = this.planets[0].x+bdist*Math.cos(bdir);//planets[0] should be at 0,0 anyways
+				var by = this.planets[0].y+bdist*Math.sin(bdir);
+				var bvx = bspeed*(Math.random()-0.5);
+				var bvy = bspeed*(Math.random()-0.5);
+				this.bling[i].x = bx;
+				this.bling[i].y = by;
+				this.bling[i].vx = bvx;
+				this.bling[i].vy = bvy ;
+				}
 			i++;
 			}
 		}
@@ -2190,12 +2219,12 @@ class System{
 			i++;
 			}
 		//this.addbling(0,100,400,100);//addbling(parent,basevalue,bonusvalue,num){//adds bling to 1 planet
-		var i=0;
-		while(i<256){
-			var newbling = new Bling(Math.random()*3000-1500,Math.random()*3000-1500,Math.random()-0.5,Math.random()-0.5,Math.floor(Math.random()*128));
-			this.bling.push(newbling);
-			i++;
-			}
+		//var i=0;
+		//while(i<256){
+		//	var newbling = new Bling(Math.random()*3000-1500,Math.random()*3000-1500,Math.random()-0.5,Math.random()-0.5,Math.floor(Math.random()*128));
+		//	this.bling.push(newbling);
+		//	i++;
+		//	}
 		var i=1;
 		while(i<nin){
 			var er = 1200; //exclusion radius in center

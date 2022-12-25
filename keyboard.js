@@ -12,7 +12,7 @@ window.addEventListener("keydown", function (event) {
 	if((myplayer.emenu>0)&&(myplayer.ship.hp>0)){
 		myplayer.emtrees[0].handleinput(myplayer,event.key);
 		}
-	else if (myplayer.ship.hp==-1000){//if the player is dead
+	else if (myplayer.alive==false){//if the player is dead
 		myplayer.emg = 0;
 		myplayer.emh = 0;
 		myplayer.emi = 0;
@@ -23,17 +23,17 @@ window.addEventListener("keydown", function (event) {
 		
 		var myrating = myplayer.deadtree.emods[0].quizblocks[0].quizzes[myplayer.deaths%myplayer.deadtree.emods[0].quizblocks[0].quizzes.length].rating ; //% operator used to cycle through available quizzes rather than go out of bounds.
 		if (myrating == 4){
-			myplayer.ship.deadtime = 1;
+			myplayer.deadtime = 1;
 			myplayer.emenu = 0;
 			myplayer.deadtree.emods[0].quizblocks[0].quizzes[myplayer.deaths%myplayer.deadtree.emods[0].quizblocks[0].quizzes.length].rating = 0;
 			}
 		else if (myrating == 3){
-			myplayer.ship.deadtime = Math.floor(0.125*myplayer.ship.deadtime)+1
-			myplayer.emenu = 0;
+			myplayer.deadtime = Math.floor(0.125*myplayer.ship.deadtime)+1
+			myplayer.emenu = 0;//I think this doesn't do anything
 			myplayer.deadtree.emods[0].quizblocks[0].quizzes[myplayer.deaths%myplayer.deadtree.emods[0].quizblocks[0].quizzes.length].rating = 0;
 			}
 		else if (myrating == 2){
-			myplayer.ship.deadtime = Math.floor(0.25*myplayer.ship.deadtime)+1
+			myplayer.deadtime = Math.floor(0.25*myplayer.ship.deadtime)+1
 			myplayer.emenu = 0;
 			myplayer.deadtree.emods[0].quizblocks[0].quizzes[myplayer.deaths%myplayer.deadtree.emods[0].quizblocks[0].quizzes.length].rating = 0;
 			}

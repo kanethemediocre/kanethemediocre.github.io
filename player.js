@@ -69,7 +69,7 @@ class Player{
 		this.targetlock = -1;
 		this.alive = true;
 		this.deadtime = -1; //Timer is set to this.respawntime on death.  Values>0 indicate player is dead.
-		this.respawntime = 500; //number of frames delay between death and respawn
+		this.respawntime = 1500; //number of frames delay between death and respawn
 		this.respawning = false;
 		this.vkactive = true; //virtual keys state
 		this.vkvisible = true;
@@ -178,6 +178,8 @@ class Player{
 			this.alive = false;
 			this.deadtime = this.respawntime;
 			this.ship.x = -1000000;//this keeps getting ignored
+			this.ship.damagestate = 0;
+			this.ship.shielddamagestate = 0;
 			}
 		if (this.alive==false){
 			console.log(this.deadtime);
@@ -187,7 +189,8 @@ class Player{
 				this.ship.hp = this.ship.maxhp;
 				console.log(this.ship.hp);
 				this.ship.shield = this.ship.maxshield;
-				this.respawning = true;
+				this.respawning = true; //This flag is needed so that the system object knows when to respawn the player
+				this.emenu = 0; //This exits the engineering menu, which is technically "on" for the respawn challenges.
 				//respawn location will be handled in system update function
 				}
 			}

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 553 by Andrew Kane </title>
+    <title>Bling Hustle 555 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -1054,7 +1054,8 @@ function update() {
 		qq++;
 		}
 //////////////////////////Bling regeneration stuff goes here///////////////////////
-if (ps>0){systems[ps].blingregen();}
+if ((ps>0)&&(ps<35)){systems[ps].blingregensolar();}
+else if (ps>34){systems[ps].blingregenpocket();}
 if ((ps==32)&&(time%600==0)){//Special asteroid arena stuff.  Randomly levels up a bot every 20 seconds
 	var lub = Math.floor(Math.random()*systems[ps].ships.length)//level up bot
 	systems[ps].levelup(lub,1);
@@ -1074,7 +1075,7 @@ if ((ps==32)&&(time%600==0)){//Special asteroid arena stuff.  Randomly levels up
 		i++;
 		}
 	}
-if (ps>0){
+if (ps>0){//Map stuff is not displayed in menu system
 	if (myplayer.mapactive == 0){
 		context.font = "20px Ariel";
 		context.fillStyle = "white";
