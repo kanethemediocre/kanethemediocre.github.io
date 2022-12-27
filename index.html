@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 555 by Andrew Kane </title>
+    <title>Bling Hustle 557 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -153,22 +153,48 @@ var bubblesong2 = new Audio("./sounds/DangerCheese3.mp3");
 bubblesong2.loop = true;
 //bubblesong2.volume = 0;
 var menusong1 = new Audio("./sounds/positivesong1.mp3");
-menusong1.loop = true
+menusong1.loop = true;
+var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1];
 var musicvolume = 0;
 function setmusicvolume(newvolume){
-	testsong.volume = newvolume;
-	asteroidsong1.volume = newvolume;
-	bubblesong1.volume = newvolume;
-	bubblesong2.volume = newvolume;
-	menusong1.volume = newvolume;
+	var i=0;
+	while(i<allmusic.length){
+		allmusic[i].volume = newvolume;
+		i++;
+		}
+	//testsong.volume = newvolume;
+	//asteroidsong1.volume = newvolume;
+	//bubblesong1.volume = newvolume;
+	//bubblesong2.volume = newvolume;
+	//menusong1.volume = newvolume;
 	}
 setmusicvolume(musicvolume);
 function pausemusic(){
-	testsong.pause();
-	asteroidsong1.pause();
-	bubblesong1.pause();
-	bubblesong2.pause();
-	menusong1.pause();
+	var i=0;
+	while(i<allmusic.length){
+		allmusic[i].pause();
+		i++;
+		}
+	//testsong.pause();
+	//asteroidsong1.pause();
+	//bubblesong1.pause();
+	//bubblesong2.pause();
+	//menusong1.pause();
+	}
+function musicshuffle(){
+	//First make sure music is not already playing
+	var isplaying = false;
+	var i=0;
+	while(i<allmusic.length){
+		if (allmusic[i].paused == false){
+			isplaying = true;
+			}
+		i++;
+		}
+	if (isplaying == false){
+		var playnext = Math.floor(Math.random()*allmusic.length);
+		allmusic[playnext].play();
+		}
 	}
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();

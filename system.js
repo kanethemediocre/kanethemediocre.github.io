@@ -1962,12 +1962,7 @@ class System{
 			this.npcs[botindex].ship.polyradius = gangpolyradius;
 			this.npcs[botindex].ai.behavior = "guardbot2";
 			if (i==(gangsize-1)){this.npcs[botindex].ai.behavior = "guardbot2";}
-			this.npcs[botindex].ai.playerhostile = true;
-			
-			//this.botbombs.push( new Umo(0,0,0,"red"));
-			//this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
-			//this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
-			//this.botbombs[this.botbombs.length-1].shield=0;  
+			this.npcs[botindex].ai.playerhostile = true; 
 			this.levelup(botindex,level);
 			}
 		}
@@ -1989,22 +1984,51 @@ class System{
 			this.npcs[botindex].ship.c = fleetcolor1;
 			this.npcs[botindex].ship.c2 = fleetcolor2;
 			this.npcs[botindex].ship.parentid = fleetparent; 
-			this.npcs[botindex].ship.respawn(this.planets[fleetparent]);
+			this.npcs[botindex].ship.respawn(this.planets[fleetparent]);//This method is semi-obselete, after death respawns are handled by setting a "respawning" flag on the NPC object and waiting for the system updateall() function to run.
 			this.npcs[botindex].ship.name = randname(5);
 			this.npcs[botindex].ship.hp = 150;
 			this.npcs[botindex].ship.maxhp = 150;
 			this.npcs[botindex].ship.polytheta = fleetpolytheta;
 			this.npcs[botindex].ship.polyradius = fleetpolyradius;
 			this.npcs[botindex].ai.team = "trader";
-			//this.npcs[botindex].ship.aistate = 0;
 			this.npcs[botindex].ai.route = destinations;
 			this.npcs[botindex].ai.behavior = "inertpatrol";
-			//this.botbombs.push( new Umo(0,0,0,"red"));
-			//this.botbombs[this.botbombs.length-1].hp = 1;  //Set hitpoints to 1 so they explode on contact
-			//this.botbombs[this.botbombs.length-1].maxhp = 1; //with planets 
-			//this.botbombs[this.botbombs.length-1].shield=0;  
 			this.levelup(botindex,level);
 			}
+		}
+	addprivateer(home, level){//Home is planet index, not actual planet (umo) object
+		//var fleetsize = num;
+		var fleetcolor1 = randcolor();
+		var fleetcolor2 = randcolor();
+		var randomsides = Math.floor(Math.random()*8)*2+8; //randomized side number
+		var randomshipverts = randpolarpoly(randomsides, 0.25);//sides,  minimum radius
+		normalizepoly(randomshipverts);
+		var fleetpolytheta = randomshipverts[0];
+		var fleetpolyradius = randomshipverts[1];
+		var botindex = this.npcs.length;
+		this.npcs.push(new NPC(botindex));
+		this.npcs[botindex].ship.c = fleetcolor1;
+		this.npcs[botindex].ship.c2 = fleetcolor2;
+		this.npcs[botindex].ship.parentid = fleetparent; 
+		this.npcs[botindex].ship.respawn(this.planets[fleetparent]);
+		this.npcs[botindex].ship.name = randname(5);
+		this.npcs[botindex].ship.hp = 150;
+		this.npcs[botindex].ship.maxhp = 150;
+		this.npcs[botindex].ship.polytheta = fleetpolytheta;
+		this.npcs[botindex].ship.polyradius = fleetpolyradius;
+		this.npcs[botindex].ai.team = "privateer";
+		this.npcs[botindex].ai.homeplanet = home;
+		this.npcs[botindex].ai.behavior = "bassassin";
+		this.npcs[botindex].ai.career = "privateer";
+		var rnpc = Math.floor(Math.random()*systems[ps].npcs.length);
+		var i=0;
+		while (((this.npcs[rnpc].ai.playerhostile == false)||(this.npcs[rnpc].level>this.npcs[botindex].level))&&(i<10)){
+			rnpc = Math.floor(Math.random()*systems[ps].npcs.length);
+			systems[ps].npcs[botindex].ai.alltargetplayers = [ rnpc ];
+			}
+		if (i>9){console.log("failed to find appropriate target after 10 tries");}
+		this.levelup(botindex,level);
+			
 		}
 	enemypopulate(num,minlevel,maxlevel){ //Adds gangs of enemy ships, level describes difficulty, num is size of each gang.
 		var i=1;
