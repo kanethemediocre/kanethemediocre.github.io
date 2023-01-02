@@ -252,7 +252,7 @@ class Umo { //Universal Moving Object
 			pulled[i].vy = pulled[i].vy + magnitude*dsin;
 			}
 		}	
-	push(mag,dir){
+	push(mag,dir){//Poor word choice, but it's already widely used.
 		this.vx = this.vx + mag*Math.cos(dir);
 		this.vy = this.vy + mag*Math.sin(dir);
 	}

@@ -180,6 +180,7 @@ class Player{
 			this.ship.x = -1000000;//this keeps getting ignored
 			this.ship.damagestate = 0;
 			this.ship.shielddamagestate = 0;
+			this.deaths++;
 			}
 		if (this.alive==false){
 			console.log(this.deadtime);

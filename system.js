@@ -731,74 +731,87 @@ class System{
 			var j = this.players.length;
 			while(j>0){
 				j=j-1;
-				//console.log("itried3");
-				if (this.planets[i].collide(this.players[j].ship)){
-					
-					var collidedamagebonus = 9;//9x bonus damage plus the normal damage done in circlecollide
-					if (this.players[j].shieldbonus != "impact"){
-						this.players[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+				if (this.players[j].alive==true){
+					//console.log("itried3");
+					if (this.planets[i].collide(this.players[j].ship)){
+						var collidedamagebonus = 9;//9x bonus damage plus the normal damage done in circlecollide
+						if (this.players[j].shieldbonus != "impact"){
+							this.players[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+							}
 						}
-					}
-				this.planets[i].circlecollide(this.players[j].ship);
-				//this.players[j].ship.damagewithsound(1);
-				var k=this.players[j].blasters.length;
-				while(k>0){
-					k=k-1;
-					//console.log("itried2");
-					var h = this.players[j].blasters[k].bombs.length;//usually h=1
-					while(h>0){
-						h=h-1;
-						//console.log("itried1");
-						this.planets[i].circlecollide(this.players[j].blasters[k].bombs[h]);
+					this.planets[i].circlecollide(this.players[j].ship);
+					//this.players[j].ship.damagewithsound(1);
+					var k=this.players[j].blasters.length;
+					while(k>0){
+						k=k-1;
+						//console.log("itried2");
+						var h = this.players[j].blasters[k].bombs.length;//usually h=1
+						while(h>0){
+							h=h-1;
+							//console.log("itried1");
+							this.planets[i].circlecollide(this.players[j].blasters[k].bombs[h]);
+							}
 						}
 					}
 				}
 			var j = this.npcs.length;
 			while(j>0){
 				j=j-1;
-				//NPC bonus collision damage nerfed to keep bots alive longer in arena systems
-				if (this.planets[i].collide(this.npcs[j].ship)){
-					var collidedamagebonus = 3;//9x bonus damage plus the normal damage done in circlecollide
-					if (this.npcs[j].shieldbonus != "impact"){
-						this.npcs[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+				if (this.npcs[j].alive==true){
+					//NPC bonus collision damage nerfed to keep bots alive longer in arena systems
+					if (this.planets[i].collide(this.npcs[j].ship)){
+						var collidedamagebonus = 3;//9x bonus damage plus the normal damage done in circlecollide
+						if (this.npcs[j].shieldbonus != "impact"){
+							this.npcs[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+							}
 						}
-					}
-				this.planets[i].circlecollide(this.npcs[j].ship);
-				var k=this.npcs[j].blasters.length;
-				while(k>0){
-					k=k-1;
-					//console.log("itried2");
-					var h = this.npcs[j].blasters[k].bombs.length;//usually h=1
-					while(h>0){
-						h=h-1;
-						//console.log("itried1");
-						this.planets[i].circlecollide(this.npcs[j].blasters[k].bombs[h]);
+					this.planets[i].circlecollide(this.npcs[j].ship);
+					var k=this.npcs[j].blasters.length;
+					while(k>0){
+						k=k-1;
+						//console.log("itried2");
+						var h = this.npcs[j].blasters[k].bombs.length;//usually h=1
+						while(h>0){
+							h=h-1;
+							//console.log("itried1");
+							this.planets[i].circlecollide(this.npcs[j].blasters[k].bombs[h]);
+							}
 						}
 					}
 				}
-		}
+			}
 		var i = 0; //for each player (.ship)
 		var j = 0;
 		while (i<this.players.length){
-			j=i+1;
-			while(j<this.players.length){
-				this.players[j].ship.circlecollide2(this.players[i].ship);	
-				j++;
-				}
-			j=0;
-			while(j<this.npcs.length){
-				this.npcs[j].ship.circlecollide2(this.players[i].ship);
-				j++;
+			if (this.players[i].alive==true){
+				j=i+1;
+				while(j<this.players.length){
+					if (this.players[j].alive==true){
+						this.players[j].ship.circlecollide2(this.players[i].ship);	
+						}
+					j++;
+					}
+				j=0;
+				while(j<this.npcs.length){
+					if (this.npcs[j].alive==true){
+						this.npcs[j].ship.circlecollide2(this.players[i].ship);
+						}
+					j++;
+					}
 				}
 			i++;
 			}
 		var i = 0;//For each npc,
 		var j = 0; //to each other npc
 		while (i<this.npcs.length){
-			j = i+1; //avoids duplicate executions
-			while (j<this.npcs.length){
-				this.npcs[i].ship.circlecollide4(this.npcs[j].ship);
-				j++;
+			if (this.npcs[i].alive==true){
+				j = i+1; //avoids duplicate executions
+				while (j<this.npcs.length){
+					if (this.npcs[j].alive==true){
+						this.npcs[i].ship.circlecollide4(this.npcs[j].ship);
+						}
+					j++;
+					}
 				}
 			i++;
 			}
@@ -807,19 +820,23 @@ class System{
 		while (i<this.turrets.length){
 			var j=0;
 			while(j<this.players.length){
-				var k=0;
-				while(k<this.turrets[i].bombs.length){
-					this.turrets[i].bombs[k].bombcollide(this.players[j].ship);
-					k++;
+				if (this.players[j].alive==true){
+					var k=0;
+					while(k<this.turrets[i].bombs.length){
+						this.turrets[i].bombs[k].bombcollide(this.players[j].ship);
+						k++;
+						}
 					}
 				j++;
 				}
 			var j=0;
 			while(j<this.npcs.length){
-				var k=0;
-				while(k<this.turrets[i].bombs.length){
-					this.turrets[i].bombs[k].bombcollide(this.npcs[j].ship);
-					k++;
+				if (this.npcs[j].alive==true){
+					var k=0;
+					while(k<this.turrets[i].bombs.length){
+						this.turrets[i].bombs[k].bombcollide(this.npcs[j].ship);
+						k++;
+						}
 					}
 				j++;
 				}
@@ -828,34 +845,37 @@ class System{
 			i=i+1; 
 			}
 		var i=0;//////Rework/repeat this for npcs
-		while(i<this.players.length){
+		while(i<this.players.length){//Do NOT exclude dead players aas shooters, their bombs may be still active
 			var j = 0;
 			while (j<this.players[i].blasters.length){ 
 				var k = 0;
 				while (k<this.players[i].blasters[j].bombs.length){ 
 					var m = 0;
 					while (m<this.players.length){ //players bombs hit other players
-						this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
+						if (this.players[m].alive==true){
+							this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
+							}
 						m++;
 						}
 					var m = 0;
 					while (m<this.npcs.length){ //players bombs hit npcs
 						if (this.npcs[m].ship.hp>0){	
 							this.players[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
-							if (this.npcs[m].ship.hp<0){ 
+							if (this.npcs[m].ship.hp<=0){ //npc .alive is being weird, causes excessive erroneous cash awards
 								if (this.npcs[m].ai.playerhostile==true){
 									var getcash = Math.floor(Math.random()*21+10)*this.npcs[m].ship.level;
 									this.players[i].money = this.players[i].money + getcash;
 									this.players[i].gotmoney = [30,getcash];
 	//////////////////////////////////explosion stuff///////////////
-									var boomstages = Math.floor(4+this.npcs[m].ship.level/2);
-									this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.npcs[m].ship));
-									this.bling.push(new Bling(this.npcs[m].ship.x,this.npcs[m].ship.y,this.npcs[m].ship.vx,this.npcs[m].ship.vy,this.npcs[m].ship.level*5));
+									//var boomstages = Math.floor(4+this.npcs[m].ship.level/2);
+									//this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.npcs[m].ship));
+									//this.bling.push(new Bling(this.npcs[m].ship.x,this.npcs[m].ship.y,this.npcs[m].ship.vx,this.npcs[m].ship.vy,this.npcs[m].ship.level*5));
 									if(!cashsound1.paused) cashsound1.pause();
 									cashsound1.currentTime = 0;
 									cashsound1.play();
+									console.log("wut");
 								}else if (this.npcs[m].ai.playerhostile==false){
-									this.explosions.push(new Bubblesplosion(4,0.375,"red",this.npcs[m].ship));
+									//this.explosions.push(new Bubblesplosion(4,0.375,"red",this.npcs[m].ship));
 									this.players[i].money = this.players[i].money - 1000;
 									this.players[i].gotmoney = [30, -1000];
 									//somebadsound.play();
@@ -865,11 +885,10 @@ class System{
 						m++;
 						}
 					var m=0;
-					while (m<this.turrets.length){
-						
+					while (m<this.turrets.length){//need to add and implement .alive for turrets
 						if (this.turrets[m].pivot.hp>0){	
 							this.players[i].blasters[j].bombs[k].bombcollide(this.turrets[m].pivot);
-							if (this.turrets[m].pivot.hp<0){ 
+							if (this.turrets[m].pivot.hp<=0){ 
 								if (this.turrets[m].pivot.ai=="enemy"){//Ai handled old way for turrets
 									var getcash = Math.floor(Math.random()*21+10)*this.turrets[m].pivot.level;
 									this.players[i].money = this.players[i].money + getcash;
@@ -891,8 +910,6 @@ class System{
 							}
 						m++;
 						}
-						
-						
 					k++;
 					}
 				j++;

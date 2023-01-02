@@ -3,13 +3,15 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 557 by Andrew Kane </title>
+    <title>Bling Hustle 564 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
 </head>
 <body class="myElement" oncontextmenu="return false;">
 <canvas id="gameCanvas" width="1600" height="900"></canvas>
+<script type="text/javascript" src="logo.js"></script>
+<script type="text/javascript" src="bhlogos.js"></script>
 <script type="text/javascript" src="umo.js"></script>
 <script type="text/javascript" src="upgrades.js"></script>	
 <script type="text/javascript" src="blasters.js"></script>	
@@ -144,16 +146,16 @@ var missioncomplete1 = new Audio("./sounds/JazzStab1.mp3");
 var testsong = new Audio("./sounds/business2.mp3");
 //testsong.volume = 0;
 var asteroidsong1 = new Audio("./sounds/goodstart3.mp3");
-asteroidsong1.loop = true;
+//asteroidsong1.loop = true;
 //asteroidsong1.volume = 0;
 var bubblesong1 = new Audio("./sounds/dungeony1short2.mp3");
-bubblesong1.loop = true;
+//bubblesong1.loop = true;
 //bubblesong1.volume = 0;
 var bubblesong2 = new Audio("./sounds/DangerCheese3.mp3");
-bubblesong2.loop = true;
+//bubblesong2.loop = true;
 //bubblesong2.volume = 0;
 var menusong1 = new Audio("./sounds/positivesong1.mp3");
-menusong1.loop = true;
+//menusong1.loop = true;
 var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1];
 var musicvolume = 0;
 function setmusicvolume(newvolume){
@@ -421,7 +423,7 @@ while (i<35){//systems.length){
 	i=i+1;
 	}
 
-var bubbleuniverse = new Supersystem("3bubble",7,6,16,48,100,400,0,3,0);//constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax,difficulty){
+var bubbleuniverse = new Supersystem("3bubble",7,12,16,48,100,400,0,3,0);//constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax,difficulty){
 var i=0;
 while(i<bubbleuniverse.systems.length){
 	systems.push(bubbleuniverse.systems[i]);
@@ -488,6 +490,7 @@ function update() {
   	var servertime = mytime+Math.floor(time*1000/FPS);
   	if (servertime<truetime){
 	time++;
+	if (time%1000==0){ musicshuffle();}
 	var vwx = systems[ps].players[myi].ship.x;
 	var vwy = systems[ps].players[myi].ship.y;
 	var myplayer = systems[ps].players[myi];
@@ -739,7 +742,7 @@ function update() {
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[17])){
 			myship.x = -20000;
 			myship.y = -100;
-			menusong1.play();
+			//menusong1.play();
 			}
 		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[18])){
 			menuabout = false;
@@ -788,6 +791,26 @@ function update() {
 			myplayer.task = "Collect Bling";
 			myplayer.planetarychart = systems[ps].generateplanetlist();
 
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[22])){
+			if (document.fullscreenElement) {
+				fullscreenmouseyoffset++;
+				myplayer.mouseyoffset = fullscreenmouseyoffset;
+	
+			} else {
+				windowmouseyoffset++;
+				myplayer.mouseyoffset = windowmouseyoffset;
+				}
+			}
+		else if (myplayer.blasters[1].bombs[0].collide(systems[ps].planets[23])){
+			if (document.fullscreenElement) {
+				fullscreenmouseyoffset--;
+				myplayer.mouseyoffset = fullscreenmouseyoffset;
+	
+			} else {
+				windowmouseyoffset--;
+				myplayer.mouseyoffset = windowmouseyoffset;
+				}
 			}
 		else if (menuabout){
 			context.fillStyle = "white";
@@ -993,17 +1016,14 @@ function update() {
 					var ptest = pointingat( aship.directionof(ptarget), aship.d, aship.distance(ptarget), ptarget.s)
 					if (ptest == 1){
 						ptarget.damage(aplayer.blasters[aplayer.wep].hurt);
-						if (ptarget.hp<0){
+						if (ptarget.hp<=0){
 							if (systems[ps].npcs[i].ai.playerhostile==true){
 								var getcash = Math.floor(Math.random()*21+10)*ptarget.level;
 								aplayer.money = aplayer.money + getcash;
 								aplayer.gotmoney = [30,getcash];
 								cashsound1.play();
 								var boomstages = Math.floor(4+ptarget.level/2);
-								systems[ps].explosions.push(new Bubblesplosion(boomstages,0.375,"red",ptarget));
-								systems[ps].bling.push(new Bling(ptarget.x,ptarget.y,ptarget.vx,ptarget.vy,ptarget.level*5));
 							}else if (systems[ps].npcs[i].ai.playerhostile==false){
-								systems[ps].explosions.push(new Bubblesplosion(4,0.375,"red",ptarget));
 								aplayer.money = aplayer.money - 1000;
 								aplayer.gotmoney = [30, -1000];
 								//somebadsound.play();
@@ -1145,8 +1165,6 @@ if (ps>0){//Map stuff is not displayed in menu system
 		context.strokeStyle = "yellow";
 		context.stroke();
 
-
-		
 		context.beginPath(); //Border of map rectangle
 		context.rect(0,canvas.height-310,410,310); //2*this.s wide
 		context.strokeStyle = "green";
@@ -1157,12 +1175,10 @@ if (ps>0){//Map stuff is not displayed in menu system
 		context.strokeStyle = "blue";
 		context.stroke();
 		
-		
 		context.restore();
-
 		}
 	}
-if (ps>34){
+if (ps>34){//0 thru 34 are non-pocket systems
 	//if (myplayer.nowarp == false){
 		var newps = bubbleuniverse.checktrans(0,ps-35);
 		if (newps>=0){ps = newps+35;}
@@ -1212,7 +1228,6 @@ function getFile(event) {
       input.files[0])
   }
 }
-
 function placeFileContent(target, file) {
 	readFileContent(file).then(content => {
   	target.value = content

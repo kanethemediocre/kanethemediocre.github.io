@@ -60,11 +60,11 @@ function loadmenusystem(){
 	menu4.name = "Main Menu";
 	menu4.c2 = "red";
 	menu4.m = 0;
-	let morejams = new Umo(-20000-280, -300, 85, "green"); //15
+	let morejams = new Umo(-20000-0, -400, 85, "green"); //15
 	morejams.name = "More jams";
 	morejams.c2 = "red";
 	morejams.m = 0;
-	let lessjams = new Umo(-20000+280, -300, 90, "purple"); //16
+	let lessjams = new Umo(-20000+250, -350, 90, "purple"); //16
 	lessjams.name = "Less jams";
 	lessjams.c2 = "violet";
 	lessjams.m = 0;
@@ -92,8 +92,18 @@ function loadmenusystem(){
 	pocket1.name = "Pocket Arena";
 	pocket1.c2 = "teal";
 	pocket1.m = 0;		
+	
+	let fsyop = new Umo(-20000-400, 50, 100, "violet"); //22
+	fsyop.name = "Mouse Y +";
+	fsyop.c2 = "teal";
+	fsyop.m = 0;
+	
+	let fsyom = new Umo(-20000-400, -250, 100, "violet"); //23
+	fsyom.name = "Mouse Y -";
+	fsyom.c2 = "teal";
+	fsyom.m = 0;	
 		
-	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest,bp1test,bp2test,menu1,menu2,menu3,links,whatis,modding,menu4,morejams,lessjams,options1,mousecontrols,slomo,fastmo,pocket1];
+	let menuplanets = [about,playstory,playfree,playrandom,controls,aatest,bp1test,bp2test,menu1,menu2,menu3,links,whatis,modding,menu4,morejams,lessjams,options1,mousecontrols,slomo,fastmo,pocket1,fsyop,fsyom];
 	var i = 0; //This randomizes planetary dots for home system.
 	while (i<menuplanets.length){
 		var j=0;

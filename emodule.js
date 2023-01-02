@@ -15,6 +15,7 @@ class Emodule{
 		this.playerhas = false;//indicates if the player has bought or found this emodule yet
 		this.completed = false;
 		this.perfected = false;
+		this.logo = "none";//Placeholder value
 		}
 	iscomplete(){
 		var complete = true;
@@ -175,5 +176,8 @@ class Emodule{
 		context.beginPath();
 		context.rect(x,y,48,48);
 		context.stroke();
+		if (this.logo != "none"){
+			this.logo.draw(x+24,y+24);
+			}
 		}    
 	}

@@ -62,6 +62,9 @@ class NPC{
 		if ((this.ship.hp<=0)&&(this.alive==true)){
 			this.alive = false;
 			this.deadtime = this.respawntime;
+			var boomstages = Math.floor(4+this.ship.level/2);
+			thesystem.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ship));
+			thesystem.bling.push(new Bling(this.ship.x,this.ship.y,this.ship.vx,this.ship.vy,this.ship.level*5));
 			this.ship.x = 100000000;
 			}
 		if (this.alive==false){

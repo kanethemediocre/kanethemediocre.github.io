@@ -158,7 +158,7 @@ class NPCAI{
 		if (this.behavenow == "gotonpc"){
 			thesystem.npcs[this.id].ship.seek3(thesystem.npcs[this.nowtargetship].ship,200,30,time,100);//seek3(target,closingvelocity,period,gametime,stopradius){
 			}
-		if (this.behavenow == "loiter"){
+		if (this.behavenow == "loiter"){//Maintains proximity to homeplanet
 			if (time%20==0){
 				var homeplanet = thesystem.planets[this.homeplanet];
 				var myship = thesystem.npcs[this.id].ship;
@@ -169,6 +169,24 @@ class NPCAI{
 					}
 				else if (homedistance>this.softtether){
 					this.hangaround(thesystem,this.homeplanet,2000,time);
+					}
+				}
+			}
+		if (this.behavenow == "loiter2"){ //Slows excessive speeds
+			if (time%20==0){
+				var homeplanet = thesystem.planets[this.homeplanet];
+				var myship = thesystem.npcs[this.id].ship;
+				var mydv = myship.dv2(homeplanet);
+				if ((homedistance>this.hardtether)&&(myship.hp>0)){
+					myship.respawn(homeplanet);
+					//console.log("respawning at planet "+this.homeplanet)
+					}
+				else if (homedistance>this.softtether){
+					//this.hangaround(thesystem,this.homeplanet,2000,time);
+					if (mydv[0]>1){
+						myship.d = mydv[1];
+						myship.thrust = 1;
+						}
 					}
 				}
 			}
@@ -275,6 +293,31 @@ class NPCAI{
 				}
 			else {this.behavenow = "loiter";}
 			}
+		else if (this.behavior == "guardbot4"){//Look for enemies in range, pick closest one and shoot at it
+			var me = thesystem.npcs[this.id];
+			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
+			//console.log(this.nearbyplayers);
+			//console.log(this.nearbynpcs);
+			//console.log(this.nearbyplanets);
+			var closestplayerdistance = 999999;
+			var closestplayer = -1;
+			var i=0;
+			while (i<this.nearbyplayers.length){
+				var playerdistance = thesystem.players[ this.nearbyplayers[i] ].ship.distance(me.ship);
+				if (playerdistance<closestplayerdistance){
+					closestplayer = this.nearbyplayers[i];
+					closestplayerdistance = playerdistance;
+					}
+
+				i++;
+				}
+			if (closestplayer>=0){
+				//console.log("found target "+closestplayer)
+				this.behavenow = "trackattackplayer";
+				this.nowtargetship = closestplayer;
+				}
+			else {this.behavenow = "loiter2";}
+			}
 		else if (this.behavior == "inertpatrol"){
 			//console.log("inertpatrollin");
 			var me = thesystem.npcs[this.id];
@@ -296,13 +339,13 @@ class NPCAI{
 			var mytarget = thesystem.npcs[this.alltargetnpcs[0]].ship;
 			var mydistance =  me.ship.distance(mytarget);
 			if (mydistance<myrange){//If in range
-				this.behavenow = "trackattackplayer";//target the player
-				this.nowtargetship = this.alltargetplayers[0];
+				this.behavenow = "trackattacknpc";//target the player
+				this.nowtargetship = this.alltargetnpcs[0];
 				console.log("targeting npc");
 				}
 			else{
 				this.behavenow = "gotonpc";//Goto the player!
-				this.nowtargetship = this.alltargetplayers[0];//0 because at this point in dev there will be 1 element in array
+				this.nowtargetship = this.alltargetnpcs[0];//0 because at this point in dev there will be 1 element in array
 				console.log("going to npc");
 				}
 			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive

@@ -111,12 +111,19 @@ function hud(playerindex){
 		var thenavtarget=0;
 		if (myplayer.navactive==1){
 			thenavtarget=systems[ps].planets[myplayer.navtarget];
+			context.font = '20px Ariel';
+			context.fillStyle = "white";
+			context.fillText("Planet Navigation", canvas.width-160, canvas.height-16);
 			}
 		if (myplayer.navactive==2){
 			if (myplayer.navtarget < 0) {myplayer.navtarget = 0;}//maybe not necessary?
 			else if (myplayer.navtarget>systems[ps].outposts.length-1){myplayer.navtarget = 0;			}
 			thenavtarget=systems[ps].outposts[myplayer.navtarget];
+			context.font = '20px Ariel';
+			context.fillStyle = "white";
+			context.fillText("Station Navigation", canvas.width-160, canvas.height-16);
 			}
+
 		thenavtarget.drawcompass(myplayer.ship,canvas.width-64,canvas.height-96, 64); //Nav computer compass for planets
 		var solardistance = systems[ps].planets[0].distance(myplayer.ship); //distance to sun
 		var solargravity = (.0003*systems[ps].planets[0].m)/(solardistance*solardistance); //Gravitational influence of sun, pixels per frame per frame.

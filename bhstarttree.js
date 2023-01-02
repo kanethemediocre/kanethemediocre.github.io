@@ -1,7 +1,8 @@
 function bhstarttree(){
+	var logos = bhlogos()
 	var protection1em = new Emodule("arithmatic","Protection I");
 	var addition1 = new Quizblock("arithmatic","Adding I");
-	addition1.prizesize = 50;
+	addition1.prizesize = 100;
 	addition1.prizetype = "armor"
 	addition1.addaddquiz([1],[2],[false],8); //addaddquiz(alloweddigits,allowedaddends,allowedallownegative,size){
 	addition1.quizzes[addition1.quizzes.length-1].title = "Adding 2 numbers";
@@ -15,7 +16,7 @@ function bhstarttree(){
 	addition1.quizzes[addition1.quizzes.length-1].title = "Assorted";
 	var subtraction1 = new Quizblock("arithmatic","Subtracting I");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
-	subtraction1.prizesize = 4; //Describes amount statistic will be upgraded with a rating of 1.
+	subtraction1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
 	subtraction1.addsubquiz([1],[2],[false],[false],12);
 	subtraction1.quizzes[subtraction1.quizzes.length-1].title = "Subtraction";
 	subtraction1.addsubquiz([1],[2],[false],[true],12);
@@ -25,7 +26,7 @@ function bhstarttree(){
 	subtraction1.addsubquiz([1],[2,3],[false],[true,false],12);
 	subtraction1.quizzes[subtraction1.quizzes.length-1].title = "Assorted";
 	var addition2 = new Quizblock("arithmatic","Adding II");
-	addition2.prizesize = 50;
+	addition2.prizesize = 100;
 	addition2.prizetype = "armor";
 	addition2.addaddquiz([1],[2],[true],16);
 	addition2.quizzes[addition2.quizzes.length-1].title = "Adding and Integers";
@@ -33,14 +34,14 @@ function bhstarttree(){
 	addition2.quizzes[addition2.quizzes.length-1].title = "Adding and Integers";
 	var subtraction2 = new Quizblock("arithmatic","Subtracting II");
 	subtraction2.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
-	subtraction2.prizesize = 4; //Describes amount statistic will be upgraded with a rating of 1.
+	subtraction2.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
 	subtraction2.addsubquiz([1],[2],[true],[true],16);
 	subtraction2.quizzes[subtraction2.quizzes.length-1].title = "Subtraction and integers";
 	subtraction2.addsubquiz([1],[2,3,4],[true],[true],16);
 	subtraction2.quizzes[subtraction2.quizzes.length-1].title = "Subtraction and integers";
 
 	protection1em.quizblocks = [addition1,subtraction1,addition2,subtraction2];
-
+	protection1em.logo = logos[0]; 
 
 	var protection2em = new Emodule("arithmatic","Protection II");
 	protection2em.yoffset = 64;
@@ -49,31 +50,37 @@ function bhstarttree(){
 	var addition3 = new Quizblock("arithmatic","Adding III");
 	addition3.addaddquiz([1],[2],[false],5);//Placeholder for custom quizzes that step through multidigit adding process
 	addition3.addaddquiz([1],[2],[false],4);
+	addition3.prizetype = "armor";//Describes what statistic will be upgraded by passing the quiz
+	addition3.prizesize = 100; //Describes amount statistic will be upgraded with a rating of 1.
 	var subtraction3 = new Quizblock("arithmatic","Subtracting III");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
-	subtraction1.prizesize = 2; //Describes amount statistic will be upgraded with a rating of 1.
+	subtraction1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
 	subtraction3.addsubquiz([1],[2],[true],[true],16);//placeholder for custom quizzes that step throguh multidigit subtraction process.
 	subtraction3.addsubquiz([1],[2,3,4],[true],[true],16);
 	var addition4 = new Quizblock("arithmatic","Adding IV");
+	addition4.prizetype = "armor";//Describes what statistic will be upgraded by passing the quiz
+	addition4.prizesize = 100; //Describes amount statistic will be upgraded with a rating of 1.
 	addition4.addaddquiz([2],[2],[false],12);
 	addition4.addaddquiz([3],[2],[false],12);
 	addition4.addaddquiz([4,5,6],[2],[false],6);
 	addition4.addaddquiz([2,3],[3],[false],6);
 	var subtraction4 = new Quizblock("arithmatic","Subtracting IV");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
-	subtraction1.prizesize = 2; //Describes amount statistic will be upgraded with a rating of 1.
+	subtraction1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
 	subtraction4.addsubquiz([2],[2],[false],[false],12);//placeholder for custom quizzes that step throguh multidigit subtraction process.
 	subtraction4.addsubquiz([3,4,5],[2],[false],[false],12);
 	subtraction4.addsubquiz([2,3,4],[2],[false],[true],12);
 	subtraction4.addsubquiz([2,3],[2],[true],[true],12);
 	protection2em.quizblocks = [addition3,subtraction3,addition4,subtraction4];
-
+	protection2em.logo = logos[1]
 
 	var speed1em = new Emodule("arithmatic","Speed I");
 	speed1em.yoffset = 128;
 	speed1em.xoffset = 32;
 	speed1em.prereqs = [1];
 	speed1em.level = 2;
+	
+	
 	var addfast1 = new Quizblock("arithmatic","Adding Fast 1");
 	addfast1.addaddquiz([1],[2],[false],16);
 	addfast1.addaddquiz([1],[2],[true],16);
@@ -91,7 +98,7 @@ function bhstarttree(){
 	subfast1.addsubquiz([2],[2],[false],[true],8);
 	var adaptfast1 = new Quizblock("arithmatic","Adapt!");
 	adaptfast1.prizetype = "thrust";//Describes what statistic will be upgraded by passing the quiz
-	adaptfast1.prizesize = 0.2; //Describes amount statistic will be upgraded with a rating of 1.
+	adaptfast1.prizesize = 0.25; //Describes amount statistic will be upgraded with a rating of 1.
 	var mixingbowl = new Quizblock("arithmatic","For Internal Use Only");
 	mixingbowl.addaddquiz([1],[2,3,4],[true,false],8);
 	mixingbowl.addsubquiz([1],[2,2,3],[true,false],[true],8);
@@ -112,7 +119,7 @@ function bhstarttree(){
 	mixingbowl2.quizzes[0].scramble();
 	adaptfast1.quizzes.push(mixingbowl2.quizzes[0]);
 	speed1em.quizblocks = [addfast1,subfast1,adaptfast1];
-
+	speed1em.logo = logos[3];
 
 	var energy1em = new Emodule("arithmatic","Energy I");
 	energy1em.prereqs = [1];
@@ -153,7 +160,7 @@ function bhstarttree(){
 	omnimult1.scramble();
 	multiplication3.quizzes.push(omnimult1);
 	energy1em.quizblocks = [multiplication1,multiplication2,multiplication3];
-	
+	energy1em.logo = logos[2]
 	
 	
 
@@ -162,6 +169,7 @@ function bhstarttree(){
 	cargo1em.xoffset = -32;
 	cargo1em.prereqs = [3];
 	cargo1em.level = 4;
+	cargo1em.logo=logos[5];
 	
 	var algebra1 = new Quizblock("arithmatic","Algebra I");
 	algebra1.prizetype = "cargo";//Describes what statistic will be upgraded by passing the quiz
@@ -177,6 +185,7 @@ function bhstarttree(){
 	var radar1em = new Emodule("arithmatic","Radar I");
 	radar1em.prereqs = [3];
 	radar1em.level = [4];
+	radar1em.logo=logos[4];
 
 	var startertree = new Emtree("Ship");
 	startertree.emods = [protection1em,  protection2em, speed1em, energy1em, cargo1em];
