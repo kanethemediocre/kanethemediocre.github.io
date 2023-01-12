@@ -104,7 +104,8 @@ function hud(playerindex){
 	if (myplayer.vkactive == false){
 		context.font = '20px Ariel';
 		context.fillStyle = "yellow";
-		context.fillText("Virtual keys are off.  Press V reactivate", canvas.width/2-160, 16);
+		if (myplayer.vkvisible == true){context.fillText("Virtual keys are visible and disabled, press V to change.", canvas.width/2-160, 16);}
+		if (myplayer.vkvisible == false){context.fillText("Virtual keys are hidden and disabled, press V to change.", canvas.width/2-160, 16);}
 		} 
 ///////////////Navigation hud///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (myplayer.navactive > 0){
@@ -168,6 +169,7 @@ function hud(playerindex){
 	var sbl = 150; //status bar base length
 	context.font='12px Arial';
 	context.fillStyle = "orange"; //thruster power bar 
+	context.lineWidth = 2;
     context.fillRect(4, 84,Math.floor(sbl*myplayer.thruster/100), 16);
 	context.strokeStyle = "orange";
 	context.beginPath();

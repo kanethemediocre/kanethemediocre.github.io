@@ -1379,8 +1379,13 @@ class System{
 				  break;
 				case "v": 
 					if (aplayer.vkactive == true ) {aplayer.vkactive = false;} 
-					else {aplayer.vkactive = true;}
+					else if (aplayer.vkvisible == true ){aplayer.vkvisible = false;}
+					else {
+						aplayer.vkactive = true;
+						aplayer.vkvisible = true;
+						}
 				  break;
+				  
 				case "t": 
 					aplayer.targetlock = aplayer.shiptarget;//This can be more efficient and exclude other calculations around here                                      
 				  break;
@@ -1719,7 +1724,7 @@ class System{
 			var lastindex = this.outposts.length-1;
 			this.outposts[lastindex].c2 = randcolor();
 			this.outposts[lastindex].parentid = 0;
-			this.outposts[lastindex].name = randname(8)+"'s "+randname(7)+" "+randname(5);
+			this.outposts[lastindex].name = randname(8)+" "+randname(7)+" "+randname(5);
 			var totheta = [Math.PI/4,3*Math.PI/4,5*Math.PI/4,7*Math.PI/4];
 			var toradii = [1,1,1,1]; //rectangle
 			this.outposts[lastindex].polytheta = totheta;

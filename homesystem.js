@@ -1,6 +1,6 @@
 function loadhomesystem(){
 	let sun = new Umo(0, 0, 2048, "orange"); //planet initialization/////////////
-	sun.name = "Sool";
+	sun.name = 'Sool';
 	let murc = new Umo(0,8000,150,"brown");//1//initial position irrelevant
 	murc.name = "Murc";
 	murc.setorbit(sun, 8000, 0, 1);

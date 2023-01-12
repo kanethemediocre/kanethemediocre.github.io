@@ -50,7 +50,10 @@ class Emtree{
 			myquiz.q++;
 			if (myquiz.q>=myquiz.challenges.length){
 				//myquiz.grade();
+				console.log("completingquiz");
+				
 				var prize = this.emods[myplayer.emh].grade();
+				console.log(this.emods[myplayer.emh].quizblocks[myplayer.emi].quizzes[myplayer.emj].rating);
 				console.log(prize);
 				if (prize[0]>0){myplayer.emodaward(prize);}
 				

@@ -36,7 +36,7 @@ class Umo { //Universal Moving Object
 		this.parentid = 0;
 		this.active = true; //Flag indicating if ship (or planet's ships) needs to be considered by the game engine 
 		this.shopchart = [];//["Item Name","Item type",price,tier]
-		this.target = 0; //For ai use
+		this.user = -1; //For determining if a bomb should make a hit confirm sound on impact.
 		this.ai = "none";
 		this.aistate = "none";
 		this.aitargets = [];
@@ -341,6 +341,9 @@ class Umo { //Universal Moving Object
 		if (this.distance(that) < (this.s + that.s)) {
 			that.damage(this.hurt); //Automatically proportional based on time spent inside 
 			if (this.timer>6){this.timer = 6;}//sets off explosion by setting timer to start of explosion
+			if (this.user == 0){
+				//ideally only play on first frame
+				}
 			}
 		}
 	squarebouncecollide(that){

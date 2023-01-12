@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 564 by Andrew Kane </title>
+    <title>Bling Hustle 570 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -26,6 +26,7 @@
 <script type="text/javascript" src="graphics.js"></script>
 <script type="text/javascript" src="bubblesplosion.js"></script>
 <script type="text/javascript" src="bling.js"></script>
+<script type="text/javascript" src="customsystem1.js"></script>
 
 <script type="text/javascript" src="dot.js"></script>
 <script type="text/javascript" src="spot.js"></script>
@@ -73,131 +74,12 @@
 <script type="text/javascript" src="npc.js"></script>
 <script type="text/javascript" src="npcai.js"></script>
 <script type="text/javascript" src="supersystem.js"></script>
-
+<script type="text/javascript" src="savesystem.js"></script>
+<script type="text/javascript" src="mysystem.js"></script>
+<script type="text/javascript" src="bhsounds.js"></script>
 <script>
 
-//var blastersound1 = new Audio("./sounds/bubble4_short2.mp3");
-var blastersound1 = new Audio("./sounds/w11s1.mp3");
-var blastersound2 = new Audio("./sounds/close_door_12.mp3");
-var blastersound3 = new Audio("./sounds/Bubble5_trunc.mp3");
-var blastersound4 = new Audio("./sounds/bottleshortpop2.mp3");
-var blastersound5 = new Audio("./sounds/w5s0.mp3");
-var blastersound6 = new Audio("./sounds/chirpshort1.mp3");
-var blastersound7 = new Audio("./sounds/w7s0.mp3");
-var blastersound8 = new Audio("./sounds/shortburp.mp3");
-var blastersound8x0 = new Audio("./sounds/w8s0.mp3");
-var blastersound8x1 = new Audio("./sounds/w8s1.mp3");
-var blastersound8x2 = new Audio("./sounds/w8s2.mp3");
-var blastersound8x3 = new Audio("./sounds/w8s3.mp3");
-var blastersound8x4 = new Audio("./sounds/w8s4.mp3");
-var blastersound8x5 = new Audio("./sounds/w8s5.mp3");
-var blastersound9 = new Audio("./sounds/w9s0.mp3");
-var blastersound0 = new Audio("./sounds/chirpshort1.mp3");
-var blastersound10 = new Audio("./sounds/chirpshort1.mp3");
-//var blastersound11x1 = new Audio("./sounds/w11s1.mp3");
-var blastersound11x2 = new Audio("./sounds/w11s2.mp3");
-var blastersound11x3 = new Audio("./sounds/w11s3.mp3");
-var blastersound11x4 = new Audio("./sounds/w11s4.mp3");
-var blastersound11x5 = new Audio("./sounds/w11s5.mp3");
-var blastersound11x6 = new Audio("./sounds/w11s6.mp3");
-var blastersound11x7 = new Audio("./sounds/w11s7.mp3");
-var blastersound11x8 = new Audio("./sounds/w11s8.mp3");
-var blastersound11x9 = new Audio("./sounds/w11s9.mp3");
-var blastersound11x10 = new Audio("./sounds/w11s10.mp3");
-var blastersound11x11 = new Audio("./sounds/w11s11.mp3");
-var blastersound11x12 = new Audio("./sounds/w11s12.mp3");
-var blastersound12 = new Audio("./sounds/w12s4.mp3");
-var blastersound13 = new Audio("./sounds/w13s0.mp3");
 
-var blastersound14x0 = new Audio("./sounds/w14s0.mp3");
-var blastersound14x1 = new Audio("./sounds/w14s1.mp3");
-var blastersound14x2 = new Audio("./sounds/w14s2.mp3");
-var blastersound14x3 = new Audio("./sounds/w14s3.mp3");
-var blastersound14x4 = new Audio("./sounds/w14s4.mp3");
-var blastersound14x5 = new Audio("./sounds/w14s5.mp3");
-var blastersound15 = new Audio("./sounds/w15s0.mp3");
-var blastersound16 = new Audio("./sounds/w16s0.mp3");
-var blastersound17 = new Audio("./sounds/w17s0.mp3");
-
-var blastersound18x0 = new Audio("./sounds/w18s0.mp3");
-var blastersound18x1 = new Audio("./sounds/w18s1.mp3");
-var blastersound18x2 = new Audio("./sounds/w18s2.mp3");
-var blastersound18x3 = new Audio("./sounds/w18s3.mp3");
-var blastersound18x4 = new Audio("./sounds/w18s4.mp3");
-var blastersound18x5 = new Audio("./sounds/w18s5.mp3");
-var blastersound19 = new Audio("./sounds/shortburp.mp3");
-
-var armorhit0 = new Audio("./sounds/armorhit0.mp3");
-var shieldhit0 = new Audio("./sounds/shieldhit0.mp3");
-var shieldhit1 = new Audio("./sounds/shieldhit1.mp3");
-var shieldhit2 = new Audio("./sounds/shieldhit2.mp3");
-var shieldhit3 = new Audio("./sounds/shieldhit3.mp3");
-
-var enginesound1 = new Audio("./sounds/engine26.mp3");
-var damagesound1 = new Audio("./sounds/engine3.mp3");
-var cashsound1 = new Audio("./sounds/cash_register_2.mp3");
-var menuclick1 = new Audio("./sounds/menuclick1.mp3");
-var menuclick2 = new Audio("./sounds/simplechnk2.mp3");
-var menuclick3 = new Audio("./sounds/singleshot1.mp3");
-var menubuy1 = new Audio("./sounds/buyitem1.mp3");
-var respawn1 = new Audio("./sounds/respawn.mp3");
-var boost1 =  new Audio("./sounds/boingpowerup1.mp3");
-var missioncomplete1 = new Audio("./sounds/JazzStab1.mp3");
-var testsong = new Audio("./sounds/business2.mp3");
-//testsong.volume = 0;
-var asteroidsong1 = new Audio("./sounds/goodstart3.mp3");
-//asteroidsong1.loop = true;
-//asteroidsong1.volume = 0;
-var bubblesong1 = new Audio("./sounds/dungeony1short2.mp3");
-//bubblesong1.loop = true;
-//bubblesong1.volume = 0;
-var bubblesong2 = new Audio("./sounds/DangerCheese3.mp3");
-//bubblesong2.loop = true;
-//bubblesong2.volume = 0;
-var menusong1 = new Audio("./sounds/positivesong1.mp3");
-//menusong1.loop = true;
-var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1];
-var musicvolume = 0;
-function setmusicvolume(newvolume){
-	var i=0;
-	while(i<allmusic.length){
-		allmusic[i].volume = newvolume;
-		i++;
-		}
-	//testsong.volume = newvolume;
-	//asteroidsong1.volume = newvolume;
-	//bubblesong1.volume = newvolume;
-	//bubblesong2.volume = newvolume;
-	//menusong1.volume = newvolume;
-	}
-setmusicvolume(musicvolume);
-function pausemusic(){
-	var i=0;
-	while(i<allmusic.length){
-		allmusic[i].pause();
-		i++;
-		}
-	//testsong.pause();
-	//asteroidsong1.pause();
-	//bubblesong1.pause();
-	//bubblesong2.pause();
-	//menusong1.pause();
-	}
-function musicshuffle(){
-	//First make sure music is not already playing
-	var isplaying = false;
-	var i=0;
-	while(i<allmusic.length){
-		if (allmusic[i].paused == false){
-			isplaying = true;
-			}
-		i++;
-		}
-	if (isplaying == false){
-		var playnext = Math.floor(Math.random()*allmusic.length);
-		allmusic[playnext].play();
-		}
-	}
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
 FPS = 60;
@@ -275,7 +157,7 @@ function pointingat(objdir,dir,distance,size){ //are you pointing at a thing?
 	}
 ////////Declarations//////////////////////////////////////////////////////////////////////////////////
 ////////This is basically the game world/////////////////////////////////////////////////////////////////
-let testsystem = new System(2,randname(4),0,0);
+let testsystem1 = new System(2,randname(4),0,0);
 let testsystem2 = new System(3,randname(4),0,0);
 let testsystem3 = new System(4,randname(4),0,0);
 let testsystem4 = new System(5,randname(4),0,0);
@@ -325,7 +207,7 @@ pocketarena1.addsuperboss(128,7,5000,1200,320,80,9);//addsuperboss(size,turretnu
 let playerradio = new Radio(" ");
 let home = new System(1,"Sool",0,0);
 let menu = new System(0,"Main Menu",0,0);
-let systems = [menu,home,testsystem,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
+let systems = [menu,home,mysystem(),testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
 				testsystem15,testsystem16,testsystem17,testsystem18,testsystem19,testsystem20,testsystem21,testsystem22,testsystem23,testsystem24,testsystem25,testsystem26,
 				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena,bubbleparty1,bubbleparty2];
 systems[0].planets = loadmenusystem();
@@ -367,7 +249,7 @@ systems[1].addrandomtraders([5,11,16], 8, 4);
 systems[1].addcargomissions(4);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////now a simple randomly generated system////////////////////////////////
-systems[2].generatebasicsystem(5,2,16+2,80);//new lightly tested
+//systems[2].generatebasicsystem(5,2,16+2,80);//new lightly tested
 ////////////////////////////////////////////////////////////////////////////
 //now another custom system, but with less precisely controlled enemy placement
 systems[3].planets = loadtrinidadsystem(); //from trinidadsystem.js
@@ -378,6 +260,7 @@ systems[3].addrandombling(50);
 systems[3].addcargomissions(4);
 ////////////////////////////////////////////////////////////////////////////////////////
 /////////////Couple more basic systems//////////////////////////////////
+//systems[4] = customsystem1();
 systems[4].generatebasicsystem(5,4,16+4,80);//new lightly tested
 systems[5].generatebasicsystem(5,5,16+5,80);//new lightly tested
 ///////////////////////////////////////////////////////////////////////
@@ -481,6 +364,7 @@ var onmobile = window.mobileAndTabletCheck();
 if (onmobile==true){
 	vkeys[vkeys.length-2].x = 420;
 	}
+console.log(savesystem(systems[4]));
 
 ///GAMELOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -552,6 +436,7 @@ function update() {
 	//testmodule.draw(400,400);
 	//Menu system handling///////////////////////////////////////////////
 	if (ps==0){
+		myplayer.blasters[myplayer.wep].drawsights(myplayer,time);//Normally this is done in hud(), but that is excluded from menu system
 		//myship.x = 0;
 		//myship.y = -100;
 		myship.vx = 0;

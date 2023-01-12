@@ -9,19 +9,20 @@ window.addEventListener("keydown", function (event) {
 		else {vkeys[vkeys.length-2].x=99999;}//disables button by hiding it.
 		}
 	var myplayer = systems[ps].players[myi];
-	if((myplayer.emenu>0)&&(myplayer.ship.hp>0)){
+	if((myplayer.emenu>0)&&(myplayer.alive)){
 		myplayer.emtrees[0].handleinput(myplayer,event.key);
 		}
 	else if (myplayer.alive==false){//if the player is dead
 		myplayer.emg = 0;
-		myplayer.emh = 0;
+		myplayer.emh = 0;//this should happen on death, not every keyboard input frame while dead
 		myplayer.emi = 0;
 		myplayer.emj = 0;
 		myplayer.emk = 0;
 		myplayer.emenu = 5;
 		myplayer.deadtree.handleinput(myplayer,event.key);
 		
-		var myrating = myplayer.deadtree.emods[0].quizblocks[0].quizzes[myplayer.deaths%myplayer.deadtree.emods[0].quizblocks[0].quizzes.length].rating ; //% operator used to cycle through available quizzes rather than go out of bounds.
+		var myrating = myplayer.deadtree.emods[0].quizblocks[0].quizzes[0].rating ; //this should cycle through all quizzes in the deadtree, not just repeat the first quiz every time
+		console.log(myrating);
 		if (myrating == 4){
 			myplayer.deadtime = 1;
 			myplayer.emenu = 0;

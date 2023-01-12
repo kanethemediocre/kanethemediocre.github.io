@@ -88,7 +88,12 @@ class Player{
         this.inventory = new Inventory(10); //for cargo?
 		var i = 0;
 		while (i<this.blasters.length){
-			this.blasters[i].origin = this;
+			this.blasters[i].origin = this.ship;
+			var j=0;
+			while(j<this.blasters[i].bombs.length){
+				this.blasters[i].bombs[j].user = 0;//Not OK for multiplayer.
+				j++;
+				}
 			i++;
 			}
 		//this.blasters = [baseblastercopy(allblasters[0]),baseblastercopy(allblasters[1]),baseblastercopy(allblasters[2]),baseblastercopy(allblasters[3]),baseblastercopy(allblasters[4]),baseblastercopy(allblasters[5]),baseblastercopy(allblasters[6]),baseblastercopy(allblasters[7]),baseblastercopy(allblasters[8]),baseblastercopy(allblasters[9])];
@@ -183,7 +188,7 @@ class Player{
 			this.deaths++;
 			}
 		if (this.alive==false){
-			console.log(this.deadtime);
+			//console.log(this.deadtime);
 			if (this.deadtime>=0){this.deadtime--;}
 			else{
 				this.alive = true;
