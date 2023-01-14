@@ -143,36 +143,49 @@ class Supersystem{
 						while (dir>2*Math.PI){dir = dir-2*Math.PI;}
 						while (dir<0){dir = dir+2*Math.PI;}
 						dirnum = Math.floor((dir/(2*Math.PI))*6);
-						if (dirnum == 0){
+						if (dirnum == 0){//There is probably a few faster ways to do this but it only executes rarely.
+							var centerangle = 0
+							var dangle = centerangle - truedir;
 							newsystem = systemindex+this.n;
-							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
-							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
+							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
+							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
 							}
 						if (dirnum == 1){
+							var centerangle = Math.PI/3;
+							var dangle = centerangle - truedir;
 							newsystem = systemindex+1;
-							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
-							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
+							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
+							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
 							}
 						if (dirnum == 2){
+							var centerangle = 2*Math.PI/3;
+							var dangle = centerangle - truedir;
 							newsystem = systemindex+1;
-							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
-							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
+							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
+							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
 							}
 						if (dirnum == 3){
+							var centerangle = 3*Math.PI/3;
+							var dangle = centerangle - truedir;
 							newsystem = systemindex-this.n;
-							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
-							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
+							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
+							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
 							}
 						if (dirnum == 4){
+							var centerangle = 4*Math.PI/3;
+							var dangle = centerangle - truedir;
 							newsystem = systemindex-1;
-							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
-							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
+							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
+							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
 							}
 						if (dirnum == 5){
+							var centerangle = 5*Math.PI/3;
+							var dangle = centerangle - truedir;
 							newsystem = systemindex-1;
-							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
-							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
+							this.systems[systemindex].players[playerindex].ship.y = Math.sin(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.y;
+							this.systems[systemindex].players[playerindex].ship.x = Math.cos(truedir+Math.PI+2*dangle)*(threshold-1);//-1*this.systems[systemindex].players[playerindex].ship.x;
 							}
+						console.log(dangle);
 						this.systems[systemindex].players[playerindex].navtarget = 0;
 						this.systems[systemindex].players[playerindex].shiptarget = 0;
 						console.log(newsystem);
