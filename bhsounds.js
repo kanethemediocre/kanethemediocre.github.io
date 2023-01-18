@@ -66,13 +66,13 @@ var respawn1 = new Audio("./sounds/respawn.mp3");
 var boost1 =  new Audio("./sounds/boingpowerup1.mp3");
 var missioncomplete1 = new Audio("./sounds/JazzStab1.mp3");
 
-var testsong = new Audio("./sounds/business2.mp3");
-var asteroidsong1 = new Audio("./sounds/goodstart3.mp3");
+var testsong = new Audio("./sounds/BusinessShort.mp3");
+var asteroidsong1 = new Audio("./sounds/GoodStartShort.mp3");
 var bubblesong1 = new Audio("./sounds/dungeony1short2.mp3");
 var bubblesong2 = new Audio("./sounds/DangerCheese3.mp3");
-var menusong1 = new Audio("./sounds/positivesong1.mp3");
+var menusong1 = new Audio("./sounds/PositiveShort.mp3");
 var jasong1 = new Audio("./sounds/bhbusy1.mp3");
-var jasong2 = new Audio("./sounds/MildSpoooky3.mp3");
+var jasong2 = new Audio("./sounds/MildSpooky3.mp3");
 var jasong3 = new Audio("./sounds/groovy6.mp3");
 var jasong4 = new Audio("./sounds/deepturr1.mp3");
 var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1,jasong1,jasong2,jasong3,jasong4];
