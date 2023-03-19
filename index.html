@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 572 by Andrew Kane </title>
+    <title>Bling Hustle 578 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -77,12 +77,15 @@
 <script type="text/javascript" src="savesystem.js"></script>
 <script type="text/javascript" src="mysystem.js"></script>
 <script type="text/javascript" src="bhsounds.js"></script>
+
+<script type="text/javascript" src="quest.js"></script>
+<script type="text/javascript" src="bhquests.js"></script>
 <script>
 
 
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
-FPS = 60;
+var FPS = 60;
 setInterval(update, 1000 / FPS);// set up interval (game loop)
 var canvas, context;
 canvas = document.getElementById("gameCanvas"); //canvas is the draw sauce.
@@ -221,7 +224,7 @@ systems[1].outposts = loadhomeoutposts();
 systems[1].shops = allshops;  //Defined in bhshops.js, "allshops" actually is just all shops in the home system.
 var i=0;
 while(i<50){
-	systems[1].ecobalance(.05);
+	systems[1].ecobalance(.03);
 	i++;
 	}
 systems[1].addcargosales(cargoitems);
@@ -244,6 +247,16 @@ systems[1].addrandomgang(22,2,6);
 systems[1].addrandomgang(23,4,4);
 //no tune bots
 systems[1].addrandomgang(25,5,16);
+var i=0;
+while(i<systems[1].npcs.length){
+	var maybe = Math.floor(Math.random()*4)
+	if (maybe==0){
+		systems[1].npcs[i].ai.behavior = "guardandpursueplayers";
+		systems[1].npcs[i].ai.alltargetplayers = [-1];
+		systems[1].npcs[i].ai.alltargetplanets = [systems[1].npcs[i].ai.homeplanet];
+		}
+	i++;
+	}
 systems[1].addrandomtraders([5,11,16], 8, 4);
 
 systems[1].addcargomissions(4);

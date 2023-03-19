@@ -368,6 +368,43 @@ class NPCAI{
 				}
 			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
 			}//Seek and destroy a particular player
+		else if (this.behavior == "guardandpursueplayers"){//player assassin
+			//console.log("helpimbeingexecuted");
+			var me = thesystem.npcs[this.id];
+			var myrange = me.blasters[0].timer*me.blasters[0].speed+64;
+			//var mytarget = thesystem.players[this.alltargetplayers[0]].ship;
+			
+			var myplanet = thesystem.planets[this.alltargetplanets[0]];
+			//var mydistance =  me.ship.distance(mytarget);
+			if (this.alltargetplayers[0]>=0){//Use -1 as flag to indicate no active target
+				var mytarget = thesystem.players[this.alltargetplayers[0]].ship;
+				var mydistance =  me.ship.distance(mytarget);
+				if (mydistance<myrange){//If in range
+					this.behavenow = "trackattackplayer";//target the player
+					this.nowtargetship = this.alltargetplayers[0];
+					//console.log("targeting player");
+					}
+				else{
+					this.behavenow = "gotoplayer";//Goto the player!
+					this.nowtargetship = this.alltargetplayers[0];//0 because at this point in dev there will be 1 element in array
+					//console.log("going to player");
+					}
+				if (mydistance>3000){//Bot has lost player (often due to death)
+					this.behavenow = "loiter"
+					this.alltargetplayers = [-1];
+					}
+				}
+			else {//Scan for enemies to pursue
+				var i=0;
+				while(i<this.nearbyplayers.length){
+					var aplayer = thesystem.players[this.nearbyplayers[i]];
+					var planetplayerdistance = myplanet.distance(aplayer.ship);
+					if (planetplayerdistance< (2000+myplanet.s) ){this.alltargetplayers = [this.nearbyplayers[i]];}//If player is near bot AND near planet, set as target.
+					i++;
+					}
+				}
+			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
+			}//Seek and destroy a particular player
 		//Adjust this.behavenow according to this.behavior
 		}
 	

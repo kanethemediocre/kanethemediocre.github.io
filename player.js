@@ -50,6 +50,7 @@ class Player{
         this.storytime = 0;//timestamp of last story event
 		this.storywarn = 0;
 		this.storyreturn = 0;
+		this.dialogstate = 0;
         this.task = "Read the tutorial"; //main story mission line
         this.job = "None"; //latest task from a station.
         this.jobs = [];
