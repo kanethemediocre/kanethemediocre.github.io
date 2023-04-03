@@ -10,8 +10,8 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var qvk=new Virtualkey("q","Q",xmax-168,ymax-216);//constructor(key,label,x,y){
 	var dvk=new Virtualkey("d","D",xmax-72,344);//constructor(key,label,x,y)
 	var spacebarvk=new Virtualkey(" ","Spacebar",xmax/2-136,ymax-40);//constructor(key,label,x,y)
-	var lbracketvk=new Virtualkey("[","[",xmax-332,16);//constructor(key,label,x,y)
-	var rbracketvk=new Virtualkey("]","]",xmax-332,48);//constructor(key,label,x,y)
+	var lbracketvk=new Virtualkey("[","[",xmax-332,-160);//constructor(key,label,x,y) //disabled by offscreen placement
+	var rbracketvk=new Virtualkey("]","]",xmax-332,-480);//constructor(key,label,x,y)
 	var gtvk=new Virtualkey(".",">",xmax-40,ymax-216);//constructor(key,label,x,y)
 	var ltvk=new Virtualkey(",","<",xmax-72,ymax-216);//constructor(key,label,x,y)
 	var plusvk=new Virtualkey("+","+",24,ymax-336);//constructor(key,label,x,y)

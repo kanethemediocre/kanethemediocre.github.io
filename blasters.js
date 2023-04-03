@@ -30,6 +30,7 @@ class Blaster{
 		this.maxtimer = maxtimer;
 		this.special1 = 0;//For variables that may only apply to certain blaster types.
 		this.special2 = 0;
+		this.special3 = 0;
 		this.id = ID;
 		this.c = bombcolor; 
 		this.firing = 0;//for use with rapid blasters.  -1 is inactive, 0 and above are bomb indices
@@ -79,7 +80,7 @@ class Blaster{
 				}
 			i=i+1;
 			}
-		if (this.type == "fixedspread"){
+		if ((this.type == "fixedspread")||(this.type == "semispread")){
 			this.special1 = Math.PI/2;//Default spread 
 			this.special2 = 1*Math.PI/4;//default spread start
 			}
@@ -192,7 +193,13 @@ class Blaster{
 			this.firing++;
 			if (this.firing>=this.n){this.firing = 0;}
 			theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);	
+		}else if (this.type == "semispread"){
+			this.firing = this.firing + this.special3;//Special3  is the number of projectiles in the spread
+			if (this.firing>=this.n){this.firing = 0;}
+			theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);	
+			//add actual firing of spread here, special1 and special2 are arc start and end
 		}else if (this.type == "spread"){
+			/*
 			//var spread = 0.5; //arbitrary angle in radians.
 			var spread = 0.0625 + 128/theplayer.mousedistance; //Used global variable mousedistance here, shame....
 			if (spread>Math.PI){spread = Math.PI;}
@@ -207,7 +214,11 @@ class Blaster{
 				i=i+1;
 				}
 			theplayer.ship.d = shipd;
+			*/
+			var spread = 0.0625 + 128/theplayer.mousedistance;
+			this.firespread(spread,this.bombs.length,theplayer.ship.d+spread/2,theplayer.ship,0);
 		}else if (this.type == "fixedspread"){
+			/*
 			var spread = this.special1; //arbitrary angle in radians.
 			var n = this.bombs.length;
 			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
@@ -220,7 +231,10 @@ class Blaster{
 				i++;
 				}
 			theplayer.ship.d = shipd;
+			*/
+			this.firespread(this.special1,this.bombs.length,theplayer.ship.d+this.special2,theplayer.ship,0);
 		}else if (this.type == "novaspread"){
+			/*
 			var spread = 2*Math.PI; 
 			var n = this.bombs.length;
 			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
@@ -233,7 +247,10 @@ class Blaster{
 				i=i+1;
 				}
 			theplayer.ship.d = shipd;
+			*/
+			this.firespread(2*Math.PI,this.bombs.length,theplayer.ship.d+spread/2,theplayer.ship,0);
 		}else if (this.type == "multiplex"){
+			/*
 			var n = this.bombs.length;
 			var interspread = 32
 			var interstart = -1*((n-1)/2)*interspread
@@ -248,7 +265,10 @@ class Blaster{
 				this.bombs[i].y = this.bombs[i].y + dy
 				i=i+1;
 				}
+			*/	
+			this.firemulti(this.bombs.length,theplayer.ship.d,theplayer.ship,0);	
 		}else if (this.type == "rapidmultiplex"){
+			/*
 			var n = Math.floor(this.bombs.length / 12);
 			var interspread = 32;
 			var interstart = -1*((n-1)/2)*interspread;
@@ -265,8 +285,15 @@ class Blaster{
 				if (this.firing>=this.bombs.length){this.firing = 0;}
 				i=i+1;
 				}
+			*/
+			
+				var n = Math.floor(this.bombs.length / 12);
+				this.firemulti(n,theplayer.ship.d,theplayer.ship,this.firing);	
+				this.firing = this.firing + n;
+				if (this.firing>=this.bombs.length){this.firing = 0;}
+			
 			}
-		if (this.recoil!=0){ theplayer.ship.push(this.recoil,theplayer.ship.d);	}
+		if (this.recoil!=0){ theplayer.ship.push(this.recoil,theplayer.ship.d,0);	}
 		}
 	draw(viewx,viewy){
 		var i = 0;
@@ -395,6 +422,37 @@ class Blaster{
 			context.stroke();
 			}
 		}
+	firespread(spread,n,dir,ogumo,starti){
+		//var spread = this.special1; //arbitrary angle in radians.
+		//var n = this.bombs.length;
+		var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
+		var shipd = ogumo.d; //Saves origin umo's original dimension
+		ogumo.d=dir;//+this.special2; //for above, theship.d=theship.d+0.25;
+		var i=0;
+		while (i<n){
+			ogumo.launchbomb(this.bombs[i+starti],this.speed,this.timer);	
+			ogumo.d = ogumo.d-interspread;
+			i++;
+			}
+		ogumo.d = shipd;//Restores origin umo to original orientation
+		}
+	firemulti(n,dir,ogumo,starti){	//n number of bombs dir direction to fire ogumo origin umo starti first bomb index to use
+		//var n = this.bombs.length;
+		var interspread = 32
+		var interstart = -1*((n-1)/2)*interspread
+		var offsetd = dir+Math.PI/2;//theplayer.ship.d+Math.PI/2;
+		var i=0;
+		while (i<n){
+			var interoffset = interstart + interspread*i;
+			var dx = interoffset*Math.cos(offsetd);
+			var dy = interoffset*Math.sin(offsetd);
+			ogumo.launchbomb(this.bombs[i+starti],this.speed,this.timer);	
+			this.bombs[i+starti].x = this.bombs[i+starti].x + dx;
+			this.bombs[i+starti].y = this.bombs[i+starti].y + dy
+			i=i+1;
+			}
+		}
+
 	update1(){
 		var i=0;
 		while (i<this.bombs.length){

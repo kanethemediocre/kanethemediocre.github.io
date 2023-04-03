@@ -47,6 +47,7 @@ function hud(playerindex){
 		}
 	var i=0;
 	if (nmeactive == 1){//if targeting computer is on...
+			/*
 			context.font='12px Courier New';
 			var sorttargets = [];//No sorting yet
 			var i = 0 //assumes each column is same length, otherwise error
@@ -66,6 +67,7 @@ function hud(playerindex){
 			context.fillStyle = "red";
 			context.fillText("No targets in range", canvas.width-160, 24);
 			}
+			*/
 			
 	//if (myplayer.shiptarget>shipsinrange.length-1){myplayer.shiptarget = 0;}
 	//else if (myplayer.shiptarget<0){myplayer.shiptarget = 0;}

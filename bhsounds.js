@@ -76,7 +76,8 @@ var jasong2 = new Audio("./sounds/MildSpooky3.mp3");
 var jasong3 = new Audio("./sounds/groovy6.mp3");
 var jasong4 = new Audio("./sounds/deepturr1.mp3");
 var jasong5 = new Audio("./sounds/DTS1.mp3");
-var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1,jasong1,jasong2,jasong3,jasong4,jasong5];
+var jasong6 = new Audio("./sounds/somethingwave6.mp3");
+var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1,jasong1,jasong2,jasong3,jasong4,jasong5,jasong6];
 var musicvolume = 0;
 function setmusicvolume(newvolume){
 	var i=0;
