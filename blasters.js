@@ -154,7 +154,7 @@ class Blaster{
 				this.bombs[i].hp = 100;
 				this.bombs[i].shield = 1;
 			}
-			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")||(this.type == "semirapid")){
+			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")||(this.type == "semirapid")||(this.type == "semispread")){
 				var cnum = (ioffset+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
@@ -196,102 +196,33 @@ class Blaster{
 		}else if (this.type == "semispread"){
 			this.firing = this.firing + this.special3;//Special3  is the number of projectiles in the spread
 			if (this.firing>=this.n){this.firing = 0;}
-			theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);	
+			//theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);
+			console.log(this.firing);
+			console.log(this.special1);
+			console.log(this.special2);
+			console.log(this.special3);
+			this.firespread(this.special1,this.special3,theplayer.ship.d+this.special2,theplayer.ship,this.firing);			
 			//add actual firing of spread here, special1 and special2 are arc start and end
 		}else if (this.type == "spread"){
-			/*
-			//var spread = 0.5; //arbitrary angle in radians.
-			var spread = 0.0625 + 128/theplayer.mousedistance; //Used global variable mousedistance here, shame....
-			if (spread>Math.PI){spread = Math.PI;}
-			var n = this.bombs.length;
-			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
-			var shipd = theplayer.ship.d;
-			theplayer.ship.d=theplayer.ship.d+spread/2; //for above, theship.d=theship.d+0.25;
-			var i=0;
-			while (i<n){
-				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
-				theplayer.ship.d = theplayer.ship.d-interspread;
-				i=i+1;
-				}
-			theplayer.ship.d = shipd;
-			*/
 			var spread = 0.0625 + 128/theplayer.mousedistance;
 			this.firespread(spread,this.bombs.length,theplayer.ship.d+spread/2,theplayer.ship,0);
 		}else if (this.type == "fixedspread"){
-			/*
-			var spread = this.special1; //arbitrary angle in radians.
-			var n = this.bombs.length;
-			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
-			var shipd = theplayer.ship.d;
-			theplayer.ship.d=theplayer.ship.d+this.special2; //for above, theship.d=theship.d+0.25;
-			var i=0;
-			while (i<n){
-				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
-				theplayer.ship.d = theplayer.ship.d-interspread;
-				i++;
-				}
-			theplayer.ship.d = shipd;
-			*/
+			console.log(this.firing);
+			console.log(this.special1);
+			console.log(this.special2);
+			console.log(this.special3);
 			this.firespread(this.special1,this.bombs.length,theplayer.ship.d+this.special2,theplayer.ship,0);
 		}else if (this.type == "novaspread"){
-			/*
-			var spread = 2*Math.PI; 
-			var n = this.bombs.length;
-			var interspread = spread/(n-1);//for n==6 and spread == 0.5, interspread == 0.1
-			var shipd = theplayer.ship.d;
-			theplayer.ship.d = theplayer.ship.d+spread/2; //for above, theship.d=theship.d+0.25;
-			var i=0;
-			while (i<n){
-				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
-				theplayer.ship.d = theplayer.ship.d-interspread;
-				i=i+1;
-				}
-			theplayer.ship.d = shipd;
-			*/
 			this.firespread(2*Math.PI,this.bombs.length,theplayer.ship.d+spread/2,theplayer.ship,0);
 		}else if (this.type == "multiplex"){
-			/*
-			var n = this.bombs.length;
-			var interspread = 32
-			var interstart = -1*((n-1)/2)*interspread
-			var offsetd = theplayer.ship.d+Math.PI/2;
-			var i=0;
-			while (i<n){
-				var interoffset = interstart + interspread*i;
-				var dx = interoffset*Math.cos(offsetd);
-				var dy = interoffset*Math.sin(offsetd);
-				theplayer.ship.launchbomb(this.bombs[i],this.speed,this.timer);	
-				this.bombs[i].x = this.bombs[i].x + dx;
-				this.bombs[i].y = this.bombs[i].y + dy
-				i=i+1;
-				}
-			*/	
 			this.firemulti(this.bombs.length,theplayer.ship.d,theplayer.ship,0);	
 		}else if (this.type == "rapidmultiplex"){
-			/*
-			var n = Math.floor(this.bombs.length / 12);
-			var interspread = 32;
-			var interstart = -1*((n-1)/2)*interspread;
-			var offsetd = theplayer.ship.d+Math.PI/2;
-			var i=0;
-			while (i<n){
-				var interoffset = interstart + interspread*i;
-				var dx = interoffset*Math.cos(offsetd);
-				var dy = interoffset*Math.sin(offsetd);
-				theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);	
-				this.bombs[this.firing].x = this.bombs[this.firing].x + dx;
-				this.bombs[this.firing].y = this.bombs[this.firing].y + dy;
-				this.firing++;
-				if (this.firing>=this.bombs.length){this.firing = 0;}
-				i=i+1;
-				}
-			*/
-			
-				var n = Math.floor(this.bombs.length / 12);
-				this.firemulti(n,theplayer.ship.d,theplayer.ship,this.firing);	
-				this.firing = this.firing + n;
-				if (this.firing>=this.bombs.length){this.firing = 0;}
-			
+			//var n = Math.floor(this.bombs.length / 12);
+			//this.firemulti(n,theplayer.ship.d,theplayer.ship,this.firing);	
+			//this.firing = this.firing + n;
+			//if (this.firing>=this.bombs.length){this.firing = 0;}
+			//Firing happens in main loop on a timer for rapid blasters.
+			theplayer.energy = theplayer.energy + this.ecost;//energy refund
 			}
 		if (this.recoil!=0){ theplayer.ship.push(this.recoil,theplayer.ship.d,0);	}
 		}
@@ -325,7 +256,7 @@ class Blaster{
 		if ((myplayer.blasters[myplayer.wep].type == "plain")||(myplayer.blasters[myplayer.wep].type == "rapid")||(myplayer.blasters[myplayer.wep].type == "semirapid")||(myplayer.blasters[myplayer.wep].type == "beam")||(myplayer.blasters[myplayer.wep].type == "multiplex")||(myplayer.blasters[myplayer.wep].type == "rapidmultiplex")){
 			aimdirection = myplayer.ship.d
 			}
-		else if (myplayer.blasters[myplayer.wep].type == "fixedspread"){
+		else if ((myplayer.blasters[myplayer.wep].type == "fixedspread")||(myplayer.blasters[myplayer.wep].type == "semispread")){
 			aimdirection = myplayer.ship.d + myplayer.blasters[myplayer.wep].special2;
 			}
 		else if (myplayer.blasters[myplayer.wep].type == "spread"){
@@ -347,7 +278,7 @@ class Blaster{
 			context.stroke();
 			i=i+2;
 			}
-		if (myplayer.blasters[myplayer.wep].type == "fixedspread"){
+		if ((myplayer.blasters[myplayer.wep].type == "fixedspread")||(myplayer.blasters[myplayer.wep].type == "semispread")){
 			aimdirection = myplayer.ship.d + myplayer.blasters[myplayer.wep].special2-myplayer.blasters[myplayer.wep].special1;
 			}
 		else if (myplayer.blasters[myplayer.wep].type == "spread"){

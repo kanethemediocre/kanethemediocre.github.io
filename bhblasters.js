@@ -23,9 +23,19 @@
 	 let weapon8 = new Blaster("Spectral Disintegrator","Short range, rapid-firing blaster with great damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",
 	 12,6,10,12,2,4,0.25,0.25,10,6,0,0,24,6,4,10,"white","ID not implemented");
 	 weapon8.recoil = -0.25;
+	 /*
 	 let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.  Beepapop boowopendongle, prodoopsenboboompo bopopob.",20000,"spread",                                           
 	 16,8,10,12,2,10,0.5,0.25,10,8,1,10,1000,8,10,99,"white","ID not implemented");
 	  weapon9.recoil = -2;
+	  */
+	  let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.  Beepapop boowopendongle, prodoopsenboboompo bopopob.",20000,"semispread",                                           
+	 16,8,10,8,4,10,1,0.5,10,48,12,10,60,30,10,25,"white","ID not implemented");
+	  weapon9.recoil = -1.5;
+	  weapon9.special1 = Math.PI/6;
+	  weapon9.special2 = Math.PI/12;
+	  weapon9.special3 = 4;
+	  
+	  
 	 let weapon0 = new Blaster("Probe","Currently equipped to steal colors or shapes. Upgradeable to provide many other functions. Eventually.",1000,"plain",                      
 	 10,4,10,12,4,10,0.25,0.5,10,1,0,0,80,80,10,11,"white","ID not implemented");
 	 weapon0.recoil = -0.05;

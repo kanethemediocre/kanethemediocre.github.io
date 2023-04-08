@@ -66,6 +66,12 @@ var respawn1 = new Audio("./sounds/respawn.mp3");
 var boost1 =  new Audio("./sounds/boingpowerup1.mp3");
 var missioncomplete1 = new Audio("./sounds/JazzStab1.mp3");
 
+var allsounds = [ blastersound1,blastersound2,blastersound3,blastersound4,blastersound5,blastersound6,blastersound7,blastersound8,blastersound8x0,blastersound8x1,blastersound8x2,blastersound8x3,blastersound8x4,
+blastersound8x5,blastersound9,blastersound0,blastersound10,blastersound11x2,blastersound11x3,blastersound11x4,blastersound11x5,blastersound11x6,blastersound11x7,blastersound11x8,blastersound11x9,blastersound11x10,
+blastersound11x11,blastersound11x12,blastersound12,blastersound13,blastersound14x0,blastersound14x1,blastersound14x2,blastersound14x3,blastersound14x4,blastersound14x5,blastersound15,blastersound16,
+blastersound17,blastersound18x0,blastersound18x1,blastersound18x2,blastersound18x3,blastersound18x4,blastersound18x5,blastersound19,armorhit0,shieldhit0,shieldhit1,shieldhit2,shieldhit3,
+enginesound1,damagesound1,cashsound1,menuclick1,menuclick2,menuclick3,menubuy1,respawn1,boost1,missioncomplete1 ];
+
 var testsong = new Audio("./sounds/BusinessShort.mp3");
 var asteroidsong1 = new Audio("./sounds/GoodStartShort.mp3");
 var bubblesong1 = new Audio("./sounds/dungeony1short2.mp3");
@@ -79,6 +85,7 @@ var jasong5 = new Audio("./sounds/DTS1.mp3");
 var jasong6 = new Audio("./sounds/somethingwave6.mp3");
 var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1,jasong1,jasong2,jasong3,jasong4,jasong5,jasong6];
 var musicvolume = 0;
+var soundvolume = 1;
 function setmusicvolume(newvolume){
 	var i=0;
 	while(i<allmusic.length){
@@ -87,6 +94,14 @@ function setmusicvolume(newvolume){
 		}
 	}
 setmusicvolume(musicvolume);
+function setsoundvolume(newvolume){
+	var i=0;
+	while(i<allsounds.length){
+		allsounds[i].volume = newvolume;
+		i++;
+		}
+	}
+setsoundvolume(soundvolume);
 function pausemusic(){
 	var i=0;
 	while(i<allmusic.length){
@@ -106,5 +121,28 @@ function musicshuffle(){
 	if (isplaying == false){
 		var playnext = Math.floor(Math.random()*allmusic.length);
 		allmusic[playnext].play();
+		lastsong = playnext
+		}
+	}
+function nextsong(){
+	var wasplaying = false;
+	var i=0;//First make sure music is not already playing
+	while(i<allmusic.length){
+		if (allmusic[i].paused == false){
+			allmusic[i].paused == true;
+			allmusic[i].currentTime = 0;
+			i++;
+			lastsong = i;
+			if (lastsong>allmusic.length){lastsong = 0;}
+			allmusic[lastsong].play();
+			i=allmusic.length;
+			wasplaying = true;
+			}
+		i++;
+		}
+	if (wasplaying == false){
+		lastsong++;
+		if (lastsong>allmusic.length){lastsong = 0;}
+		allmusic[lastsong].play();
 		}
 	}

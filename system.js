@@ -1174,7 +1174,7 @@ class System{
 						//else if (aplayer.wep == 8){blastersound8.play();}
 						else if (aplayer.wep == 9){
 							blastersound9.play();
-							playerweapon9superbomb.initorbitbomb(aplayer.blasters[9].bombs,8,16,160,aplayer.ship,0.5,aplayer.moused+Math.PI, 4); //(bombs,coresize,minorbitize,maxorbitsize,origin,orbitspeed,direction,speed){//Orbitspeed is a multiplier value.  Individual orbit speeds are handled with the borbitspeed variable. //global scope here shame
+							//playerweapon9superbomb.initorbitbomb(aplayer.blasters[9].bombs,8,16,160,aplayer.ship,0.5,aplayer.moused+Math.PI, 4); //(bombs,coresize,minorbitize,maxorbitsize,origin,orbitspeed,direction,speed){//Orbitspeed is a multiplier value.  Individual orbit speeds are handled with the borbitspeed variable. //global scope here shame
 							}
 						else if (aplayer.wep == 0){blastersound0.play();}
 						else if (aplayer.wep == 10){blastersound0.play();}
@@ -1478,6 +1478,9 @@ class System{
 				  break;
 				  case "s":
 				  if (starmode == 0){starmode = 1;}else{starmode = 0;}
+				  break;
+				  case "o":
+				  if (aplayer.options == 0){ aplayer.options = 1;}else{aplayer.options = 0;}
 				  break;
 				 case "Enter": //The enter key purchases the currently selected shop item
 				 if ((aplayer.dockstate >= 0)&&(aplayer.dockstate<this.shops.length)){//check if docked and shop exists

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 589 by Andrew Kane </title>
+    <title>Bling Hustle 594 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -69,6 +69,7 @@
 <script type="text/javascript" src="turrets.js"></script>
 <script type="text/javascript" src="virtualkey.js"></script>
 <script type="text/javascript" src="bhvirtualkeys.js"></script>
+<script type="text/javascript" src="bhoptionsvkeys.js"></script>
 <script type="text/javascript" src="bhblasters.js"></script>
 <script type="text/javascript" src="superbomb.js"></script>
 <script type="text/javascript" src="npc.js"></script>
@@ -114,6 +115,7 @@ function openFullscreen() {
 }
 
 var vkeys = allvkeys(canvas.width,canvas.height);
+var ovkeys = optionsvkeys(canvas.width,canvas.height);
 var comfy = false;
 if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
 var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
@@ -130,6 +132,7 @@ let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
 var testdustfield0 = new Dustfield(8000,8000,0,2.25,24000);
 var testdustfield1 = new Dustfield(8000,8000,0,2.25,24000);
 
+
 var pz = 0;
 var menuabout = false;
 var menucontrols = false;
@@ -140,7 +143,8 @@ var upgradesavestring="";
 var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 var playerselect = 0;
-var playerweapon9superbomb = new Superbomb("orbitalsystem");
+var lastsong = -1
+//var playerweapon9superbomb = new Superbomb("orbitalsystem");
 var firsttree = bhstarttree();//from bhstarttree.js
 var testsavetree = firsttree.savestring();
 console.log(testsavetree);
@@ -945,16 +949,20 @@ function update() {
 				}
 			}
 		if ((aplayer.blasters[aplayer.wep].type == "rapidmultiplex")){
-			if((aplayer.mousestate==1)&&(time%(aplayer.blasters[aplayer.wep].special1)==0)&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){  //mousestate is always evaluating true, so it fires constantly.  oof, why?
-				aplayer.blasters[aplayer.wep].fire(aplayer,time);
+			if((aplayer.mousestate==1)&&(time%(aplayer.blasters[aplayer.wep].special1)==0)&&(aplayer.energy>aplayer.blasters[aplayer.wep].ecost)){  //mousestate is always evaluating true, so it fires constantly.  oof, why?				
+				var n = Math.floor(aplayer.blasters[aplayer.wep].bombs.length / 12);//Assumes blaster has enough bombs for exactly 12 groups.  
+				aplayer.blasters[aplayer.wep].firing = aplayer.blasters[aplayer.wep].firing + n;//.firing variable tracks which bomb is next to be fired.
+				if (aplayer.blasters[aplayer.wep].firing>=aplayer.blasters[aplayer.wep].bombs.length){aplayer.blasters[aplayer.wep].firing = 0;}
+				console.log(aplayer.blasters[aplayer.wep].firing);
+				aplayer.blasters[aplayer.wep].firemulti(n,aplayer.ship.d,aplayer.ship,aplayer.blasters[aplayer.wep].firing);				
 				aplayer.energy = aplayer.energy - aplayer.blasters[aplayer.wep].ecost;
 				if (aplayer.wep==15){blastersound15.play();}
 			}
 		}
 	/////////////////////////////////weapon 9 in-loop code, is even more special////////////////////////////////////////////////////////////////
-		if (aplayer.blasters[9].bombs[0].timer>0){
-			playerweapon9superbomb.maintainorbitbomb();
-			}
+		//if (aplayer.blasters[9].bombs[0].timer>0){
+		//	playerweapon9superbomb.maintainorbitbomb();
+		//	}
 	///////weapon 10 in-loop code, probe is special//////////////////////////////////////////////////
 		if ((aplayer.wep==0)&&(aplayer.blasters[0].bombs[0].timer>0)){//wep == 11 to disable, wep should ==0
 			var j = systems[ps].npcs.length;

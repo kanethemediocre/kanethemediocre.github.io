@@ -103,6 +103,7 @@ function hud(playerindex){
 			i++;
 			}
 		}
+
 	if (myplayer.vkactive == false){
 		context.font = '20px Ariel';
 		context.fillStyle = "yellow";
@@ -454,7 +455,20 @@ function hud(playerindex){
 			}
 		}
 		
-
+	if (myplayer.options == 1){
+	context.fillStyle = "navy";
+	context.fillRect(180,80,600,600);
+		var i=0;
+		while (i<ovkeys.length){
+			ovkeys[i].draw();
+			i++;
+			}
+		context.font = "20px Ariel";
+		context.fillStyle = "yellow";
+		context.fillText(musicvolume,370,120);	
+		context.fillText(soundvolume,370,160);			
+		context.fillText(lastsong,370,200);	
+		}
 		
 	
 

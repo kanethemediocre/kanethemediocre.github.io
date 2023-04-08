@@ -1,4 +1,4 @@
-
+//A lot of player keyboard controls are handled in system.playerkeys().
 window.addEventListener("keydown", function (event) {
   if (event.defaultPrevented) {
     return; // Do nothing if the event was already processed

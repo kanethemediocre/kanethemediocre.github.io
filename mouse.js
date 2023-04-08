@@ -10,29 +10,49 @@ function mouseMoveHandler(e) {
 } 
 document.addEventListener("mousedown", mouseDownHandler, false);
 function mouseDownHandler(e) {
+	action = -1;
 	var myplayer = systems[1].players[myi];
 	if (myplayer.planetmenu == 1){
 		myplayer.planetmenu = 0;
 		return;
 		}
-	myplayer.mousestate = e.buttons;
-	myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
-	myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
-	console.log(e.clientX+ " " +e.clientY);
-	if (myplayer.vkactive == true){
+	if (myplayer.options == 1){
+		var vkeypressed = false;
+		var vkeyaction = -1;
 		var i=0;
-		while(i<vkeys.length){
-			if (vkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
-				myplayer.input = vkeys[i].key;
-				systems[ps].playerkeys();
-				i=vkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
+		while(i<ovkeys.length){
+			//console.log("itried");
+			if (ovkeys[i].inside(e.clientX-8,e.clientY-8)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
+				action = ovkeys[i].key;
+				i=ovkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
+				vkeypressed = true;
 				}
 			i++;
 			}
-		if (i==vkeys.length){ systems[ps].playermice(); } //If loop exited without vkeys trigger, meaning no buttons were clicked
+		optionsactions(action,myplayer);
 		}
-	else { systems[ps].playermice();}
+	else{
+		myplayer.mousestate = e.buttons;
+		myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
+		myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
+		console.log(e.clientX+ " " +e.clientY);
+		if (myplayer.vkactive == true){
+			var i=0;
+			while(i<vkeys.length){
+				if (vkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
+					myplayer.input = vkeys[i].key;
+					systems[ps].playerkeys();
+					i=vkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
+					}
+				i++;
+				}
+			if (i==vkeys.length){ systems[ps].playermice(); } //If loop exited without vkeys trigger, meaning no buttons were clicked
+			}
+		else { systems[ps].playermice();}
+		}
 	}
+	
+	
 document.addEventListener("mouseup", mouseUpHandler, false);
 function mouseUpHandler(e) {
 var myplayer = systems[1].players[0];
