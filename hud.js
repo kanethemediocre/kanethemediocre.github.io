@@ -453,26 +453,31 @@ function hud(playerindex){
 					}
 				}
 			}
-		}
-		
+		}	
 	if (myplayer.options == 1){
-	context.fillStyle = "navy";
-	context.fillRect(180,80,600,600);
+		context.fillStyle = "#080808";
+		context.fillRect(180,50,500,500);
+		context.font = "24px Ariel";
+		context.fillStyle = "yellow";
+		context.fillText("Options",200,88);	
 		var i=0;
 		while (i<ovkeys.length){
 			ovkeys[i].draw();
 			i++;
 			}
 		context.font = "20px Ariel";
-		context.fillStyle = "yellow";
+		context.fillStyle = "lime";
 		context.fillText(musicvolume,370,120);	
 		context.fillText(soundvolume,370,160);			
-		context.fillText(lastsong,370,200);	
+		context.fillText(lastsong,370,200);
+		context.fillText(myplayer.vkactive,360,340);
+		if (document.fullscreenElement) {
+			context.fillText(fullscreenmouseyoffset,370,420);
+		} else {
+			context.fillText(windowmouseyoffset,370,420);
+			}
 		}
 		
-	
-
-	
 var netsolarpain = 0;
 if (myplayer.shieldbonus!="solar"){netsolarpain = myplayer.solarpain-1.125;}
 else {netsolarpain = myplayer.solarpain - 3.125;}

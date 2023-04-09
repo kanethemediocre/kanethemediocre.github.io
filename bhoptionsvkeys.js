@@ -7,12 +7,14 @@ function optionsvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var ss=new Virtualkey(4,"Skip Song",200,180);//constructor(key,label,x,y)
 	var ttt=new Virtualkey(5,"Touchscreen Thrust Toggler",200,240);//constructor(key,label,x,y) //disabled by offscreen placement
 	var sta=new Virtualkey(6,"Starfield toggle",200,280);//constructor(key,label,x,y)
-	var vka=new Virtualkey(7,"Virtual Keys Active",200,320);//constructor(key,label,x,y)
-	var vkv=new Virtualkey(8,"Virtual Keys Visible",400,320);//constructor(key,label,x,y){
+	var vka=new Virtualkey(7,"VKeys Active",200,320);//constructor(key,label,x,y)
+	var vkv=new Virtualkey(8,"VKeys Visible",400,320);//constructor(key,label,x,y){
 	var fup=new Virtualkey(9,"Enable Fullscreen",200,360);//constructor(key,label,x,y)
 	var fum=new Virtualkey(10,"Exit Fullscreen",400,360);//constructor(key,label,x,y)
-
-	return [mvp,mvm,svp,svm,ss,sta,vka,vkv,fup,fum,ttt];
+	var myp=new Virtualkey(11,"Y Offset +",200,400);//constructor(key,label,x,y)
+	var mym=new Virtualkey(12,"Y Offset - ",400,400);//constructor(key,label,x,y)
+	var exit=new Virtualkey(13,"Click here or press o to exit",250,500);//constructor(key,label,x,y)
+	return [mvp,mvm,svp,svm,ss,sta,vka,vkv,fup,fum,ttt,myp,mym,exit];
 }
 function optionsactions(action,theplayer){
 	switch(action){
@@ -62,8 +64,28 @@ function optionsactions(action,theplayer){
 			theplayer.mousexoffset = fullscreenmousexoffset;
 			theplayer.mouseyoffset = fullscreenmouseyoffset; 
 			break;
-		case 10:
-
+		case 11:
+			if (document.fullscreenElement) {
+				fullscreenmouseyoffset++;
+				theplayer.mouseyoffset = fullscreenmouseyoffset;
+	
+			} else {
+				windowmouseyoffset++;
+				theplayer.mouseyoffset = windowmouseyoffset;
+				}
+			break;
+		case 12:
+			if (document.fullscreenElement) {
+				fullscreenmouseyoffset--;
+				theplayer.mouseyoffset = fullscreenmouseyoffset;
+	
+			} else {
+				windowmouseyoffset--;
+				theplayer.mouseyoffset = windowmouseyoffset;
+				}
+			break;
+		case 13://fullscreen
+			theplayer.options = 0;
 			break;
 		}
 	}
