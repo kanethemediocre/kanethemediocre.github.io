@@ -16,7 +16,7 @@ function bhstarttree(){
 	addition1.quizzes[addition1.quizzes.length-1].title = "Assorted";
 	var subtraction1 = new Quizblock("arithmatic","Subtracting I");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
-	subtraction1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
+	subtraction1.prizesize = 10; //Describes amount statistic will be upgraded with a rating of 1.
 	subtraction1.addsubquiz([1],[2],[false],[false],12);
 	subtraction1.quizzes[subtraction1.quizzes.length-1].title = "Subtraction";
 	subtraction1.addsubquiz([1],[2],[false],[true],12);
@@ -34,7 +34,7 @@ function bhstarttree(){
 	addition2.quizzes[addition2.quizzes.length-1].title = "Adding and Integers";
 	var subtraction2 = new Quizblock("arithmatic","Subtracting II");
 	subtraction2.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
-	subtraction2.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
+	subtraction2.prizesize = 10; //Describes amount statistic will be upgraded with a rating of 1.
 	subtraction2.addsubquiz([1],[2],[true],[true],16);
 	subtraction2.quizzes[subtraction2.quizzes.length-1].title = "Subtraction and integers";
 	subtraction2.addsubquiz([1],[2,3,4],[true],[true],16);
@@ -66,7 +66,7 @@ function bhstarttree(){
 	addition4.addaddquiz([2,3],[3],[false],6);
 	var subtraction4 = new Quizblock("arithmatic","Subtracting IV");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
-	subtraction1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
+	subtraction1.prizesize = 10; //Describes amount statistic will be upgraded with a rating of 1.
 	subtraction4.addsubquiz([2],[2],[false],[false],12);//placeholder for custom quizzes that step throguh multidigit subtraction process.
 	subtraction4.addsubquiz([3,4,5],[2],[false],[false],12);
 	subtraction4.addsubquiz([2,3,4],[2],[false],[true],12);
@@ -128,7 +128,7 @@ function bhstarttree(){
 	energy1em.level = 3;
 	var multiplication1 = new Quizblock("arithmatic","Multiplying I");
 	multiplication1.prizetype = "blasterenergy";//Describes what statistic will be upgraded by passing the quiz
-	multiplication1.prizesize = 2; //Describes amount statistic will be upgraded with a rating of 1.
+	multiplication1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
 	multiplication1.addarithmaticquizpr([1],[2],[false],10,[1,-999],"*");//addarithmaticquizpr(alloweddigits,allowedaddends,allowedallownegative, size,overrides,operator){
 	multiplication1.addarithmaticquizpr([1],[2],[false],10,[0,-999],"*");
 	multiplication1.addarithmaticquizpr([1],[2],[false],10,[2,-999],"*");
@@ -136,7 +136,7 @@ function bhstarttree(){
 	multiplication1.addarithmaticquizpr([1],[2],[false],10,[4,-999],"*");
 	var multiplication2 = new Quizblock("arithmatic","Multiplying II");
 	multiplication1.prizetype = "blasterenergy";//Describes what statistic will be upgraded by passing the quiz
-	multiplication1.prizesize = 3; //Describes amount statistic will be upgraded with a rating of 1.
+	multiplication1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
 	multiplication1.addarithmaticquizpr([1],[2],[false],10,[5,-999],"*");
 	multiplication2.addarithmaticquizpr([1],[2],[false],10,[9,-999],"*");
 	multiplication2.addarithmaticquizpr([1],[2],[false],10,[10,-999],"*");
