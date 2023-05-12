@@ -1033,14 +1033,14 @@ if (ps>0){//Map stuff is not displayed in menu system
 		context.fillStyle = "white";
 		context.fillText("Map is off.",16,canvas.height-16);
 		}
-	if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
-	if (myplayer.mapactive == 2){
+	else if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
+	else if (myplayer.mapactive == 2){
 		context.save();
 		context.beginPath();
 		context.rect(0,canvas.height-313,414,314)
 		context.clip();
-		if (myplayer.opaquemap == true){
-			context.fillStyle = "black";//Background is black
+		if (myplayer.transparentui == false){
+			context.fillStyle = "#080808";//Background is grey
 			context.fillRect(0,canvas.height-300,400,300);//cornerrner map area		
 			}
 		drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 

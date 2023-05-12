@@ -17,13 +17,12 @@ class Shop{
 	drawbuymenu(xpos,ypos,item,theplayer){//screen coords of top corner, item index
 		var x = xpos;
 		var y = ypos;
-		context.fillStyle = "#080808";
-		context.fillRect(xpos-16,ypos-56,512,336+128);
+		if (theplayer.transparentmenus == false){
+			context.fillStyle = "#080808";
+			context.fillRect(xpos-16,ypos-56,512,336+128);
+			}
 		context.font='16px Arial';
 		context.fillStyle = "white";
-		
-		//this.eco.drawdiagnostic(xpos,ypos+600);
-
 		context.fillText("Welcome to "+this.name,x,y);
 		context.font='32px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
@@ -35,10 +34,6 @@ class Shop{
 		var utypes = [];
 		var i=0;
 		while (i<this.inv.length-1){//-1 hack might or might not fix something, might or might not break something
-			//console.log(i);
-			//console.log(this.inv.length);
-			//console.log( this.inv[i].namestring() );
-
 			names.push(this.inv[i].namestring().slice(0,20));
 			descriptions.push(this.inv[i].describestring().slice(0,20));
 			//console.log(this.eco.prices);

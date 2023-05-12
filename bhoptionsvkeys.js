@@ -1,20 +1,22 @@
 function optionsvkeys(xmax,ymax){   //constructor(key,label,x,y){
-	var mvp=new Virtualkey(0,"Music Volume +",200,100);//constructor(key,label,x,y){
-	var mvm=new Virtualkey(1,"Music Volume -",400,100);//constructor(key,label,x,y){
-	var svp=new Virtualkey(2,"Sound Volume +",200,140);//constructor(key,label,x,y){
-	var svm=new Virtualkey(3,"Sound Volume -",400,140);//constructor(key,label,x,y){
+	var mvp=new Virtualkey(0,"Music Volume +",250,100);//constructor(key,label,x,y){
+	var mvm=new Virtualkey(1,"Music Volume -",450,100);//constructor(key,label,x,y){
+	var svp=new Virtualkey(2,"Sound Volume +",250,140);//constructor(key,label,x,y){
+	var svm=new Virtualkey(3,"Sound Volume -",450,140);//constructor(key,label,x,y){
 	//var hvk=new Virtualkey("h","H",-100,-100);//constructor(key,label,x,y){
-	var ss=new Virtualkey(4,"Skip Song",200,180);//constructor(key,label,x,y)
-	var ttt=new Virtualkey(5,"Touchscreen Thrust Toggler",200,240);//constructor(key,label,x,y) //disabled by offscreen placement
-	var sta=new Virtualkey(6,"Starfield toggle",200,280);//constructor(key,label,x,y)
-	var vka=new Virtualkey(7,"VKeys Active",200,320);//constructor(key,label,x,y)
-	var vkv=new Virtualkey(8,"VKeys Visible",400,320);//constructor(key,label,x,y){
-	var fup=new Virtualkey(9,"Enable Fullscreen",200,360);//constructor(key,label,x,y)
-	var fum=new Virtualkey(10,"Exit Fullscreen",400,360);//constructor(key,label,x,y)
-	var myp=new Virtualkey(11,"Y Offset +",200,400);//constructor(key,label,x,y)
-	var mym=new Virtualkey(12,"Y Offset - ",400,400);//constructor(key,label,x,y)
-	var exit=new Virtualkey(13,"Click here or press o to exit",250,500);//constructor(key,label,x,y)
-	return [mvp,mvm,svp,svm,ss,sta,vka,vkv,fup,fum,ttt,myp,mym,exit];
+	var ss=new Virtualkey(4,"Skip Song",250,180);//constructor(key,label,x,y)
+	var ttt=new Virtualkey(5,"Touchscreen Thrust Toggler",250,240);//constructor(key,label,x,y) //disabled by offscreen placement
+	var sta=new Virtualkey(6,"Starfield toggle",250,280);//constructor(key,label,x,y)
+	var vka=new Virtualkey(7,"VKeys Active",250,320);//constructor(key,label,x,y)
+	var vkv=new Virtualkey(8,"VKeys Visible",450,320);//constructor(key,label,x,y){
+	var fup=new Virtualkey(9,"Enable Fullscreen",250,360);//constructor(key,label,x,y)
+	var fum=new Virtualkey(10,"Exit Fullscreen",450,360);//constructor(key,label,x,y)
+	var myp=new Virtualkey(11,"Y Offset +",250,400);//constructor(key,label,x,y)
+	var mym=new Virtualkey(12,"Y Offset - ",450,400);//constructor(key,label,x,y)
+	var tmt=new Virtualkey(13,"Transparent Menus",250,440);//constructor(key,label,x,y)
+	var tmu=new Virtualkey(14,"Transparent UI",250,480);//constructor(key,label,x,y)
+	var exit=new Virtualkey(15,"Click here or press o to exit",250,520);//constructor(key,label,x,y)
+	return [mvp,mvm,svp,svm,ss,sta,vka,vkv,fup,fum,ttt,myp,mym,tmt,tmu,exit];
 }
 function optionsactions(action,theplayer){
 	switch(action){
@@ -84,7 +86,15 @@ function optionsactions(action,theplayer){
 				theplayer.mouseyoffset = windowmouseyoffset;
 				}
 			break;
-		case 13://fullscreen
+		case 13:
+			if (theplayer.transparentmenus){theplayer.transparentmenus=false;}
+			else{theplayer.transparentmenus=true;}
+			break;
+		case 14:
+			if (theplayer.transparentui){theplayer.transparentui=false;}
+			else{theplayer.transparentui=true;}
+			break;
+		case 15:
 			theplayer.options = 0;
 			break;
 		}

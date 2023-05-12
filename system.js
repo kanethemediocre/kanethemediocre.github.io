@@ -2412,6 +2412,10 @@ class System{
 		}
 	joblist(x,y,theplayer){  
 		//var item = thepla;
+		if (theplayer.transparentmenus == false){
+			context.fillStyle = "#080808";
+			context.fillRect(x-4,y-48,640,500);
+			}
 		var joblistcolor = "orange"
 		context.fillStyle = joblistcolor;
 		context.strokeStyle = joblistcolor;

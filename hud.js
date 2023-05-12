@@ -14,8 +14,7 @@ function hud(playerindex){
 			var closestdistance = myplayer.ship.distance(systems[ps].npcs[myplayer.targetlock].ship);
 			var closestindex = myplayer.targetlock; 
 			}
-		}
-		
+		}	
 	else {
 		var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
 		var closestdistance = 999999;//needs to be larger than radarrange 
@@ -72,6 +71,11 @@ function hud(playerindex){
 	//if (myplayer.shiptarget>shipsinrange.length-1){myplayer.shiptarget = 0;}
 	//else if (myplayer.shiptarget<0){myplayer.shiptarget = 0;}
 	if (shipsinrange.length>0){
+		if (myplayer.transparentui == false){
+			console.log("itriedtoopaquetargeting");
+			context.fillStyle = "#080808";
+			context.fillRect(canvas.width-160,0,160,320);
+			}
 		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
 		var reticlecolor = "blue";
 		if (systems[ps].npcs[myplayer.shiptarget].ai.playerhostile==true){reticlecolor = "red";}
@@ -112,6 +116,11 @@ function hud(playerindex){
 		} 
 ///////////////Navigation hud///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (myplayer.navactive > 0){
+		if (myplayer.transparentui == false){
+			//console.log("itriedtoopaquenav");
+			context.fillStyle = "#080808";
+			context.fillRect(canvas.width-500,canvas.height-180,500,180);
+			}
 		var thenavtarget=0;
 		if (myplayer.navactive==1){
 			thenavtarget=systems[ps].planets[myplayer.navtarget];
@@ -169,6 +178,11 @@ function hud(playerindex){
 			//if (mapactive == 1){drawmap(planets,256,canvas.width/2,canvas.height/2, ships[0].x, ships[0].y);}
 			//planets[0].drawcompass(ships[0],canvas.width/2,canvas.height-48); //Nav computer compass for sun
 ///////////////Rest of HUD/////////////////////////////////////////////////////////////////////////////////////////////////	
+	if (myplayer.transparentui == false){
+		console.log("itriedtoopaquestatus");
+		context.fillStyle = "#080808";
+		context.fillRect(0,0,160,180);
+		}
 	var sbl = 150; //status bar base length
 	context.font='12px Arial';
 	context.fillStyle = "orange"; //thruster power bar 
@@ -262,8 +276,10 @@ function hud(playerindex){
 //Journal display if active
 	if (myplayer.journalactive==1){//Journal of radio messages
 		if (myplayer.journalitem>playerradio.log.length-1){myplayer.journalitem=0;}
-		context.fillStyle = "skyblue";
-		context.strokeStyle = "skyblue";
+				if (myplayer.transparentmenus == false){
+				context.fillStyle = "#080808";
+				context.fillRect(200-4,64-48,640,500);
+				}
 		playerradio.showlog(myplayer.journalitem,200,64);
 		//if (playerradio.log.length>0){ playerradio.showlog(myplayer.journalitem,200,50); }
 		//else{
@@ -390,18 +406,22 @@ function hud(playerindex){
 		vkeys[21].active = false;		
 		}
 	//draw cargo stuff
-	if (diagnostic == 1){myplayer.blasters[myplayer.wep].drawstats(canvas.width-200,400);}
-	if (diagnostic == 2){myplayer.inventory.draw(canvas.width-200,400);}//Oof, add to player
-	if (diagnostic == 3){//this should be togglable
-		context.fillStyle = "teal";
-		context.font='12px Arial';
-		var titles = ["Armor",    "Max Armor",    "Shield",       "Max Shield",      "Shield Regen",      "Radar Range","Cargo Max",             ];
-		var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, myplayer.inventory.maxcargo ];
-		showchart([titles,values], 80, 16, canvas.width-200,400);
-	}
-	//myplayer.blasters[myplayer.wep].drawsights(myplayer,time); //Draws aiming guide
-	//}
-	
+	if (diagnostic>0){	
+		if (myplayer.transparentui == false){
+			console.log("itriedtoopaquestatus");
+			context.fillStyle = "#080808";
+			context.fillRect(canvas.width-200,380,200,200);
+			}
+		if (diagnostic == 1){myplayer.blasters[myplayer.wep].drawstats(canvas.width-200,400);}
+		if (diagnostic == 2){myplayer.inventory.draw(canvas.width-200,400);}
+		if (diagnostic == 3){
+			context.fillStyle = "teal";
+			context.font='12px Arial';
+			var titles = ["Armor",    "Max Armor",    "Shield",       "Max Shield",      "Shield Regen",      "Radar Range","Cargo Max",             ];
+			var values = [myplayer.ship.hp,myplayer.ship.maxhp, myplayer.ship.shield,myplayer.ship.maxshield,myplayer.ship.shieldregen,myplayer.radarrange, myplayer.inventory.maxcargo ];
+			showchart([titles,values], 80, 16, canvas.width-200,400);
+			}
+		}
 	if (myplayer.planetmenu == 1){
 		//systems[ps].drawplanetlist(0,400,100,48,80); //Mostly works.  Wasteful, could be more preprocessed
 		//drawplanetlist(playerindex,x,y,ystep,scale){
@@ -455,11 +475,13 @@ function hud(playerindex){
 			}
 		}	
 	if (myplayer.options == 1){
-		context.fillStyle = "#080808";
-		context.fillRect(180,50,500,500);
+		if (myplayer.transparentmenus == false){
+			context.fillStyle = "#080808";
+			context.fillRect(230,50,500,500);
+			}
 		context.font = "24px Ariel";
 		context.fillStyle = "yellow";
-		context.fillText("Options",200,88);	
+		context.fillText("Options",250,88);	
 		var i=0;
 		while (i<ovkeys.length){
 			ovkeys[i].draw();
@@ -467,14 +489,14 @@ function hud(playerindex){
 			}
 		context.font = "20px Ariel";
 		context.fillStyle = "lime";
-		context.fillText(musicvolume,370,120);	
-		context.fillText(soundvolume,370,160);			
-		context.fillText(lastsong,370,200);
-		context.fillText(myplayer.vkactive,360,340);
+		context.fillText(musicvolume,420,120);	
+		context.fillText(soundvolume,420,160);			
+		context.fillText(lastsong,420,200);
+		context.fillText(myplayer.vkactive,410,340);
 		if (document.fullscreenElement) {
-			context.fillText(fullscreenmouseyoffset,370,420);
+			context.fillText(fullscreenmouseyoffset,420,420);
 		} else {
-			context.fillText(windowmouseyoffset,370,420);
+			context.fillText(windowmouseyoffset,420,420);
 			}
 		}
 		

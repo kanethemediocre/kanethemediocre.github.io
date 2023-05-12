@@ -152,7 +152,6 @@
 				context.font='16px Courier New';
 				context.fillStyle = "red";  
 				context.fillText(this.sender+":",this.senderx,this.sendery);
-				//function fillwrappedtext(text,textlength,textheight,x,y){
 				var starty = Math.floor(canvas.height*5/6 - 24); //allotting bottom 1/6 of screen + 24 px fudge factor
 				var startx = 412;
 				context.fillStyle = "white";
@@ -160,6 +159,8 @@
 				}
 			}
 		showlog(index,xpos,ypos){
+			context.fillStyle = "skyblue";
+			context.strokeStyle = "skyblue";
 			context.font = "24px Verdana";
 			context.fillText("Journal",xpos,ypos-24);
 			context.font = "16px Verdana";

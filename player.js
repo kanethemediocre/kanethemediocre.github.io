@@ -78,6 +78,8 @@ class Player{
 		this.mousexoffset = 0;
 		this.nowarp = false;
 		this.options = 0;
+		this.transparentmenus = false;
+		this.transparentui = true;
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;
