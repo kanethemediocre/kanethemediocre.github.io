@@ -1,4 +1,4 @@
-function hud(playerindex){
+function minihud(playerindex){
 	var myplayer = systems[ps].players[playerindex];
 	context.font='12px Arial';
 	context.fillStyle = "white"; 
@@ -91,8 +91,8 @@ function hud(playerindex){
 			context.lineTo(canvas.width/2+Math.cos(aimdir[1])*300,canvas.height/2+Math.sin(aimdir[1])*300);
 			context.stroke();
 			}
-		var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].npcs[myplayer.shiptarget].ship.name, systems[ps].npcs[myplayer.shiptarget].ship.level, systems[ps].npcs[myplayer.shiptarget].ship.hp,  systems[ps].npcs[myplayer.shiptarget].ship.shield, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].hurt, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].boombuff,systems[ps].npcs[myplayer.shiptarget].ship.shieldregen,systems[ps].npcs[myplayer.shiptarget].ai.behavior]];
-		showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
+		//var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].npcs[myplayer.shiptarget].ship.name, systems[ps].npcs[myplayer.shiptarget].ship.level, systems[ps].npcs[myplayer.shiptarget].ship.hp,  systems[ps].npcs[myplayer.shiptarget].ship.shield, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].hurt, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].boombuff,systems[ps].npcs[myplayer.shiptarget].ship.shieldregen,systems[ps].npcs[myplayer.shiptarget].ai.behavior]];
+		//showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
 		//context.beginPath(); 
 		//context.rect(canvas.width-304,4+16*closestindex, 160, 16); //This is the item selection indicator
 		//context.lineWidth = 2; 
@@ -165,8 +165,8 @@ function hud(playerindex){
 		var sindv =  Math.sin(dv[1]-myplayer.ship.directionof(thenavtarget))*dv[0];
 		var escape = 0;
 		if (myplayer.navactive == 1){escape = Math.sqrt(thenavtarget.m*2*.0003/myplayer.ship.distance(thenavtarget));}
-		var navchart2 = [ ["Name","Class", "Size", "Mass", "Parent", "Orbit Radius", "Orbit speed", "Orbit Position"], [name, pclass, size, mass, parent, Math.floor(orbitradius), Math.floor(orbitspeed), orbitpos.toFixed(3)],  ["Distance","DeltaV", "Cos DV", "Sin DV", "Gravity", "Escape","X","Y"], [Math.floor(distance),deltav, cosdv.toFixed(3), sindv.toFixed(3), gravity, escape.toFixed(3),Math.floor(thenavtarget.x), Math.floor(thenavtarget.y)]  ];
-		showchart(navchart2, 80, 16, canvas.width-480,canvas.height-160);	
+		//var navchart2 = [ ["Name","Class", "Size", "Mass", "Parent", "Orbit Radius", "Orbit speed", "Orbit Position"], [name, pclass, size, mass, parent, Math.floor(orbitradius), Math.floor(orbitspeed), orbitpos.toFixed(3)],  ["Distance","DeltaV", "Cos DV", "Sin DV", "Gravity", "Escape","X","Y"], [Math.floor(distance),deltav, cosdv.toFixed(3), sindv.toFixed(3), gravity, escape.toFixed(3),Math.floor(thenavtarget.x), Math.floor(thenavtarget.y)]  ];
+		//showchart(navchart2, 80, 16, canvas.width-480,canvas.height-160);		
 		}
 	else {
 		context.font = '20px Ariel';
@@ -250,16 +250,16 @@ function hud(playerindex){
 	context.font='16px Arial';
 	context.fillStyle = "green"; 
 	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
-	context.fillStyle = "yellow";
-	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,280);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
+	//context.fillStyle = "yellow";
+	//context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,280);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	context.fillStyle = "white";
 	context.font='12px Arial';
-	context.fillText("dockstate: "+myplayer.dockstate,8,336);//Debugging stuff
-	context.fillText("storystate: "+myplayer.storystate,8,352);
-	context.fillText("probemode: "+myplayer.probemode,8,368);
-	context.fillText("autopilot: "+myplayer.autopilot,8,384);
-	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
-	context.fillText("ps: "+ps,8,416);
+	//context.fillText("dockstate: "+myplayer.dockstate,8,336);//Debugging stuff
+	//context.fillText("storystate: "+myplayer.storystate,8,352);
+	//context.fillText("probemode: "+myplayer.probemode,8,368);
+	//context.fillText("autopilot: "+myplayer.autopilot,8,384);
+	//context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
+	//context.fillText("ps: "+ps,8,416);
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
 	if (myplayer.alive == false){//This is the death screen.
 		context.fillStyle = "red";
@@ -272,9 +272,9 @@ function hud(playerindex){
 	}
 	context.fillStyle = "white";
 	context.font='12px Arial';
-	var starty = Math.floor(canvas.height*5/6 - 24); //allotting bottom 1/6 of screen + 24 px fudge factor
-	var startx = 420;
-	var endx = canvas.width - 640;
+	var starty = canvas.height-230; //allotting bottom 1/6 of screen + 24 px fudge factor
+	var startx = 260;
+	var endx = canvas.width-300; 
 	playerradio.display(time,startx,starty,endx);
 //Journal display if active
 	if (myplayer.journalactive==1){//Journal of radio messages

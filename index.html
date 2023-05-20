@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 596 by Andrew Kane </title>
+    <title>Bling Hustle 600 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -59,6 +59,7 @@
 <script type="text/javascript" src="keyboard.js"></script>
 <script type="text/javascript" src="storyfunction.js"></script>
 <script type="text/javascript" src="hud.js"></script>
+<script type="text/javascript" src="minihud.js"></script>
 <script type="text/javascript" src="starfield.js"></script>
 <script type="text/javascript" src="dustfield.js"></script>
 <script type="text/javascript" src="about.js"></script>
@@ -113,8 +114,9 @@ function openFullscreen() {
     canvas.msRequestFullscreen();
   }
 }
+if (canvas.width>1500){var vkeys = allvkeys(canvas.width,canvas.height);}
+else {var vkeys = minivkeys(canvas.width,canvas.height);}
 
-var vkeys = allvkeys(canvas.width,canvas.height);
 var ovkeys = optionsvkeys(canvas.width,canvas.height);
 var comfy = false;
 if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
@@ -122,7 +124,7 @@ var time = 0; //Count of frames elapsed in game time.  Used to track in-game tim
 var nmeactive = 1; //targeting computer starts off
 var mdx = 0; //I think these were for the mouse?  Not sure if used.
 var mdy = 0;
-var diagnostic = 1; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
+var diagnostic = 0; //0 is not displayed, 1 is weapon stats, 2 is cargo stats, 3 is ship stats.  Might get used for other items.
 var cheatmode = 0; //0 = not a cheater
 var ps = 0; //Player System.  Had to be abbreviated, systems[ps] is an important keyword
 var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
@@ -844,7 +846,14 @@ function update() {
 		if (supercompass>1){
 			systems[ps].drawshipfinder(0,300);
 			}
-		hud(myi);//myi is the player index.  
+		console.log(canvas.width);
+		if (canvas.width>1500){
+	
+			hud(myi);//myi is the player index.  
+			}
+		else {
+			minihud(myi);//myi is the player index
+			}
 		}
 //////////////////updating moved to end of stack////////////////
 
@@ -1035,53 +1044,74 @@ if (ps>0){//Map stuff is not displayed in menu system
 		}
 	else if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
 	else if (myplayer.mapactive == 2){
-		context.save();
-		context.beginPath();
-		context.rect(0,canvas.height-313,414,314)
-		context.clip();
-		if (myplayer.transparentui == false){
-			context.fillStyle = "#080808";//Background is grey
-			context.fillRect(0,canvas.height-300,400,300);//cornerrner map area		
+		if (canvas.width>1500){
+			context.save();
+			context.beginPath();
+			context.rect(0,canvas.height-313,414,314)
+			context.clip();
+			if (myplayer.transparentui == false){
+				context.fillStyle = "#080808";//Background is grey
+				context.fillRect(0,canvas.height-300,400,300);//cornerrner map area		
+				}
+			drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-300,400,300); //2*this.s wide
+			context.lineWidth = 2; 
+			context.strokeStyle = "blue";
+			context.stroke();	
+			
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-302,402,302); //2*this.s wide
+			context.lineWidth = 2; 
+			context.strokeStyle = "purple";
+			context.stroke();	
+			
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-304,404,304); //2*this.s wide
+			context.strokeStyle = "red";
+			context.stroke();	
+			
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-306,406,306); //2*this.s wide
+			context.strokeStyle = "orange";
+			context.stroke();	
+
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-308,408,308); //2*this.s wide
+			context.strokeStyle = "yellow";
+			context.stroke();
+
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-310,410,310); //2*this.s wide
+			context.strokeStyle = "green";
+			context.stroke();
+			
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-312,412,312); //2*this.s wide
+			context.strokeStyle = "blue";
+			context.stroke();
+			
+			context.restore();
 			}
-		drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,200,canvas.height-150, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-300,400,300); //2*this.s wide
-		context.lineWidth = 2; 
-		context.strokeStyle = "blue";
-		context.stroke();	
-		
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-302,402,302); //2*this.s wide
-		context.lineWidth = 2; 
-		context.strokeStyle = "purple";
-		context.stroke();	
-		
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-304,404,304); //2*this.s wide
-		context.strokeStyle = "red";
-		context.stroke();	
-		
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-306,406,306); //2*this.s wide
-		context.strokeStyle = "orange";
-		context.stroke();	
-
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-308,408,308); //2*this.s wide
-		context.strokeStyle = "yellow";
-		context.stroke();
-
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-310,410,310); //2*this.s wide
-		context.strokeStyle = "green";
-		context.stroke();
-		
-		context.beginPath(); //Border of map rectangle
-		context.rect(0,canvas.height-312,412,312); //2*this.s wide
-		context.strokeStyle = "blue";
-		context.stroke();
-		
-		context.restore();
+		else{
+			var mapx = 240;
+			var mapy = 240;
+			context.save();
+			context.beginPath();
+			context.rect(0,canvas.height-mapy,mapx,mapy)
+			context.clip();
+			if (myplayer.transparentui == false){
+				context.fillStyle = "#080808";//Background is grey
+				context.fillRect(0,canvas.height-mapy,mapx,mapy);//cornerrner map area		
+				}
+			drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,mapx/2,canvas.height-mapy/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);//corner map c 
+			context.beginPath(); //Border of map rectangle
+			context.rect(0,canvas.height-mapy,mapx,mapy); //2*this.s wide
+			context.lineWidth = 2; 
+			context.strokeStyle = "blue";
+			context.stroke();	
+			context.restore();		
+			}
 		}
 	}
 if (ps>34){//0 thru 34 are non-pocket systems

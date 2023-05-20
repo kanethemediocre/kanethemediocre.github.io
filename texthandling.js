@@ -70,7 +70,7 @@
 				i=i+1;
 				}
 			 }
-		function showmessage(message){ //Displays a message, breaking it up into multiple lines as needed.  No word continuity or overflow handling yet.
+		function showmessage(message,startx,starty){ //Displays a message, breaking it up into multiple lines as needed.  No word continuity or overflow handling yet.
 			var maxlength = (canvas.width-820)/11; //estimating font width to 10 px, allotting 150 px margins
 			var maxlines = canvas.height/(24*6); //estimating font height to 24 px, allotting 1/6 of screen, only used for overflow handling (eventually)
 			var starty = Math.floor(canvas.height*5/6 - 24); //allotting bottom 1/6 of screen + 24 px fudge factor
@@ -134,7 +134,7 @@
 			this.msgstart = 0; //Time that current message began
 			this.sender = ""; //Who sent the message
 			this.senderx = 420;//Math.floor(canvas.width/2) - Math.floor(this.sender.length/2);//not used?
-			this.sendery = Math.floor(canvas.height*5/6 - 50);
+			this.sendery = Math.floor(canvas.height*5/6 - 50);//senderx and sendery are probably obselete
 			this.msgnow = intromessage; //Text of message
 			this.msgtime = Math.floor(this.msgnow.length*1.5) + 120; //message duration
 			this.log = [];
@@ -147,15 +147,18 @@
 			this.msgtime = Math.floor(this.msgnow.length*1.5) + 240;
 			this.log.push(this.msgnow);
 			}
-		display(thetime){
+		display(thetime,startx,starty,endx){
 			if (thetime<(this.msgstart+this.msgtime)){			
-				context.font='16px Courier New';
+				context.font='20px Courier New';
 				context.fillStyle = "red";  
-				context.fillText(this.sender+":",this.senderx,this.sendery);
-				var starty = Math.floor(canvas.height*5/6 - 24); //allotting bottom 1/6 of screen + 24 px fudge factor
-				var startx = 412;
+				//context.fillText(this.sender+":",this.senderx,this.sendery);
+				var senderx = (startx+endx)/2-this.sender.length*10;
+				context.fillText(this.sender+":",senderx,starty-24);
+				//var starty = Math.floor(canvas.height*5/6 - 24); //allotting bottom 1/6 of screen + 24 px fudge factor
+				//var startx = 412;
+				var thetextlength = Math.floor((endx-startx)/10);
 				context.fillStyle = "white";
-				fillwrappedtext(this.msgnow.slice(0, (thetime-this.msgstart)*1 ),100,20,startx,starty,);
+				fillwrappedtext(this.msgnow.slice(0, (thetime-this.msgstart)*1 ),thetextlength,24,startx,starty,);
 				}
 			}
 		showlog(index,xpos,ypos){
