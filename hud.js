@@ -252,14 +252,17 @@ function hud(playerindex){
 	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
 	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,280);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
-	context.fillStyle = "white";
-	context.font='12px Arial';
-	context.fillText("dockstate: "+myplayer.dockstate,8,336);//Debugging stuff
-	context.fillText("storystate: "+myplayer.storystate,8,352);
-	context.fillText("probemode: "+myplayer.probemode,8,368);
-	context.fillText("autopilot: "+myplayer.autopilot,8,384);
-	context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
-	context.fillText("ps: "+ps,8,416);
+	
+	if (myplayer.debugdisplay){
+		context.fillStyle = "white";
+		context.font='12px Arial';
+		context.fillText("dockstate: "+myplayer.dockstate,8,336);//Debugging stuff
+		context.fillText("storystate: "+myplayer.storystate,8,352);
+		context.fillText("probemode: "+myplayer.probemode,8,368);
+		context.fillText("autopilot: "+myplayer.autopilot,8,384);
+		context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
+		context.fillText("ps: "+ps,8,416);
+		}
 	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
 	if (myplayer.alive == false){//This is the death screen.
 		context.fillStyle = "red";

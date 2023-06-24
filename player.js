@@ -80,6 +80,7 @@ class Player{
 		this.options = 0;
 		this.transparentmenus = false;
 		this.transparentui = true;
+		this.debugdisplay = true;
     }
 	initialize(hp,shield,thrustmultiplier){
 		this.ship.hp=hp;
