@@ -8,7 +8,7 @@
 	 let weapon2 = new Blaster("Mine","Powerful but very slow moving bomb.  This blaster needs to be used in conjunction with some combination of thrusters and clever planning.",500,"plain",                                 
 	 50,25,10,0.5,0,0,2,0.75,10,1,0,0,1800,600,10,40,"purple","ID not implemented");
 	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"fixedspread",
-	 8,4,10,12,3,10,1.2,0.3,10,3,2,10,16,8,10,25,"green","ID not implemented");
+	 8,4,10,12,3,10,1.2,0.3,10,3,2,10,18,8,10,25,"green","ID not implemented");
 	 weapon3.recoil = -0.3;
 	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
 	 48,16,10,20,4,4,0.2,0,0,1,0,0,96,32,10,95,"blue","ID not implemented");

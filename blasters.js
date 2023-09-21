@@ -60,23 +60,67 @@ class Blaster{
 				var cnum = (i+ioffset)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
-					this.bombs[i].c2 = "orange";
+					//this.bombs[i].c2 = "orange";
 				}else if (cnum == 1){
 					this.bombs[i].c = "orange";
-					this.bombs[i].c2 = "yellow";
+					//this.bombs[i].c2 = "yellow";
 				}else if (cnum == 2){
 					this.bombs[i].c = "yellow";
-					this.bombs[i].c2 = "green";
+					//this.bombs[i].c2 = "green";
 				}else if (cnum == 3){
 					this.bombs[i].c = "green";
-					this.bombs[i].c2 = "blue";
+					//this.bombs[i].c2 = "blue";
 				}else if (cnum == 4){
 					this.bombs[i].c = "blue";
-					this.bombs[i].c2 = "purple";
+					//this.bombs[i].c2 = "purple";
 				}else if (cnum == 5){
 					this.bombs[i].c = "purple";
-					this.bombs[i].c2 = "red";
+					//this.bombs[i].c2 = "red";
 					}
+			
+				var bcolor0 = this.bombs[i].c;
+				var bcolor1 = "red";//default handles this.c == "purple";
+				var bcolor2 = "orange";
+				var bcolor3 = "yellow";
+				var bcolor4 = "green";
+				var bcolor5 = "blue";
+				if (this.bombs[i].c=="red"){
+					bcolor1 = "orange";
+					bcolor2 = "yellow";
+					bcolor3 = "green"; 
+					bcolor4= "blue"; 
+					bcolor5 = "purple";
+					}
+				if (this.bombs[i].c=="orange"){
+					bcolor1 = "yellow";
+					bcolor2 = "green";
+					bcolor3= "blue";
+					bcolor4 = "purple";
+					bcolor5 = "red";
+					}
+				if (this.bombs[i].c=="yellow"){
+					bcolor1 = "green";
+					bcolor2= "blue";
+					bcolor3 = "purple";
+					bcolor4 = "red"; 
+					bcolor5 = "orange";
+					}
+				if (this.bombs[i].c=="green"){
+					bcolor1= "blue";
+					bcolor2 = "purple"; 
+					bcolor3 = "red"; 
+					bcolor4 = "orange"; 
+					bcolor5 = "yellow";
+					}
+				if (this.bombs[i].c=="blue"){
+					bcolor1 = "purple"; 
+					bcolor2 = "red";
+					bcolor3 = "orange"; 
+					bcolor4 = "yellow"; 
+					bcolor5 = "green";
+					}
+				this.bombs[i].c2 = bcolor1;
+				this.bombs[i].colors = [bcolor0,bcolor1,bcolor2,bcolor3,bcolor4,bcolor5];
 				}
 			i=i+1;
 			}
@@ -155,26 +199,75 @@ class Blaster{
 				this.bombs[i].shield = 1;
 			}
 			if ((this.type == "rapid")||(this.type == "spread")||(this.type == "fixedspread")||(this.type == "multiplex")||(this.type == "semirapid")||(this.type == "semispread")){
+				
 				var cnum = (ioffset+i)%6;
 				if (cnum == 0){
 					this.bombs[i].c = "red";
-					this.bombs[i].c2 = "orange";
+					//this.bombs[i].c2 = "orange";
 				}else if (cnum == 1){
 					this.bombs[i].c = "orange";
-					this.bombs[i].c2 = "yellow";
+					//this.bombs[i].c2 = "yellow";
 				}else if (cnum == 2){
 					this.bombs[i].c = "yellow";
-					this.bombs[i].c2 = "green";
+					//this.bombs[i].c2 = "green";
 				}else if (cnum == 3){
 					this.bombs[i].c = "green";
-					this.bombs[i].c2 = "blue";
+					//this.bombs[i].c2 = "blue";
 				}else if (cnum == 4){
 					this.bombs[i].c = "blue";
-					this.bombs[i].c2 = "purple";
+					//this.bombs[i].c2 = "purple";
 				}else if (cnum == 5){
 					this.bombs[i].c = "purple";
-					this.bombs[i].c2 = "red";
+					//this.bombs[i].c2 = "red";
 					}
+				
+				
+					var bcolor0 = this.bombs[i].c;
+					var bcolor1 = "red";//default handles this.c == "purple";
+					var bcolor2 = "orange";
+					var bcolor3 = "yellow";
+					var bcolor4 = "green";
+					var bcolor5 = "blue";
+					if (this.bombs[i].c=="red"){
+						bcolor1 = "orange";
+						bcolor2 = "yellow";
+						bcolor3 = "green"; 
+						bcolor4= "blue"; 
+						bcolor5 = "purple";
+						}
+					if (this.bombs[i].c=="orange"){
+						bcolor1 = "yellow";
+						bcolor2 = "green";
+						bcolor3= "blue";
+						bcolor4 = "purple";
+						bcolor5 = "red";
+						}
+					if (this.bombs[i].c=="yellow"){
+						bcolor1 = "green";
+						bcolor2= "blue";
+						bcolor3 = "purple";
+						bcolor4 = "red"; 
+						bcolor5 = "orange";
+						}
+					if (this.bombs[i].c=="green"){
+						bcolor1= "blue";
+						bcolor2 = "purple"; 
+						bcolor3 = "red"; 
+						bcolor4 = "orange"; 
+						bcolor5 = "yellow";
+						}
+					if (this.bombs[i].c=="blue"){
+						bcolor1 = "purple"; 
+						bcolor2 = "red";
+						bcolor3 = "orange"; 
+						bcolor4 = "yellow"; 
+						bcolor5 = "green";
+						}
+					this.bombs[i].c2 = bcolor1;
+					this.bombs[i].colors = [bcolor0,bcolor1,bcolor2,bcolor3,bcolor4,bcolor5];
+				
+				
+				
 				}
 				i=i+1;
 			}

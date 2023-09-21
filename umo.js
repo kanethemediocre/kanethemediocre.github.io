@@ -5,12 +5,50 @@ class Umo { //Universal Moving Object
 		this.x = xxx; //x
 		this.y = yyy; //y
 		this.c = ccc; //color
-		this.c2 = "red";
-		if (this.c=="red"){this.c2 = "orange";}
-		if (this.c=="orange"){this.c2 = "yellow";}
-		if (this.c=="yellow"){this.c2 = "green";}
-		if (this.c=="green"){this.c2 = "blue";}
-		if (this.c=="blue"){this.c2 = "purple";}
+		//this.c2 = "red";
+		var bcolor0 = this.c;
+		var bcolor1 = "red";//default handles this.c == "purple";
+		var bcolor2 = "orange";
+		var bcolor3 = "yellow";
+		var bcolor4 = "green";
+		var bcolor5 = "blue";
+		if (this.c=="red"){
+			bcolor1 = "orange";
+			bcolor2 = "yellow";
+			bcolor3 = "green"; 
+			bcolor4= "blue"; 
+			bcolor5 = "purple";
+			}
+		if (this.c=="orange"){
+			bcolor1 = "yellow";
+			bcolor2 = "green";
+			bcolor3= "blue";
+			bcolor4 = "purple";
+			bcolor5 = "red";
+			}
+		if (this.c=="yellow"){
+			bcolor1 = "green";
+			bcolor2= "blue";
+			bcolor3 = "purple";
+			bcolor4 = "red"; 
+			bcolor5 = "orange";
+			}
+		if (this.c=="green"){
+			bcolor1= "blue";
+			bcolor2 = "purple"; 
+			bcolor3 = "red"; 
+			bcolor4 = "orange"; 
+			bcolor5 = "yellow";
+			}
+		if (this.c=="blue"){
+			bcolor1 = "purple"; 
+			bcolor2 = "red";
+			bcolor3 = "orange"; 
+			bcolor4 = "yellow"; 
+			bcolor5 = "green";
+			}
+		this.c2 = bcolor1;
+		this.colors = [bcolor0,bcolor1,bcolor2,bcolor3,bcolor4,bcolor5];
 		//this.c2 = 0; //Not a color, used to exclude 2-tone functions on single color umos.
 		this.s = sss; //size
 		this.d = 0; // direction
@@ -476,17 +514,40 @@ class Umo { //Universal Moving Object
 	drawbomb(viewx, viewy){ //Bombs are also drawn as circles, but not labelled.
 		var x = this.x - viewx + canvas.width/2;
 		var y = this.y - viewy + canvas.height/2;
+		var bcolors = this.colors;
 		if (this.s>4){
+			var bci = 0;
+			var bcolornow = this.c;
 			context.beginPath();
-			context.strokeStyle = this.c;
+			context.strokeStyle = bcolornow;
 			context.arc(x, y, this.s, 0, 2 * Math.PI, false);
-			context.lineWidth = 6;
+			context.lineWidth = 8;
 			context.stroke();
+			bci++;
+			var bcolornow = this.c2;
 			context.beginPath();
-			context.strokeStyle = this.c2;
+			context.strokeStyle = bcolornow;
 			context.arc(x, y, this.s-4, 0, 2 * Math.PI, false);
 			context.lineWidth = 4;	
-			context.stroke();		
+			context.stroke();	
+			var rnow = this.s-8
+			while ((rnow>6)&&(bci<99)){
+				bci++;
+				var bcolornow = bcolors[bci%6];
+				var linewidthnow = 4;//Math.floor(5-bci/2);
+				if (bci>6){
+					bcolornow = this.c;
+					//if (bci%2==0){bcolornow = this.c2;}
+					linewidthnow = 1;
+					rnow = rnow - 2;
+					}
+				context.beginPath();
+				context.strokeStyle = bcolornow;
+				context.arc(x, y, rnow, 0, 2 * Math.PI, false);
+				context.lineWidth = linewidthnow;//4;	
+				context.stroke();
+				rnow = rnow - 4;//Math.floor(4+bci*bci/3);				
+				}
 			//context.beginPath();
 			//context.strokeStyle = this.c2;
 			//context.arc(x, y, this.s, 0, 2 * Math.PI, false);
@@ -688,14 +749,20 @@ class Umo { //Universal Moving Object
 		this.timer= this.timer -1;
 		if (this.timer == 0){this.killbomb();}
 		if (this.timer == 1){this.s = 100*this.boombuff;}
-		if (this.timer == 2){this.s = 128*this.boombuff;}
-		if (this.timer == 3){this.s = 120*this.boombuff;}
-		if (this.timer == 4){this.s = 100*this.boombuff;}
-		if (this.timer == 5){this.s = 75*this.boombuff;}
-		if (this.timer == 6){this.s = 50*this.boombuff;}
-		if (this.timer>6){
+		if (this.timer == 2){this.s = 112*this.boombuff;}
+		if (this.timer == 3){this.s = 122*this.boombuff;}
+		if (this.timer == 4){this.s = 128*this.boombuff;}
+		if (this.timer == 5){this.s = 128*this.boombuff;}
+		if (this.timer == 6){this.s = 122*this.boombuff;}
+		if (this.timer == 7){this.s = 112*this.boombuff;}
+		if (this.timer == 8){this.s = 100*this.boombuff;}
+		if (this.timer == 9){this.s = 84*this.boombuff;}
+		if (this.timer == 10){this.s = 64*this.boombuff;}
+		if (this.timer == 11){this.s = 40*this.boombuff;}
+		
+		if (this.timer>11){
 			this.s = 8; //Mostly redundant
-			if (this.hp < 0){this.timer = 6;}
+			if (this.hp < 0){this.timer = 10;}
 			}
 		}
 	killship(deathtime){ //Ship is dead, and respawns after deathtime frames.
