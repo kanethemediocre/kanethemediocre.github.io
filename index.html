@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 604 by Andrew Kane </title>
+    <title>Bling Hustle 609 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -216,7 +216,7 @@ pocketarena1.addsuperboss(128,7,5000,1200,320,80,9);//addsuperboss(size,turretnu
 let playerradio = new Radio(" ");
 let home = new System(1,"Sool",0,0);
 let menu = new System(0,"Main Menu",0,0);
-let systems = [menu,home,mysystem(),testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
+let systems = [menu,home,testsystem1,testsystem2,testsystem3,testsystem4,testsystem5,testsystem6,testsystem7,testsystem8,testsystem9,testsystem10,testsystem11,testsystem12,testsystem13,testsystem14,
 				testsystem15,testsystem16,testsystem17,testsystem18,testsystem19,testsystem20,testsystem21,testsystem22,testsystem23,testsystem24,testsystem25,testsystem26,
 				testsystem27,testsystem28,testsystem29,testsystem30,asteroidarena,bubbleparty1,bubbleparty2];
 systems[0].planets = loadmenusystem();
@@ -268,7 +268,7 @@ systems[1].addrandomtraders([5,11,16], 8, 4);
 systems[1].addcargomissions(4);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////now a simple randomly generated system////////////////////////////////
-//systems[2].generatebasicsystem(5,2,16+2,80);//new lightly tested
+systems[2].generatebasicsystem(5,2,16+2,80);//new lightly tested
 ////////////////////////////////////////////////////////////////////////////
 //now another custom system, but with less precisely controlled enemy placement
 systems[3].planets = loadtrinidadsystem(); //from trinidadsystem.js

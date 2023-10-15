@@ -108,6 +108,7 @@ function savesystem(thesystem){
 	var i=0;
 	
 	//Add stations
+	/* //adding shops and stations removed until it inventory is being added properly
 	var i=0;
 	while(i<thesystem.outposts.length){
 		thecommand = thecommand + saveoutpost(thesystem.planets,thesystem.outposts,i,[]); 
@@ -115,13 +116,15 @@ function savesystem(thesystem){
 		i++;
 		}	
 	//Add shops
+	/* //adding shops removed until it inventory is being added properly
 	var i=0;
 	while(i<thesystem.shops.length){//Same index as outposts, could be combined loop
 		thecommand = thecommand + saveshop(thesystem.shops,thesystem.planets,thesystem.outposts,i,[]);
 		thecommand = thecommand + "cs.shops.push(s"+i+");"+"\n";
 		i++;
 		}
-
+	*/
+	
 	//Add ecobalance code.  The economies are re-randomized, not saved.  Could be improved to saved.
 	//thecommand = thecommand + "var i=0;"+"\n";
 	//thecommand = thecommand + "while(i<50){"+"\n";
@@ -161,7 +164,7 @@ function savesystem(thesystem){
 							}
 						j++;
 						}
-					var abossdeclaration = "addsuperboss("+thesystem.npcs[i-1].ship.s+","+numturrets+",1000+1000*"+numturrets+",1250,"+turrethp+","+turretshield+","+thesystem.npcs[i-1].ai.homeplanet+");";
+					var abossdeclaration = "cs.addsuperboss("+thesystem.npcs[i-1].ship.s+","+numturrets+",1000+1000*"+numturrets+",1250,"+turrethp+","+turretshield+","+thesystem.npcs[i-1].ai.homeplanet+");";
 					//Reverse engineering through all the bonuses is hard, so this is a rough approximation.
 					thecommand = thecommand + abossdeclaration + '\n';
 					}

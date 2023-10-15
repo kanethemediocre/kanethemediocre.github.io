@@ -8,7 +8,7 @@ class Bubblesplosion{
         this.timer = 12+2*this.stages;
         this.core = new Umo(0,0,200,"red") ;
         this.core.match(origin);
-        this.core.timer = 8;
+        this.core.timer = 12;
         this.core.boombuff = this.s;
 		this.x = this.core.x;
 		this.y = this.core.y;
@@ -31,7 +31,7 @@ class Bubblesplosion{
                 nextstage[nextstage.length-1].x = nextstage[nextstage.length-1].x+bubbleradius*80*Math.cos(interangle*j);//bubblesize is the wrong scale for this
                 nextstage[nextstage.length-1].y = nextstage[nextstage.length-1].y+bubbleradius*80*Math.sin(interangle*j);
                 //nextstage[nextstage.length-1].timer = 12+i*4+j;
-                nextstage[nextstage.length-1].timer = 8+i*2;
+                nextstage[nextstage.length-1].timer = 12+i*2;
                 j++;
             }
             this.bubbles.push(nextstage);
@@ -40,7 +40,7 @@ class Bubblesplosion{
     }
     startboom(){
      this.active=true;
-     this.timer = this.stages*6;   
+     this.timer = 12+this.stages*2;   
     }
     update1(){
         this.timer--;

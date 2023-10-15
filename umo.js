@@ -515,7 +515,7 @@ class Umo { //Universal Moving Object
 		var x = this.x - viewx + canvas.width/2;
 		var y = this.y - viewy + canvas.height/2;
 		var bcolors = this.colors;
-		if (this.s>4){
+		if (this.s>0){
 			var bci = 0;
 			var bcolornow = this.c;
 			context.beginPath();
@@ -523,13 +523,16 @@ class Umo { //Universal Moving Object
 			context.arc(x, y, this.s, 0, 2 * Math.PI, false);
 			context.lineWidth = 8;
 			context.stroke();
+
 			bci++;
 			var bcolornow = this.c2;
-			context.beginPath();
-			context.strokeStyle = bcolornow;
-			context.arc(x, y, this.s-4, 0, 2 * Math.PI, false);
-			context.lineWidth = 4;	
-			context.stroke();	
+			if (this.s>4){
+				context.beginPath();
+				context.strokeStyle = bcolornow;
+				context.arc(x, y, this.s-4, 0, 2 * Math.PI, false);
+				context.lineWidth = 4;	
+				context.stroke();	
+				}
 			var rnow = this.s-8
 			while ((rnow>6)&&(bci<99)){
 				bci++;
@@ -762,7 +765,7 @@ class Umo { //Universal Moving Object
 		
 		if (this.timer>11){
 			this.s = 8; //Mostly redundant
-			if (this.hp < 0){this.timer = 10;}
+			if (this.hp < 0){this.timer = 12;}
 			}
 		}
 	killship(deathtime){ //Ship is dead, and respawns after deathtime frames.

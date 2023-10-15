@@ -48,7 +48,7 @@
 	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row.  About half as much damage for a single mine, but four times as many mines BEFORE upgrades.",2500,"multiplex",                            
 	 20,10,10,0.5,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
 	 let weapon13 = new Blaster("Nova","Fires bombs in all directions.  For the times when you feel like you don't have any friends, and the world is out to get you.",1600,"fixedspread",                            
-	 12,6,10,15,3,10,1,0.25,10,16,8,10,24,8,10,60,"tan","ID not implemented");
+	 12,6,10,16,4,10,0.4,0.4,10,16,8,10,15,5,10,60,"tan","ID not implemented");
 	 weapon13.special1 = 4*Math.PI/2;
 	 weapon13.special2 = 8*Math.PI/4;
 	 let weapon14 = new Blaster("Fast Railgun","The new dank cheese.  Fast flying long range bombs, every time you tap the trigger, at a much smaller energy cost than the standard railgun.",2000,"semirapid",                            

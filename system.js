@@ -1767,6 +1767,7 @@ class System{
 			//	randshopitems3.push(new Shopitem("cargo",randcargo,"buy",1));
 			//	j=j+1;
 			//	}
+			console.log(randshopitems3);
 			this.shops.push(new Shop("XXXXXXXXXX",i, "whaaaaaaaaaaaaaat", randshopitems3)); //should fix this to reflect outpost name/description
 			var k = 0;
 			while (k<4){ //This adds 4 cargo missions to the shop.  

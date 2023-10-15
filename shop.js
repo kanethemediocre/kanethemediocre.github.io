@@ -33,7 +33,7 @@ class Shop{
 		var prices = [];
 		var utypes = [];
 		var i=0;
-		while (i<this.inv.length-1){//-1 hack might or might not fix something, might or might not break something
+		while (i<this.inv.length){//-1 hack might or might not fix something, might or might not break something
 			names.push(this.inv[i].namestring().slice(0,20));
 			descriptions.push(this.inv[i].describestring().slice(0,20));
 			//console.log(this.eco.prices);
@@ -41,73 +41,81 @@ class Shop{
 			utypes.push(this.inv[i].utype);
 			i=i+1;
 			}
-		var shopchart = [names,descriptions,prices,utypes];
-		context.font='12px Arial';
-		fillwrappedtext(this.inv[item].describestring(),86,16,x,y+236+128);
-		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = systems[ps].outposts[this.home].c;//systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
-		context.rect(x-12,y+20+item*16,400,16);
-		context.stroke();
-		var i=0;
-		while (i<this.inv.length){
-			context.fillStyle = "grey";
-			if (this.inv[i].available(theplayer)){//Used global variable instead of reference
-				context.fillStyle = "white";
+		
+		if (i>0){
+			
+			var shopchart = [names,descriptions,prices,utypes];
+			context.font='12px Arial';
+			fillwrappedtext(this.inv[item].describestring(),86,16,x,y+236+128);
+			context.beginPath(); //This colored rectangle will show which item is selected.
+			context.strokeStyle = systems[ps].outposts[this.home].c;//systems[ps].outposts[systems[ps].players[0].dockstate].c;//Global scope here, very bad, also in drawpolarpoly
+			context.rect(x-12,y+20+item*16,400,16);
+			context.stroke();
+			var i=0;
+			while (i<this.inv.length){
+				context.fillStyle = "grey";
+				if (this.inv[i].available(theplayer)){//Used global variable instead of reference
+					context.fillStyle = "white";
+					}
+				var utypewithstats = this.inv[i].utype.slice(0,16);
+				if (this.inv[i].type == "blaster"){
+					if (this.inv[i].utype == "damage"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].uphurt;
+						}
+					else if (this.inv[i].utype == "timer"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].uptimer;
+						}
+					else if (this.inv[i].utype == "boom"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upboom;
+						}
+					else if (this.inv[i].utype == "speed"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upspeed;
+						}
+					else if (this.inv[i].utype == "n"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upn;
+						}
+					}
+				if (this.inv[i].type == "upgrade"){
+					if (this.inv[i].utype == "armor"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + 250";
+						}
+					else if (this.inv[i].utype == "shield"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + 100";
+						}
+					else if (this.inv[i].utype == "shieldregen"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + 0.25";
+						}
+					else if (this.inv[i].utype == "cargo"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + 10";
+						}
+					else if (this.inv[i].utype == "thrust"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + 0.5";
+						}
+					else if (this.inv[i].utype == "radar"){
+						utypewithstats = this.inv[i].utype.slice(0,16)+" + 1000";
+						}
+					}
+				context.fillText(this.inv[i].namestring().slice(0,16),x,y+32+16*i);
+				context.fillText(this.inv[i].describestring().slice(0,16),x+80,y+32+16*i);
+				context.fillText(this.inv[i].itemprice(theplayer,this.eco),x+200,y+32+16*i);
+				context.fillText(utypewithstats,x+300,y+32+16*i);
+				i=i+1;
 				}
-			var utypewithstats = this.inv[i].utype.slice(0,16);
-			if (this.inv[i].type == "blaster"){
-				if (this.inv[i].utype == "damage"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].uphurt;
-					}
-				else if (this.inv[i].utype == "timer"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].uptimer;
-					}
-				else if (this.inv[i].utype == "boom"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upboom;
-					}
-				else if (this.inv[i].utype == "speed"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upspeed;
-					}
-				else if (this.inv[i].utype == "n"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + "+theplayer.blasters[this.inv[i].i].upn;
-					}
+			context.beginPath();
+			context.strokeStyle = systems[ps].outposts[this.home].c2//systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
+			context.rect(xpos-16,ypos-56,512,336+128);
+			context.rect(xpos-16,ypos+12,512,208+128);
+			context.stroke();
+			drawpolarpoly(x+464,y-20,systems[ps].outposts[this.home].emblem[0],systems[ps].outposts[this.home].emblem[1],32,systems[ps].outposts[this.home].c,-1*Math.PI/2); //this.emblem is a randomized logo
+			if (this.inv[item].type=="blaster"){
+				//console.log("toldblasterdrawstats");
+				theplayer.blasters[this.inv[item].i].drawstats2(canvas.width/2,160,"lime","cyan");
 				}
-			if (this.inv[i].type == "upgrade"){
-				if (this.inv[i].utype == "armor"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + 250";
-					}
-				else if (this.inv[i].utype == "shield"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + 100";
-					}
-				else if (this.inv[i].utype == "shieldregen"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + 0.25";
-					}
-				else if (this.inv[i].utype == "cargo"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + 10";
-					}
-				else if (this.inv[i].utype == "thrust"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + 0.5";
-					}
-				else if (this.inv[i].utype == "radar"){
-					utypewithstats = this.inv[i].utype.slice(0,16)+" + 1000";
-					}
-				}
-			context.fillText(this.inv[i].namestring().slice(0,16),x,y+32+16*i);
-			context.fillText(this.inv[i].describestring().slice(0,16),x+80,y+32+16*i);
-			context.fillText(this.inv[i].itemprice(theplayer,this.eco),x+200,y+32+16*i);
-			context.fillText(utypewithstats,x+300,y+32+16*i);
-			i=i+1;
 			}
-		context.beginPath();
-		context.strokeStyle = systems[ps].outposts[this.home].c2//systems[ps].outposts[systems[ps].players[0].dockstate].c2;//Global scope here, very bad, also in drawpolarpoly
-		context.rect(xpos-16,ypos-56,512,336+128);
-		context.rect(xpos-16,ypos+12,512,208+128);
-		context.stroke();
-		drawpolarpoly(x+464,y-20,systems[ps].outposts[this.home].emblem[0],systems[ps].outposts[this.home].emblem[1],32,systems[ps].outposts[this.home].c,-1*Math.PI/2); //this.emblem is a randomized logo
-		if (this.inv[item].type=="blaster"){
-			//console.log("toldblasterdrawstats");
-			theplayer.blasters[this.inv[item].i].drawstats2(canvas.width/2,160,"lime","cyan");
+		else{
+			console.log("no inventory in shop");
 			}
+		
 		}	
 	
 	drawsellmenu(xpos,ypos,item,theplayer){//screen coords of top corner, item index
