@@ -55,18 +55,18 @@ class Supersystem{
 						var dir1index = (i+1);
 						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
 						dir1index = dir1index % (this.n*this.m);
-						console.log(dir1index);
+						//console.log(dir1index);
 						this.systems[dir1index].planets[3].name = mplanet1.name;
 						this.systems[dir1index].planets[3].c = mplanet1.c;
 						this.systems[dir1index].planets[3].c2 = mplanet1.c2;
-						console.log(this.systems[dir1index].planets[3].c2);
+						//console.log(this.systems[dir1index].planets[3].c2);
 						this.systems[dir1index].planets[1].name = mplanet2.name;
 						this.systems[dir1index].planets[1].c = mplanet2.c;
 						this.systems[dir1index].planets[1].c2 = mplanet2.c2;					
 						dir1index = (i-1);
 						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
 						dir1index = dir1index % (this.n*this.m);
-						console.log(dir1index);
+						//console.log(dir1index);
 						this.systems[dir1index].planets[2].name = mplanet1.name;
 						this.systems[dir1index].planets[2].c = mplanet1.c;
 						this.systems[dir1index].planets[2].c2 = mplanet1.c2;
@@ -76,7 +76,7 @@ class Supersystem{
 						dir1index = (i-this.n);
 						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
 						dir1index = dir1index % (this.n*this.m);
-						console.log(dir1index);
+						//console.log(dir1index);
 						this.systems[dir1index].planets[3].name = mplanet3.name;
 						this.systems[dir1index].planets[3].c = mplanet3.c;
 						this.systems[dir1index].planets[3].c2 = mplanet3.c2;
@@ -92,18 +92,18 @@ class Supersystem{
 						var dir1index = (i+1);
 						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
 						dir1index = dir1index % (this.n*this.m);
-						console.log(dir1index);
+						//console.log(dir1index);
 						this.systems[dir1index].planets[3].name = mplanet1.name;
 						this.systems[dir1index].planets[3].c = mplanet1.c;
 						this.systems[dir1index].planets[3].c2 = mplanet1.c2;
-						console.log(this.systems[dir1index].planets[3].c2);
+						//console.log(this.systems[dir1index].planets[3].c2);
 						this.systems[dir1index].planets[1].name = mplanet2.name;
 						this.systems[dir1index].planets[1].c = mplanet2.c;
 						this.systems[dir1index].planets[1].c2 = mplanet2.c2;					
 						dir1index = (i-1);
 						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
 						dir1index = dir1index % (this.n*this.m);
-						console.log(dir1index);
+						//console.log(dir1index);
 						this.systems[dir1index].planets[2].name = mplanet1.name;
 						this.systems[dir1index].planets[2].c = mplanet1.c;
 						this.systems[dir1index].planets[2].c2 = mplanet1.c2;
@@ -113,7 +113,7 @@ class Supersystem{
 						dir1index = (i+this.n);
 						if (dir1index<0){dir1index = dir1index+this.n*this.m;}
 						dir1index = dir1index % (this.n*this.m);
-						console.log(dir1index);
+						//console.log(dir1index);
 						this.systems[dir1index].planets[3].name = mplanet3.name;
 						this.systems[dir1index].planets[3].c = mplanet3.c;
 						this.systems[dir1index].planets[3].c2 = mplanet3.c2;

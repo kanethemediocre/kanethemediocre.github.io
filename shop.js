@@ -32,8 +32,9 @@ class Shop{
 		var descriptions = [];
 		var prices = [];
 		var utypes = [];
+		console.log(this.inv);
 		var i=0;
-		while (i<this.inv.length){//-1 hack might or might not fix something, might or might not break something
+		while (i<this.inv.length){//hack might or might not fix something, might or might not break something
 			names.push(this.inv[i].namestring().slice(0,20));
 			descriptions.push(this.inv[i].describestring().slice(0,20));
 			//console.log(this.eco.prices);
@@ -112,7 +113,7 @@ class Shop{
 				theplayer.blasters[this.inv[item].i].drawstats2(canvas.width/2,160,"lime","cyan");
 				}
 			}
-		else{
+		else{//if the loop never ran, i==0 at check.
 			console.log("no inventory in shop");
 			}
 		

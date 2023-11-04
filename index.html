@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 609 by Andrew Kane </title>
+    <title>Bling Hustle 617 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -21,6 +21,10 @@
 <script type="text/javascript" src="inventory.js"></script>
 <script type="text/javascript" src="shopitem.js"></script>
 <script type="text/javascript" src="shop.js"></script>
+<script type="text/javascript" src="bhblasterbuyitems.js"></script>
+<script type="text/javascript" src="bhblasterupgradeitems.js"></script>
+<script type="text/javascript" src="bhcargoitems.js"></script>
+<script type="text/javascript" src="bhupgradeitems.js"></script>
 <script type="text/javascript" src="bhshops.js"></script>
 <script type="text/javascript" src="texthandling.js"></script>
 <script type="text/javascript" src="graphics.js"></script>
@@ -237,21 +241,18 @@ systems[1].addcargosales(cargoitems);
 systems[1].addrandomgang(1,2,16);//These addrandomgang statements allow me to define how difficult and how many bots are at each planet
 systems[1].addrandomgang(2,3,3);
 systems[1].addrandomgang(3,4,2);
-//no moon bots
 systems[1].addrandomgang(5,3,1);
-//no deem, fobz, jupe, or heyo bots
-systems[1].addrandomgang(10,3,4);
+systems[1].addrandomgang(10,3,8);
 systems[1].addrandomgang(11,4,6);
 systems[1].addrandomgang(12,3,5);
 systems[1].addrandomgang(14,2,7);
 systems[1].addrandomgang(15,4,9);
 systems[1].addrandomgang(16,4,10);
-systems[1].addrandomgang(17,4,8);
-systems[1].addrandomgang(18,2,11);
-systems[1].addrandomgang(21,2,6);
-systems[1].addrandomgang(22,2,6);
-systems[1].addrandomgang(23,4,4);
-//no tune bots
+systems[1].addrandomgang(17,4,12);
+systems[1].addrandomgang(18,2,14);
+systems[1].addrandomgang(21,2,8);
+systems[1].addrandomgang(22,3,9);
+systems[1].addrandomgang(23,4,10);
 systems[1].addrandomgang(25,5,16);
 var i=0;
 while(i<systems[1].npcs.length){
@@ -388,6 +389,8 @@ console.log(savesystem(systems[4]));
 ///GAMELOOP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//systems[1].generateplanetclocks();
+//systems[1].clockworkplanets = true; //testing planetary clockwork system, successful @ v614
 function update() {
 	var truetime = Date.now();
   	var servertime = mytime+Math.floor(time*1000/FPS);
@@ -1121,6 +1124,9 @@ if (ps>34){//0 thru 34 are non-pocket systems
 systems[ps].respawnall(); //Updates everthing in system
 systems[ps].updateall(time); //Updates everthing in system
 systems[ps].gravitateall(); //gravitates everything in system
+if (systems[ps].clockworkplanets){
+	systems[ps].clockplanets(time)
+	}
 systems[ps].collideself(myi); //executes all collisions between objects in the system.
 storycheck(0);//0 is player index
 if(time%2==0){

@@ -76,15 +76,30 @@ function idshopitems(theshopitems){//Takes an array of shop items and returns a 
 		i++;
 		}
 	}
+	
+function saveshopitem(theshopitem,theindex)	{
+	//let buyw0item = new Shopitem("blaster",0,"buy",0);//Probe weapon
+	//constructor(itype, iindex, utype, utier){
+	//var declaration = "let si"+theindex+" = new Shopitem('"+theshopitem.itype+"',"+theshopitem.i+",'"+theshopitem.utype+"',"+theshopitem.utier+");";
+	var declaration = "new Shopitem('"+theshopitem.type+"',"+theshopitem.i+",'"+theshopitem.utype+"',"+theshopitem.utier+")";
+	//thats not really a declaration but whatevs
+	return declaration;
+	}
 function saveshop(theshops,theplanets,theoutposts,theindex,moreassignments){//Saves orbit radius, size, name and color, plus more assignments as manually added.
-	var ashopitems = "[]";
+	var ashopitems = "[";
+	var i=0;
+	while(i<theshops[theindex].inv.length){
+		ashopitems = ashopitems + saveshopitem(theshops[theindex].inv[i],i)+",";//the i at end might get removed from function.
+		i++;
+		}
+	ashopitems.slice(0, -1); //-1 is a shortcut meaning the last element, normally index goes there.  This is to remove the extra comma
+	ashopitems = ashopitems + "]"
+	console.log(i);
 	var declaration = "let s"+theindex+" = new Shop('"+theshops[theindex].name+"',"+theindex+",'"+theshops[theindex].description+"',"+ashopitems+");";
 	//new Shop("The Merry Merzian", 1, "I have these fine tapestries....", merzianshopitems);
 	var thecommand = declaration + '\n';
 	var aname = "s"+theindex+".name = '"+theshops[theindex].name+"';";
 	thecommand = thecommand + aname + '\n';
-	
-
 	var i=0;
 	while(i<moreassignments.length){
 		thecommand = thecommand + moreassignments[i]+'\n';
@@ -108,7 +123,7 @@ function savesystem(thesystem){
 	var i=0;
 	
 	//Add stations
-	/* //adding shops and stations removed until it inventory is being added properly
+	 //adding shops and stations removed until it inventory is being added properly
 	var i=0;
 	while(i<thesystem.outposts.length){
 		thecommand = thecommand + saveoutpost(thesystem.planets,thesystem.outposts,i,[]); 
@@ -116,14 +131,14 @@ function savesystem(thesystem){
 		i++;
 		}	
 	//Add shops
-	/* //adding shops removed until it inventory is being added properly
+	
 	var i=0;
 	while(i<thesystem.shops.length){//Same index as outposts, could be combined loop
 		thecommand = thecommand + saveshop(thesystem.shops,thesystem.planets,thesystem.outposts,i,[]);
 		thecommand = thecommand + "cs.shops.push(s"+i+");"+"\n";
 		i++;
 		}
-	*/
+	
 	
 	//Add ecobalance code.  The economies are re-randomized, not saved.  Could be improved to saved.
 	//thecommand = thecommand + "var i=0;"+"\n";

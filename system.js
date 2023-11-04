@@ -25,6 +25,11 @@ class System{
 		this.playerspawnx = 0;
 		this.playerspawny = 0;
 		this.playerspawnplanet = 5;//planet ID where player is to be spawned in orbit.  -1 for XY spawn.
+		this.clockworkplanets = false;
+		this.planetclocks = [];
+		this.planetspeeds = [];
+		this.planetangles = [];
+		this.planetdistances = [];
 		}
 	isclear(target,x,y){
 		var dummy = new Umo(0,0,target.s,"pink");
@@ -416,6 +421,26 @@ class System{
 		console.log(actualplanets);
 		return actualplanets;
 		}
+	generateplanetclocks(){
+		this.planetclocks = [];
+		this.planetclocks.push(0);//Sun has no clock. 0 is placeholder.
+		this.planetspeeds.push(0);
+		this.planetangles.push(0);
+		this.planetdistances.push(0);
+		var i=1;//planet 0 is sun, assumed stationary
+		while(i<this.planets.length){
+			var pdv = this.planets[i].deltav(this.planets[this.planets[i].parentid]);
+			var pdistance = this.planets[i].distance(this.planets[this.planets[i].parentid]);
+			var pperimeter = 2*Math.PI*this.planets[i].distance(this.planets[this.planets[i].parentid]);
+			var pclock = Math.floor(pperimeter/pdv);
+			this.planetclocks.push(pclock);
+			this.planetspeeds.push(pdv);
+			this.planetdistances.push(pdistance);
+			this.planetangles.push(Math.atan2(this.planets[i].y,this.planets[i].x));//reference is 0,0, so the x and y are the dx, dy
+			console.log(i+" "+pdistance);
+			i++;
+			}
+		}
 	updateall(time){
 		if (this.wraps>0){ this.radialwrap(this.wraps); }
 		var i = 0;
@@ -587,12 +612,36 @@ class System{
 				i=i-1;
 				this.planets[0].gravitate(this.outposts[i]);	
 				}
-			var i = this.planets.length;
-			while (i>1){//Planet on planet gravity
-				i=i-1;
-				this.planets[0].gravitate(this.planets[i]);//sun gravitates all
-				if (this.planets[i].parentid>0){ this.planets[this.planets[i].parentid].gravitate(this.planets[i]); } //others only affected by parent
+			if (!this.clockworkplanets){
+				var i = this.planets.length;
+				while (i>1){//Planet on planet gravity
+					i=i-1;
+					this.planets[0].gravitate(this.planets[i]);//sun gravitates all
+					if (this.planets[i].parentid>0){ this.planets[this.planets[i].parentid].gravitate(this.planets[i]); } //others only affected by parent
+					}
 				}
+			else {
+				//don't handle clockwork gravity here, put the fork in the main loop
+				//so I don't have to change the gravitateall to include the time variable
+				
+				}
+			}
+		}
+	clockplanets(thetime){
+		var i=1;
+		while(i<this.planets.length){
+			var parentplanet = this.planets[this.planets[i].parentid];
+			var pangle = this.planetangles[i]+2*Math.PI*(thetime % this.planetclocks[i])/this.planetclocks[i];
+			var pdistance = this.planetdistances[i];
+			var pvx = parentplanet.vx+this.planetspeeds[i]*Math.cos(pangle+Math.PI/2);
+			var pvy = parentplanet.vy+this.planetspeeds[i]*Math.sin(pangle+Math.PI/2);
+			var px = parentplanet.x+pdistance*Math.cos(pangle);
+			var py = parentplanet.y+pdistance*Math.sin(pangle);
+			this.planets[i].x = px;
+			this.planets[i].y = py;
+			this.planets[i].vx = pvx;
+			this.planets[i].vy = pvy;
+			i++;
 			}
 		}
 	respawnall(){
@@ -1871,9 +1920,9 @@ class System{
 		var i=0;
 		while(i<this.shops.length){
 			var j=0;
-			while(j<this.shops[i].eco.prices.length){
+			while(j<cargoshopitems.length-1){//prices should be 1 shorter than cargoitems, because missioncargo is priceless?
 				if (this.shops[i].eco.forsale[j]==true){
-					this.shops[i].inv.push(cargoitems[j]);//from global scope, not passed by referebce, because maybe it fixes something?
+					this.shops[i].inv.push(cargoshopitems[j]);//from global scope, not passed by referebce, because maybe it fixes something?
 					console.log(i+" "+j+":::");
 					}
 				j++;

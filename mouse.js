@@ -22,7 +22,7 @@ function mouseDownHandler(e) {
 		var i=0;
 		while(i<ovkeys.length){
 			//console.log("itried");
-			if (ovkeys[i].inside(e.clientX-8,e.clientY-8)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
+			if (ovkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
 				action = ovkeys[i].key;
 				i=ovkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
 				vkeypressed = true;
