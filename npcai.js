@@ -13,11 +13,13 @@ class NPCAI{
 		this.enemyteams = [];
 		this.friendlyteams =[];
 		this.nowtargetplanet = 0;
+		this.nowtargetstation = 0;
 		this.alltargetplanets = [];
 		this.alltargetnpcs = [];
 		this.alltargetplayers = [];
 		this.nowtargetship = 0;
 		this.nowtargetplayer = 0;
+		this.avoidi = 0;
 		this.homeplanet = 0;
 		this.homestation = 0;
 		this.gang = 0;
@@ -56,6 +58,26 @@ class NPCAI{
 			}
 		return relationship;
 		}
+	avoidplanet(thesystem,planeti){	//checks if planet is a problem, sets ai to avoid it.
+		var me = thesystem.npcs[this.id];
+		var sun = thesystem.planets[planeti];
+		var sund = me.ship.directionof(sun);
+		var sundv = me.ship.deltav2(sun)
+		var sundistance = me.ship.distance(sun);
+		if (sundistance<2000+sun.s*2){//super sketch algo here
+			this.avoidi = planeti;//probably unnecessary
+			var targetd = me.ship.directionof(thesystem.planets[planeti]);
+			var targetdv = me.ship.deltav2(thesystem.planets[planeti]);
+			var sindv = Math.sin(targetd - targetdv[1]);
+			if (sindv>0){me.ship.d = targetd+Math.PI/2;}
+			if (sindv<=0){me.ship.d = targetd-Math.PI/2;}
+			console.log("Avoiding"+sund+", "+sundv[1]+", "+sundistance+", "+sindv+", "+sindv);
+			console.log(me.ship);
+			me.ship.thrust = 2;
+			}
+		}
+		
+		
 	closesttarget(thesystem){
 		var closestplayerdistance = 999999;
 		var closestplayer = -1;
@@ -149,19 +171,45 @@ class NPCAI{
 
 		}
 	behave(thesystem,time){//Bots decide and act in the current frame
+		var me = thesystem.npcs[this.id];
 		if (this.behavenow == "gotoinert"){
-			thesystem.npcs[this.id].ship.seek3(thesystem.planets[this.nowtargetplanet],20,30,time,1500);
+			me.ship.seek3(thesystem.planets[this.nowtargetplanet],20,30,time,1500);
+			}
+		if (this.behavenow == "gotostation"){
+			me.ship.seek3(thesystem.stations[this.nowtargetstation],20,30,time,1500);
+			if (me.ship.distance(thesystem.stations[this.nowtargetstation])<200){
+				this.behavenow = "dock";
+				}
+			else if (me.ship.distance(thesystem.stations[this.nowtargetstation])<1000){
+				me.ship.d=me.ship.directionof(thesystem.stations[this.nowtargetstation]);
+				if (time%10==0){me.ship.thrust = 2;}
+				}	
+			}
+		if (this.behavenow == "dock"){
+			me.ship.x = thesystem.stations[this.nowtargetstation].x;
+			me.ship.y = thesystem.stations[this.nowtargetstation].y;//crudely sticks the npc to the station
+			}
+		if (this.behavenow == "avoidplanet"){
+			this.avoidplanet(thesystem,this.avoidi)
+			}
+		if (this.behavenow == "avoidstation"){
+			var targetd = me.directionof(thesystem.stations[this.avoidi]);
+			var targetdv = me.deltav2(thesystem.planets[this.avoidi]);
+			var sindv = Math.sin(targetd - targetdv[1]);
+			if (sindv>0){me.ship.d = targetd+Math.PI/2;}
+			if (sindv<=0){me.ship.d = targetd-Math.PI/2;}
+			if (time%20==0){me.ship.thrust = 2;}
 			}
 		if (this.behavenow == "gotoplayer"){
-			thesystem.npcs[this.id].ship.seek3(thesystem.players[this.nowtargetplayer].ship,200,30,time,100);//seek3(target,closingvelocity,period,gametime,stopradius){
+			me.ship.seek3(thesystem.players[this.nowtargetplayer].ship,200,30,time,100);//seek3(target,closingvelocity,period,gametime,stopradius){
 			}
 		if (this.behavenow == "gotonpc"){
-			thesystem.npcs[this.id].ship.seek3(thesystem.npcs[this.nowtargetship].ship,200,30,time,100);//seek3(target,closingvelocity,period,gametime,stopradius){
+			me.ship.seek3(thesystem.npcs[this.nowtargetship].ship,200,30,time,100);//seek3(target,closingvelocity,period,gametime,stopradius){
 			}
 		if (this.behavenow == "loiter"){//Maintains proximity to homeplanet
 			if (time%20==0){
 				var homeplanet = thesystem.planets[this.homeplanet];
-				var myship = thesystem.npcs[this.id].ship;
+				var myship = me.ship;
 				var homedistance = myship.distance(homeplanet);
 				if ((homedistance>this.hardtether)&&(myship.hp>0)){
 					myship.respawn(homeplanet);
@@ -175,7 +223,7 @@ class NPCAI{
 		if (this.behavenow == "loiter2"){ //Slows excessive speeds
 			if (time%20==0){
 				var homeplanet = thesystem.planets[this.homeplanet];
-				var myship = thesystem.npcs[this.id].ship;
+				var myship = me.ship;
 				var mydv = myship.dv2(homeplanet);
 				if ((homedistance>this.hardtether)&&(myship.hp>0)){
 					myship.respawn(homeplanet);
@@ -191,26 +239,26 @@ class NPCAI{
 				}
 			}
 		if (this.behavenow == "trackattacknpc"){
-			var thetargetdistance = thesystem.npcs[this.id].ship.distance(thesystem.npcs[this.nowtargetship].ship);
-			thesystem.npcs[this.id].ship.fasttrack(thesystem.npcs[this.nowtargetship].ship);//point at target ship
-			if ((Math.random()>0.95) && (thesystem.npcs[this.id].blasters[0].bombs[0].timer < 1)){  //fire occasionally,
-				thesystem.npcs[this.id].blasters[0].fire(thesystem.npcs[this.id],0);//fire(theplayer,thetime){
+			var thetargetdistance = me.ship.distance(thesystem.npcs[this.nowtargetship].ship);
+			me.ship.fasttrack(thesystem.npcs[this.nowtargetship].ship);//point at target ship
+			if ((Math.random()>0.95) && (me.blasters[0].bombs[0].timer < 1)){  //fire occasionally,
+				me.blasters[0].fire(me,0);//fire(theplayer,thetime){
 				//console.log("firing");
 				}//gambling that i wont give npcs a weapon that actually uses the time value.
 			}
 		if (this.behavenow == "trackattackplayer"){
-			var me = thesystem.npcs[this.id];
+			//var me = thesystem.npcs[this.id];
 			var mytarget = thesystem.players[this.nowtargetship].ship;
 			var thetargetdistance = me.ship.distance(mytarget);
 			var maxrange = me.blasters[0].speed*me.blasters[0].timer+me.ship.s+mytarget.s+16;
-			thesystem.npcs[this.id].ship.fasttrack(thesystem.players[this.nowtargetship].ship);//point at target ship
-			if ((Math.random()>0.95) && (thesystem.npcs[this.id].blasters[0].bombs[0].timer < 1) && (thetargetdistance<maxrange*1.5)){  //fire occasionally,
-				thesystem.npcs[this.id].blasters[0].fire(thesystem.npcs[this.id],0);//fire(theplayer,thetime){
+			me.ship.fasttrack(thesystem.players[this.nowtargetship].ship);//point at target ship
+			if ((Math.random()>0.95) && (me.blasters[0].bombs[0].timer < 1) && (thetargetdistance<maxrange*1.5)){  //fire occasionally,
+				me.blasters[0].fire(me,0);//fire(theplayer,thetime){
 				//console.log("firing");
 				}//gambling that i wont give npcs a weapon that actually uses the time value.
 			}
 		if (this.behavenow == "leadattackplayer"){
-			var me = thesystem.npcs[this.id];
+			//var me = thesystem.npcs[this.id];
 			var mytarget = thesystem.players[this.nowtargetship].ship;
 			var thetargetdistance = me.ship.distance(mytarget);
 			var maxrange = me.blasters[0].speed*me.blasters[0].timer+me.ship.s+mytarget.s+16;
@@ -221,7 +269,7 @@ class NPCAI{
 				}//gambling that i wont give npcs a weapon that actually uses the time value.
 			}
 		if (this.behavenow == "leadattack1"){
-			//var dv = thesystem.npcs[this.id].ship.deltav2()
+			//var dv = me.ship.deltav2()
 			}
 		if (this.behavenow == "gototrackattack"){
 			//basic autopilotoid 
@@ -267,6 +315,7 @@ class NPCAI{
 				this.nowtargetship = closestplayer;
 				}
 			else {this.behavenow = "loiter";}
+			this.avoidplanet(thesystem,0);//avoid the sun
 			}
 		else if (this.behavior == "guardbot3"){//Look for enemies in range, pick closest one and shoot at it
 			var me = thesystem.npcs[this.id];
@@ -327,13 +376,49 @@ class NPCAI{
 				this.routei++;
 				if (this.routei>=this.route.length){this.routei = 0;}
 				}
-			//console.log(asdfasdfawf);
-			this.behavenow = "gotoinert";
-			this.nowtargetplanet = this.route[this.routei];
+			//this part is a new sun avoidance thing:
+			var sun = thesystem.planets[0];
+			var sund = me.ship.directionof(sun);
+			var sundv = me.ship.deltav2(sun)
+			var sundistance = me.ship.distance(sun);
+			if ((sundistance<10000+sun.s*5)||(Math.abs(sund-sundv)<0.25)){//super sketch algo here
+				this.avoidi = 0;
+				this.behavenow = "avoidplanet";
+				}
+			else{
+				this.behavenow = "gotoinert";
+				this.nowtargetplanet = this.route[this.routei];
+				}
 			}//check if near current target planet, if so cycle target planet
-		else if (this.behavior == "soldier"){}//check for nearby enemies, select best target
+		else if (this.behavior == "shopper"){
+			var me = thesystem.npcs[this.id];
+			var mytargetstation = thesystem.station[this.nowtargetstation];
+			if (me.distance(mytargetstation)>100){
+				this.behavenow="gotostation";
+				}
+			else {
+				//Find things to buy that npc can afford
+				var buyables = [];
+				//buy something if that list is not empty
+				//quit shopping if nothing is affordable
+				if (buyables.length==0){
+					this.behavior == "gbtw";
+					}
+				}	
+			}
+		else if (this.behavior == "gbtw"){
+			var me = thesystem.npcs[this.id];
+			if (thesystem.station[this.nowtargetstation].distance(me)<1000){
+				if (time%20){
+					me.ship.thrust = 2;
+					}
+				}
+			else {
+				this.contemplate(thesystem);//normally on longish timer, happens immediately(ish) after leaving station
+				}
+			}
 		else if (this.behavior == "bassassin"){//Bot assassin
-			console.log("helpimbeingexecuted");
+			//console.log("helpimbeingexecuted");
 			var me = thesystem.npcs[this.id];
 			var myrange = me.blasters[0].timer*me.blasters[0].speed+64;
 			var mytarget = thesystem.npcs[this.alltargetnpcs[0]].ship;
@@ -406,6 +491,35 @@ class NPCAI{
 			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
 			}//Seek and destroy a particular player
 		//Adjust this.behavenow according to this.behavior
+		
+		this.avoidplanet(thesystem,0);
+		
+		
+		
+		}
+		
+		
+	contemplate(thesystem,me){
+		if (this.career == "privateer"){
+			if (3*me.ship.hp < me.ship.maxhp){//go home when hurt
+				this.behavior = "gotostation";
+				this.behavenow = "gotoinert";
+				this.nowtargetstation = this.homestation;
+				}
+			else {
+				mytarget = this.closesttarget(thesystem);
+				var i=0;
+				while(i<this.nearbynpcs.length){
+					if (this.nearbynpcs[i].ai.playerhostile){
+						console.log("nme"+i);
+						}
+					i++;
+					}
+				}//Need something about nearby enemies
+			
+			
+			}
+	
 		}
 	
 	setuptrader(newroute,howclose){}

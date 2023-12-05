@@ -32,7 +32,7 @@ class Shop{
 		var descriptions = [];
 		var prices = [];
 		var utypes = [];
-		console.log(this.inv);
+		//console.log(this.inv);
 		var i=0;
 		while (i<this.inv.length){//hack might or might not fix something, might or might not break something
 			names.push(this.inv[i].namestring().slice(0,20));

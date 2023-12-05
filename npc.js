@@ -32,6 +32,7 @@ class NPC{
 		this.respawntime = 1000;
 		this.deadtime = -1;
 		this.respawning = false;
+		this.money = 100;
 		}
 	whatisnear(thesystem,threshhold){
 		var nearbyplanets = [];

@@ -181,7 +181,7 @@ function hud(playerindex){
 	if (myplayer.transparentui == false){
 		console.log("itriedtoopaquestatus");
 		context.fillStyle = "#080808";
-		context.fillRect(0,0,160,180);
+		context.fillRect(0,0,160,256);
 		}
 	var sbl = 150; //status bar base length
 	context.font='12px Arial';
@@ -220,10 +220,10 @@ function hud(playerindex){
 	myplayer.levelcheck();//Remove this to run this function less.
 	var statuschart1 = [ ["Health","Shields","Level "+myplayer.ship.level,"Weapons", "Thrusters"]  ];
 	showchart(statuschart1, 80, 20, 8,16);	
-	context.font='16px Arial';
+	context.font='20px Arial';
 	context.fillStyle = "yellow";
-	context.fillText("Bling",5,116);
-	context.fillText(myplayer.money,50,116);//Displays how much money the player has
+	context.fillText("Bling",5,120);
+	context.fillText(myplayer.money,80,120);//Displays how much money the player has
 	if (myplayer.gotmoney[0]>0){//If the player has received money recently, display how much and decrement the display lifetime of that event.
 		myplayer.gotmoney[0] = myplayer.gotmoney[0]-1;//gotmoney[0] is the timer integer
 		context.fillStyle = "green";
@@ -231,27 +231,29 @@ function hud(playerindex){
 		context.fillStyle = "white";
 		}
 	context.fillStyle = "red";
-	context.fillRect(16*myplayer.wep-160*Math.floor(myplayer.wep/10),124+16*Math.floor(myplayer.wep/10),14,20);//This highlights which blaster the player has selected
+	context.fillRect(16*myplayer.wep-160*Math.floor(myplayer.wep/10),128+16*Math.floor(myplayer.wep/10),14,20);//This highlights which blaster the player has selected
 	//context.fillRect(16*myplayer.wep-160*Math.floor(i/10),104+16*Math.floor(i/10),14,20);//This highlights which blaster the player has selected
 	context.font='14px Arial';
 	var i=0;//This indicates available blasters to the user
 	while(i<myplayer.blasters.length){
 		if (myplayer.blasters[i].phas){context.fillStyle = "white";}else{context.fillStyle = "grey";}
-		context.fillText(i,16*i-160*Math.floor(i/10),140+16*Math.floor(i/10));
+		context.fillText(i,16*i-160*Math.floor(i/10),144+16*Math.floor(i/10));
 		i=i+1;
 	}
 	context.fillStyle = "red";
 	context.font='20px Arial';
-	context.fillText(myplayer.blasters[myplayer.wep].name,8,180);
-
-	context.fillStyle = "white";
-	context.fillText(myplayer.boosters[0],8,208);//0 index is booster type
-	context.fillText(myplayer.boosters[myplayer.boosters[0]],8,236);
-	context.font='16px Arial';
+	context.fillText(myplayer.blasters[myplayer.wep].name+" equipped",8,184);
+	context.fillStyle = "purple";
+	context.font='20px Arial';
+	context.fillText(myplayer.boosters[1]+" Boosters",8,212);	
+	//context.fillStyle = "white";
+	//context.fillText(myplayer.boosters[0],8,208);//0 index is booster type
+	//context.fillText(myplayer.boosters[myplayer.boosters[0]],8,236);
+	context.font='20px Arial';
 	context.fillStyle = "green"; 
 	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
-	context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,280);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
+	context.fillText("job: "+myplayer.job,8,284);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	
 	if (myplayer.debugdisplay){
 		context.fillStyle = "white";

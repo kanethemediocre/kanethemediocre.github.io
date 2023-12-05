@@ -1293,11 +1293,11 @@ class System{
 				  playerradio.msgtime = 1;
 				  break;     
 				case "b": //Booster selection
-					if (aplayer.boosters[0]==aplayer.boosters.length-1){
-						aplayer.boosters[0]=0;
-					}else{
-						aplayer.boosters[0]=aplayer.boosters[0]+1;
-					}
+					if (aplayer.boosters[1]>0){//if booster 1 is available (used to be more options)
+						aplayer.boosters[aplayer.boosters[0]]=aplayer.boosters[aplayer.boosters[0]]-1; //remove 1 from stock of selected booster
+						aplayer.ship.thrust = 64;//32*2^(aplayer.boosters[0]); //boost hard
+						boost1.play();
+						}
 				  break;	
 				case "c": //supercompass toggle
 					supercompass++;
