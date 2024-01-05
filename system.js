@@ -124,6 +124,7 @@ class System{
 					var ydif = this.npcs[i].ship.y-viewy;
 					if ((ydif < ytol)&&(ydif>-1*ytol)){
 						this.npcs[i].ship.drawship(viewx,viewy);
+						this.npcs[i].drawdebug(viewx, viewy);
 						}
 					}
 				}
@@ -908,28 +909,37 @@ class System{
 						}
 					var m = 0;
 					while (m<this.npcs.length){ //players bombs hit npcs
-						if (this.npcs[m].ship.hp>0){	
-							this.players[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
-							if (this.npcs[m].ship.hp<=0){ //npc .alive is being weird, causes excessive erroneous cash awards
-								if (this.npcs[m].ai.playerhostile==true){
-									var getcash = Math.floor(Math.random()*21+10)*this.npcs[m].ship.level;
-									this.players[i].money = this.players[i].money + getcash;
-									this.players[i].gotmoney = [30,getcash];
+						if (this.npcs[m].ship.hp>0){	//Ignore dead npcs.  Probably could use alive flag for this.
+							var attacked = this.players[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
+							if (attacked){//Assign blame
+								this.npcs[m].ai.attackers.push([i+1000000,time]);//refers to global time variable, shame
+								//console.log(this.npcs[m].ai.attackers);
+								}//1000000 offset is to indicate attacker was a player, not an npc, without adding another variable.
+							//if (this.npcs[m].ship.hp<=0){ //npc .alive is being weird, causes excessive erroneous cash awards
+								//if (this.npcs[m].ai.playerhostile==true){
+									
+									//var getcash = Math.floor(Math.random()*21+10)*this.npcs[m].ship.level;
+									//this.players[i].money = this.players[i].money + getcash;
+									//this.players[i].gotmoney = [30,getcash];
+									
+									
 	//////////////////////////////////explosion stuff///////////////
 									//var boomstages = Math.floor(4+this.npcs[m].ship.level/2);
 									//this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.npcs[m].ship));
 									//this.bling.push(new Bling(this.npcs[m].ship.x,this.npcs[m].ship.y,this.npcs[m].ship.vx,this.npcs[m].ship.vy,this.npcs[m].ship.level*5));
-									if(!cashsound1.paused) cashsound1.pause();
-									cashsound1.currentTime = 0;
-									cashsound1.play();
-									console.log("wut");
-								}else if (this.npcs[m].ai.playerhostile==false){
+									//if(!cashsound1.paused) {cashsound1.pause();
+									//	cashsound1.currentTime = 0;
+									//	cashsound1.play();
+									//	console.log("wut");
+									//	}
+								//	}
+								//else if (this.npcs[m].ai.playerhostile==false){
 									//this.explosions.push(new Bubblesplosion(4,0.375,"red",this.npcs[m].ship));
-									this.players[i].money = this.players[i].money - 1000;
-									this.players[i].gotmoney = [30, -1000];
+									//this.players[i].money = this.players[i].money - 1000;
+									//this.players[i].gotmoney = [30, -1000];
 									//somebadsound.play();
-									}
-								}
+								//	}
+							//	}
 							}
 						m++;
 						}
@@ -973,7 +983,10 @@ class System{
 				while (k<this.npcs[i].blasters[j].bombs.length){
 					var m = 0;
 					while (m<this.npcs.length){ //npcs hit other npcs
-						this.npcs[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
+						var attacked = this.npcs[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
+						if (attacked){//Assign blame
+							this.npcs[m].ai.attackers.push([i,time]);//refers to global time variable, shame
+							}
 						m++;
 						}
 					var m = 0;
@@ -1736,6 +1749,11 @@ class System{
 		var i=0;
 		while (i<traderstops){
 			var thisstop = Math.floor(Math.random()*(this.planets.length-1))+1;
+			if (i>0){
+				while (thisstop==destinations[i-1]){//rerolls unttil a different destination comes up.
+					thisstop = Math.floor(Math.random()*(this.planets.length-1))+1;
+					}
+				}
 			destinations.push(thisstop);
 			i=i+1;
 			}
@@ -1745,6 +1763,11 @@ class System{
 		var i=0;
 		while (i<traderstops){
 			var thisstop = Math.floor(Math.random()*(this.planets.length-1))+1;
+			if (i>0){
+				while (thisstop==destinations[i-1]){//rerolls unttil a different destination comes up.
+					thisstop = Math.floor(Math.random()*(this.planets.length-1))+1;
+					}
+				}
 			destinations.push(thisstop);
 			i=i+1;
 			}
@@ -2035,6 +2058,8 @@ class System{
 			this.npcs[botindex].ship.maxhp = 150;
 			this.npcs[botindex].ship.polytheta = gangpolytheta;
 			this.npcs[botindex].ship.polyradius = gangpolyradius;
+			this.npcs[botindex].ai.team = 0;
+			this.npcs[botindex].ai.enemyteams = [1];
 			this.npcs[botindex].ai.behavior = "guardbot2";
 			if (i==(gangsize-1)){this.npcs[botindex].ai.behavior = "guardbot2";}
 			this.npcs[botindex].ai.playerhostile = true; 
@@ -2061,17 +2086,22 @@ class System{
 			this.npcs[botindex].ship.parentid = fleetparent; 
 			this.npcs[botindex].ship.respawn(this.planets[fleetparent]);//This method is semi-obselete, after death respawns are handled by setting a "respawning" flag on the NPC object and waiting for the system updateall() function to run.
 			this.npcs[botindex].ship.name = randname(5);
-			this.npcs[botindex].ship.hp = 150;
-			this.npcs[botindex].ship.maxhp = 150;
+			this.npcs[botindex].ship.hp = 250;
+			this.npcs[botindex].ship.maxhp = 250;
+			this.npcs[botindex].ship.shield = 100;
+			this.npcs[botindex].ship.maxshield = 100;
 			this.npcs[botindex].ship.polytheta = fleetpolytheta;
 			this.npcs[botindex].ship.polyradius = fleetpolyradius;
-			this.npcs[botindex].ai.team = "trader";
+			this.npcs[botindex].ai.team = 1;
+			this.npcs[botindex].ai.enemyteams = [0];
 			this.npcs[botindex].ai.route = destinations;
-			this.npcs[botindex].ai.behavior = "inertpatrol";
+			this.npcs[botindex].ai.behavior = "defensivepatrol";//"inertpatrol";
+			this.npcs[botindex].blasters[0].plusspeed();//Some upgrades to help keep them from hitting themselves.
+			this.npcs[botindex].blasters[0].plustimer();
 			this.levelup(botindex,level);
 			}
 		}
-	addprivateer(home, level){//Home is planet index, not actual planet (umo) object
+	addmercenaries(home,destinations,num,level){//Home is planet index, not actual planet (umo) object
 		//var fleetsize = num;
 		var fleetcolor1 = randcolor();
 		var fleetcolor2 = randcolor();
@@ -2080,30 +2110,30 @@ class System{
 		normalizepoly(randomshipverts);
 		var fleetpolytheta = randomshipverts[0];
 		var fleetpolyradius = randomshipverts[1];
-		var botindex = this.npcs.length;
-		this.npcs.push(new NPC(botindex));
-		this.npcs[botindex].ship.c = fleetcolor1;
-		this.npcs[botindex].ship.c2 = fleetcolor2;
-		this.npcs[botindex].ship.parentid = fleetparent; 
-		this.npcs[botindex].ship.respawn(this.planets[fleetparent]);
-		this.npcs[botindex].ship.name = randname(5);
-		this.npcs[botindex].ship.hp = 150;
-		this.npcs[botindex].ship.maxhp = 150;
-		this.npcs[botindex].ship.polytheta = fleetpolytheta;
-		this.npcs[botindex].ship.polyradius = fleetpolyradius;
-		this.npcs[botindex].ai.team = "privateer";
-		this.npcs[botindex].ai.homeplanet = home;
-		this.npcs[botindex].ai.behavior = "bassassin";
-		this.npcs[botindex].ai.career = "privateer";
-		var rnpc = Math.floor(Math.random()*systems[ps].npcs.length);
 		var i=0;
-		while (((this.npcs[rnpc].ai.playerhostile == false)||(this.npcs[rnpc].level>this.npcs[botindex].level))&&(i<10)){
-			rnpc = Math.floor(Math.random()*systems[ps].npcs.length);
-			systems[ps].npcs[botindex].ai.alltargetplayers = [ rnpc ];
+		while(i<num){
+			var botindex = this.npcs.length;
+			this.npcs.push(new NPC(botindex));
+			this.npcs[botindex].ship.c = fleetcolor1;
+			this.npcs[botindex].ship.c2 = fleetcolor2;
+			this.npcs[botindex].ship.parentid = home;
+			this.npcs[botindex].ship.respawn(this.planets[home]);
+			this.npcs[botindex].ship.name = randname(5);
+			this.npcs[botindex].ship.hp = 250;
+			this.npcs[botindex].ship.maxhp = 250;
+			this.npcs[botindex].ship.shield = 100;
+			this.npcs[botindex].ship.maxshield = 100;
+			this.npcs[botindex].ship.polytheta = fleetpolytheta;
+			this.npcs[botindex].ship.polyradius = fleetpolyradius;
+			this.npcs[botindex].ai.team = 1;
+			this.npcs[botindex].ai.enemyteams = [0];
+			this.npcs[botindex].ai.route = destinations;
+			this.npcs[botindex].ai.behavior = "offensivepatrol";//"inertpatrol";
+			this.npcs[botindex].ai.homeplanet = home;
+			this.npcs[botindex].ai.career = "mercprivateer";
+			this.levelup(botindex,level);
+			i++;
 			}
-		if (i>9){console.log("failed to find appropriate target after 10 tries");}
-		this.levelup(botindex,level);
-			
 		}
 	enemypopulate(num,minlevel,maxlevel){ //Adds gangs of enemy ships, level describes difficulty, num is size of each gang.
 		var i=1;

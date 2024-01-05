@@ -17,6 +17,8 @@ function hud(playerindex){
 		}	
 	else {
 		var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
+		var fshipsinrange = [];
+		var eshipsinrange = [];
 		var closestdistance = 999999;//needs to be larger than radarrange 
 		var closestindex = 0; 
 		var i=0;
@@ -24,6 +26,8 @@ function hud(playerindex){
 			var tdistance = Math.floor(myplayer.ship.distance(systems[ps].npcs[i].ship));
 			if (tdistance<myplayer.radarrange){
 				shipsinrange.push(i);
+				if (systems[ps].npcs[i].ai.playerhostile){ eshipsinrange.push(i); }
+				else {fshipsinrange.push(i);}
 				if ((myplayer.ship.pointingat(systems[ps].npcs[i].ship))&&(myplayer.targetlock<0)){
 					myplayer.shiptarget = i;	
 					}
@@ -99,6 +103,11 @@ function hud(playerindex){
 		//context.strokeStyle = "white";
 		//context.stroke();	
 		}
+	context.font = '24px Ariel';
+	context.fillStyle = "lime";
+	context.fillText(fshipsinrange.length+" Friendly ships detected", canvas.width-400, 20);	
+	context.fillStyle = "red";
+	context.fillText(eshipsinrange.length+" Enemy ships detected", canvas.width-400, 50);	
 	}
 	if (myplayer.vkvisible == true){
 		var i=0;

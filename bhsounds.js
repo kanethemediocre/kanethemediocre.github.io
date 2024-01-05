@@ -86,7 +86,7 @@ var jasong6 = new Audio("./sounds/somethingwave6.mp3");
 var jasong7 = new Audio("./sounds/NoiseBallad5.mp3");
 var allmusic = [testsong,asteroidsong1,bubblesong1,bubblesong2,menusong1,jasong1,jasong2,jasong3,jasong4,jasong5,jasong6,jasong7];
 var musicvolume = 0;
-var soundvolume = 1;
+var soundvolume = 0.4;
 function setmusicvolume(newvolume){
 	var i=0;
 	while(i<allmusic.length){

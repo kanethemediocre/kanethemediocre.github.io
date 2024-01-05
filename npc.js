@@ -29,10 +29,18 @@ class NPC{
 		this.gang = 0;
 		this.ai = new NPCAI(0,"none",this.homeplanet,npcid);
 		this.alive = true;
-		this.respawntime = 1000;
+		this.respawntime = 2000;
 		this.deadtime = -1;
 		this.respawning = false;
 		this.money = 100;
+		}
+	drawdebug(viewx, viewy){ //Ships are drawn as polar polygons, a triangle is the default.  Viewx/viewy are camera center
+		var x = this.ship.x - viewx + canvas.width/2; //normally camera center being the player ship.
+		var y = this.ship.y - viewy + canvas.height/2;
+		var prop = this.energy / this.maxhp;
+		context.fillStyle = "white";
+		context.font='16px Arial';
+		context.fillText(this.money,x,y+80);
 		}
 	whatisnear(thesystem,threshhold){
 		var nearbyplanets = [];
@@ -67,6 +75,41 @@ class NPC{
 			thesystem.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.ship));
 			thesystem.bling.push(new Bling(this.ship.x,this.ship.y,this.ship.vx,this.ship.vy,this.ship.level*5));
 			this.ship.x = 100000000;
+			//maybe do payout here.
+			if (this.ai.attackers.length>0){
+				var killer = this.ai.attackers[this.ai.attackers.length-1][0];
+				if (killer>=1000000){
+					//check for friendly fire
+					if (this.ai.playerhostile){//Using playerhostile tag for now.  Will eventually shift to team.
+						//award player
+						thesystem.players[killer-1000000].money = thesystem.players[killer-1000000].money + this.ship.level*16;
+						thesystem.players[killer-1000000].gotmoney = [60,this.ship.level*16];
+						//if(!cashsound1.paused) {
+							cashsound1.pause();
+							cashsound1.currentTime = 0;
+							cashsound1.play();
+							console.log("wut");
+							//}
+						}
+					else{
+						//punish player
+						thesystem.players[killer-1000000].money = thesystem.players[killer-1000000].money - (500+this.ship.level*32) ;
+						thesystem.players[killer-1000000].gotmoney = [60, -1*(500+this.ship.level*32)];
+						}
+					}
+				else{
+					//check for friendly fire
+					console.log(killer);
+					if (this.ai.team != thesystem.npcs[killer].ai.team){
+						//award npc
+						thesystem.npcs[killer].money = thesystem.npcs[killer].money + this.ship.level*5;
+						}
+					else{
+						//punish npc
+						thesystem.npcs[killer].money = thesystem.npcs[killer].money - (100+this.ship.level*5);
+						}
+					}
+				}
 			}
 		if (this.alive==false){
 			if (this.deadtime>=0){
@@ -74,7 +117,7 @@ class NPC{
 				//console.log(this.deadtime);
 				}
 			else{
-				this.alive = true;
+				this.alive = true;//shouldn't do anything, why this here
 				this.ship.hp = this.ship.maxhp;
 				this.ship.shield = this.ship.maxshield;
 				this.respawning = true;
@@ -85,9 +128,12 @@ class NPC{
 			//this.ship.update1();
 			this.ship.updateship(thesystem.planets);
 			//console.log(time)
-			if (time%15==0){
+			if (time%15==1){
 				//console.log(time);
 				this.ai.ponder(thesystem);
+				}
+			if (time % 300 == 0){
+				this.ai.contemplate(thesystem);
 				}
 			if (this.alive == true){this.ai.behave(thesystem,time);}
 			//this.blasters[0].update1();

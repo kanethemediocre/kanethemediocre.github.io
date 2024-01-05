@@ -7,6 +7,7 @@ class Player{
         this.input = "";
         this.money = 100;
         this.name = "-";
+		this.team = 1;
         this.upgrades = freshupgrades(); //
         this.inventory = new Inventory(10); //for cargo?
         this.emtrees = [bhstarttree()];

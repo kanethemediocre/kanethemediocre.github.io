@@ -373,16 +373,17 @@ class Umo { //Universal Moving Object
 			that.vx = tx * dpTan2 + nx * m2;
 			that.vy = ty * dpTan2 + ny * m2;
 			}
-		}	
-				
+		}			
 	bombcollide(that){ //explodes on contact, damages every frame in explosion
 		if (this.distance(that) < (this.s + that.s)) {
 			that.damage(this.hurt); //Automatically proportional based on time spent inside 
-			if (this.timer>6){this.timer = 6;}//sets off explosion by setting timer to start of explosion
+			if (this.timer>12){this.timer = 12;}//sets off explosion by setting timer to start of explosion
 			if (this.user == 0){
 				//ideally only play on first frame
 				}
+			return true;//Returns true if the collision occurred.
 			}
+		else {return false;}
 		}
 	squarebouncecollide(that){
 		var dx = this.x-that.x;
@@ -805,8 +806,8 @@ class Umo { //Universal Moving Object
 		}
 	launchbomb(thebomb, mag, time){ //This allows significant weapon customization in the function call. 
 		thebomb.match(this);	// Mag is how hard the bomb is pushed, time is how long before the bomb detonates on it's own.
-		thebomb.x = thebomb.x + (this.s+16)*Math.cos(this.d);
-		thebomb.y = thebomb.y + (this.s+16)*Math.sin(this.d); 
+		thebomb.x = thebomb.x + (this.s+24)*Math.cos(this.d);
+		thebomb.y = thebomb.y + (this.s+24)*Math.sin(this.d); 
 		thebomb.timer = time;
 		thebomb.hp = 1;
 		thebomb.push(mag,this.d);

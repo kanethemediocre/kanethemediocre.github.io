@@ -194,8 +194,8 @@ function drawmap(mplanets, mstations,scale,xx,yy, px, py, radar, mnpcs,theplayer
 			y = yy + mnpcs[i].ship.y/scale - py/scale;
 			size = 1+ Math.floor(mnpcs[i].ship.s/scale);
 			context.fillStyle = "white"; 
-			if (mnpcs[i].ai.playerhostile == true){context.fillStyle = "red";} 
-			else if (mnpcs[i].ai.team == "trader"){context.fillStyle = "blue";}//team isnt actually implemented yet 
+			if (mnpcs[i].ai.team == 0){context.fillStyle = "red";} 
+			else if (mnpcs[i].ai.team == 1){context.fillStyle = "blue";}//team isnt actually implemented yet 
 			//else {context.fillStyle = "white";} 
 			context.fillRect(x, y, 3, 3); 
 			context.fill();

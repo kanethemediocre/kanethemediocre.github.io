@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 620 by Andrew Kane </title>
+    <title>Bling Hustle 631 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -149,7 +149,7 @@ var upgradesavestring="";
 var loadgamestring = "";
 var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 var playerselect = 0;
-var lastsong = -1
+var lastsong = -1;
 //var playerweapon9superbomb = new Superbomb("orbitalsystem");
 var firsttree = bhstarttree();//from bhstarttree.js
 var testsavetree = firsttree.savestring();
@@ -265,6 +265,11 @@ while(i<systems[1].npcs.length){
 	i++;
 	}
 systems[1].addrandomtraders([5,11,16], 8, 4);
+systems[1].addmercenaries(3,[3,5],1,10);
+//systems[1].addmercenaries(3,[3,5],1,10);
+//systems[1].addmercenaries(3,[3,11],1,10);
+//systems[1].addmercenaries(3,[3,16],1,10);
+//addmercenaries(home,destinations,num,level){/
 
 systems[1].addcargomissions(4);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -848,7 +853,6 @@ function update() {
 		if (supercompass>1){
 			systems[ps].drawshipfinder(0,300);
 			}
-		console.log(canvas.width);
 		if (canvas.width>1500){
 	
 			hud(myi);//myi is the player index.  

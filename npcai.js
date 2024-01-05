@@ -17,8 +17,11 @@ class NPCAI{
 		this.alltargetplanets = [];
 		this.alltargetnpcs = [];
 		this.alltargetplayers = [];
+		this.attackers = [];//List of npcs or players that have attacked, and at what time, in pairs [npc1id,time1],[npc2id,time2] etc
+		this.grudges = [];//list of npcs or players that 
 		this.nowtargetship = 0;
 		this.nowtargetplayer = 0;
+		this.nowtargettype = "none";//"planet","npc","player" are potentially valid.
 		this.avoidi = 0;
 		this.homeplanet = 0;
 		this.homestation = 0;
@@ -66,8 +69,89 @@ class NPCAI{
 		var sundistance = me.ship.distance(sun);
 		if (sundistance<2000+sun.s*2){//super sketch algo here
 			this.avoidi = planeti;//probably unnecessary
-			var targetd = me.ship.directionof(thesystem.planets[planeti]);
-			var targetdv = me.ship.deltav2(thesystem.planets[planeti]);
+			var targetd = me.ship.directionof(sun);
+			var targetdv = me.ship.deltav2(sun);
+			var sindv = Math.sin(targetd - targetdv[1]);
+			if (sindv>0){ me.ship.d = targetd+Math.PI/2; }
+			if (sindv<=0){ me.ship.d = targetd-Math.PI/2; }
+			console.log("Avoiding"+sund+", "+sundv[1]+", "+sundistance+", "+sindv+", "+sindv);
+			console.log(me.ship);
+			me.ship.thrust = 2;
+			}
+		}
+	updategrudges(forgivetime,thetime){
+		var forgivestrikes = 16;
+		var grudges = [];
+		var strikes = [];
+		var i=0;
+		while (i<this.attackers.length){
+			if ( ( (thetime-this.attackers[i][1]) > forgivetime ) || (this.id==this.attackers[i][0]) ){
+				this.attackers.splice(i,1);//remove element i if grievance is old or self
+				}
+			else {
+				if ( !grudges.includes(this.attackers[i][0]) ){
+					grudges.push(this.attackers[i][0]);
+					strikes.push(1);
+					console.log(this.attackers);
+					}
+				else {
+					var j=0;
+					while(j<grudges.length){
+						if (grudges[j]==this.attackers[i][0]){
+							strikes[j]++
+							j=grudges.length;
+							}
+						j++;
+						}
+					}
+				i++;
+				}
+			}
+		var i=0;
+		while (i<grudges.length){//Forgiveness of small numbers of attack frames
+			if (strikes[i]<forgivestrikes){
+				grudges.splice(i,1);
+				strikes.splice(i,1);
+				}
+			else {
+				i++;
+				}
+			}
+		//console.log(grudges);
+		return grudges;
+		}
+	aavoid(thesystem,planeti,adistance,atype){	//Like avoid planet, but with parameters to avoid different objects in different ways
+		//planeti is an index but not necessarily a planet index.
+		//sun is used to indicate the umo being avoided, regardless of type
+		var me = thesystem.npcs[this.id];
+		if (atype=="planet"){ 
+			if (planeti<thesystem.planets.length){	var sun = thesystem.planets[planeti]; }
+			else {
+				console.log("i = "+planeti+", planets.length = "+thesystem.planets.length);
+				return;
+				}
+			}
+		if (atype=="station"){
+			if (planeti<thesystem.stations.length){ var sun = thesystem.stations[planeti]; }
+			else {
+				console.log("i = "+planeti+", stations.length = "+thesystem.stations.length);
+				return;
+				}
+			}
+		if (atype=="npc"){
+			if (planeti<thesystem.npcs.length){ var sun = thesystem.npcs[planeti].ship; }
+			else {
+				console.log("i = "+planeti+", npcs.length = "+thesystem.npcs.length);
+				return;
+				}
+			}
+		var sund = me.ship.directionof(sun);
+		var sundv = me.ship.deltav2(sun)
+		var sundistance = me.ship.distance(sun);
+		if (sundistance<adistance){
+			this.avoidi = planeti;//probably unnecessary
+			var targetd = me.ship.directionof(sun);
+			var targetdv = me.ship.deltav2(sun);
 			var sindv = Math.sin(targetd - targetdv[1]);
 			if (sindv>0){me.ship.d = targetd+Math.PI/2;}
 			if (sindv<=0){me.ship.d = targetd-Math.PI/2;}
@@ -75,9 +159,30 @@ class NPCAI{
 			console.log(me.ship);
 			me.ship.thrust = 2;
 			}
+		}	
+	tattack(thesystem,npci,aprob,atype){ //aprob == 0 never shoots, aprob==1 always shoots
+		//var aprob = 0.05;//attack probability per frame
+		var me = thesystem.npcs[this.id];
+		if (atype=="npc"){ 
+			var mytarget = thesystem.npcs[this.nowtargetship].ship;
+			}
+		else if (atype=="player"){
+			var mytarget = thesystem.players[this.nowtargetship].ship;
+			}
+		else {
+			mytarget = thesystem.planets[0];//hopefully avoids crashing or errors by putting an umo in mytarget.
+			console.log("invalid ai attack type: "+atype);
+			return;
+			}
+		var thetargetdistance = me.ship.distance(mytarget);
+		var maxrange = me.blasters[0].speed*me.blasters[0].timer+me.ship.s+mytarget.s+me.ship.s;
+		var minrange = me.blasters[0].boom*100;//technically should be 128 or 160, minus some factor based on speed.
+		me.ship.fasttrack(mytarget);//point at target ship
+		if ((me.blasters[0].bombs[0].timer < 1) && (thetargetdistance<maxrange*1.4)&&(thetargetdistance>minrange)&&(Math.random()<aprob)){  //fire occasionally,
+			me.blasters[0].fire(me,0);//fire(theplayer,thetime){
+			}//gambling that i wont give npcs a weapon that actually uses the time value.
+		return;
 		}
-		
-		
 	closesttarget(thesystem){
 		var closestplayerdistance = 999999;
 		var closestplayer = -1;
@@ -239,23 +344,10 @@ class NPCAI{
 				}
 			}
 		if (this.behavenow == "trackattacknpc"){
-			var thetargetdistance = me.ship.distance(thesystem.npcs[this.nowtargetship].ship);
-			me.ship.fasttrack(thesystem.npcs[this.nowtargetship].ship);//point at target ship
-			if ((Math.random()>0.95) && (me.blasters[0].bombs[0].timer < 1)){  //fire occasionally,
-				me.blasters[0].fire(me,0);//fire(theplayer,thetime){
-				//console.log("firing");
-				}//gambling that i wont give npcs a weapon that actually uses the time value.
+			this.tattack(thesystem,this.nowtargetship,0.05,"npc");
 			}
 		if (this.behavenow == "trackattackplayer"){
-			//var me = thesystem.npcs[this.id];
-			var mytarget = thesystem.players[this.nowtargetship].ship;
-			var thetargetdistance = me.ship.distance(mytarget);
-			var maxrange = me.blasters[0].speed*me.blasters[0].timer+me.ship.s+mytarget.s+16;
-			me.ship.fasttrack(thesystem.players[this.nowtargetship].ship);//point at target ship
-			if ((Math.random()>0.95) && (me.blasters[0].bombs[0].timer < 1) && (thetargetdistance<maxrange*1.5)){  //fire occasionally,
-				me.blasters[0].fire(me,0);//fire(theplayer,thetime){
-				//console.log("firing");
-				}//gambling that i wont give npcs a weapon that actually uses the time value.
+			this.tattack(thesystem,this.nowtargetship,0.05,"player");
 			}
 		if (this.behavenow == "leadattackplayer"){
 			//var me = thesystem.npcs[this.id];
@@ -272,8 +364,17 @@ class NPCAI{
 			//var dv = me.ship.deltav2()
 			}
 		if (this.behavenow == "gototrackattack"){
-			//basic autopilotoid 
-			//basic point at and shoot sometimes
+			if (this.nowtargettype == "player"){
+				this.tattack(thesystem,this.nowtargetship,0.05,"player");
+				}
+			else if (this.nowtargettype == "npc"){
+				this.tattack(thesystem,this.nowtargetship,0.05,"npc");
+				}
+				
+			if (me.blasters[0].bombs[0].distance(me.ship)>200){ 
+				me.ship.seek3(thesystem.planets[this.nowtargetplanet],20,30,time,1500); 
+				//seek3(target,closingvelocity,period,gametime,stopradius){//
+				}
 			}	
 		}
 	ponder(thesystem){//Bots examine their situation and reevaluate this.behavenow
@@ -367,6 +468,8 @@ class NPCAI{
 				}
 			else {this.behavenow = "loiter2";}
 			}
+			
+			
 		else if (this.behavior == "inertpatrol"){
 			//console.log("inertpatrollin");
 			var me = thesystem.npcs[this.id];
@@ -381,7 +484,7 @@ class NPCAI{
 			var sund = me.ship.directionof(sun);
 			var sundv = me.ship.deltav2(sun)
 			var sundistance = me.ship.distance(sun);
-			if ((sundistance<10000+sun.s*5)||(Math.abs(sund-sundv)<0.25)){//super sketch algo here
+			if ((sundistance<10000+sun.s*5)||(Math.abs(sund-sundv[1])<0.25)){//super sketch algo here
 				this.avoidi = 0;
 				this.behavenow = "avoidplanet";
 				}
@@ -389,7 +492,122 @@ class NPCAI{
 				this.behavenow = "gotoinert";
 				this.nowtargetplanet = this.route[this.routei];
 				}
+			//console.log("dests: "+this.route);
 			}//check if near current target planet, if so cycle target planet
+			
+		else if (this.behavior == "defensivepatrol"){
+			//console.log("inertpatrollin");
+			var me = thesystem.npcs[this.id];
+			var mytargetplanet = thesystem.planets[this.route[this.routei]];
+			var closeenough = mytargetplanet.s*3+1250;
+			if (mytargetplanet.distance(me.ship)<closeenough){
+				this.routei++;
+				if (this.routei>=this.route.length){this.routei = 0;}
+				this.nowtargetplanet = this.route[this.routei];	
+				me.money=me.money+100;//Good enough until reward is calculated
+				//this.behavenow = "gotoinert";
+				}
+			this.behavenow = "gotoinert";//Default behavior, will be overridden if target is near.
+			var shitlist = this.updategrudges(3600,time);
+			//console.log(time);
+			var range = me.blasters[0].timer*me.blasters[0].speed+100;//600;//fix 
+			var i=0;
+			while(i<shitlist.length){
+				//console.log(shitlist);
+				var enemy = shitlist[i];
+				if (enemy>=1000000){
+					enemy = enemy - 1000000; //Removes player flag on enemy number.
+					if ( thesystem.players[enemy].ship.distance(me.ship) < range ) {
+						this.nowtargetship = enemy;
+						this.nowtargettype = "player";
+						this.behavenow = "gototrackattack";
+						//console.log("itried");
+						}
+					}
+				else{
+					if ( thesystem.npcs[enemy].ship.distance(me.ship) < range ) {
+						this.nowtargetship = enemy;
+						this.nowtargettype = "npc";
+						this.behavenow = "gototrackattack";
+						}
+					}
+				//console.log(enemy);
+				i++;
+				}
+
+			//aavoid(thesystem,planeti,adistance,atype){
+			this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//All ais avoid the sun, maybe fix for bubble universe?
+			}//check if near current target planet, if so cycle target planet	
+
+		else if (this.behavior == "offensivepatrol"){
+			var me = thesystem.npcs[this.id];
+			var mytargetplanet = thesystem.planets[this.route[this.routei]];
+			var closeenough = mytargetplanet.s*3+1250;
+			if (mytargetplanet.distance(me.ship)<closeenough){
+				this.routei++;
+				if (this.routei>=this.route.length){this.routei = 0;}
+				this.nowtargetplanet = this.route[this.routei];	
+				me.money=me.money+100;//Good enough until reward is calculated
+				//this.behavenow = "gotoinert";
+				}
+			this.behavenow = "gotoinert";//Default behavior, will be overridden if target is near.
+			
+			//Start with recent attackers
+			var shitlist = this.updategrudges(3600,time);
+			//look for enemy team
+			me.whatisnear(thesystem,2000);
+			var i=0;
+			while(i<this.nearbynpcs.length){
+				var j=0;
+				while (j<this.enemyteams.length){
+					var npci = this.nearbynpcs[i];
+					if (thesystem.npcs[npci].ai.team==this.enemyteams[j]){
+						shitlist.unshift(npci);//should put at front of list, so grudges take priority.
+						}
+					j++;
+					}
+				i++;
+				}
+			//console.log(time);
+			var range = me.blasters[0].timer*me.blasters[0].speed+100;//600;//fix 
+			var i=0;
+			while(i<shitlist.length){
+				//console.log(shitlist);
+				var enemy = shitlist[i];
+				if (enemy>=1000000){
+					enemy = enemy - 1000000; //Removes player flag on enemy number.
+					if ( thesystem.players[enemy].ship.distance(me.ship) < range ) {
+						this.nowtargetship = enemy;
+						this.nowtargettype = "player";
+						this.behavenow = "gototrackattack";
+						//console.log("itried");
+						}
+					}
+				else if ( thesystem.npcs[enemy].ship.distance(me.ship) < range ) {
+					this.nowtargetship = enemy;
+					this.nowtargettype = "npc";
+					this.behavenow = "gototrackattack";
+					}
+				i++;
+				}
+
+			//aavoid(thesystem,planeti,adistance,atype){
+			this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//All ais avoid the sun, maybe fix for bubble universe?
+			}//check if near current target planet, if so cycle target planet	
+
+
+
+
+
+
+
+
+
+
+
+
+			
+			
 		else if (this.behavior == "shopper"){
 			var me = thesystem.npcs[this.id];
 			var mytargetstation = thesystem.station[this.nowtargetstation];
@@ -420,20 +638,24 @@ class NPCAI{
 		else if (this.behavior == "bassassin"){//Bot assassin
 			//console.log("helpimbeingexecuted");
 			var me = thesystem.npcs[this.id];
+			me.whatisnear(thesystem,2000);//maybe remove this?  It's not changing targets.
+			//var me = thesystem.npcs[this.id];
 			var myrange = me.blasters[0].timer*me.blasters[0].speed+64;
-			var mytarget = thesystem.npcs[this.alltargetnpcs[0]].ship;
-			var mydistance =  me.ship.distance(mytarget);
-			if (mydistance<myrange){//If in range
-				this.behavenow = "trackattacknpc";//target the player
-				this.nowtargetship = this.alltargetnpcs[0];
-				console.log("targeting npc");
+			var mytarget = thesystem.npcs[this.nowtargetship].ship;
+			if (mytarget.hp>=0){
+				var mydistance =  me.ship.distance(mytarget);
+				if (mydistance<myrange){//If in range
+					this.behavenow = "trackattacknpc";//target the player
+					//this.nowtargetship = this.alltargetnpcs[0];
+					console.log("targeting npc");
+					}
+				else{
+					this.behavenow = "gotonpc";//Goto the player!
+					//this.nowtargetship = this.alltargetnpcs[mytarget];//0 because at this point in dev there will be 1 element in array
+					console.log("going to npc");
+					}
 				}
-			else{
-				this.behavenow = "gotonpc";//Goto the player!
-				this.nowtargetship = this.alltargetnpcs[0];//0 because at this point in dev there will be 1 element in array
-				console.log("going to npc");
-				}
-			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
+			else {this.contemplate(thesystem);}
 			}//Seek and destroy a particular npc
 		else if (this.behavior == "passassin"){//player assassin
 			//console.log("helpimbeingexecuted");
@@ -491,35 +713,74 @@ class NPCAI{
 			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
 			}//Seek and destroy a particular player
 		//Adjust this.behavenow according to this.behavior
-		
-		this.avoidplanet(thesystem,0);
-		
-		
-		
+		//aavoid(thesystem,planeti,adistance,atype){	
+		this.aavoid(thesystem,0,thesystem.planets[0].s*2+2000,"planet");
+		//this.avoidplanet(thesystem,0);
 		}
 		
 		
-	contemplate(thesystem,me){
-		if (this.career == "privateer"){
+	contemplate(thesystem){
+		var me = thesystem.npcs[this.id];
+		me.whatisnear(thesystem,4000);
+		if (this.career == "mercprivateer"){
 			if (3*me.ship.hp < me.ship.maxhp){//go home when hurt
 				this.behavior = "gotostation";
 				this.behavenow = "gotoinert";
 				this.nowtargetstation = this.homestation;
 				}
 			else {
-				mytarget = this.closesttarget(thesystem);
+				//this.mytarget = this.closesttarget(thesystem);
+				var nearbyenemies = [];
 				var i=0;
-				while(i<this.nearbynpcs.length){
-					if (this.nearbynpcs[i].ai.playerhostile){
+				while(i<this.nearbynpcs.length){//nearbynpcs is a list of indices.
+					var thenpc = thesystem.npcs[this.nearbynpcs[i]];
+					if (thenpc.ai.playerhostile){//replace with more sophisticated filter
+						nearbyenemies.push(thenpc.id);
 						console.log("nme"+i);
 						}
 					i++;
+					}
+				if (nearbyenemies.length == 0){
+					this.behavior = "defensivepatrol";
+					this.behavenow = "gotoinert";
+					this.nowtargetplanet = this.route[this.routei];	
+					}
+				else{
+					var mytarget = 0;
+					var closestdistance = 999999;
+					var i=0;
+					while (i<nearbyenemies.length){
+						var enemy = thesystem.npcs[nearbyenemies[i]];
+						var enemydistance = me.ship.distance(enemy.ship);
+						if (enemydistance<closestdistance){
+							mytarget = nearbyenemies[i];
+							closestdistance = enemydistance;
+							}
+						i++;
+						}
+					this.nowtargetship = mytarget;
+					this.behavior = "bassassin";
 					}
 				}//Need something about nearby enemies
 			
 			
 			}
-	
+		else if (this.career == "traderprivateer"){
+			if (3*me.ship.hp < me.ship.maxhp){//go home when hurt
+				this.behavior = "gotostation";
+				this.behavenow = "gotoinert";
+				this.nowtargetstation = this.homestation;
+				}
+			else if (me.money>Math.pow(2,me.level)){
+				//go shopping
+				}
+			else {
+				this.behavior = "defensivepatrol";
+				this.behavenow = "gotoinert"
+				}//Need something about nearby enemies
+			
+			
+			}
 		}
 	
 	setuptrader(newroute,howclose){}
