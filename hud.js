@@ -386,6 +386,8 @@ function hud(playerindex){
 		//}
 ////Shopping!//////////////////////////////////////////////////////
 	if ((myplayer.dockstate>=0)&&(myplayer.dockstate<systems[ps].shops.length)){
+		
+		
 		//console.log("itriedtodrawthebuymenu0");
 		//drawaskeyspecial(480,32,128,24,"Backspace","white");
 		//drawaskeyspecial(800,180,80,24,"Enter","white");
@@ -404,7 +406,7 @@ function hud(playerindex){
 			//console.log("itriedtodrawthebuymenu1");
 			if (myplayer.shopitem >= systems[ps].shops[myplayer.dockstate].inv.length){myplayer.shopitem=0;}
 			//console.log("itriedtodrawthebuymenu2");
-			systems[ps].shops[myplayer.dockstate].drawbuymenu(400,64,myplayer.shopitem,myplayer);//y u no work
+			systems[ps].shops[myplayer.dockstate].drawbuymenu(280,64,myplayer.shopitem,myplayer);//y u no work
 		}else if (myplayer.shopmode == 1){
 			//console.log("itriedtodrawthebuymenu3");
 			systems[ps].shops[myplayer.dockstate].drawsellmenu(400,64,myplayer.shopitem,myplayer);

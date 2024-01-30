@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 631 by Andrew Kane </title>
+    <title>Bling Hustle 634 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -265,7 +265,10 @@ while(i<systems[1].npcs.length){
 	i++;
 	}
 systems[1].addrandomtraders([5,11,16], 8, 4);
-systems[1].addmercenaries(3,[3,5],1,10);
+systems[1].addmercenaries(3,[16,23],2,6);
+var thatguy = systems[1].npcs[systems[1].npcs.length-1];
+thatguy.money = 230;
+thatguy.ai.homestation = 5;
 //systems[1].addmercenaries(3,[3,5],1,10);
 //systems[1].addmercenaries(3,[3,11],1,10);
 //systems[1].addmercenaries(3,[3,16],1,10);

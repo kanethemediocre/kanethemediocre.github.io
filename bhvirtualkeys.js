@@ -47,6 +47,13 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var allkeys = [avk,bvk,cvk,gvk,jvk,mvk,nvk,qvk,dvk,spacebarvk,lbracketvk,rbracketvk,gtvk,ltvk,plusvk,minusvk,upjvk,downjvk,upsvk,downsvk,backspacevk,entervk,upwvk,downwvk,rightwvk,leftwvk,mobilethrust,zvk];
 	return allkeys;
 }
+function shopkeys(xmax,ymax){
+	var upvk = new Virtualkey("ArrowUp","Up",784,124);//constructor(key,label,x,y)
+	var downvk = new Virtualkey("ArrowDown","Down",784,204);//constructor(key,label,x,y)
+	var backspacevk = new Virtualkey("Backspace","Backspace",472,20);//constructor(key,label,x,y)
+	var entervk = new Virtualkey("Enter","Enter",784,164);//constructor(key,label,x,y)
+	return [upvk,downvk,backspacevk,entervk];
+	}
 function minivkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var avk=new Virtualkey("a","A",xmax-136,ymax-216);//constructor(key,label,x,y){
 	var bvk=new Virtualkey("b","B",24,187);//constructor(key,label,x,y){

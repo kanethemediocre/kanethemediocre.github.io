@@ -814,6 +814,11 @@ class System{
 						if (this.npcs[j].shieldbonus != "impact"){
 							this.npcs[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
 							}
+						var	escape = Math.sqrt(this.planets[i].m*2*.0003/this.npcs[j].ship.distance(this.planets[i]));
+						if (this.npcs[j].ship.deltav(this.planets[i])<escape){//only record collision if npc ship is "stuck" in the planets gravity
+							this.npcs[j].ai.collisions.push(i);
+							console.log("stuck-ish");
+							}
 						}
 					this.planets[i].circlecollide(this.npcs[j].ship);
 					var k=this.npcs[j].blasters.length;
@@ -913,33 +918,7 @@ class System{
 							var attacked = this.players[i].blasters[j].bombs[k].bombcollide(this.npcs[m].ship);
 							if (attacked){//Assign blame
 								this.npcs[m].ai.attackers.push([i+1000000,time]);//refers to global time variable, shame
-								//console.log(this.npcs[m].ai.attackers);
 								}//1000000 offset is to indicate attacker was a player, not an npc, without adding another variable.
-							//if (this.npcs[m].ship.hp<=0){ //npc .alive is being weird, causes excessive erroneous cash awards
-								//if (this.npcs[m].ai.playerhostile==true){
-									
-									//var getcash = Math.floor(Math.random()*21+10)*this.npcs[m].ship.level;
-									//this.players[i].money = this.players[i].money + getcash;
-									//this.players[i].gotmoney = [30,getcash];
-									
-									
-	//////////////////////////////////explosion stuff///////////////
-									//var boomstages = Math.floor(4+this.npcs[m].ship.level/2);
-									//this.explosions.push(new Bubblesplosion(boomstages,0.375,"red",this.npcs[m].ship));
-									//this.bling.push(new Bling(this.npcs[m].ship.x,this.npcs[m].ship.y,this.npcs[m].ship.vx,this.npcs[m].ship.vy,this.npcs[m].ship.level*5));
-									//if(!cashsound1.paused) {cashsound1.pause();
-									//	cashsound1.currentTime = 0;
-									//	cashsound1.play();
-									//	console.log("wut");
-									//	}
-								//	}
-								//else if (this.npcs[m].ai.playerhostile==false){
-									//this.explosions.push(new Bubblesplosion(4,0.375,"red",this.npcs[m].ship));
-									//this.players[i].money = this.players[i].money - 1000;
-									//this.players[i].gotmoney = [30, -1000];
-									//somebadsound.play();
-								//	}
-							//	}
 							}
 						m++;
 						}
@@ -1819,17 +1798,17 @@ class System{
 			randshopitems3.push(repairshopitem);//First 2 items are always the same, repair item and booster item.
 			randshopitems3.push(booster1);
 			var j=2;
-			while(j<4){ //Next 2 items will be random blasters for sale
+			while(j<5){ //Next 2 items will be random blasters for sale
 				var buyableblaster = Math.floor(Math.random()*blasterbuyitems.length);
 				randshopitems3.push(blasterbuyitems[buyableblaster]);
 				j=j+1;
 				}
-			while (j<7){ //Next 3 items will be random blaster upgrades
+			while (j<8){ //Next 3 items will be random blaster upgrades
 				var theitem = Math.floor(Math.random()*blasterupgradeitems.length);
 				randshopitems3.push(blasterupgradeitems[theitem]);
 				j=j+1;
 			}
-			while (j<9){ //Next 2 items will be random ship upgrades.
+			while (j<11){ //Next 2 items will be random ship upgrades.
 				var randupgrade = Math.floor(Math.random()*upgradeshopitems.length);
 				randshopitems3.push(upgradeshopitems[randupgrade]);
 				j=j+1;
@@ -1849,7 +1828,7 @@ class System{
 			i=i+1;
 			}
 		}
-	randomoutpostat(opx,opy){
+	randomoutpostat(opx,opy){//not maintained
 		this.outposts.push( new Umo(0,0,128, randcolor()));
 		var lastindex = this.outposts.length-1;
 		this.outposts[lastindex].c2 = randcolor();
@@ -1946,7 +1925,8 @@ class System{
 			while(j<cargoshopitems.length-1){//prices should be 1 shorter than cargoitems, because missioncargo is priceless?
 				if (this.shops[i].eco.forsale[j]==true){
 					this.shops[i].inv.push(cargoshopitems[j]);//from global scope, not passed by referebce, because maybe it fixes something?
-					console.log(i+" "+j+":::");
+					console.log(i+" "+j+"::::::::::::::::::");
+					//console.log(thesheefw)
 					}
 				j++;
 				}
@@ -2096,6 +2076,7 @@ class System{
 			this.npcs[botindex].ai.enemyteams = [0];
 			this.npcs[botindex].ai.route = destinations;
 			this.npcs[botindex].ai.behavior = "defensivepatrol";//"inertpatrol";
+			this.npcs[botindex].ai.career = "traderprivateer";
 			this.npcs[botindex].blasters[0].plusspeed();//Some upgrades to help keep them from hitting themselves.
 			this.npcs[botindex].blasters[0].plustimer();
 			this.levelup(botindex,level);
@@ -2151,11 +2132,47 @@ class System{
 				}
 			i=i+1;
 			}
-		
+		}
+	friendlypopulate(numtraders,nummercs,gangsize,minlevel,maxlevel){ //Adds gangs of enemy ships, level describes difficulty, num is size of each gang.
+		var i=0;
+		while (i<numtraders){
+			var templevel = Math.floor(minlevel + Math.random()*(maxlevel+1 - minlevel));
+			var mydestinations = [];
+			var numdestinations = 2+Math.floor(Math.random()*4);
+			var j=0;
+			while(j<numdestinations){
+				var adestination = Math.floor(Math.random()*(this.planets.length-1))+1
+				mydestinations.push(adestination);
+				j++;
+				}
+			this.addrandomtraders(mydestinations, gangsize, templevel);
+			//addrandomtraders(destinations, num, level){
+			i++;
+			}
+		var i=0;
+		while (i<nummercs){
+			var home = Math.floor(Math.random()*(this.planets.length-2))+1
+			var templevel = Math.floor(minlevel + Math.random()*(maxlevel+1 - minlevel));
+			var mydestinations = [];
+			var numdestinations = 2+Math.floor(Math.random()*4);
+			var j=0;
+			while(j<numdestinations){//Requires at least 2 planets, because the sun is not allowed.
+				var adestination = Math.floor(Math.random()*(this.planets.length-2))+1
+				if (mydestinations[mydestinations.length-1]!=adestination){
+					mydestinations.push(adestination);
+					j++;
+					}
+				}
+			this.addmercenaries(home,mydestinations,gangsize,templevel)
+			//addrandomtraders(destinations, num, level){
+			i++;
+			}
 		}
 	generatebasicsystem(gangsize,minlevel,maxlevel,bling){
 		this.randomplanets();
 		this.enemypopulate(gangsize,minlevel,maxlevel);
+		this.friendlypopulate(3,1,Math.floor(gangsize/2)+1,minlevel,maxlevel);
+		this.addcargosales(cargoitems);//global scope shame
 		this.addrandombling(bling);
 		this.addsuperboss(96,4,1000+minlevel*128,500+minlevel*32,320,80,1+Math.floor((this.planets.length-2)*Math.random()));
 		this.addsuperboss(96,6,1000+maxlevel*128,500+maxlevel*32,320,80,1+Math.floor((this.planets.length-2)*Math.random()));

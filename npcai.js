@@ -18,6 +18,7 @@ class NPCAI{
 		this.alltargetnpcs = [];
 		this.alltargetplayers = [];
 		this.attackers = [];//List of npcs or players that have attacked, and at what time, in pairs [npc1id,time1],[npc2id,time2] etc
+		this.collisions = []; //list of planets that have struck the npc 
 		this.grudges = [];//list of npcs or players that 
 		this.nowtargetship = 0;
 		this.nowtargetplayer = 0;
@@ -92,7 +93,7 @@ class NPCAI{
 				if ( !grudges.includes(this.attackers[i][0]) ){
 					grudges.push(this.attackers[i][0]);
 					strikes.push(1);
-					console.log(this.attackers);
+					//console.log(this.attackers);
 					}
 				else {
 					var j=0;
@@ -155,8 +156,9 @@ class NPCAI{
 			var sindv = Math.sin(targetd - targetdv[1]);
 			if (sindv>0){me.ship.d = targetd+Math.PI/2;}
 			if (sindv<=0){me.ship.d = targetd-Math.PI/2;}
-			console.log("Avoiding"+sund+", "+sundv[1]+", "+sundistance+", "+sindv+", "+sindv);
-			console.log(me.ship);
+			//console.log("Avoiding"+sund+", "+sundv[1]+", "+sundistance+", "+sindv+", "+sindv);
+			console.log("Avoiding "+sundistance);
+			//console.log(me.ship);
 			me.ship.thrust = 2;
 			}
 		}	
@@ -281,25 +283,25 @@ class NPCAI{
 			me.ship.seek3(thesystem.planets[this.nowtargetplanet],20,30,time,1500);
 			}
 		if (this.behavenow == "gotostation"){
-			me.ship.seek3(thesystem.stations[this.nowtargetstation],20,30,time,1500);
-			if (me.ship.distance(thesystem.stations[this.nowtargetstation])<200){
+			me.ship.seek3(thesystem.outposts[this.nowtargetstation],20,30,time,10);
+			if (me.ship.distance(thesystem.outposts[this.nowtargetstation])<200){
 				this.behavenow = "dock";
 				}
-			else if (me.ship.distance(thesystem.stations[this.nowtargetstation])<1000){
-				me.ship.d=me.ship.directionof(thesystem.stations[this.nowtargetstation]);
+			else if (me.ship.distance(thesystem.outposts[this.nowtargetstation])<1000){
+				me.ship.d=me.ship.directionof(thesystem.outposts[this.nowtargetstation]);
 				if (time%10==0){me.ship.thrust = 2;}
 				}	
 			}
 		if (this.behavenow == "dock"){
-			me.ship.x = thesystem.stations[this.nowtargetstation].x;
-			me.ship.y = thesystem.stations[this.nowtargetstation].y;//crudely sticks the npc to the station
+			me.ship.x = thesystem.outposts[this.nowtargetstation].x;
+			me.ship.y = thesystem.outposts[this.nowtargetstation].y;//crudely sticks the npc to the station
 			}
 		if (this.behavenow == "avoidplanet"){
 			this.avoidplanet(thesystem,this.avoidi)
 			}
 		if (this.behavenow == "avoidstation"){
-			var targetd = me.directionof(thesystem.stations[this.avoidi]);
-			var targetdv = me.deltav2(thesystem.planets[this.avoidi]);
+			var targetd = me.directionof(thesystem.outposts[this.avoidi]);
+			var targetdv = me.deltav2(thesystem.outposts[this.avoidi]);
 			var sindv = Math.sin(targetd - targetdv[1]);
 			if (sindv>0){me.ship.d = targetd+Math.PI/2;}
 			if (sindv<=0){me.ship.d = targetd-Math.PI/2;}
@@ -468,8 +470,7 @@ class NPCAI{
 				}
 			else {this.behavenow = "loiter2";}
 			}
-			
-			
+
 		else if (this.behavior == "inertpatrol"){
 			//console.log("inertpatrollin");
 			var me = thesystem.npcs[this.id];
@@ -480,18 +481,18 @@ class NPCAI{
 				if (this.routei>=this.route.length){this.routei = 0;}
 				}
 			//this part is a new sun avoidance thing:
-			var sun = thesystem.planets[0];
-			var sund = me.ship.directionof(sun);
-			var sundv = me.ship.deltav2(sun)
-			var sundistance = me.ship.distance(sun);
-			if ((sundistance<10000+sun.s*5)||(Math.abs(sund-sundv[1])<0.25)){//super sketch algo here
-				this.avoidi = 0;
-				this.behavenow = "avoidplanet";
-				}
-			else{
+			//var sun = thesystem.planets[0];
+			//var sund = me.ship.directionof(sun);
+			//var sundv = me.ship.deltav2(sun)
+			//var sundistance = me.ship.distance(sun);
+			//if ((sundistance<10000+sun.s*5)||(Math.abs(sund-sundv[1])<0.25)){//super sketch algo here
+			//	this.avoidi = 0;
+			//	this.behavenow = "avoidplanet";
+			//	}
+			//else{
 				this.behavenow = "gotoinert";
 				this.nowtargetplanet = this.route[this.routei];
-				}
+			//	}
 			//console.log("dests: "+this.route);
 			}//check if near current target planet, if so cycle target planet
 			
@@ -504,8 +505,9 @@ class NPCAI{
 				this.routei++;
 				if (this.routei>=this.route.length){this.routei = 0;}
 				this.nowtargetplanet = this.route[this.routei];	
-				me.money=me.money+100;//Good enough until reward is calculated
-				//this.behavenow = "gotoinert";
+				if (this.career == "traderprivateer"){
+					me.money=me.money+100;//Good enough until reward is calculated
+					}
 				}
 			this.behavenow = "gotoinert";//Default behavior, will be overridden if target is near.
 			var shitlist = this.updategrudges(3600,time);
@@ -534,9 +536,6 @@ class NPCAI{
 				//console.log(enemy);
 				i++;
 				}
-
-			//aavoid(thesystem,planeti,adistance,atype){
-			this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//All ais avoid the sun, maybe fix for bubble universe?
 			}//check if near current target planet, if so cycle target planet	
 
 		else if (this.behavior == "offensivepatrol"){
@@ -547,7 +546,9 @@ class NPCAI{
 				this.routei++;
 				if (this.routei>=this.route.length){this.routei = 0;}
 				this.nowtargetplanet = this.route[this.routei];	
-				me.money=me.money+100;//Good enough until reward is calculated
+				if (this.career == "traderprivateer"){
+					me.money=me.money+100;//Good enough until reward is calculated
+					}
 				//this.behavenow = "gotoinert";
 				}
 			this.behavenow = "gotoinert";//Default behavior, will be overridden if target is near.
@@ -592,41 +593,32 @@ class NPCAI{
 				}
 
 			//aavoid(thesystem,planeti,adistance,atype){
-			this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//All ais avoid the sun, maybe fix for bubble universe?
+			//this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//All ais avoid the sun, maybe fix for bubble universe?
 			}//check if near current target planet, if so cycle target planet	
-
-
-
-
-
-
-
-
-
-
-
-
-			
-			
-		else if (this.behavior == "shopper"){
+		
+		else if (this.behavior == "shopping"){
 			var me = thesystem.npcs[this.id];
-			var mytargetstation = thesystem.station[this.nowtargetstation];
-			if (me.distance(mytargetstation)>100){
+			var mytargetstation = thesystem.outposts[this.nowtargetstation];
+			if (me.ship.distance(mytargetstation)>100){
 				this.behavenow="gotostation";
 				}
 			else {
-				//Find things to buy that npc can afford
-				var buyables = [];
-				//buy something if that list is not empty
-				//quit shopping if nothing is affordable
-				if (buyables.length==0){
-					this.behavior == "gbtw";
+				if (4*me.ship.hp<5*me.ship.maxhp){//buy a repair
+					me.money = me.money - 20;
+					me.ship.hp = me.ship.maxhp; 
 					}
-				}	
+				var upcost = Math.floor(100*Math.pow(2,me.ship.level/4));//levelup cost doubles every 4 levels.
+				if (me.money>=upcost){
+					me.money = me.money - upcost;
+					thesystem.levelup(me.id,1);
+					}
+				}
+			this.behavior = "gbtw";
+			this.contemplate(thesystem);
 			}
 		else if (this.behavior == "gbtw"){
 			var me = thesystem.npcs[this.id];
-			if (thesystem.station[this.nowtargetstation].distance(me)<1000){
+			if (thesystem.station[this.nowtargetstation].distance(me)<1000){//If close to the station, get away
 				if (time%20){
 					me.ship.thrust = 2;
 					}
@@ -712,21 +704,30 @@ class NPCAI{
 				}
 			me.whatisnear(thesystem,2000);//todo 2000 should be more adaptive
 			}//Seek and destroy a particular player
-		//Adjust this.behavenow according to this.behavior
-		//aavoid(thesystem,planeti,adistance,atype){	
-		this.aavoid(thesystem,0,thesystem.planets[0].s*2+2000,"planet");
-		//this.avoidplanet(thesystem,0);
+		
+		
+		//Universal ponder behaviors go here
+		this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//Universal ponder behaviors go here
+		//All ais avoid the sun, maybe fix for bubble universe?
+		if (this.collisions.length>=3){
+			if ( (this.collisions[this.collisions.length-1]==this.collisions[this.collisions.length-2])&&(this.collisions[this.collisions.length-3]==this.collisions[this.collisions.length-2]) ){
+				//if last 3 collisions are the same planet,
+				this.aavoid(thesystem,0,thesystem.planets[this.collisions[this.collisions.length-1]].s*4,"planet");
+				this.collisions = [ this.collisions[this.collisions.length-1],this.collisions[this.collisions.length-1] ];
+				console.log(me.id+" escaping from "+this.collisions[this.collisions.length-1]);
+				}
+			}
 		}
-		
-		
+
 	contemplate(thesystem){
 		var me = thesystem.npcs[this.id];
 		me.whatisnear(thesystem,4000);
 		if (this.career == "mercprivateer"){
-			if (3*me.ship.hp < me.ship.maxhp){//go home when hurt
-				this.behavior = "gotostation";
-				this.behavenow = "gotoinert";
+			if ((3*me.ship.hp < me.ship.maxhp)||(me.money>20+100*Math.pow(2,me.ship.level/4))){//go home when hurt
+				this.behavior = "shopping";
+				this.behavenow = "gotostation";
 				this.nowtargetstation = this.homestation;
+				console.log(me.id+" going shopping");
 				}
 			else {
 				//this.mytarget = this.closesttarget(thesystem);
@@ -736,7 +737,7 @@ class NPCAI{
 					var thenpc = thesystem.npcs[this.nearbynpcs[i]];
 					if (thenpc.ai.playerhostile){//replace with more sophisticated filter
 						nearbyenemies.push(thenpc.id);
-						console.log("nme"+i);
+						//console.log("nme"+i);
 						}
 					i++;
 					}
@@ -766,20 +767,17 @@ class NPCAI{
 			
 			}
 		else if (this.career == "traderprivateer"){
-			if (3*me.ship.hp < me.ship.maxhp){//go home when hurt
-				this.behavior = "gotostation";
-				this.behavenow = "gotoinert";
+			if ((3*me.ship.hp < me.ship.maxhp)||(me.money>20+100*Math.pow(2,me.ship.level/4))){//go home when hurt
+				this.behavior = "shopping";
+				this.behavenow = "gotostation";
 				this.nowtargetstation = this.homestation;
+				console.log(me.id+" going shopping");
 				}
-			else if (me.money>Math.pow(2,me.level)){
-				//go shopping
-				}
+
 			else {
 				this.behavior = "defensivepatrol";
-				this.behavenow = "gotoinert"
-				}//Need something about nearby enemies
-			
-			
+				//this.behavenow = "gotoinert"
+				}
 			}
 		}
 	

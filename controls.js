@@ -1,8 +1,8 @@
 //This file just specifies the help text in the menu.  Actual keyboard controls in keyboard.js and system.js playerkeys function.
 var controltext = [
-"[B] key will cycle through booster options and [G] key will fire current booster.  ",
+"[B] key will use a booster.  ",
 "[Z] key toggles autobrakes, and [A] key toggles the autopilot. ",
-"[Spacebar] skips current radio message, [J] shows journal of all received messages.  ",
+"[Spacebar] skips current radio message, [J] shows journal of all received messages or jobs.",
 "[Q] key brings up a quick selection menu for planets.  Click one to select it with your nav computer." ,
 "[N] key cycles navigation modes (Planets, Stations, or None), [<] and [>] cycle navigation targets. " ,
 "[M] key cycles map modes (off, corner, fullscreen), [+] and [-] keys on keypad zoom in and out. " ,

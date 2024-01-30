@@ -1,17 +1,17 @@
 function loadmenusystem(){
-	let about = new Umo(400, 0, 80, "orange"); //0//planet initialization/////////////
+	let about = new Umo(-200, 240, 80, "orange"); //0//planet initialization/////////////
 	about.name = "About";
 	about.c2 = "red";
 	about.m = 0;
-	let playstory = new Umo(-250,-300,130,"brown");//1//initial position irrelevant
+	let playstory = new Umo(-250,-300,120,"brown");//1//initial position irrelevant
 	playstory .name = "Play story";
 	playstory .c2 = "darkgreen";
 	playstory.m = 0;
-	let playfree = new Umo(250,-300,110,"red");//2
+	let playfree = new Umo(250,-300,105,"red");//2
 	playfree.name = "Free play";
 	playfree.c2 = "blue";
 	playfree.m = 0;
-	let playrandom = new Umo(0,-400,100,"purple");//3
+	let playrandom = new Umo(0,-400,95,"purple");//3
 	playrandom.name = "Random play";
 	playrandom.c2 = "green";
 	playrandom.m = 0;
@@ -68,7 +68,7 @@ function loadmenusystem(){
 	lessjams.name = "Less jams";
 	lessjams.c2 = "violet";
 	lessjams.m = 0;
-	let options1 = new Umo(0, 250, 100, "violet"); //17
+	let options1 = new Umo(200, 250, 100, "violet"); //17
 	options1.name = "Options";
 	options1.c2 = "teal";
 	options1.m = 0;	
@@ -88,9 +88,9 @@ function loadmenusystem(){
 	fastmo.c2 = "teal";
 	fastmo.m = 0;		
 	
-	let pocket1 = new Umo(10000, 250, 100, "violet"); //21
+	let pocket1 = new Umo(400, 0, 100, "purple"); //21
 	pocket1.name = "Pocket Arena";
-	pocket1.c2 = "teal";
+	pocket1.c2 = "red";
 	pocket1.m = 0;		
 	
 	let fsyop = new Umo(-20000-400, 50, 100, "violet"); //22
