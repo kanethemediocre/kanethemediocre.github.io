@@ -56,7 +56,7 @@ class Player{
         this.job = "None"; //latest task from a station.
         this.jobs = [];
 		this.jobitem = 0;
-        this.boosters = [0,16,0,0,0];//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
+        this.boosters = 16;//0 booster selected (boosters[0]==0), 0 tier 1 boosters in inventory (boosters[1]==0), etc.
         this.shopmode = 0; //0 is buy menu, 1 is sell menu, 2 is mission menu
         this.ps = 1; //Player System.  Had to be abbreviated, systems[ps] is an important keyword.  Not sure if I need this.
         this.probemode = 0; //Available modes determined by xtier.  Behavior hardcoded in game loop.
@@ -228,6 +228,16 @@ class Player{
 				//remove this expired notification
 				}
 			i++;
+			}
+		if ((autozoom==1)&&(this.navactive==1)){
+			var targetdistance = this.ship.distance(theplanets[this.navtarget]);
+			if (targetdistance>this.mapscale*200){
+				this.mapscale = targetdistance/100;//this.mapscale*1.1;
+				}
+			else if (targetdistance<this.mapscale*50){
+				this.mapscale = targetdistance/100;
+				}
+			
 			}
 		}
     drawship(viewx,viewy){

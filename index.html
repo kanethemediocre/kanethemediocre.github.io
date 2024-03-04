@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 634 by Andrew Kane </title>
+    <title>Bling Hustle 638 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -120,6 +120,8 @@ function openFullscreen() {
 }
 if (canvas.width>1500){var vkeys = allvkeys(canvas.width,canvas.height);}
 else {var vkeys = minivkeys(canvas.width,canvas.height);}
+var svkeys = shopkeys(canvas.width,canvas.height);
+var jvkeys = journalkeys(canvas.width,canvas.height);
 
 var ovkeys = optionsvkeys(canvas.width,canvas.height);
 var comfy = false;
@@ -134,6 +136,7 @@ var ps = 0; //Player System.  Had to be abbreviated, systems[ps] is an important
 var myi = 0; //For multiplayer, systems[ps].players[myi] is the user
 var starmode = 1; //0 for no starfield.
 var dustmode = 0;
+var autozoom = 0;
 let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
 var testdustfield0 = new Dustfield(8000,8000,0,2.25,24000);
 var testdustfield1 = new Dustfield(8000,8000,0,2.25,24000);
@@ -1193,4 +1196,5 @@ function readFileContent(file) {
 </script>
 <a href="ShipBuilder.html">Alpha Ship Builder</a>
 <a href="Mascadoreslive/Mascadores.html">Mascadores game</a>
+<a href="MegaMascadores037/index.html">Mega Mascadores game</a>
 </html>

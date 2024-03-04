@@ -11,7 +11,7 @@ function mouseMoveHandler(e) {
 document.addEventListener("mousedown", mouseDownHandler, false);
 function mouseDownHandler(e) {
 	action = -1;
-	var myplayer = systems[1].players[myi];
+	var myplayer = systems[ps].players[myi];
 	if (myplayer.planetmenu == 1){
 		myplayer.planetmenu = 0;
 		return;
@@ -37,25 +37,50 @@ function mouseDownHandler(e) {
 		myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
 		console.log(e.clientX+ " " +e.clientY);
 		if (myplayer.vkactive == true){
+			var vkeyused = false;
 			var i=0;
 			while(i<vkeys.length){
 				if (vkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
 					myplayer.input = vkeys[i].key;
 					systems[ps].playerkeys();
-					i=vkeys.length; //On loop exit i=vkeys.length+1 if triggered, otherwise i=vkeys.length after last iteration.
+					vkeyused = true;
+					i=vkeys.length; //Exit loop.
 					}
 				i++;
 				}
-			if (i==vkeys.length){ systems[ps].playermice(); } //If loop exited without vkeys trigger, meaning no buttons were clicked
+			if (myplayer.dockstate>=0){
+				var i=0;
+				while(i<svkeys.length){
+					if (svkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
+						myplayer.input = svkeys[i].key;
+						systems[ps].playerkeys();
+						vkeyused = true;
+						i=svkeys.length; //Exit loop.
+						}
+					i++;
+					}
+				}
+			if (myplayer.journalactive>0){
+				var i=0;
+				while(i<jvkeys.length){
+					if (jvkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
+						myplayer.input = jvkeys[i].key;
+						systems[ps].playerkeys();
+						vkeyused = true;
+						i=jvkeys.length; //Exit loop.
+						}
+					i++;
+					}
+				}
+			if (!vkeyused){ systems[ps].playermice(); } //If loop exited without vkeys trigger, meaning no buttons were clicked
 			}
 		else { systems[ps].playermice();}
 		}
 	}
-	
-	
+
 document.addEventListener("mouseup", mouseUpHandler, false);
 function mouseUpHandler(e) {
-var myplayer = systems[1].players[0];
+var myplayer = systems[ps].players[0];
 myplayer.mousestate = e.buttons;
 }
 document.addEventListener("wheel", mouseWheelHandler, {passive: false});

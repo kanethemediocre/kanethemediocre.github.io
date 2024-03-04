@@ -44,7 +44,6 @@ class Shop{
 			}
 		
 		if (i>0){
-			
 			var shopchart = [names,descriptions,prices,utypes];
 			context.font='12px Arial';
 			fillwrappedtext(this.inv[item].describestring(),86,16,x,y+236+128);
@@ -191,7 +190,7 @@ class Shop{
 		}		
 	drawworkmenu(xpos, ypos, item,theplayer){
 		var x = xpos;
-		var y = ypos+16;
+		var y = ypos;//+16;
 		context.fillStyle = "#080808";
 		context.fillRect(xpos-16,ypos-56,512,336+128);
 		context.font='16px Arial';
@@ -205,21 +204,21 @@ class Shop{
 		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,ypos+236+128);}
 		context.beginPath(); //This colored rectangle will show which item is selected.
 		context.strokeStyle = systems[ps].outposts[theplayer.dockstate].c;//Global scope here, very bad, also in drawpolarpoly
-		context.rect(x-12,y+28+item*16,400,16);
+		context.rect(x-12,y+52+item*16,400,16);
 		context.stroke();
-		context.fillText("Type:",x+0,y+32+16*-1);
-		context.fillText("Location:",x+80,y+32+16*-1);
-		context.fillText("Distance:",x+160,y+32+16*-1);
-		context.fillText("Danger:",x+240,y+32+16*-1);
-		context.fillText("Reward:",x+320,y+32+16*-1);
+		context.fillText("Type:",x+0,y+32);
+		context.fillText("Location:",x+80,y+32);
+		context.fillText("Distance:",x+160,y+32);
+		context.fillText("Danger:",x+240,y+32);
+		context.fillText("Reward:",x+320,y+32);
 		var i=0;
 		while (i<this.missions.length){
 			if (this.missions[i].taken){context.fillStyle = "red";}else{context.fillStyle = "white";}
-			context.fillText(this.missions[i].type.slice(0,16),x,y+40+16*i);
-			context.fillText(this.missions[i].distance,x+160,y+40+16*i);
-			context.fillText(this.missions[i].danger,x+240,y+40+16*i);
+			context.fillText(this.missions[i].type.slice(0,16),x,y+64+16*i);
+			context.fillText(this.missions[i].distance,x+160,y+64+16*i);
+			context.fillText(this.missions[i].danger,x+240,y+64+16*i);
 			//context.fillText(this.missions[i].message.slice(0,16),x+80,y+32+16*i);
-			context.fillText(this.missions[i].reward,x+320,y+40+16*i);
+			context.fillText(this.missions[i].reward,x+320,y+64+16*i);
 			var missionlocation = "unknown";
 			if (this.missions[i].type == "cargo"){
 				missionlocation = systems[ps].planets[this.missions[i].target].name;
@@ -227,8 +226,8 @@ class Shop{
 			if (this.missions[i].type == "destroy"){
 				missionlocation = systems[ps].planets[systems[ps].npcs[this.missions[i].target].ai.homeplanet].name;
 				}
-			context.fillText(missionlocation,x+80,y+40+16*i);
-			context.fillText(missionlocation,x+80,y+40+16*i);
+			context.fillText(missionlocation,x+80,y+64+16*i);
+			context.fillText(missionlocation,x+80,y+64+16*i);
 			i=i+1;
 			}
 		context.beginPath();

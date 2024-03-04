@@ -582,7 +582,7 @@ class System{
 			var i = this.planets.length;
 			while (i>0){ //Planet on ships and bombs
 				i=i-1;			
-				j = this.bling.length;
+				var j = this.bling.length;
 				while (j>0){ //gravitate on each bling
 					j=j-1;
 					this.planets[i].gravitate(this.bling[j]);
@@ -1285,8 +1285,8 @@ class System{
 				  playerradio.msgtime = 1;
 				  break;     
 				case "b": //Booster selection
-					if (aplayer.boosters[1]>0){//if booster 1 is available (used to be more options)
-						aplayer.boosters[aplayer.boosters[0]]=aplayer.boosters[aplayer.boosters[0]]-1; //remove 1 from stock of selected booster
+					if (aplayer.boosters>0){//if booster 1 is available (used to be more options)
+						aplayer.boosters=aplayer.boosters-1; //remove 1 from stock of selected booster
 						aplayer.ship.thrust = 64;//32*2^(aplayer.boosters[0]); //boost hard
 						boost1.play();
 						}
@@ -1296,11 +1296,11 @@ class System{
 					if (supercompass>3){supercompass = 0;}
 				  break;
 				case "g": //Booster activation
-					if (aplayer.boosters[aplayer.boosters[0]]>0){//if selected booster is in stock
-						aplayer.boosters[aplayer.boosters[0]]=aplayer.boosters[aplayer.boosters[0]]-1; //remove 1 from stock of selected booster
-						aplayer.ship.thrust = 32*2^(aplayer.boosters[0]); //boost hard
-						boost1.play();
-						}
+					//if (aplayer.boosters[aplayer.boosters[0]]>0){//if selected booster is in stock
+					//	aplayer.boosters[aplayer.boosters[0]]=aplayer.boosters[aplayer.boosters[0]]-1; //remove 1 from stock of selected booster
+					//	aplayer.ship.thrust = 32*2^(aplayer.boosters[0]); //boost hard
+					//	boost1.play();
+					//	}
 				  break;	  	  
 				case "1":    //This is how weapon switching is handled.
 					if (aplayer.blasters[1].phas){ aplayer.wep = 1; } //If weapon is present, switch to it.		

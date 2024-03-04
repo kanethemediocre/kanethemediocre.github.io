@@ -36,7 +36,7 @@ function loadmenusystem(){
 	menu1.c2 = "lime";
 	menu1.m = 0;
 	let menu2 = new Umo(-360, 000, 100, "violet"); //9
-	menu2.name = "Special Game Modes";
+	menu2.name = "Cursed worlds";
 	menu2.c2 = "teal";
 	menu2.m = 0;
 	let menu3 = new Umo(-10000+320, 0, 100, "orange"); //10
@@ -89,7 +89,7 @@ function loadmenusystem(){
 	fastmo.m = 0;		
 	
 	let pocket1 = new Umo(400, 0, 100, "purple"); //21
-	pocket1.name = "Pocket Arena";
+	pocket1.name = "Pocket Universe";
 	pocket1.c2 = "red";
 	pocket1.m = 0;		
 	

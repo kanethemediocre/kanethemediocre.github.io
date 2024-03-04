@@ -109,7 +109,7 @@ function hud(playerindex){
 	context.fillStyle = "red";
 	context.fillText(eshipsinrange.length+" Enemy ships detected", canvas.width-400, 50);	
 	}
-	if (myplayer.vkvisible == true){
+	if (myplayer.vkvisible){
 		var i=0;
 		while (i<vkeys.length){
 			vkeys[i].draw();
@@ -254,10 +254,7 @@ function hud(playerindex){
 	context.fillText(myplayer.blasters[myplayer.wep].name+" equipped",8,184);
 	context.fillStyle = "purple";
 	context.font='20px Arial';
-	context.fillText(myplayer.boosters[1]+" Boosters",8,212);	
-	//context.fillStyle = "white";
-	//context.fillText(myplayer.boosters[0],8,208);//0 index is booster type
-	//context.fillText(myplayer.boosters[myplayer.boosters[0]],8,236);
+	context.fillText(myplayer.boosters +" Boosters",8,212);	
 	context.font='20px Arial';
 	context.fillStyle = "green"; 
 	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
@@ -298,43 +295,22 @@ function hud(playerindex){
 				context.fillRect(200-4,64-48,640,500);
 				}
 		playerradio.showlog(myplayer.journalitem,200,64);
-		//if (playerradio.log.length>0){ playerradio.showlog(myplayer.journalitem,200,50); }
-		//else{
-		//	context.fillText("No journal entries",200,50);//The task is a brief description of the last thing a player was asked to do.
-		//}
-		//drawaskeyspecial(700,160,60,24,"Up","white");
-		//drawaskeyspecial(700,200,60,24,"Down","white");
-		vkeys[16].display = true;
-		vkeys[16].active = true;	
-		vkeys[17].display = true;
-		vkeys[17].active = true;	
-		vkeys[22].display = false;
-		vkeys[22].active = false;
-		vkeys[23].display = false;
-		vkeys[23].active = false;
-		vkeys[24].display = false;
-		vkeys[24].active = false;
-		vkeys[25].display = false;
-		vkeys[25].active = false;	
+		
 	}else if (myplayer.journalactive==2){ //journal of jobs taken
 	
 		systems[ps].joblist(200,64,myplayer);
 
 		//display jobs
 	}else{
-		vkeys[16].display = false;
-		vkeys[16].active = false;
-		vkeys[17].display = false;
-		vkeys[17].active = false;	
-		vkeys[22].display = true;
-		vkeys[22].active = true;
-		vkeys[23].display = true;
-		vkeys[23].active = true;	
-		vkeys[24].display = true;
-		vkeys[24].active = true;
-		vkeys[25].display = true;
-		vkeys[25].active = true;		
-	}
+		}
+	if ((myplayer.journalactive>0)&&(myplayer.vkvisible)){
+		var i=0;
+		while (i<jvkeys.length){
+			jvkeys[i].draw();
+			i++;
+			}
+		}
+		
 	myplayer.blasters[myplayer.wep].drawsights(myplayer,time);
 //Autopilot indicator
 	if (myplayer.autopilot==1){
@@ -386,22 +362,6 @@ function hud(playerindex){
 		//}
 ////Shopping!//////////////////////////////////////////////////////
 	if ((myplayer.dockstate>=0)&&(myplayer.dockstate<systems[ps].shops.length)){
-		
-		
-		//console.log("itriedtodrawthebuymenu0");
-		//drawaskeyspecial(480,32,128,24,"Backspace","white");
-		//drawaskeyspecial(800,180,80,24,"Enter","white");
-		
-		//drawaskeyspecial(800,140,60,24,"Up","white");
-		//drawaskeyspecial(800,220,60,24,"Down","white");
-		vkeys[18].display = true;//these assignments get executed redundantly, fixable
-		vkeys[18].active = true;//up and down
-		vkeys[19].display = true;
-		vkeys[19].active = true;
-		vkeys[20].display = true;//backspace and enter
-		vkeys[20].active = true;		
-		vkeys[21].display = true;
-		vkeys[21].active = true;	
 		if (myplayer.shopmode == 0){
 			//console.log("itriedtodrawthebuymenu1");
 			if (myplayer.shopitem >= systems[ps].shops[myplayer.dockstate].inv.length){myplayer.shopitem=0;}
@@ -409,20 +369,19 @@ function hud(playerindex){
 			systems[ps].shops[myplayer.dockstate].drawbuymenu(280,64,myplayer.shopitem,myplayer);//y u no work
 		}else if (myplayer.shopmode == 1){
 			//console.log("itriedtodrawthebuymenu3");
-			systems[ps].shops[myplayer.dockstate].drawsellmenu(400,64,myplayer.shopitem,myplayer);
+			systems[ps].shops[myplayer.dockstate].drawsellmenu(280,64,myplayer.shopitem,myplayer);
 		}else if (myplayer.shopmode == 2){
 			//console.log("itriedtodrawthebuymenu4");
-			systems[ps].shops[myplayer.dockstate].drawworkmenu(400,64,myplayer.shopitem,myplayer);
+			systems[ps].shops[myplayer.dockstate].drawworkmenu(280,64,myplayer.shopitem,myplayer);
+			}
+		var i=0;
+		while ((i<svkeys.length)&&(myplayer.vkvisible)){
+			svkeys[i].draw();
+			i++;
+			}
 		}
-	}else{ 
-		vkeys[18].display = false;//these assignments get executed redundantly every frame, fixable
-		vkeys[18].active = false;
-		vkeys[19].display = false;
-		vkeys[19].active = false;	
-		vkeys[20].display = false;//these assignments get executed redundantly every frame, fixable
-		vkeys[20].active = false;
-		vkeys[21].display = false;
-		vkeys[21].active = false;		
+	else{ 
+		//dont draw or do shop stuff?
 		}
 	//draw cargo stuff
 	if (diagnostic>0){	

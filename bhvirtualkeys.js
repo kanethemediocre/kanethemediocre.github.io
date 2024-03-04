@@ -23,42 +23,49 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var leftwvk = new Virtualkey("ArrowLeft","<",172,118);//constructor(key,label,x,y)
 	
 	
-	var upjvk = new Virtualkey("ArrowUp","Up",684,152);//constructor(key,label,x,y)
-	upjvk.display = false; //These keys are attached to menus that are not always visible.
-	upjvk.active = false;
-	var downjvk = new Virtualkey("ArrowDown","Down",684,192);//constructor(key,label,x,y)
-	downjvk.display = false;
-	downjvk.active = false;
-	var upsvk = new Virtualkey("ArrowUp","Up",784,124);//constructor(key,label,x,y)
-	upsvk.display = false;
-	upsvk.active = false;
-	var downsvk = new Virtualkey("ArrowDown","Down",784,204);//constructor(key,label,x,y)
-	downsvk.display = false;
-	downsvk.active = false;
-	var backspacevk = new Virtualkey("Backspace","Backspace",472,20);//constructor(key,label,x,y)
-	backspacevk.display = false;
-	backspacevk.active = false;
-	var entervk = new Virtualkey("Enter","Enter",784,164);//constructor(key,label,x,y)
-	entervk.display = false;
-	entervk.active = false;
+	var upjvk = new Virtualkey("ArrowUp","Up",684,-999);//constructor(key,label,x,y)
+	//upjvk.display = false; //These keys are attached to menus that are not always visible.
+	//upjvk.active = false;
+	var downjvk = new Virtualkey("ArrowDown","Down",684,-999);//constructor(key,label,x,y)
+	//downjvk.display = false;
+	//downjvk.active = false;
+	var upsvk = new Virtualkey("ArrowUp","Up",784,-999);//constructor(key,label,x,y)
+	//upsvk.display = false;
+	//upsvk.active = false;
+	var downsvk = new Virtualkey("ArrowDown","Down",784,-999);//constructor(key,label,x,y)
+	//downsvk.display = false;
+	//downsvk.active = false;
+	var backspacevk = new Virtualkey("Backspace","Backspace",472,-999);//constructor(key,label,x,y)
+	//backspacevk.display = false;
+	//backspacevk.active = false;
+	var entervk = new Virtualkey("Enter","Enter",784,-999);//constructor(key,label,x,y)
+	//entervk.display = false;
+	//entervk.active = false;
 	var mobilethrust = new Virtualkey("thrust", "Thrust mode is OFF",420,ymax-64);
 	
 	var zvk=new Virtualkey("z","Z",xmax-204,ymax-216);//constructor(key,label,x,y){
 	var allkeys = [avk,bvk,cvk,gvk,jvk,mvk,nvk,qvk,dvk,spacebarvk,lbracketvk,rbracketvk,gtvk,ltvk,plusvk,minusvk,upjvk,downjvk,upsvk,downsvk,backspacevk,entervk,upwvk,downwvk,rightwvk,leftwvk,mobilethrust,zvk];
 	return allkeys;
 }
+function journalkeys(xmax,ymax){
+	var upjvk = new Virtualkey("ArrowUp","Up",684,152);//constructor(key,label,x,y)
+	var downjvk = new Virtualkey("ArrowDown","Down",684,192);//constructor(key,label,x,y)
+	return [upjvk,downjvk];
+	}
+
+
 function shopkeys(xmax,ymax){
-	var upvk = new Virtualkey("ArrowUp","Up",784,124);//constructor(key,label,x,y)
-	var downvk = new Virtualkey("ArrowDown","Down",784,204);//constructor(key,label,x,y)
-	var backspacevk = new Virtualkey("Backspace","Backspace",472,20);//constructor(key,label,x,y)
-	var entervk = new Virtualkey("Enter","Enter",784,164);//constructor(key,label,x,y)
+	var upvk = new Virtualkey("ArrowUp","Up",688,124);//constructor(key,label,x,y)
+	var downvk = new Virtualkey("ArrowDown","Down",688,204);//constructor(key,label,x,y)
+	var backspacevk = new Virtualkey("Backspace","Backspace",360,16);//constructor(key,label,x,y)
+	var entervk = new Virtualkey("Enter","Enter",688,164);//constructor(key,label,x,y)
 	return [upvk,downvk,backspacevk,entervk];
 	}
 function minivkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var avk=new Virtualkey("a","A",xmax-136,ymax-216);//constructor(key,label,x,y){
 	var bvk=new Virtualkey("b","B",24,187);//constructor(key,label,x,y){
 	var cvk=new Virtualkey("c","C",xmax/2-112,16);//constructor(key,label,x,y){
-	var gvk=new Virtualkey("g","G",24,217);//constructor(key,label,x,y){
+	var gvk=new Virtualkey("g","G",24,-999);//constructor(key,label,x,y){
 	//var hvk=new Virtualkey("h","H",-100,-100);//constructor(key,label,x,y){
 	var jvk=new Virtualkey("j","J",xmax/2+100,ymax-30);//constructor(key,label,x,y)
 	var mvk=new Virtualkey("m","M",88,ymax-276);//constructor(key,label,x,y)
@@ -79,22 +86,22 @@ function minivkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var leftwvk = new Virtualkey("ArrowLeft","<",172,118);//constructor(key,label,x,y)
 	
 	
-	var upjvk = new Virtualkey("ArrowUp","Up",684,152);//constructor(key,label,x,y)
+	var upjvk = new Virtualkey("ArrowUp","Up",684,-999);//constructor(key,label,x,y)
 	upjvk.display = false; //These keys are attached to menus that are not always visible.
 	upjvk.active = false;
-	var downjvk = new Virtualkey("ArrowDown","Down",684,192);//constructor(key,label,x,y)
+	var downjvk = new Virtualkey("ArrowDown","Down",684,-999);//constructor(key,label,x,y)
 	downjvk.display = false;
 	downjvk.active = false;
-	var upsvk = new Virtualkey("ArrowUp","Up",784,124);//constructor(key,label,x,y)
+	var upsvk = new Virtualkey("ArrowUp","Up",784,-999);//constructor(key,label,x,y)
 	upsvk.display = false;
 	upsvk.active = false;
-	var downsvk = new Virtualkey("ArrowDown","Down",784,204);//constructor(key,label,x,y)
+	var downsvk = new Virtualkey("ArrowDown","Down",784,-999);//constructor(key,label,x,y)
 	downsvk.display = false;
 	downsvk.active = false;
-	var backspacevk = new Virtualkey("Backspace","Backspace",472,20);//constructor(key,label,x,y)
+	var backspacevk = new Virtualkey("Backspace","Backspace",472,-999);//constructor(key,label,x,y)
 	backspacevk.display = false;
 	backspacevk.active = false;
-	var entervk = new Virtualkey("Enter","Enter",784,164);//constructor(key,label,x,y)
+	var entervk = new Virtualkey("Enter","Enter",784,-999);//constructor(key,label,x,y)
 	entervk.display = false;
 	entervk.active = false;
 	var mobilethrust = new Virtualkey("thrust", "Thrust mode is OFF",420,ymax-64);
