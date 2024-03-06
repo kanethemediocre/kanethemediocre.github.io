@@ -46,60 +46,29 @@ function minihud(playerindex){
 		}
 	var i=0;
 	if (nmeactive == 1){//if targeting computer is on...
-			/*
-			context.font='12px Courier New';
-			var sorttargets = [];//No sorting yet
-			var i = 0 //assumes each column is same length, otherwise error
-			while(i<shipsinrange.length){
-				var cellposx = canvas.width-300;
-				var cellposy = 16+i*16;
-				context.fillStyle = systems[ps].npcs[shipsinrange[i]].ship.c;
-				context.fillText(systems[ps].npcs[shipsinrange[i]].ship.name,cellposx,cellposy);
-				var cellposx = canvas.width-300+64;
-				var shipdistance = myplayer.ship.distance(systems[ps].npcs[shipsinrange[i]].ship);
-				context.fillText(shipdistance,cellposx,cellposy);
-				i=i+1;
+		if (shipsinrange.length>0){
+			if (myplayer.transparentui == false){
+				console.log("itriedtoopaquetargeting");
+				context.fillStyle = "#080808";
+				context.fillRect(canvas.width-160,0,160,320);
 				}
-			context.fillStyle = "white";  
-		if (shipsinrange.length == 0){
-			context.font = '20px Ariel';
-			context.fillStyle = "red";
-			context.fillText("No targets in range", canvas.width-160, 24);
+			//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
+			var reticlecolor = "blue";
+			if (systems[ps].npcs[myplayer.shiptarget].ai.playerhostile==true){reticlecolor = "red";}
+			myplayer.ship.drawcompass2(systems[ps].npcs[myplayer.shiptarget].ship,canvas.width-64, 96, 64); //Targeting computer compass
+			systems[ps].npcs[myplayer.shiptarget].ship.drawreticle(myplayer.ship.x,myplayer.ship.y,reticlecolor); //Targeting reticle
+			var aimdir = myplayer.blasters[myplayer.wep].aim1(myplayer.ship,systems[ps].npcs[myplayer.shiptarget].ship);
+			if (aimdir!=999){//This is the lead indicator
+				context.beginPath();
+				context.strokeStyle = reticlecolor;
+				context.moveTo(canvas.width/2+Math.cos(aimdir[0])*200,canvas.height/2+Math.sin(aimdir[0])*200);
+				context.lineTo(canvas.width/2+Math.cos(aimdir[0])*300,canvas.height/2+Math.sin(aimdir[0])*300);
+				context.moveTo(canvas.width/2+Math.cos(aimdir[1])*200,canvas.height/2+Math.sin(aimdir[1])*200);
+				context.lineTo(canvas.width/2+Math.cos(aimdir[1])*300,canvas.height/2+Math.sin(aimdir[1])*300);
+				context.stroke();
+				}
 			}
-			*/
-			
-	//if (myplayer.shiptarget>shipsinrange.length-1){myplayer.shiptarget = 0;}
-	//else if (myplayer.shiptarget<0){myplayer.shiptarget = 0;}
-	if (shipsinrange.length>0){
-		if (myplayer.transparentui == false){
-			console.log("itriedtoopaquetargeting");
-			context.fillStyle = "#080808";
-			context.fillRect(canvas.width-160,0,160,320);
-			}
-		//shipsinrange[shiptarget][0].drawcompass(ships[0],canvas.width-64, 96, 64); //Targeting computer compass
-		var reticlecolor = "blue";
-		if (systems[ps].npcs[myplayer.shiptarget].ai.playerhostile==true){reticlecolor = "red";}
-		myplayer.ship.drawcompass2(systems[ps].npcs[myplayer.shiptarget].ship,canvas.width-64, 96, 64); //Targeting computer compass
-		systems[ps].npcs[myplayer.shiptarget].ship.drawreticle(myplayer.ship.x,myplayer.ship.y,reticlecolor); //Targeting reticle
-		var aimdir = myplayer.blasters[myplayer.wep].aim1(myplayer.ship,systems[ps].npcs[myplayer.shiptarget].ship);
-		if (aimdir!=999){//This is the lead indicator
-			context.beginPath();
-			context.strokeStyle = reticlecolor;
-			context.moveTo(canvas.width/2+Math.cos(aimdir[0])*200,canvas.height/2+Math.sin(aimdir[0])*200);
-			context.lineTo(canvas.width/2+Math.cos(aimdir[0])*300,canvas.height/2+Math.sin(aimdir[0])*300);
-			context.moveTo(canvas.width/2+Math.cos(aimdir[1])*200,canvas.height/2+Math.sin(aimdir[1])*200);
-			context.lineTo(canvas.width/2+Math.cos(aimdir[1])*300,canvas.height/2+Math.sin(aimdir[1])*300);
-			context.stroke();
-			}
-		//var nmechart2 = [["Name","Level","HP","Shield","Damage","Blast","Regen", "AI"],[systems[ps].npcs[myplayer.shiptarget].ship.name, systems[ps].npcs[myplayer.shiptarget].ship.level, systems[ps].npcs[myplayer.shiptarget].ship.hp,  systems[ps].npcs[myplayer.shiptarget].ship.shield, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].hurt, systems[ps].npcs[myplayer.shiptarget].blasters[0].bombs[0].boombuff,systems[ps].npcs[myplayer.shiptarget].ship.shieldregen,systems[ps].npcs[myplayer.shiptarget].ai.behavior]];
-		//showchart(nmechart2, 64, 16, canvas.width-128,192);//test location
-		//context.beginPath(); 
-		//context.rect(canvas.width-304,4+16*closestindex, 160, 16); //This is the item selection indicator
-		//context.lineWidth = 2; 
-		//context.strokeStyle = "white";
-		//context.stroke();	
 		}
-	}
 	if (myplayer.vkvisible == true){
 		var i=0;
 		while (i<vkeys.length){
@@ -107,7 +76,6 @@ function minihud(playerindex){
 			i++;
 			}
 		}
-
 	if (myplayer.vkactive == false){
 		context.font = '20px Ariel';
 		context.fillStyle = "yellow";
@@ -243,24 +211,13 @@ function minihud(playerindex){
 	context.fillStyle = "red";
 	context.font='20px Arial';
 	context.fillText(myplayer.blasters[myplayer.wep].name,8,180);
-
 	context.fillStyle = "white";
-	//context.fillText(myplayer.boosters[0],8,208);//0 index is booster type
 	context.fillText(myplayer.boosters+" boosters",8,208);
 	context.font='16px Arial';
 	context.fillStyle = "green"; 
 	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
-	//context.fillStyle = "yellow";
-	//context.fillText("job: ("+myplayer.jobs.length+" jobs) "+myplayer.job,8,280);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	context.fillStyle = "white";
 	context.font='12px Arial';
-	//context.fillText("dockstate: "+myplayer.dockstate,8,336);//Debugging stuff
-	//context.fillText("storystate: "+myplayer.storystate,8,352);
-	//context.fillText("probemode: "+myplayer.probemode,8,368);
-	//context.fillText("autopilot: "+myplayer.autopilot,8,384);
-	//context.fillText("nav target active "+systems[ps].planets[myplayer.navtarget].active,8,400);
-	//context.fillText("ps: "+ps,8,416);
-	//context.fillText("ship target active "+systems[ps].ships[myplayer.shiptarget].active,8,330);
 	if (myplayer.alive == false){//This is the death screen.
 		context.fillStyle = "red";
 		context.font='24px Arial';
@@ -274,7 +231,7 @@ function minihud(playerindex){
 	context.font='12px Arial';
 	var starty = canvas.height-230; //allotting bottom 1/6 of screen + 24 px fudge factor
 	var startx = 260;
-	var endx = canvas.width-300; 
+	var endx = canvas.width-320; 
 	playerradio.display(time,startx,starty,endx);
 //Journal display if active
 	if (myplayer.journalactive==1){//Journal of radio messages

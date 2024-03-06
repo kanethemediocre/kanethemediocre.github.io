@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 638 by Andrew Kane </title>
+    <title>Bling Hustle 640 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -125,7 +125,7 @@ var jvkeys = journalkeys(canvas.width,canvas.height);
 
 var ovkeys = optionsvkeys(canvas.width,canvas.height);
 var comfy = false;
-if ((canvas.width>1200)&&(canvas.height>700)){comfy = true;}
+if ((canvas.width>1400)&&(canvas.height>700)){comfy = true;}
 var time = 0; //Count of frames elapsed in game time.  Used to track in-game time related stuff.
 var nmeactive = 1; //targeting computer starts off
 var mdx = 0; //I think these were for the mouse?  Not sure if used.
@@ -859,7 +859,7 @@ function update() {
 		if (supercompass>1){
 			systems[ps].drawshipfinder(0,300);
 			}
-		if (canvas.width>1500){
+		if (comfy){
 	
 			hud(myi);//myi is the player index.  
 			}
@@ -1055,7 +1055,7 @@ if (ps>0){//Map stuff is not displayed in menu system
 		}
 	else if (myplayer.mapactive == 1){drawmap(systems[ps].planets,systems[ps].outposts,myplayer.mapscale,canvas.width/2,canvas.height/2, vwx, vwy, myplayer.radarrange,systems[ps].npcs,myplayer);}//centered map
 	else if (myplayer.mapactive == 2){
-		if (canvas.width>1500){
+		if (comfy){
 			context.save();
 			context.beginPath();
 			context.rect(0,canvas.height-313,414,314)

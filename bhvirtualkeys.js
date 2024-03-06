@@ -24,23 +24,11 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	
 	
 	var upjvk = new Virtualkey("ArrowUp","Up",684,-999);//constructor(key,label,x,y)
-	//upjvk.display = false; //These keys are attached to menus that are not always visible.
-	//upjvk.active = false;
 	var downjvk = new Virtualkey("ArrowDown","Down",684,-999);//constructor(key,label,x,y)
-	//downjvk.display = false;
-	//downjvk.active = false;
 	var upsvk = new Virtualkey("ArrowUp","Up",784,-999);//constructor(key,label,x,y)
-	//upsvk.display = false;
-	//upsvk.active = false;
 	var downsvk = new Virtualkey("ArrowDown","Down",784,-999);//constructor(key,label,x,y)
-	//downsvk.display = false;
-	//downsvk.active = false;
 	var backspacevk = new Virtualkey("Backspace","Backspace",472,-999);//constructor(key,label,x,y)
-	//backspacevk.display = false;
-	//backspacevk.active = false;
 	var entervk = new Virtualkey("Enter","Enter",784,-999);//constructor(key,label,x,y)
-	//entervk.display = false;
-	//entervk.active = false;
 	var mobilethrust = new Virtualkey("thrust", "Thrust mode is OFF",420,ymax-64);
 	
 	var zvk=new Virtualkey("z","Z",xmax-204,ymax-216);//constructor(key,label,x,y){
@@ -87,23 +75,11 @@ function minivkeys(xmax,ymax){   //constructor(key,label,x,y){
 	
 	
 	var upjvk = new Virtualkey("ArrowUp","Up",684,-999);//constructor(key,label,x,y)
-	upjvk.display = false; //These keys are attached to menus that are not always visible.
-	upjvk.active = false;
 	var downjvk = new Virtualkey("ArrowDown","Down",684,-999);//constructor(key,label,x,y)
-	downjvk.display = false;
-	downjvk.active = false;
 	var upsvk = new Virtualkey("ArrowUp","Up",784,-999);//constructor(key,label,x,y)
-	upsvk.display = false;
-	upsvk.active = false;
 	var downsvk = new Virtualkey("ArrowDown","Down",784,-999);//constructor(key,label,x,y)
-	downsvk.display = false;
-	downsvk.active = false;
 	var backspacevk = new Virtualkey("Backspace","Backspace",472,-999);//constructor(key,label,x,y)
-	backspacevk.display = false;
-	backspacevk.active = false;
 	var entervk = new Virtualkey("Enter","Enter",784,-999);//constructor(key,label,x,y)
-	entervk.display = false;
-	entervk.active = false;
 	var mobilethrust = new Virtualkey("thrust", "Thrust mode is OFF",420,ymax-64);
 	
 	var zvk=new Virtualkey("z","Z",xmax-204,ymax-216);//constructor(key,label,x,y){

@@ -467,14 +467,14 @@ function hud(playerindex){
 			}
 		context.font = "20px Ariel";
 		context.fillStyle = "lime";
-		context.fillText(musicvolume,420,120);	
-		context.fillText(soundvolume,420,160);			
-		context.fillText(lastsong,420,200);
-		context.fillText(myplayer.vkactive,410,340);
+		context.fillText(musicvolume,420,116);	
+		context.fillText(soundvolume,420,148);			
+		context.fillText(lastsong,368,182);
+		context.fillText(myplayer.vkactive,410,288);
 		if (document.fullscreenElement) {
-			context.fillText(fullscreenmouseyoffset,420,420);
+			context.fillText(fullscreenmouseyoffset,420,352);
 		} else {
-			context.fillText(windowmouseyoffset,420,420);
+			context.fillText(windowmouseyoffset,420,352);
 			}
 		}
 		
