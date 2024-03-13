@@ -521,17 +521,17 @@ class Blaster{
 		showchart(blasterchart, 128, 16, xpos,ypos);
 		}
 	drawstats2(xpos,ypos,color1,color2){
-		var titles = ["Attribute","Current Value","Base stat","Upgrade bonus","Max Tier"];
+		var titles = ["Attribute","Current","Base","Upgrade","Max Tier"];
 		var damagestats = ["Damage",this.hurt,this.bhurt,this.uphurt,this.maxhurt];
 		var speedstats = ["Speed",this.speed,this.bspeed,this.upspeed,this.maxspeed];
-		var timerstats = ["Bomb Timer",this.timer,this.btimer,this.uptimer,this.maxtimer];
-		var boomstats = ["Blast Radius",this.boom,this.bboom,this.upboom,this.maxboom];
-		var nstats = ["Bomb Number",this.n,this.bn,this.upn,this.maxn];
+		var timerstats = ["Timer",this.timer,this.btimer,this.uptimer,this.maxtimer];
+		var boomstats = ["Radius",this.boom,this.bboom,this.upboom,this.maxboom];
+		var nstats = ["Number",this.n,this.bn,this.upn,this.maxn];
 		var remote = this.rtier;
 		context.fillStyle = "white";
 		context.font = "16px Ariel";
 		var blasterchart2 = [titles,damagestats,speedstats,timerstats,boomstats,nstats];
-		showchart(blasterchart2,104, 24, xpos,ypos);
+		showchart(blasterchart2,64, 24, xpos,ypos);
 		context.fillStyle = "red";
 		if (this.phas){
 			context.fillText("You own this blaster",xpos, ypos + 125);

@@ -1512,10 +1512,20 @@ class System{
 						}
 				  break;   
 				case "ArrowLeft":
-					aplayer.cyclewep(-1);
+					if (aplayer.dockstate>=0){
+						menuclick2.play();
+						aplayer.shopmode--;
+						if (aplayer.shopmode<0){aplayer.shopmode=2;}
+						}
+					else{ aplayer.cyclewep(-1) };
 				  break;   
 				case "ArrowRight":
-					aplayer.cyclewep(1);
+					if (aplayer.dockstate>=0){
+						menuclick2.play();
+						aplayer.shopmode++;
+						if (aplayer.shopmode>2){aplayer.shopmode=0;}
+						}
+					else{ aplayer.cyclewep(1) };
 				  break;  
 				case "End":
 					if (cheatmode == 1){aplayer.money = aplayer.money +10000;}
@@ -1605,12 +1615,12 @@ class System{
 					}
 				  break;
 				 case "Backspace": //The enter key purchases the currently selected shop item
-					if (aplayer.dockstate>=0){
-						menuclick2.play();
-						aplayer.shopmode++;
-						if (aplayer.shopmode > 2) { aplayer.shopmode = 0; }
-						aplayer.shopitem = 0;
-						}
+					//if (aplayer.dockstate>=0){
+						//menuclick2.play();
+						//aplayer.shopmode++;
+						//if (aplayer.shopmode > 2) { aplayer.shopmode = 0; }
+						//aplayer.shopitem = 0;
+						//}
 				  break;
 				 case "p": 
 					 aplayer.probemode = aplayer.probemode + 1;

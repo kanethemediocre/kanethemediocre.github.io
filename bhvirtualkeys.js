@@ -19,10 +19,10 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var plusvk=new Virtualkey("+","+",24,ymax-340);//constructor(key,label,x,y)
 	var minusvk=new Virtualkey("-","-",56,ymax-340);//constructor(key,label,x,y)
 	
-	var upwvk = new Virtualkey("ArrowUp","^",200,104);//constructor(key,label,x,y)
-	var downwvk = new Virtualkey("ArrowDown","v",200,132);//constructor(key,label,x,y)
-	var rightwvk = new Virtualkey("ArrowRight",">",228,118);//constructor(key,label,x,y)
-	var leftwvk = new Virtualkey("ArrowLeft","<",172,118);//constructor(key,label,x,y)
+	var upwvk = new Virtualkey("ArrowUp","↑",200,104);//constructor(key,label,x,y)
+	var downwvk = new Virtualkey("ArrowDown","↓",200,132);//constructor(key,label,x,y)
+	var rightwvk = new Virtualkey("ArrowRight","→",228,118);//constructor(key,label,x,y)
+	var leftwvk = new Virtualkey("ArrowLeft","←",172,118);//constructor(key,label,x,y)
 	
 	
 	var upjvk = new Virtualkey("ArrowUp","Up",684,-999);//constructor(key,label,x,y)
@@ -45,11 +45,13 @@ function journalkeys(xmax,ymax){
 
 
 function shopkeys(xmax,ymax){
-	var upvk = new Virtualkey("ArrowUp","Up",688,124);//constructor(key,label,x,y)
-	var downvk = new Virtualkey("ArrowDown","Down",688,204);//constructor(key,label,x,y)
-	var backspacevk = new Virtualkey("Backspace","Backspace",360,24);//constructor(key,label,x,y)
+	var upvk = new Virtualkey("ArrowUp","↑",688,124);//constructor(key,label,x,y)
+	var downvk = new Virtualkey("ArrowDown","↓",688,204);//constructor(key,label,x,y)
+	//var backspacevk = new Virtualkey("Backspace","Backspace",540,24);//constructor(key,label,x,y)
+	var rightvk = new Virtualkey("ArrowRight","→",500,24);//constructor(key,label,x,y)
+	var leftvk = new Virtualkey("ArrowLeft","←",300,24);//constructor(key,label,x,y)
 	var entervk = new Virtualkey("Enter","Enter",688,164);//constructor(key,label,x,y)
-	return [upvk,downvk,backspacevk,entervk];
+	return [upvk,downvk,rightvk,leftvk,entervk];
 	}
 function minivkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var avk=new Virtualkey("a","A",xmax-136,ymax-216);//constructor(key,label,x,y){
@@ -72,10 +74,10 @@ function minivkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var plusvk=new Virtualkey("+","+",24,ymax-276);//constructor(key,label,x,y)
 	var minusvk=new Virtualkey("-","-",56,ymax-276);//constructor(key,label,x,y)
 	
-	var upwvk = new Virtualkey("ArrowUp","^",200,104);//constructor(key,label,x,y)
-	var downwvk = new Virtualkey("ArrowDown","v",200,132);//constructor(key,label,x,y)
-	var rightwvk = new Virtualkey("ArrowRight",">",228,118);//constructor(key,label,x,y)
-	var leftwvk = new Virtualkey("ArrowLeft","<",172,118);//constructor(key,label,x,y)
+	var upwvk = new Virtualkey("ArrowUp","↑",200,104);//constructor(key,label,x,y)
+	var downwvk = new Virtualkey("ArrowDown","↓",200,132);//constructor(key,label,x,y)
+	var rightwvk = new Virtualkey("ArrowRight","→",228,118);//constructor(key,label,x,y)
+	var leftwvk = new Virtualkey("ArrowLeft","←",172,118);//constructor(key,label,x,y)
 	
 	
 	var upjvk = new Virtualkey("ArrowUp","Up",684,-999);//constructor(key,label,x,y)

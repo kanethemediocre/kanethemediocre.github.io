@@ -23,11 +23,13 @@ class Shop{
 			}
 		context.font='16px Arial';
 		context.fillStyle = "white";
-		context.fillText("Welcome to "+this.name,x,y);
-		context.font='32px Arial';
+		context.fillText("Welcome to "+this.name,x,y+8);
+		context.font='36px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
-		context.fillText("Buy",x,y-24);
-		context.fillStyle = "white";
+		context.fillText("Buy",x+100,y-24);
+		context.font='16px Arial';
+		context.fillText("Work",x+50,y-24);
+		context.fillText("Sell",x+180,y-24);
 		var names = [];
 		var descriptions = [];
 		var prices = [];
@@ -109,7 +111,11 @@ class Shop{
 			drawpolarpoly(x+464,y-20,systems[ps].outposts[this.home].emblem[0],systems[ps].outposts[this.home].emblem[1],32,systems[ps].outposts[this.home].c,-1*Math.PI/2); //this.emblem is a randomized logo
 			if (this.inv[item].type=="blaster"){
 				//console.log("toldblasterdrawstats");
-				theplayer.blasters[this.inv[item].i].drawstats2(canvas.width/2,160,"lime","cyan");
+				if (!theplayer.transparentmenus){
+					context.fillStyle = "#080808";//Background is black
+					context.fillRect(800, 140, 360, 188); //rectangle the size of the canvas.
+					}
+				theplayer.blasters[this.inv[item].i].drawstats2(800,160,"lime","cyan");
 				}
 			}
 		else{//if the loop never ran, i==0 at check.
@@ -125,11 +131,13 @@ class Shop{
 		context.fillRect(xpos-16,ypos-56,512,336+128);
 		context.font='16px Arial';
 		context.fillStyle = "white";
-		context.fillText("Welcome to "+this.name,x,y);
-		context.font='32px Arial';
+		context.fillText("Welcome to "+this.name,x,y+8);
+		context.font='36px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
-		context.fillText("Sell",x,y-24);
-		context.fillStyle = "white";
+		context.fillText("Sell",x+100,y-24);
+		context.font='16px Arial';
+		context.fillText("Buy",x+50,y-24);
+		context.fillText("Work",x+180,y-24);
 		context.font='12px Arial';
 		if (theplayer.inventory.cargotypes()>0){
 			//fillwrappedtext(allcargos[item].description,86,16,x,y+236+128);
@@ -195,10 +203,13 @@ class Shop{
 		context.fillRect(xpos-16,ypos-56,512,336+128);
 		context.font='16px Arial';
 		context.fillStyle = "white";
-		context.fillText("Welcome to "+this.name,x,ypos);
-		context.font='32px Arial';
+		context.fillText("Welcome to "+this.name,x,ypos+8);
+		context.font='36px Arial';
 		context.fillStyle = systems[ps].outposts[this.home].c;
-		context.fillText("Work",x,ypos-24);
+		context.fillText("Work",x+88,y-24);
+		context.font='16px Arial';
+		context.fillText("Sell",x+50,y-24);
+		context.fillText("Buy",x+180,y-24);
 		context.font='12px Arial';
 		context.fillStyle = "white";	
 		if (this.missions.length>0){fillwrappedtext(this.missions[item].message,86,16,x,ypos+236+128);}
