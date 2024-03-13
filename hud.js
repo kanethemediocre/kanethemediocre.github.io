@@ -15,39 +15,39 @@ function hud(playerindex){
 			var closestindex = myplayer.targetlock; 
 			}
 		}	
-	else {
-		var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
-		var fshipsinrange = [];
-		var eshipsinrange = [];
-		var closestdistance = 999999;//needs to be larger than radarrange 
-		var closestindex = 0; 
-		var i=0;
-		while (i<systems[ps].npcs.length){ //this loop makes the short list
-			var tdistance = Math.floor(myplayer.ship.distance(systems[ps].npcs[i].ship));
-			if (tdistance<myplayer.radarrange){
-				shipsinrange.push(i);
-				if (systems[ps].npcs[i].ai.playerhostile){ eshipsinrange.push(i); }
-				else {fshipsinrange.push(i);}
-				if ((myplayer.ship.pointingat(systems[ps].npcs[i].ship))&&(myplayer.targetlock<0)){
-					myplayer.shiptarget = i;	
-					}
-				else if (myplayer.targetlock>0){
-					myplayer.shiptarget = myplayer.targetlock;//This can be more efficient and exclude other calculations around here
-					}
-				if (tdistance<closestdistance){
-					closestdistance = tdistance;
-					closestindex = shipsinrange.length-1;
-					}
+
+	var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
+	var fshipsinrange = [];
+	var eshipsinrange = [];
+	var closestdistance = 999999;//needs to be larger than radarrange 
+	var closestindex = 0; 
+	var i=0;
+	while (i<systems[ps].npcs.length){ //this loop makes the short list
+		var tdistance = Math.floor(myplayer.ship.distance(systems[ps].npcs[i].ship));
+		if (tdistance<myplayer.radarrange){
+			shipsinrange.push(i);
+			if (systems[ps].npcs[i].ai.playerhostile){ eshipsinrange.push(i); }
+			else {fshipsinrange.push(i);}
+			if ((myplayer.ship.pointingat(systems[ps].npcs[i].ship))&&(myplayer.targetlock<0)){
+				myplayer.shiptarget = i;	
 				}
-			i++;
+			else if (myplayer.targetlock>=0){
+				myplayer.shiptarget = myplayer.targetlock;//This can be more efficient and exclude other calculations around here
+				}
+			if (tdistance<closestdistance){
+				closestdistance = tdistance;
+				closestindex = shipsinrange.length-1;
+				}
 			}
-		if (closestdistance!=999999){
-			if (myplayer.ship.distance(systems[ps].npcs[myplayer.shiptarget].ship)>myplayer.radarrange){
-				myplayer.shiptarget=0;
-				closestindex = 0;
-				}
+		i++;
+		}
+	if (closestdistance!=999999){
+		if (myplayer.ship.distance(systems[ps].npcs[myplayer.shiptarget].ship)>myplayer.radarrange){
+			myplayer.shiptarget=0;
+			closestindex = 0;
 			}
 		}
+
 	var i=0;
 	if (nmeactive == 1){//if targeting computer is on...
 			/*
@@ -108,6 +108,11 @@ function hud(playerindex){
 	context.fillText(fshipsinrange.length+" Friendly ships detected", canvas.width-400, 20);	
 	context.fillStyle = "red";
 	context.fillText(eshipsinrange.length+" Enemy ships detected", canvas.width-400, 50);	
+	if (myplayer.targetlock>=0){
+		context.font = '24px Ariel';
+		context.fillStyle = "yellow";
+		context.fillText("Target Locked", canvas.width-160, 20);	
+		}
 	}
 	if (myplayer.vkvisible){
 		var i=0;
@@ -195,9 +200,9 @@ function hud(playerindex){
 	var sbl = 150; //status bar base length
 	context.font='12px Arial';
 	context.fillStyle = "orange"; //thruster power bar 
+	context.strokeStyle = "orange";
 	context.lineWidth = 2;
     context.fillRect(4, 84,Math.floor(sbl*myplayer.thruster/100), 16);
-	context.strokeStyle = "orange";
 	context.beginPath();
 	context.rect(4,84,Math.floor(sbl*myplayer.maxthruster/100),16);
 	context.stroke();
@@ -207,21 +212,21 @@ function hud(playerindex){
 	context.beginPath();
 	context.rect(4,64,Math.floor(sbl*myplayer.maxenergy/100),16);
 	context.stroke();
-	context.fillStyle = "purple"; //weapons energy bar
-    context.fillRect(4, 44,Math.floor(sbl*myplayer.levelcheck()), 16);
+	context.fillStyle = "purple"; //level bar
 	context.strokeStyle = "purple";
+    context.fillRect(4, 44,Math.floor(sbl*myplayer.levelcheck()), 16);
 	context.beginPath();
 	context.rect(4,44,sbl,16);
 	context.stroke();
 	context.fillStyle = "blue"; //shield bar
-    context.fillRect(4, 24,Math.floor(sbl*myplayer.ship.shield/200), 16);
 	context.strokeStyle = "blue";
+    context.fillRect(4, 24,Math.floor(sbl*myplayer.ship.shield/200), 16);
 	context.beginPath();
 	context.rect(4,24,Math.floor(sbl*myplayer.ship.maxshield/200),16);
 	context.stroke();
 	context.fillStyle = "green"; //health bar
-    context.fillRect(4, 4,Math.floor(sbl*myplayer.ship.hp/1000), 16);
 	context.strokeStyle = "green";
+    context.fillRect(4, 4,Math.floor(sbl*myplayer.ship.hp/1000), 16);
 	context.beginPath();
 	context.rect(4,4,Math.floor(sbl*myplayer.ship.maxhp/1000),16);
 	context.stroke();
@@ -248,18 +253,18 @@ function hud(playerindex){
 		if (myplayer.blasters[i].phas){context.fillStyle = "white";}else{context.fillStyle = "grey";}
 		context.fillText(i,16*i-160*Math.floor(i/10),144+16*Math.floor(i/10));
 		i=i+1;
-	}
-	context.fillStyle = "red";
+		}
 	context.font='20px Arial';
+	context.fillStyle = "red";
 	context.fillText(myplayer.blasters[myplayer.wep].name+" equipped",8,184);
 	context.fillStyle = "purple";
-	context.font='20px Arial';
 	context.fillText(myplayer.boosters +" Boosters",8,212);	
-	context.font='20px Arial';
+	context.fillStyle = "#4040FF";
+	context.fillText("Probe Mode "+myplayer.probemode,8,240);
 	context.fillStyle = "green"; 
-	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
+	context.fillText("task: "+myplayer.task,8,268);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
-	context.fillText("job: "+myplayer.job,8,284);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
+	context.fillText("job: "+myplayer.job,8,296);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	
 	if (myplayer.debugdisplay){
 		context.fillStyle = "white";
@@ -443,8 +448,8 @@ function hud(playerindex){
 			i++;
 			}
 		if ((mx>x)&&(my>y)){
-			var mi = Math.floor((my-y)/ystep);
-			var mj = Math.floor((mx-x)/ystep);
+			var mi = Math.floor((my-y)/ystep+0.5);
+			var mj = Math.floor((mx-x)/ystep+0.5);
 			if (mi<myplayer.planetarychart.length-blind){
 				if (mj<myplayer.planetarychart[mi].length){
 					myplayer.navtarget = myplayer.planetarychart[mi][mj];

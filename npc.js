@@ -88,7 +88,7 @@ class NPC{
 							cashsound1.pause();
 							cashsound1.currentTime = 0;
 							cashsound1.play();
-							console.log("wut");
+							//console.log("wut");
 							//}
 						}
 					else{

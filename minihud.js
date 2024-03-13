@@ -208,16 +208,17 @@ function minihud(playerindex){
 		context.fillText(i,16*i-160*Math.floor(i/10),140+16*Math.floor(i/10));
 		i=i+1;
 	}
+	context.font='18px Arial';
 	context.fillStyle = "red";
-	context.font='20px Arial';
-	context.fillText(myplayer.blasters[myplayer.wep].name,8,180);
-	context.fillStyle = "white";
-	context.fillText(myplayer.boosters+" boosters",8,208);
-	context.font='16px Arial';
+	context.fillText(myplayer.blasters[myplayer.wep].name+" equipped",8,184);
+	context.fillStyle = "purple";
+	context.fillText(myplayer.boosters +" Boosters",8,208);	
+	context.fillStyle = "#4040FF";
+	context.fillText("Probe Mode "+myplayer.probemode,8,232);
 	context.fillStyle = "green"; 
-	context.fillText("task: "+myplayer.task,8,260);//The task is a brief description of the last thing a player was asked to do.
-	context.fillStyle = "white";
-	context.font='12px Arial';
+	context.fillText("task: "+myplayer.task,8,256);//The task is a brief description of the last thing a player was asked to do.
+	context.fillStyle = "yellow";
+	context.fillText("job: "+myplayer.job,8,280);//Jobs are missions taken from station menus.  This indicates latest and how many jobs.
 	if (myplayer.alive == false){//This is the death screen.
 		context.fillStyle = "red";
 		context.font='24px Arial';

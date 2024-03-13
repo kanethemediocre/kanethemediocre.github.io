@@ -48,7 +48,7 @@ function mouseDownHandler(e) {
 					}
 				i++;
 				}
-			if (myplayer.dockstate>=0){
+			if ((myplayer.dockstate>=0)&&(!vkeyused)){
 				var i=0;
 				while(i<svkeys.length){
 					if (svkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
@@ -60,7 +60,7 @@ function mouseDownHandler(e) {
 					i++;
 					}
 				}
-			if (myplayer.journalactive>0){
+			if ((myplayer.journalactive>0)&&(!vkeyused)){
 				var i=0;
 				while(i<jvkeys.length){
 					if (jvkeys[i].inside(e.clientX+myplayer.mousexoffset,e.clientY+myplayer.mouseyoffset)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation

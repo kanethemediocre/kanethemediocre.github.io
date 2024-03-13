@@ -162,6 +162,16 @@ class NPCAI{
 			me.ship.thrust = 2;
 			}
 		}	
+	slowdown(thesystem,planeti,maxspeed){	//Like avoid planet, but with parameters to avoid different objects in different ways
+		var me = thesystem.npcs[this.id];
+		var sun = thesystem.planets[planeti];//slows relative to planeti
+		var sundv = me.ship.deltav2(sun); 
+		if (sundv[0]>maxspeed){
+			me.ship.d = sundv[1]
+			console.log("Braking "+sundv[0]);
+			me.ship.thrust = 2;
+			}
+		}	
 	tattack(thesystem,npci,aprob,atype){ //aprob == 0 never shoots, aprob==1 always shoots
 		//var aprob = 0.05;//attack probability per frame
 		var me = thesystem.npcs[this.id];
@@ -418,7 +428,7 @@ class NPCAI{
 				this.nowtargetship = closestplayer;
 				}
 			else {this.behavenow = "loiter";}
-			this.avoidplanet(thesystem,0);//avoid the sun
+			//this.avoidplanet(thesystem,0);//avoid the sun
 			}
 		else if (this.behavior == "guardbot3"){//Look for enemies in range, pick closest one and shoot at it
 			var me = thesystem.npcs[this.id];
@@ -639,12 +649,12 @@ class NPCAI{
 				if (mydistance<myrange){//If in range
 					this.behavenow = "trackattacknpc";//target the player
 					//this.nowtargetship = this.alltargetnpcs[0];
-					console.log("targeting npc");
+					//console.log("targeting npc");
 					}
 				else{
 					this.behavenow = "gotonpc";//Goto the player!
 					//this.nowtargetship = this.alltargetnpcs[mytarget];//0 because at this point in dev there will be 1 element in array
-					console.log("going to npc");
+					//console.log("going to npc");
 					}
 				}
 			else {this.contemplate(thesystem);}
@@ -707,16 +717,21 @@ class NPCAI{
 		
 		
 		//Universal ponder behaviors go here
-		this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//Universal ponder behaviors go here
-		//All ais avoid the sun, maybe fix for bubble universe?
-		if (this.collisions.length>=3){
-			if ( (this.collisions[this.collisions.length-1]==this.collisions[this.collisions.length-2])&&(this.collisions[this.collisions.length-3]==this.collisions[this.collisions.length-2]) ){
-				//if last 3 collisions are the same planet,
-				this.aavoid(thesystem,0,thesystem.planets[this.collisions[this.collisions.length-1]].s*4,"planet");
-				this.collisions = [ this.collisions[this.collisions.length-1],this.collisions[this.collisions.length-1] ];
-				console.log(me.id+" escaping from "+this.collisions[this.collisions.length-1]);
+		if (thesystem.gravity){
+			this.aavoid(thesystem,0,thesystem.planets[0].s*4,"planet");//All ais avoid the sun, maybe fix for bubble universe?
+			if (this.collisions.length>=3){//avoid planets with recent collisions
+				if ( (this.collisions[this.collisions.length-1]==this.collisions[this.collisions.length-2])&&(this.collisions[this.collisions.length-3]==this.collisions[this.collisions.length-2]) ){
+					//if last 3 collisions are the same planet,
+					this.aavoid(thesystem,0,thesystem.planets[this.collisions[this.collisions.length-1]].s*4,"planet");
+					this.collisions = [ this.collisions[this.collisions.length-1],this.collisions[this.collisions.length-1] ];
+					console.log(me.id+" escaping from "+this.collisions[this.collisions.length-1]);
+					}
 				}
 			}
+		else {//universal brakes for bubble universe
+			this.slowdown(thesystem,0,4);	//slowdown(thesystem,planeti,maxspeed){	
+			}
+		
 		}
 
 	contemplate(thesystem){
@@ -771,7 +786,7 @@ class NPCAI{
 				this.behavior = "shopping";
 				this.behavenow = "gotostation";
 				this.nowtargetstation = this.homestation;
-				console.log(me.id+" going shopping");
+				//console.log(me.id+" going shopping");
 				}
 
 			else {

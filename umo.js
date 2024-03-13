@@ -62,7 +62,7 @@ class Umo { //Universal Moving Object
 		this.hp = 100 ; //This is used for destructible entities to track health
 		this.maxhp = 100;
 		this.timer = 0; //Used for bombs.  Could maybe be consolidated with deadtime.
-		this.hurt = 16 ; //used for bombs and planets.  Determines damage.
+		this.hurt = 8 ; //used for bombs and planets.  Determines damage.
 		this.boombuff = 0.5 ; // used for bombs.  Multiplies blast radius
 		this.shield = 50; //for ships, mostly
 		this.maxshield = 50; 

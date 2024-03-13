@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle 640 by Andrew Kane </title>
+    <title>Bling Hustle 648 by Andrew Kane </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -83,6 +83,7 @@
 <script type="text/javascript" src="savesystem.js"></script>
 <script type="text/javascript" src="mysystem.js"></script>
 <script type="text/javascript" src="bhsounds.js"></script>
+<script type="text/javascript" src="hoverhelp.js"></script>
 
 <script type="text/javascript" src="quest.js"></script>
 <script type="text/javascript" src="bhquests.js"></script>
@@ -140,7 +141,6 @@ var autozoom = 0;
 let testfield2 = new Starfield2(30000,20000,64,1000,4000,128);
 var testdustfield0 = new Dustfield(8000,8000,0,2.25,24000);
 var testdustfield1 = new Dustfield(8000,8000,0,2.25,24000);
-
 
 var pz = 0;
 var menuabout = false;
@@ -1125,12 +1125,41 @@ if (ps>0){//Map stuff is not displayed in menu system
 			}
 		}
 	}
+if (myplayer.vkvisible == true){
+	var i=0;
+	while(i<vkeys.length){
+		if (vkeys[i].inside(mdx+canvas.width/2,mdy+canvas.height/2)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
+			var mpi = vkeys[i].key;
+			var hovertext = hoverhelp(mpi);
+			context.font = "20px Ariel";
+			context.fillStyle = "white";
+			context.fillText(hovertext,mdx+canvas.width/2 - 50,mdy+canvas.height/2 - 25);
+			i=vkeys.length; //Exit loop.
+			}
+		i++;
+		}
+	var i=0;
+	while((myplayer.dockstate>=0)&&(i<svkeys.length)){
+		if (svkeys[i].inside(mdx+canvas.width/2,mdy+canvas.height/2)){//mouseyoffset is needed to help support bad / fake fullscreen browser implementation
+			var mpi = svkeys[i].key;
+			if (mpi=="ArrowUp"){var hovertext = "Previous item";}
+			else if (mpi=="ArrowDown"){var hovertext = "Next item";}
+			else { var hovertext = hoverhelp(mpi); }
+			context.font = "20px Ariel";
+			context.fillStyle = "white";
+			context.fillText(hovertext,mdx+canvas.width/2 - 50,mdy+canvas.height/2 - 25);
+			i=svkeys.length; //Exit loop.
+			}
+		i++;
+		}
+	}
 if (ps>34){//0 thru 34 are non-pocket systems
 	//if (myplayer.nowarp == false){
 		var newps = bubbleuniverse.checktrans(0,ps-35);//returns -1 if no transition occurs
 		if (newps>=0){ps = newps+35;}
 	//	}
 	}
+
 systems[ps].respawnall(); //Updates everthing in system
 systems[ps].updateall(time); //Updates everthing in system
 systems[ps].gravitateall(); //gravitates everything in system

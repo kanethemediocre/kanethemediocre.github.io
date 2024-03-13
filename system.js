@@ -32,8 +32,8 @@ class System{
 		this.planetdistances = [];
 		}
 	isclear(target,x,y){
-		var dummy = new Umo(0,0,target.s,"pink");
-		dummy.match(target);
+		var dummy = new Umo(x,y,target.s+8,"pink");
+		//dummy.match(target);
 		var clear = true;
 		//var problems = 0;
 		var i=0;
@@ -41,7 +41,7 @@ class System{
 			if ( (dummy.collide(this.planets[i])) && (target!==this.planets[i]) ){
 				clear = false; 
 				//problem = this.planets[i];
-				//console.log("Collided with planet "+i);
+				console.log("Collided with planet "+i);
 				}
 			i++;
 			}
@@ -50,7 +50,10 @@ class System{
 			if ( (dummy.collide(this.npcs[i].ship)) && (target!==this.npcs[i].ship) ){
 				clear = false; 
 		//		//problem = this.ships[i];
-		//		//console.log("Collided with npc "+i);
+		
+				console.log("Collided with npc "+i);
+				//console.log(this.npcs[i].ship);
+				//console.log(dummy);
 				}
 			i++;
 			}
@@ -59,7 +62,7 @@ class System{
 			if ( (dummy.collide(this.outposts[i])) && (target!==this.outposts[i]) ){
 				clear = false;
 				//problem = this.outposts[i];
-				//console.log("Collided with outpost "+i);
+				console.log("Collided with outpost "+i);
 				}
 			i++;
 			}
@@ -451,13 +454,33 @@ class System{
 			this.npcs[i].update1(this,time);//Unsure if use of "this" is allowed like that.
 			if (this.npcs[i].respawning == true){
 				var parentplanet = this.planets[this.npcs[i].ai.homeplanet];
-				console.log(this.npcs[i].ai.homeplanet)
-				console.log(i);
-				console.log(parentplanet);
-				var rdir = Math.random()*Math.PI*2; //random direction from planet
-				var rdist = parentplanet.s+this.npcs[i].ship.s+12+Math.random()*2*parentplanet.s; //random ish distance
-				var rcw = Math.floor(Math.random()*2)*2 - 1; //random orbit direction (-1 or 1);
-				this.npcs[i].ship.setorbit(parentplanet, rdist, rdir, rcw);
+				//console.log(this.npcs[i].ai.homeplanet)
+				//console.log(i);
+				//console.log(parentplanet);
+				if (this.gravity){
+					var rdir = Math.random()*Math.PI*2; //random direction from planet
+					var rdist = parentplanet.s+this.npcs[i].ship.s+12+Math.random()*2*parentplanet.s; //random ish distance
+					var rcw = Math.floor(Math.random()*2)*2 - 1; //random orbit direction (-1 or 1);
+					this.npcs[i].ship.setorbit(parentplanet, rdist, rdir, rcw);
+					}
+				else{
+					var spawnx = Math.floor(Math.random()*4000-2000);
+					var spawny = Math.floor(Math.random()*4000-2000);
+					//console.log("spawnhard "+i+" "+spawnx+" "+spawny);
+					//console.log(this.isclear(this.npcs[i].ship,spawnx,spawny) );
+					var z = 0;
+					while ((!this.isclear(this.npcs[i].ship,spawnx,spawny))&&(z<100)){//if (this.isclear(aplanet,xpos,ypos)){
+						//console.log("spawnharder"+spawnx+" "+spawny);
+						//console.log(this.isclear(this.npcs[i].ship,spawnx,spawny) );
+						spawnx = Math.floor(Math.random()*4000-2000);
+						spawny = Math.floor(Math.random()*4000-2000);
+						z++;
+						}
+					this.npcs[i].ship.x = spawnx;
+					this.npcs[i].ship.y = spawny;
+					this.npcs[i].ship.vx = Math.random()*4-2;
+					this.npcs[i].ship.vy = Math.random()*4-2;
+					}
 				this.npcs[i].ship.hp = this.npcs[i].ship.maxhp;
 				this.npcs[i].alive = true;
 				this.npcs[i].respawning = false;
@@ -783,13 +806,17 @@ class System{
 				j=j-1;
 				if (this.players[j].alive==true){
 					//console.log("itried3");
+					var dv = this.planets[i].deltav2(this.players[j].ship);
+					var cosdv =  Math.cos(dv[1]-this.players[j].ship.directionof(this.planets[i]))*dv[0];
 					if (this.planets[i].collide(this.players[j].ship)){
-						var collidedamagebonus = 9;//9x bonus damage plus the normal damage done in circlecollide
-						if (this.players[j].shieldbonus != "impact"){
-							this.players[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+						this.planets[i].circlecollide(this.players[j].ship);
+						var collidedamagebonus = 2;//9x bonus damage plus the normal damage done in circlecollide
+						if (this.players[j].shieldbonus == "impact"){
+							collidedamagebonus = 0.25;
 							}
+						this.players[j].ship.damage(collidedamagebonus*(3*cosdv+dv[0])*Math.sqrt(Math.abs((3*cosdv+dv[0]))));//1.5 power
 						}
-					this.planets[i].circlecollide(this.players[j].ship);
+					//this.planets[i].circlecollide(this.players[j].ship);
 					//this.players[j].ship.damagewithsound(1);
 					var k=this.players[j].blasters.length;
 					while(k>0){
@@ -810,17 +837,22 @@ class System{
 				if (this.npcs[j].alive==true){
 					//NPC bonus collision damage nerfed to keep bots alive longer in arena systems
 					if (this.planets[i].collide(this.npcs[j].ship)){
-						var collidedamagebonus = 3;//9x bonus damage plus the normal damage done in circlecollide
-						if (this.npcs[j].shieldbonus != "impact"){
-							this.npcs[j].ship.damage(collidedamagebonus*this.planets[i].hurt);//Still no dependence on delta V.  But it's something.
+						var dv = this.planets[i].deltav2(this.npcs[j].ship);
+						var cosdv =  Math.cos(dv[1]-this.npcs[j].ship.directionof(this.planets[i]))*dv[0];
+						var collidedamagebonus = 1;//bonus damage plus the normal damage done in circlecollide
+						if (this.npcs[j].shieldbonus == "impact"){
+							collidedamagebonus = 0.25;//Still no dependence on delta V.  But it's something.
 							}
+						
 						var	escape = Math.sqrt(this.planets[i].m*2*.0003/this.npcs[j].ship.distance(this.planets[i]));
 						if (this.npcs[j].ship.deltav(this.planets[i])<escape){//only record collision if npc ship is "stuck" in the planets gravity
 							this.npcs[j].ai.collisions.push(i);
-							console.log("stuck-ish");
+							//console.log("stuck-ish");
 							}
+						this.planets[i].circlecollide(this.npcs[j].ship);
+						this.npcs[j].ship.damage(collidedamagebonus*(3*cosdv+dv[0])*Math.sqrt(Math.abs((3*cosdv+dv[0]))));//1.5 power
 						}
-					this.planets[i].circlecollide(this.npcs[j].ship);
+					//this.planets[i].circlecollide(this.npcs[j].ship);
 					var k=this.npcs[j].blasters.length;
 					while(k>0){
 						k=k-1;
@@ -1428,7 +1460,8 @@ class System{
 				  break;
 				  
 				case "t": 
-					aplayer.targetlock = aplayer.shiptarget;//This can be more efficient and exclude other calculations around here                                      
+					if (aplayer.targetlock<0){	aplayer.targetlock = aplayer.shiptarget; }//This can be more efficient and exclude other calculations around here                                      
+					else { aplayer.targetlock = -1; }
 				  break;
 				case "ArrowUp":
 					console.log("ihearya")
@@ -2390,6 +2423,28 @@ class System{
 			}
 		this.enemypopulate(2,1+difficulty,4+difficulty*2);
 		var i=0;
+		while(i<this.npcs.length){
+			var speed = this.planets[0].deltav(this.npcs[i].ship);
+			if (speed>4){
+				this.npcs[i].ship.vx = this.npcs[i].ship.vx*4/speed;
+				this.npcs[i].ship.vy = this.npcs[i].ship.vy*4/speed;
+				}
+			var clearance = true;
+			var j=0;
+			while(j<this.planets.length){
+				if (this.planets[j].collide(this.npcs[i].ship)){
+					clearance = false;
+					j=this.planets.length;
+					}
+				j++;
+				}	
+			if (clearance){i++;}
+			else{
+				this.npcs[i].ship.x = Math.floor( Math.random()*4000 - 2000 );
+				this.npcs[i].ship.y = Math.floor( Math.random()*4000 - 2000 );
+				}
+			}
+		var i=0;
 		while(i<nout){
 			var opdir = (i+0.5) * 2*Math.PI/nout
 			var opr = sizeout*0.35;
@@ -2484,7 +2539,7 @@ class System{
 				this.addbling(this.planets[i],16,32,1);
 				this.bling[this.bling.length-1].parentid = i;
 				this.bling[this.bling.length-1].t = Math.floor(Math.random()*1000);//Timer counts up to an expiration, this helps stagger the expiration times
-				j++
+				j++;
 			}
 			i++;
 		}
@@ -2513,7 +2568,7 @@ class System{
 			context.fillStyle = "#080808";
 			context.fillRect(x-4,y-48,640,500);
 			}
-		var joblistcolor = "orange"
+		var joblistcolor = "green";
 		context.fillStyle = joblistcolor;
 		context.strokeStyle = joblistcolor;
 		context.font = "24px Verdana";
@@ -2525,7 +2580,7 @@ class System{
 		context.stroke();	
 		context.font='12px Arial';
 		var jobnum = 0;
-		var myjobs = []
+		var myjobs = [];
 		var i=0;
 		while (i<this.shops.length){
 			var j=0;
@@ -2573,12 +2628,10 @@ class System{
 				context.fillText(myjobs[i].reward,x+400,y+24+20*(i-chartstart));
 				i++;
 				}
-		
+			context.beginPath(); //This colored rectangle will show which item is selected.
+			context.strokeStyle = joblistcolor;
+			context.rect(x-2,y+8+(theplayer.jobitem-chartstart)*20,500,20);
+			context.stroke();	
 			}
-		context.beginPath(); //This colored rectangle will show which item is selected.
-		context.strokeStyle = joblistcolor;
-		context.rect(x-2,y+8+(theplayer.jobitem-chartstart)*20,500,20);
-		context.stroke();	
-		
 		}
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////

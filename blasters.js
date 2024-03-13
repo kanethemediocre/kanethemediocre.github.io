@@ -290,20 +290,20 @@ class Blaster{
 			this.firing = this.firing + this.special3;//Special3  is the number of projectiles in the spread
 			if (this.firing>=this.n){this.firing = 0;}
 			//theplayer.ship.launchbomb(this.bombs[this.firing],this.speed,this.timer);
-			console.log(this.firing);
-			console.log(this.special1);
-			console.log(this.special2);
-			console.log(this.special3);
+			//console.log(this.firing);
+			//console.log(this.special1);
+			//console.log(this.special2);
+			//console.log(this.special3);
 			this.firespread(this.special1,this.special3,theplayer.ship.d+this.special2,theplayer.ship,this.firing);			
 			//add actual firing of spread here, special1 and special2 are arc start and end
 		}else if (this.type == "spread"){
 			var spread = 0.0625 + 128/theplayer.mousedistance;
 			this.firespread(spread,this.bombs.length,theplayer.ship.d+spread/2,theplayer.ship,0);
 		}else if (this.type == "fixedspread"){
-			console.log(this.firing);
-			console.log(this.special1);
-			console.log(this.special2);
-			console.log(this.special3);
+			//console.log(this.firing);
+			//console.log(this.special1);
+			//console.log(this.special2);
+			//console.log(this.special3);
 			this.firespread(this.special1,this.bombs.length,theplayer.ship.d+this.special2,theplayer.ship,0);
 		}else if (this.type == "novaspread"){
 			this.firespread(2*Math.PI,this.bombs.length,theplayer.ship.d+spread/2,theplayer.ship,0);
