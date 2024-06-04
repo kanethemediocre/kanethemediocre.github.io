@@ -33,6 +33,9 @@ function mouseDownHandler(e) {
 		}
 	else{
 		myplayer.mousestate = e.buttons;
+		if (myplayer.mousestate ==2){
+			psimsys = systems[ps].simcopy(0);
+			}
 		myplayer.moused = -1*Math.atan2(mdx,mdy) - Math.PI/2;
 		myplayer.mousedistance = Math.sqrt(mdx*mdx+mdy*mdy);
 		console.log(e.clientX+ " " +e.clientY);

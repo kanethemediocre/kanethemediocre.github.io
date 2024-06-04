@@ -31,6 +31,41 @@ class System{
 		this.planetangles = [];
 		this.planetdistances = [];
 		}
+	simcopy(playeri){
+		var psystem = new System(0,"sim",this.x,this.y);
+		var i=0;
+		while(i<this.planets.length){
+			var op = this.planets[i];
+			var np = new Umo(op.x,op.y,op.s,op.c);
+			np.m = op.m;
+			np.parentid=op.parentid;
+			np.vx = op.vx;
+			np.vy = op.vy;
+			psystem.planets.push(np);
+			i++;
+			}
+		var oldplayer = this.players[playeri];
+		var aplayer = new Player();
+		aplayer.ship.match(oldplayer);
+		psystem.players = [aplayer];
+		return psystem;
+		}
+	sim1(){
+		this.gravitateall();
+		this.update();
+		if (this.players[0].shield<this.players[0].maxshield){ return true;	}//Detects damage, which in sims should only come from collisions.
+		else{ return false; }
+		}
+	simn(n){
+		var i=0;
+		while(i<n){
+			if (this.sim()==true){//Executes this.sim() function,
+				return true;
+				}
+			else{ i++; }
+			}
+		return false;
+		}
 	isclear(target,x,y){
 		var dummy = new Umo(x,y,target.s+8,"pink");
 		//dummy.match(target);
@@ -184,8 +219,6 @@ class System{
 			}
 		var i=0;
 		while  (i<this.explosions.length){
-			//this.explosions[i].draw(viewx,viewy);//FIlter on explosions wasnt working, turned off for now
-			
 			var xtol = canvas.width;
 			var xdif = this.explosions[i].x-viewx;
 			if ((xdif < xtol)&&(xdif > -1*xtol)){
@@ -195,7 +228,6 @@ class System{
 					this.explosions[i].draw(viewx,viewy);
 					}		
 				}
-			
 			i++;
 			}
 		var i=0;
@@ -808,7 +840,7 @@ class System{
 					//console.log("itried3");
 					var dv = this.planets[i].deltav2(this.players[j].ship);
 					var cosdv =  Math.cos(dv[1]-this.players[j].ship.directionof(this.planets[i]))*dv[0];
-					if (this.planets[i].collide(this.players[j].ship)){
+					if ((this.planets[i].collide(this.players[j].ship))&&(this.planets[i].hurt>0)){
 						this.planets[i].circlecollide(this.players[j].ship);
 						var collidedamagebonus = 2;//9x bonus damage plus the normal damage done in circlecollide
 						if (this.players[j].shieldbonus == "impact"){
