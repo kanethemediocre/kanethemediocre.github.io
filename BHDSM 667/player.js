@@ -248,10 +248,31 @@ class Player{
 			this.journalactive = 0;
 			this.alive = false;
 			this.deadtime = this.respawntime;
-			this.ship.x = -1000000;//this keeps getting ignored
+			//this.ship.x = -1000000;//this keeps getting ignored
 			this.ship.damagestate = 0;
 			this.ship.shielddamagestate = 0;
 			this.deaths++;
+			var i=0;
+			while(i<this.blasters.length){
+				if ((this.blasters[i].phas)&&(i!=1)&&(i!=10)){
+					bonusweplist.push(i);
+					}
+				i++;
+				}
+			//Respawning...
+			this.initialize(1000,200,1);
+			this.mousexoffset = windowmousexoffset;
+			this.mouseyoffset = windowmouseyoffset;
+			this.task = "Collect Bling";
+			this.transparentui = false;
+			this.money = 3001
+			this.mapscale = 40; //Map zoom
+			this.navactive = 0;
+			this.boosters = 0;
+			this.ship.s = 24;
+			this.deadtime = 0;
+			respawnbonus(this,bonuslevel);//sus
+			aplayer.ship.match(systems[ps].outposts[0]);//also sus
 			}
 		if (this.alive==false){
 			//console.log(this.deadtime);
@@ -263,6 +284,7 @@ class Player{
 				console.log(this.ship.hp);
 				this.ship.shield = this.ship.maxshield;
 				this.respawning = true; //This flag is needed so that the system object knows when to respawn the player
+				ps = 0; //sketchy global scope
 				this.emenu = 0; //This exits the engineering menu, which is technically "on" for the respawn challenges.
 				//respawn location will be handled in system update function
 				}

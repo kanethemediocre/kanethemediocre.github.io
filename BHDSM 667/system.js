@@ -41,7 +41,7 @@ class System{
 			if ( (dummy.collide(this.planets[i])) && (target!==this.planets[i]) ){
 				clear = false; 
 				//problem = this.planets[i];
-				console.log("Collided with planet "+i);
+				//console.log("Collided with planet "+i);
 				}
 			i++;
 			}
@@ -709,27 +709,19 @@ class System{
 		var i = this.players.length; 
 		while (i>0){
 			i=i-1;
-			this.players[i].update1(this.planets);
+			//this.players[i].update1(this.planets);
 			
 			if (this.players[i].respawning == true){
-				if (this.playerspawnplanet>=0){
-					var parentplanet = this.planets[this.playerspawnplanet];
-					var rdir = Math.random()*Math.PI*2; //random direction from planet
-					var rdist = parentplanet.s+this.players[i].ship.s+12+Math.random()*2*parentplanet.s; //random ish distance
-					var rcw = Math.floor(Math.random()*2)*2 - 1; //random orbit direction (-1 or 1);
-					this.players[i].ship.setorbit(parentplanet, rdist, rdir, rcw);
-					this.players[i].respawning = false;
-					console.log(this.players[i].ship.hp);
-					}
-				else{
-
-					this.players[i].ship.x = this.playerspawnx;
-					this.players[i].ship.y = this.playerspawny;
-					this.players[i].ship.vx = 0;
-					this.players[i].ship.vy = 0;
-					this.players[i].respawning = false;
-					}
+				this.players[i].respawning = false;
+				console.log("seriouslyputthedamnshipatthestation");
+				
+				this.players[i].ship.match(this.outposts[0]);
+				console.log(ps);
+				console.log(this.players[i].ship.x + " " + this.outposts[0].x);
+				console.log(this.players[i].ship.y + " " + this.outposts[0].y);
 				}
+			this.players[i].update1(this.planets);//order matters, because player update will change global ps on death.
+
 			}					
 //update explosions///////////////////////////////////////////////////
 		var i=0;

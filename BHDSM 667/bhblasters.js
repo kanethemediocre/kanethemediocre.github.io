@@ -16,11 +16,11 @@
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               
 	 8,4,10,9,3,5,0.75,0.25,5,6,2,10,75,25,10,50,"white","ID not implemented");
 	 weapon5.recoil = -1.25;
-	 let weapon6 = new Blaster("Blazor","Beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. ",1000,"beam",                                                   
+	 let weapon6 = new Blaster("Blazor","Beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. Hold down left mouse button to fire.",1000,"beam",                                                   
 	 6,3,10,1,0,0,1,0,0,1,0,0,320,80,10,2,"white","ID not implemented");
 	 let weapon7 = new Blaster("Double Rainbow","Fires a wide spread of many damaging projectiles.",4000,"fixedspread",          
 	 10,5,10,10,0,0,0.3,0,0,12,4,10,60,12,10,50,"white","ID not implemented");
-	 let weapon8 = new Blaster("Spectral Disintegrator","Short range, rapid-firing blaster with great damage output.  Hold the left mouse button down instead of tapping it.",3000,"rapid",
+	 let weapon8 = new Blaster("Spectral Disintegrator","Short range, rapid-firing blaster with great damage output.  Hold the left mouse button down to fire.",3000,"rapid",
 	 12,6,10,12,2,4,0.25,0.25,10,6,0,0,24,6,4,10,"white","ID not implemented");
 	 weapon8.recoil = -0.25;
 	 /*
@@ -65,7 +65,7 @@
 	 weapon17.special1 = 3*Math.PI/2;
 	 weapon17.special2 = 7*Math.PI/4;
 	 weapon17.recoil = 8;
-	 let weapon18 = new Blaster("wangus","A rapid-firing blaster akin to the Disintigrator with greatly improved range, but worse energy efficiency and damage. Hold the left mouse button down instead of tapping it.",7500,"rapid",                            
+	 let weapon18 = new Blaster("wangus","A rapid-firing blaster akin to the Disintigrator with greatly improved range, but worse energy efficiency and damage. Hold the left mouse button to fire.",6000,"rapid",                            
 	 8,4,10,8,4,10,0.5,0.5,10,24,0,0,72,24,10,6,"olive","ID not implemented");
 	 weapon18.recoil = -0.25;
 	 weapon18.special1 = 5;

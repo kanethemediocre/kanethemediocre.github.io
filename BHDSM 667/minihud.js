@@ -147,7 +147,7 @@ function minihud(playerindex){
 			//planets[0].drawcompass(ships[0],canvas.width/2,canvas.height-48); //Nav computer compass for sun
 ///////////////Rest of HUD/////////////////////////////////////////////////////////////////////////////////////////////////	
 	if (myplayer.transparentui == false){
-		console.log("itriedtoopaquestatus");
+		//console.log("itriedtoopaquestatus");
 		context.fillStyle = "#080808";
 		context.fillRect(0,0,160,180);
 		}

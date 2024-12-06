@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle: Deep Space Mine 668</title>
+    <title>Bling Hustle: Deep Space Mine 667</title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
 </head>
 <body class="myElement" oncontextmenu="return false;" style="background-color:black;">
+<body style="background-color:powderblue;">
 <canvas id="gameCanvas" width="1600" height="900"></canvas>
 <script type="text/javascript" src="logo.js"></script>
 <script type="text/javascript" src="bhlogos.js"></script>
@@ -80,8 +81,7 @@
 
 <script type="text/javascript" src="quest.js"></script>
 <script>
-var bonuslevel = 1;//highest level attained. 1 is a freebie
-var bonusweplist = [4,5,6,8,11,14];
+
 // declare global variables/////////////////////////////////////////////////
 var mytime = Date.now();
 var FPS = 60;
@@ -185,27 +185,6 @@ aplayer.money = 3001
 aplayer.mapscale = 40; //Map zoom
 aplayer.navactive = 0;
 aplayer.boosters = 0;
-aplayer.ship.s = 24;
-
-function respawnbonus(theplayer,thebonuslevel){
-	var numbonus = Math.floor(Math.sqrt(thebonuslevel));
-	var tempbonusweplist = bonusweplist
-	var i = 0;
-	while(i<numbonus){
-		var bonuswepi = Math.floor(Math.random()*bonusweplist.length)
-		var bonuswep = bonusweplist[ bonuswepi ];
-		
-		//var array = [1,2,'deleted',4,5,'deleted',6,7];
-		 tempbonusweplist = tempbonusweplist.filter(function(a){return a !== bonuswep})
-		
-		var bonusship = Math.floor(Math.random()*bhupgradeitems().length);		
-		theplayer.blasters[bonuswep].phas = true;
-		theplayer.upgrades[bonusship].apply(theplayer);
-		i++;
-		}
-
-	}
-respawnbonus(aplayer,bonuslevel);
 //aplayer.mapactive = 0;
 var i=0;
 while(i<systems.length){
@@ -236,16 +215,11 @@ function update() {
   	var servertime = mytime+Math.floor(time*1000/FPS);
   	if (servertime<truetime){
 	time++;
-	
-	
 	if (time%1000==0){ musicshuffle();}
 	var vwx = systems[ps].players[myi].ship.x;
 	var vwy = systems[ps].players[myi].ship.y;
 	var myplayer = systems[ps].players[myi];
 	var myship = systems[ps].players[myi].ship; 
-	
-	if (myship.level>bonuslevel){bonuslevel = myship.level;}
-	
 	context.fillStyle = "black";//Background is black
 	context.fillRect(0, 0, canvas.width, canvas.height); //rectangle the size of the canvas.
 	if ((myplayer.probemode == 3)&&(myplayer.blasters[0].bombs[0].timer>0)){//Probe camera functionality has to go here before vwx,vwy start drawing things
@@ -324,52 +298,4 @@ if(time%2==0){
 	}
 }
 </script>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 </body>
- <div style="color:lime;">
-<input type="button" id="dwn-btn" value="Download latest save"/>
- <label for="input-file">[K] saves your game [L] loads uploaded save file. </label><br>
- <input type="file" id="input-file">
- <textarea id="content-target"></textarea>
-<script>
-	document.getElementById('input-file')
-  .addEventListener('change', getFile)
-
-function getFile(event) {
-	const input = event.target
-	//console.log(event.target);
-  if ('files' in input && input.files.length > 0) {
-	  placeFileContent(
-      document.getElementById('content-target'),
-      input.files[0])
-  }
-}
-function placeFileContent(target, file) {
-	readFileContent(file).then(content => {
-  	target.value = content
-	  loadgamestring = content;
-  }).catch(error => console.log(error))
-}
-
-function readFileContent(file) {
-	const reader = new FileReader()
-  return new Promise((resolve, reject) => {
-    reader.onload = event => resolve(event.target.result)
-    reader.onerror = error => reject(error)
-    reader.readAsText(file)
-  })
-}
-</script>
-<a href="ShipBuilder.html">Alpha Ship Builder</a>
-<a href="Mascadoreslive/Mascadores.html">Mascadores game</a>
-<a href="MegaMascadores037/index.html">Mega Mascadores game</a>
-</div>
-</html>
