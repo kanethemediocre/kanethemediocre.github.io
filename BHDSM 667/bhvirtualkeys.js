@@ -1,5 +1,5 @@
 function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
-	var avk=new Virtualkey("a","A",xmax-136,ymax-216);//constructor(key,label,x,y){
+	var avk=new Virtualkey("a","A",xmax-136+10000,ymax-216);//constructor(key,label,x,y){
 	var bvk=new Virtualkey("bb","B",172,192);//constructor(key,label,x,y){
 	//"bb" instead of "b" because this shouldn't actually fire the boosters when clicked.
 	//If the boosters could be fired when the vkey was clicked, then the booster would always fire in the direction of the vkey,
@@ -7,18 +7,18 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var cvk=new Virtualkey("c","C",xmax/2-112,16);//constructor(key,label,x,y){
 	var gvk=new Virtualkey("g","G",24,-999);//B and G are being removed from vkeys, but I didnt want to alter the indexes
 	//var hvk=new Virtualkey("h","H",-100,-100);//constructor(key,label,x,y){
-	var jvk=new Virtualkey("j","J",xmax/2+100,ymax-30);//constructor(key,label,x,y)
+	var jvk=new Virtualkey("j","J",xmax/2+100+10000,ymax-30);//constructor(key,label,x,y)
 	var mvk=new Virtualkey("m","M",88,ymax-340);//constructor(key,label,x,y)
-	var nvk=new Virtualkey("n","N",xmax-104,ymax-216);//constructor(key,label,x,y)
-	var qvk=new Virtualkey("q","Q",xmax-168,ymax-216);//constructor(key,label,x,y){
+	var nvk=new Virtualkey("n","N",xmax-104+10000,ymax-216);//constructor(key,label,x,y)
+	var qvk=new Virtualkey("q","Q",xmax-168+10000,ymax-216);//constructor(key,label,x,y){
 	var dvk=new Virtualkey("d","D",xmax-72,344);//constructor(key,label,x,y)
 	var pvk=new Virtualkey("p","P",172,224);//constructor(key,label,x,y)
 	var vvk=new Virtualkey("vv","V",188,32);//constructor(key,label,x,y)
-	var spacebarvk=new Virtualkey(" ","Spacebar",xmax/2-100,ymax-30);//constructor(key,label,x,y)
+	var spacebarvk=new Virtualkey(" ","Spacebar",xmax/2-100+10000,ymax-30);//constructor(key,label,x,y)
 	var lbracketvk=new Virtualkey("[","[",xmax-332,-160);//constructor(key,label,x,y) //disabled by offscreen placement
 	var rbracketvk=new Virtualkey("]","]",xmax-332,-480);//constructor(key,label,x,y)
-	var gtvk=new Virtualkey(".",">",xmax-40,ymax-216);//constructor(key,label,x,y)
-	var ltvk=new Virtualkey(",","<",xmax-72,ymax-216);//constructor(key,label,x,y)
+	var gtvk=new Virtualkey(".",">",xmax-40+10000,ymax-216);//constructor(key,label,x,y)
+	var ltvk=new Virtualkey(",","<",xmax-72+10000,ymax-216);//constructor(key,label,x,y)
 	var plusvk=new Virtualkey("+","+",24,ymax-340);//constructor(key,label,x,y)
 	var minusvk=new Virtualkey("-","-",56,ymax-340);//constructor(key,label,x,y)
 	

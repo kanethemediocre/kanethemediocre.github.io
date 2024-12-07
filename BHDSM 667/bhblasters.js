@@ -1,6 +1,6 @@
 //constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,bombcolor,ID){
  function bhblasters(){
-	 let weapon1 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done and has great upgrade potential.",150,"plain",                            
+	 let weapon1 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done and has great upgrade potential.",100,"plain",                            
 	 12,6,10,12,4,10,0.5,0.5,10,1,0,0,36,12,10,12,"red","ID not implemented");
 	 weapon1.phas = true; //this is the starter blaster
 	 //weapon1.etier = 1; //testing bounce stuff
@@ -18,7 +18,7 @@
 	 weapon5.recoil = -1.25;
 	 let weapon6 = new Blaster("Blazor","Beam weapon damages everything in it's path.  Instead of tapping the mouse, hold the left button down for a continuous beam of... honestly, we don't even know, but it hurts. Hold down left mouse button to fire.",1000,"beam",                                                   
 	 6,3,10,1,0,0,1,0,0,1,0,0,320,80,10,2,"white","ID not implemented");
-	 let weapon7 = new Blaster("Double Rainbow","Fires a wide spread of many damaging projectiles.",4000,"fixedspread",          
+	 let weapon7 = new Blaster("Double Rainbow","Fires a wide spread of many damaging projectiles.",3200,"fixedspread",          
 	 10,5,10,10,0,0,0.3,0,0,12,4,10,60,12,10,50,"white","ID not implemented");
 	 let weapon8 = new Blaster("Spectral Disintegrator","Short range, rapid-firing blaster with great damage output.  Hold the left mouse button down to fire.",3000,"rapid",
 	 12,6,10,12,2,4,0.25,0.25,10,6,0,0,24,6,4,10,"white","ID not implemented");
@@ -45,7 +45,7 @@
 	 let weapon11 = new Blaster("Multibanger","Similar to the standard banger, but fires a row of bombs instead of a single bomb.  A great value as-is with even greater upgrade potential.",800,"multiplex",                            
 	 12,6,10,12,3,10,0.75,0.25,10,2,1,10,40,8,10,24,"pink","ID not implemented");
 	 weapon11.recoil = -0.3;
-	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row.  About half as much damage for a single mine, but four times as many mines BEFORE upgrades.",2500,"multiplex",                            
+	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row.  About half as much damage for a single mine, but four times as many mines BEFORE upgrades.",2400,"multiplex",                            
 	 20,10,10,0.5,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
 	 let weapon13 = new Blaster("Nova","Fires bombs in all directions.  For the times when you feel like you don't have any friends, and the world is out to get you.",1600,"fixedspread",                            
 	 12,6,10,16,4,10,0.4,0.4,10,16,8,10,15,5,10,60,"tan","ID not implemented");
@@ -54,11 +54,11 @@
 	 let weapon14 = new Blaster("Fast Railgun","The new dank cheese.  Fast flying long range bombs, every time you tap the trigger, at a much smaller energy cost than the standard railgun.",2000,"semirapid",                            
 	 24,8,10,20,4,4,0.3,0,0,6,0,0,64,16,10,25,"grey","ID not implemented");
 	 weapon14.recoil = -0.4;
-	 let weapon15 = new Blaster("Gemini Cutter","Hold down the trigger to repeatedly fire pairs of bombs. Good damage, projectile speed, and energy efficiency compensates for a somewhat slow rate of fire.",5000,"rapidmultiplex",                            
+	 let weapon15 = new Blaster("Gemini Cutter","Hold down the trigger to repeatedly fire pairs of bombs. Good damage, projectile speed, and energy efficiency compensates for a somewhat slow rate of fire.",4000,"rapidmultiplex",                            
 	 16,8,10,16,4,10,0.5,0.25,10,24,0,0,50,10,10,20,"white","ID not implemented");
 	 weapon15.special1 = 24; //e g a b d e
 	 weapon15.recoil = -0.25;
-	 let weapon16 = new Blaster("Pulse Blazor","Beam weapon damages everything in it's path.  Unlike the Blazor, this fires a powerful, instantaneous pulse on click.",2800,"beam",                            
+	 let weapon16 = new Blaster("Pulse Blazor","Beam weapon damages everything in it's path.  Unlike the Blazor, this fires a powerful, instantaneous pulse on click.",2500,"beam",                            
 	 50,25,10,1,0,0,0.8,0.2,10,1,0,0,640,8,10,20,"lime","ID not implemented");
 	 let weapon17 = new Blaster("Squid","Fires a cloud of projectiles backwards, and propels your ship forwards.  A weapon designed for panic.",1500,"fixedspread",                            
 	 20,10,10,3,2,10,0.8,0.2,10,12,4,10,100,25,10,90,"darkslategrey","ID not implemented");

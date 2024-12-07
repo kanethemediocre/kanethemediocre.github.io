@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle: Deep Space Mine 668</title>
+    <title>Bling Hustle: Deep Space Mine 670</title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -49,8 +49,6 @@
 <script type="text/javascript" src="player.js"></script>
 <script type="text/javascript" src="system.js"></script>	
 <script type="text/javascript" src="rainbows.js"></script>	
-
-	
 <script type="text/javascript" src="mission.js"></script>	
 
 <script type="text/javascript" src="mouse.js"></script>
@@ -141,7 +139,7 @@ var menumods = false;
 var menumousecontrols = false;
 var upgradesavestring="";
 var loadgamestring = "";
-var supercompass = 0;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
+var supercompass = 2;//0 is deactivated, 1 and 3 is navigation compass active, 2 and 3 is targeting compass active.
 var playerselect = 0;
 var lastsong = -1;
 //var playerweapon9superbomb = new Superbomb("orbitalsystem");
@@ -188,22 +186,38 @@ aplayer.boosters = 0;
 aplayer.ship.s = 24;
 
 function respawnbonus(theplayer,thebonuslevel){
+
+	systems = [];//sketchy global scope here
+	bubbleuniverse = new Supersystem("3bubble",9,16,16,48,100,400,0,3,0);//constructor(linktype,nsystems,msystems,ppopmin,ppopmax,psizemin,psizemax,npopmin,npopmax,difficulty){
+	var i=0;
+	while(i<bubbleuniverse.systems.length){
+		systems.push(bubbleuniverse.systems[i]);
+		i++;
+		}
+	console.log(i);
+	ps = 0;
+
+
+
 	var numbonus = Math.floor(Math.sqrt(thebonuslevel));
-	var tempbonusweplist = bonusweplist
+	var tempbonusweplist = bonusweplist;
 	var i = 0;
 	while(i<numbonus){
 		var bonuswepi = Math.floor(Math.random()*bonusweplist.length)
 		var bonuswep = bonusweplist[ bonuswepi ];
-		
 		//var array = [1,2,'deleted',4,5,'deleted',6,7];
-		 tempbonusweplist = tempbonusweplist.filter(function(a){return a !== bonuswep})
-		
+		 tempbonusweplist = tempbonusweplist.filter(function(a){return a !== bonuswep}) ; //removes all instances of same blaster index so player doesn't receive duplicates
+		bonusweplist.splice(bonuswepi,1);//remove the 1 instance of blaster index from bonusweplist, because it will get added back on death
 		var bonusship = Math.floor(Math.random()*bhupgradeitems().length);		
 		theplayer.blasters[bonuswep].phas = true;
 		theplayer.upgrades[bonusship].apply(theplayer);
 		i++;
 		}
-
+	var i=0;
+	while(i<systems.length){
+		systems[i].players.push(theplayer);
+		i++;
+		}
 	}
 respawnbonus(aplayer,bonuslevel);
 //aplayer.mapactive = 0;
@@ -305,7 +319,7 @@ if (systems[ps].clockworkplanets){
 	systems[ps].clockplanets(time)
 	}
 systems[ps].collideself(myi); //executes all collisions between objects in the system.
-storycheck(0);//0 is player index
+//storycheck(0);//0 is player index
 if(time%2==0){
     var truetime = Date.now();
     var servertime = mytime+Math.floor(time*1000/FPS);

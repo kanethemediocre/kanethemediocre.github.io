@@ -188,9 +188,9 @@ function hud(playerindex){
 			}
 		}
 	else {
-		context.font = '20px Ariel';
-		context.fillStyle = "white";
-		context.fillText("Navigation is off", canvas.width-160, canvas.height-16);
+		//context.font = '20px Ariel';
+		//context.fillStyle = "white";
+		//context.fillText("Navigation is off", canvas.width-160, canvas.height-16);
 		}
 	//context.fillText("Press N key to cycle navigation computer mode",canvas.width-300,canvas.height-8);
 ////////////////////////Map/////////////////////////////////////

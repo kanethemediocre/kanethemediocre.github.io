@@ -936,10 +936,10 @@ class System{
 							ptarget.damage(aplayer.blasters[aplayer.wep].hurt);
 							if (ptarget.hp<=0){
 								if (this.npcs[i].ai.playerhostile==true){
-									var getcash = Math.floor(Math.random()*21+10)*ptarget.level;
-									aplayer.money = aplayer.money + getcash;
-									aplayer.gotmoney = [30,getcash];
-									cashsound1.play();
+									//var getcash = Math.floor(Math.random()*21+10)*ptarget.level;
+									//aplayer.money = aplayer.money + getcash;
+									//aplayer.gotmoney = [30,getcash];
+									//cashsound1.play();
 									var boomstages = Math.floor(4+ptarget.level/2);
 								}else if (this.npcs[i].ai.playerhostile==false){
 									aplayer.money = aplayer.money - 1000;
@@ -1680,11 +1680,11 @@ class System{
 			aplayer = this.players[qq];
 			switch (aplayer.input) {  //events for all the keyboard keys
 				case "q":
-				if (aplayer.planetmenu < 1){
-					aplayer.planetmenu++;
-					aplayer.navactive = 1;
-					}
-				else {aplayer.planetmenu = 0;}	
+				//if (aplayer.planetmenu < 1){
+				//	aplayer.planetmenu++;
+				//	aplayer.navactive = 1;
+				//	}
+				//else {aplayer.planetmenu = 0;}	
 				
 				  break;   
 				 case "Delete":
@@ -1694,11 +1694,11 @@ class System{
 				  playerradio.msgtime = 1;
 				  break;     
 				case "b": //Booster selection
-					if (aplayer.boosters>0){//if booster 1 is available (used to be more options)
-						aplayer.boosters=aplayer.boosters-1; //remove 1 from stock of selected booster
-						aplayer.ship.thrust = 64;//32*2^(aplayer.boosters[0]); //boost hard
-						boost1.play();
-						}
+					//if (aplayer.boosters>0){//if booster 1 is available (used to be more options)
+					//	aplayer.boosters=aplayer.boosters-1; //remove 1 from stock of selected booster
+					//	aplayer.ship.thrust = 64;//32*2^(aplayer.boosters[0]); //boost hard
+					//	boost1.play();
+					//	}
 				  break;	
 				case "c": //supercompass toggle
 					supercompass++;
@@ -1772,19 +1772,19 @@ class System{
 					if (aplayer.blasters[10].phas){ aplayer.wep = 10; }
 					  break;
 				case "n": 
-					if (aplayer.navactive == 0){
-						aplayer.navactive = 1;
-						if (aplayer.navtarget>this.planets.length-2){aplayer.navtarget=0;}
-					} else if (aplayer.navactive == 1) {
-						aplayer.navactive = 2;
-						if (aplayer.navtarget > this.outposts.length-2){aplayer.navtarget=0;}
-					} else if (aplayer.navactive == 2){aplayer.navactive = 0;}
+					//if (aplayer.navactive == 0){
+					//	aplayer.navactive = 1;
+					//	if (aplayer.navtarget>this.planets.length-2){aplayer.navtarget=0;}
+					//} else if (aplayer.navactive == 1) {
+					//	aplayer.navactive = 2;
+					//	if (aplayer.navtarget > this.outposts.length-2){aplayer.navtarget=0;}
+					//} else if (aplayer.navactive == 2){aplayer.navactive = 0;}
 					  break;
 				case "m": 
 					if (aplayer.mapactive == 0){aplayer.mapactive = 2;} else {aplayer.mapactive--;}
 					  break;
 				case "j": 
-					if (aplayer.journalactive<2){aplayer.journalactive++;}else{aplayer.journalactive = 0;}
+					//if (aplayer.journalactive<2){aplayer.journalactive++;}else{aplayer.journalactive = 0;}
 					  break;
 				case "+": 
 					aplayer.mapscale = aplayer.mapscale * 0.9;
@@ -1795,29 +1795,29 @@ class System{
 					if (aplayer.mapscale>64){aplayer.mapscale = Math.floor(aplayer.mapscale);}
 					  break;	  
 				case ".": 
-					var maxnavtarget = this.planets.length-1;
-					if ((aplayer.sensor<1)&&(this.planets[this.planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
-					if (aplayer.navactive == 1){
-						aplayer.navtarget++;
-						if (aplayer.navtarget > maxnavtarget){ aplayer.navtarget = 0; }//Waldo is now excluded
-					}else if (aplayer.navactive == 2){
-						aplayer.navtarget++;
-						if (aplayer.navtarget > this.outposts.length-1){aplayer.navtarget = 0; }
-						}
+					//var maxnavtarget = this.planets.length-1;
+					//if ((aplayer.sensor<1)&&(this.planets[this.planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
+					//if (aplayer.navactive == 1){
+					//	aplayer.navtarget++;
+					//	if (aplayer.navtarget > maxnavtarget){ aplayer.navtarget = 0; }//Waldo is now excluded
+					//}else if (aplayer.navactive == 2){
+					//	aplayer.navtarget++;
+					//	if (aplayer.navtarget > this.outposts.length-1){aplayer.navtarget = 0; }
+					//	}
 					  break;
 				case ",": 
-					var maxnavtarget = this.planets.length-1;
-					if ((aplayer.sensor<1)&&(this.planets[this.planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
-					if (aplayer.navactive == 1){
-						aplayer.navtarget--;
-						if (aplayer.navtarget == -1){ aplayer.navtarget = maxnavtarget; }
-					}else if (aplayer.navactive == 2){
-						aplayer.navtarget--;
-						if (aplayer.navtarget == -1){ aplayer.navtarget = this.outposts.length-1; }
-						}
+					//var maxnavtarget = this.planets.length-1;
+					//if ((aplayer.sensor<1)&&(this.planets[this.planets.length-1].s<64)){maxnavtarget--;}//Player can't select waldo, the last planet, without player.sensor >=1;
+					//if (aplayer.navactive == 1){
+					//	aplayer.navtarget--;
+					//	if (aplayer.navtarget == -1){ aplayer.navtarget = maxnavtarget; }
+					//}else if (aplayer.navactive == 2){
+					//	aplayer.navtarget--;
+					//	if (aplayer.navtarget == -1){ aplayer.navtarget = this.outposts.length-1; }
+					//	}
 					break;		  
 				case "w": 
-				if (cheatmode ==1){	aplayer.ship.respawn(this.planets[aplayer.navtarget]); }
+				//if (cheatmode ==1){	aplayer.ship.respawn(this.planets[aplayer.navtarget]); }
 					  break;
 				case "]": 
 					//if (aplayer.shiptarget == aplayer.shipsinrange.length-1){ aplayer.shiptarget = 0; }
@@ -1922,6 +1922,7 @@ class System{
 			
 				  break;
 				 case "v":
+				 /*
 				 if (cheatmode == 1){//global scope stuff
 					if (ps <31){ps++;} //maybe ps should be a player property?
 					else  {ps = 1;}
@@ -1936,6 +1937,7 @@ class System{
 					aplayer.ship.vy = 0;
 					//myplayer.planetarychart = systems[ps].generateplanetlist();
 					}
+					*/
 				  break;
 				  case "s":
 				  if (starmode == 0){starmode = 1;}else{starmode = 0;}
@@ -2004,8 +2006,8 @@ class System{
 					if (aplayer.probemode > 3) { aplayer.probemode = 0;}
 				  break;
 				   case "a": 
-				   aplayer.autopilot++;
-					if (aplayer.autopilot > 1) { aplayer.autopilot = 0;}//disables experimental modes for playability
+				   //aplayer.autopilot++;
+					//if (aplayer.autopilot > 1) { aplayer.autopilot = 0;}//disables experimental modes for playability
 					//if (autopilot > 4) { autopilot = 0;}
 				  break;
 				  case "thrust": 

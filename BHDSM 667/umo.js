@@ -747,7 +747,7 @@ class Umo { //Universal Moving Object
 		if (this.damagestate>0){this.damagestate = this.damagestate-1;}
 		if (this.shielddamagestate>0){this.shielddamagestate = this.shielddamagestate-1;}
 		this.thrust = 0; //keeps thrusters momentary
-		if ((this.hp <= 0) && (this.hp !==-1000)){ this.killship(1800); }
+		if ((this.hp <= 0) && (this.hp !==-1000)){ this.killship(7200); }
 		this.deadtime = this.deadtime - 1;
 		//this.energy = this.energy + 1;
 		//if (this.energy > 100){	this.energy = 100; }				
