@@ -303,29 +303,19 @@ function hud(playerindex){
 	var startx = 420;
 	var endx = canvas.width - 640;
 	playerradio.display(time,startx,starty,endx);
-//Journal display if active
-	if (myplayer.journalactive==1){//Journal of radio messages
-		if (myplayer.journalitem>playerradio.log.length-1){myplayer.journalitem=0;}
-				if (myplayer.transparentmenus == false){
-				context.fillStyle = "#080808";
-				context.fillRect(200-4,64-48,640,500);
-				}
-		playerradio.showlog(myplayer.journalitem,200,64);
-		
-	}else if (myplayer.journalactive==2){ //journal of jobs taken
-	
-		systems[ps].joblist(200,64,myplayer);
+	if (showstats){
+		context.fillStyle = "white";
+		context.font='20px Arial';
+		//console.log("itriedtoshowstats");
+		context.fillText("Highest level: "+bonuslevel,canvas.width/2 - 80,100);
+		context.fillText("Weapons pool: "+bonusweplist,canvas.width/2 - 80,128);
+		context.fillText("Boss kills: "+bosskills,canvas.width/2 - 80,156);
+		context.fillText("Systems visited: "+visited.length,canvas.width/2 - 80,184);
+		context.fillText("Most Bling: "+maxbling,canvas.width/2 - 80,212);
+		context.fillText("Deaths: "+myplayer.deaths,canvas.width/2 - 80,240);
+		context.fillText("X to hide",canvas.width/2 - 80,268);
+		}
 
-		//display jobs
-	}else{
-		}
-	if ((myplayer.journalactive>0)&&(myplayer.vkvisible)){
-		var i=0;
-		while (i<jvkeys.length){
-			jvkeys[i].draw();
-			i++;
-			}
-		}
 		
 	myplayer.blasters[myplayer.wep].drawsights(myplayer,time);
 //Autopilot indicator

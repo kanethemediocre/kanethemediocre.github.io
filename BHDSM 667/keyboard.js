@@ -56,6 +56,10 @@ window.addEventListener("keydown", function (event) {
 	else if (event.key=="e"){
 		myplayer.emenu=1;
 		}	
+	else if (event.key=="x"){ 
+		showstats = !showstats; //skethy global
+		//console.log("Itriedtotakekeyboardinputx");
+		}
 	else if (event.key=="Insert"){
 		if (cheatmode == 1){
 			var i=0;

@@ -1908,6 +1908,7 @@ class System{
 					if (cheatmode == 1){aplayer.money = aplayer.money +10000;}
 				  break;  
 				case "x":
+					//showstats = !showstats; //skethy global
 					//if (cheatmode == 1){
 					//	var clustercolor = "red";
 					//	testcluster = new Clusterbomb(time,ships[0].x+mdx,ships[0].y+mdy,ships[0].vx,ships[0].vy,12,6,32,0.9,clustercolor,233,0.3);
@@ -2484,6 +2485,7 @@ class System{
 			if (i==(gangsize-1)){this.npcs[botindex].ai.behavior = "guardbot2";}
 			this.npcs[botindex].ai.playerhostile = true; 
 			this.levelup(botindex,level);
+			this.npcs[botindex].ship.s = 20+Math.floor(Math.random()*12+this.npcs[botindex].ship.hp/50)
 			}
 		}
 	addrandomtraders(destinations, num, level){

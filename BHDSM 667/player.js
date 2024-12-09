@@ -271,8 +271,10 @@ class Player{
 			this.boosters = 0;
 			this.ship.s = 24;
 			this.deadtime = 0;
+			this.shiptarget = 1;
 			respawnbonus(this,bonuslevel);//sus
 			aplayer.ship.match(systems[ps].outposts[0]);//also sus
+			time = 0; //sus
 			}
 		if (this.alive==false){
 			//console.log(this.deadtime);

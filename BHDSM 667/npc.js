@@ -131,6 +131,9 @@ class NPC{
 						//award player
 						thesystem.players[killer-1000000].money = thesystem.players[killer-1000000].money + this.ship.level*16;
 						thesystem.players[killer-1000000].gotmoney = [60,this.ship.level*16];
+						if (this.ship.maxhp>1500){
+							bosskills++;//Global scope, shame
+							}
 						//if(!cashsound1.paused) {
 							cashsound1.pause();
 							cashsound1.currentTime = 0;
