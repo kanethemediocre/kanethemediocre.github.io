@@ -80,11 +80,13 @@ function hud(playerindex){
 			//context.strokeStyle = "white";
 			//context.stroke();	
 			}
-		context.font = '24px Ariel';
-		context.fillStyle = "lime";
-		context.fillText(fshipsinrange.length+" Friendly ships detected", canvas.width-408, 20);	
+		//context.font = '24px Ariel';
+		//context.fillStyle = "lime";
+		//context.fillText(fshipsinrange.length+" Friendly ships detected", canvas.width-408, 20);	
 		context.fillStyle = "red";
+		
 		context.fillText(eshipsinrange.length+" Enemy ships detected", canvas.width-408, 50);	
+		
 		if (myplayer.targetlock>=0){
 			context.font = '24px Ariel';
 			context.fillStyle = "yellow";
@@ -266,7 +268,13 @@ function hud(playerindex){
 	context.fillStyle = "purple";
 	context.fillText(myplayer.boosters +" Boosters",8,212);	
 	context.fillStyle = "#4040FF";
-	context.fillText("Probe Mode "+myplayer.probemode,8,240);
+	var probestring = "Probing Color";
+	if (myplayer.probemode==1){ probestring = "Probing Shape";}
+	if (myplayer.probemode==2){ probestring = "Probing Weapon";}
+	if (myplayer.probemode==3){ probestring = "Probe Camera";}
+	if ((myplayer.wep==0)||(aturretwep==0)||(bturretwep==0)){
+		context.fillText(probestring,8,240);
+		}
 	//context.fillStyle = "green"; 
 	//context.fillText("task: "+myplayer.task,8,268);//The task is a brief description of the last thing a player was asked to do.
 	context.fillStyle = "yellow";
@@ -315,9 +323,16 @@ function hud(playerindex){
 		context.fillText("Deaths: "+myplayer.deaths,canvas.width/2 - 80,240);
 		context.fillText("X to hide",canvas.width/2 - 80,268);
 		}
-
-		
 	myplayer.blasters[myplayer.wep].drawsights(myplayer,time);
+	if (players>1){
+		context.fillText("T1 Weapon: "+aturretwep, canvas.width/2 - 80,100);
+		context.fillText("T1 Energy "+aturretenergy, canvas.width/2 + 80,100);
+		}
+	if (players>2){
+		context.fillText("T2 Weapon: "+bturretwep, canvas.width/2 - 80,128);
+		context.fillText("T2 Energy "+bturretenergy, canvas.width/2 + 80,128);
+		}
+
 //Autopilot indicator
 	if (myplayer.autopilot==1){
 		context.fillStyle = "red";

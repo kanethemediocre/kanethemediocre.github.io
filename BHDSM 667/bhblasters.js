@@ -7,11 +7,12 @@
 	  weapon1.recoil = -0.15;
 	 let weapon2 = new Blaster("Mine","Powerful but very slow moving bomb.  This blaster needs to be used in conjunction with some combination of thrusters and clever planning.",500,"plain",                                 
 	 50,25,10,0.5,0,0,2,0.75,10,1,0,0,1800,900,10,40,"purple","ID not implemented");
+	 weapon2.plusremote();
 	 let weapon3 = new Blaster("Flakker","Quickly detonating, short-range weapon with a wide area of effect.  Damage output and range are low, and it's most suitable for finishing off damaged umos or damaging small groups at close range.",600,"fixedspread",
 	 8,4,10,12,3,10,1.2,0.3,10,3,2,10,18,8,10,25,"green","ID not implemented");
 	 weapon3.recoil = -0.3;
 	 let weapon4 = new Blaster("Railgun","Powerful, fast moving projectile without explosive effect.  The Railgun will almost completely drain your blaster energy in one shot, but it's so fast and powerful you might not need a followup.",1000,"plain",      
-	 48,16,10,20,4,4,0.2,0,0,1,0,0,96,32,10,95,"blue","ID not implemented");
+	 50,25,10,20,4,4,0.2,0,0,1,0,0,96,32,10,95,"blue","ID not implemented");
 	 weapon4.recoil = -1.0;
 	 let weapon5 = new Blaster("Scatter Cannon","Fires an adjustable spread of bombs. Good for close range damage and target rich environments. Probably the best weapon.",2000,"spread",               
 	 8,4,10,9,3,5,0.75,0.25,5,6,2,10,75,25,10,50,"white","ID not implemented");
@@ -28,11 +29,11 @@
 	 16,8,10,12,2,10,0.5,0.25,10,8,1,10,1000,8,10,99,"white","ID not implemented");
 	  weapon9.recoil = -2;
 	  */
-	  let weapon9 = new Blaster("Boodabeep","Beep Beep BaBoomba, Boomba Be Boppo!  Baboombador bopposobeep, babumble beepapoo.  Beepapop boowopendongle, prodoopsenboboompo bopopob.",20000,"semispread",                                           
-	 16,8,10,8,4,10,1,0.5,10,48,12,10,60,30,10,25,"white","ID not implemented");
-	  weapon9.recoil = -1.5;
-	  weapon9.special1 = Math.PI/6;
-	  weapon9.special2 = Math.PI/12;
+	  let weapon9 = new Blaster("Blopper","Rapidly blops bombs in a narrow spread.",16000,"semispread",                                           
+	 14,7,10,16,4,2,0.5,0.5,10,48,12,10,60,30,10,25,"white","ID not implemented");
+	  weapon9.recoil = -0.5;
+	  weapon9.special1 = Math.PI/12;
+	  weapon9.special2 = Math.PI/24;
 	  weapon9.special3 = 4;
 	  
 	  
@@ -45,9 +46,10 @@
 	 let weapon11 = new Blaster("Multibanger","Similar to the standard banger, but fires a row of bombs instead of a single bomb.  A great value as-is with even greater upgrade potential.",800,"multiplex",                            
 	 12,6,10,12,3,10,0.75,0.25,10,2,1,10,40,8,10,24,"pink","ID not implemented");
 	 weapon11.recoil = -0.3;
-	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row.  About half as much damage for a single mine, but four times as many mines BEFORE upgrades.",2400,"multiplex",                            
+	 let weapon12 = new Blaster("Multimine","Drops multiple mines in a row.  Less powerful than the classic mines, but dropped in deady groups.  Detonate by pulling the trigger again after the mines have been released.",2400,"multiplex",                            
 	 20,10,10,0.5,0,0,1.5,0.5,10,4,2,10,1200,300,10,80,"tan","ID not implemented");
-	 let weapon13 = new Blaster("Nova","Fires bombs in all directions.  For the times when you feel like you don't have any friends, and the world is out to get you.",1600,"fixedspread",                            
+	 weapon12.plusremote();
+	 let weapon13 = new Blaster("Nova","Fires bombs in all directions.  For the times when you feel like you don't have any friends, and the world is out to get you.",1500,"fixedspread",                            
 	 12,6,10,16,4,10,0.4,0.4,10,16,8,10,15,5,10,60,"tan","ID not implemented");
 	 weapon13.special1 = 4*Math.PI/2;
 	 weapon13.special2 = 8*Math.PI/4;
@@ -59,12 +61,12 @@
 	 weapon15.special1 = 24; //e g a b d e
 	 weapon15.recoil = -0.25;
 	 let weapon16 = new Blaster("Pulse Blazor","Beam weapon damages everything in it's path.  Unlike the Blazor, this fires a powerful, instantaneous pulse on click.",2500,"beam",                            
-	 50,25,10,1,0,0,0.8,0.2,10,1,0,0,640,8,10,20,"lime","ID not implemented");
-	 let weapon17 = new Blaster("Squid","Fires a cloud of projectiles backwards, and propels your ship forwards.  A weapon designed for panic.",1500,"fixedspread",                            
-	 20,10,10,3,2,10,0.8,0.2,10,12,4,10,100,25,10,90,"darkslategrey","ID not implemented");
-	 weapon17.special1 = 3*Math.PI/2;
-	 weapon17.special2 = 7*Math.PI/4;
-	 weapon17.recoil = 8;
+	 60,30,10,1,0,0,0.8,0.2,10,1,0,0,640,8,10,20,"lime","ID not implemented");
+	 let weapon17 = new Blaster("Cutter +","Hold down the trigger to continuously fire bombs. Low damage and blast is offset by the volume of fire.",7500,"rapidmultiplex",                            
+	6,3,10,16,4,10,0.25,0.25,10,36,12,10,50,10,10,10,"white","ID not implemented");
+	 weapon17.special1 = 10; //e g a b d e
+	 weapon17.recoil = -0.25;
+//constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,bombcolor,ID){
 	 let weapon18 = new Blaster("wangus","A rapid-firing blaster akin to the Disintigrator with greatly improved range, but worse energy efficiency and damage. Hold the left mouse button to fire.",6000,"rapid",                            
 	 8,4,10,8,4,10,0.5,0.5,10,24,0,0,72,24,10,6,"olive","ID not implemented");
 	 weapon18.recoil = -0.25;

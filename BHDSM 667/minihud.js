@@ -48,7 +48,7 @@ function minihud(playerindex){
 	if (nmeactive == 1){//if targeting computer is on...
 		if (shipsinrange.length>0){
 			if (myplayer.transparentui == false){
-				console.log("itriedtoopaquetargeting");
+				//console.log("itriedtoopaquetargeting");
 				context.fillStyle = "#080808";
 				context.fillRect(canvas.width-160,0,160,320);
 				}

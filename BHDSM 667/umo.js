@@ -577,7 +577,35 @@ class Umo { //Universal Moving Object
 		context.fill();
 		context.lineWidth = 2;
 		context.stroke();		 
-	}
+		}
+	drawpointer(viewx,viewy,r1,r2,pcolor){ //Draws as a solid circle
+		var x = this.x - viewx + canvas.width/2;
+		var y = this.y - viewy + canvas.height/2;
+		var r1x = x + Math.cos(this.d)*r1;
+		var r2x = x + Math.cos(this.d)*r2;
+		var r1y = y + Math.sin(this.d)*r1;
+		var r2y = y + Math.sin(this.d)*r2;
+		context.strokeStyle = pcolor;
+		context.lineWidth = 2;
+		context.beginPath();
+		context.moveTo(r1x,r1y);
+		context.lineTo(r2x,r2y);
+		context.stroke();		 
+		}
+	drawstatusbar(viewx,viewy,yoffset,ysize,xsize,xvalue,pcolor){
+		var x = this.x - viewx + canvas.width/2;
+		var y = this.y - viewy + canvas.height/2;
+		var p1x = x - xsize/2;
+		var p2x = p1x + Math.floor(xsize*xvalue);
+		var p1y = y + yoffset
+		//var r2y = y + Math.sin(this.d)*r2;
+		context.strokeStyle = pcolor;
+		context.lineWidth = ysize;
+		context.beginPath();
+		context.moveTo(p1x,p1y);
+		context.lineTo(p2x,p1y);
+		context.stroke();		
+		}
 	drawstation(viewx, viewy){ //input variables are player ship position
 		var x = this.x - viewx + canvas.width/2;//stations are squares for now
 		var y = this.y - viewy + canvas.height/2;

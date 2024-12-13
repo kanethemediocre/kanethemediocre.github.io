@@ -4,40 +4,40 @@ function bhstarttree(){
 	var addition1 = new Quizblock("arithmatic","Adding I");
 	addition1.prizesize = 100;
 	addition1.prizetype = "armor"
-	addition1.addaddquiz([1],[2],[false],8); //addaddquiz(alloweddigits,allowedaddends,allowedallownegative,size){
+	addition1.addaddquiz([1],[2],[false],4); //addaddquiz(alloweddigits,allowedaddends,allowedallownegative,size){
 	addition1.quizzes[addition1.quizzes.length-1].title = "Adding 2 numbers";
-	addition1.addaddquiz([1],[3],[false],8); //addaddquiz(alloweddigits,allowedaddends,allowedallownegative,size){/
+	addition1.addaddquiz([1],[3],[false],4); //addaddquiz(alloweddigits,allowedaddends,allowedallownegative,size){/
 	addition1.quizzes[addition1.quizzes.length-1].title = "Adding 3 numbers";
-	addition1.addaddquiz([1],[2,3],[false],8);
+	addition1.addaddquiz([1],[2,3],[false],4);
 	addition1.quizzes[addition1.quizzes.length-1].title = "Assorted";
-	addition1.addaddquiz([1],[4,5],[false],8);
+	addition1.addaddquiz([1],[4,5],[false],4);
 	addition1.quizzes[addition1.quizzes.length-1].title = "Adding lots of numbers";
-	addition1.addaddquiz([1],[2,3,4,5],[false],8);
+	addition1.addaddquiz([1],[2,3,4,5],[false],4);
 	addition1.quizzes[addition1.quizzes.length-1].title = "Assorted";
 	var subtraction1 = new Quizblock("arithmatic","Subtracting I");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
 	subtraction1.prizesize = 10; //Describes amount statistic will be upgraded with a rating of 1.
-	subtraction1.addsubquiz([1],[2],[false],[false],12);
+	subtraction1.addsubquiz([1],[2],[false],[false],6);
 	subtraction1.quizzes[subtraction1.quizzes.length-1].title = "Subtraction";
-	subtraction1.addsubquiz([1],[2],[false],[true],12);
+	subtraction1.addsubquiz([1],[2],[false],[true],6);
 	subtraction1.quizzes[subtraction1.quizzes.length-1].title = "Subtraction and integers";
 	subtraction1.addsubquiz([1],[3],[false],[true],6);
 	subtraction1.quizzes[subtraction1.quizzes.length-1].title = "Subtraction and integers";
-	subtraction1.addsubquiz([1],[2,3],[false],[true,false],12);
+	subtraction1.addsubquiz([1],[2,3],[false],[true,false],6);
 	subtraction1.quizzes[subtraction1.quizzes.length-1].title = "Assorted";
 	var addition2 = new Quizblock("arithmatic","Adding II");
 	addition2.prizesize = 100;
 	addition2.prizetype = "armor";
-	addition2.addaddquiz([1],[2],[true],16);
+	addition2.addaddquiz([1],[2],[true],8);
 	addition2.quizzes[addition2.quizzes.length-1].title = "Adding and Integers";
-	addition2.addaddquiz([1],[3,4,5],[true],16);
+	addition2.addaddquiz([1],[3,4,5],[true],8);
 	addition2.quizzes[addition2.quizzes.length-1].title = "Adding and Integers";
 	var subtraction2 = new Quizblock("arithmatic","Subtracting II");
 	subtraction2.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
 	subtraction2.prizesize = 10; //Describes amount statistic will be upgraded with a rating of 1.
-	subtraction2.addsubquiz([1],[2],[true],[true],16);
+	subtraction2.addsubquiz([1],[2],[true],[true],8);
 	subtraction2.quizzes[subtraction2.quizzes.length-1].title = "Subtraction and integers";
-	subtraction2.addsubquiz([1],[2,3,4],[true],[true],16);
+	subtraction2.addsubquiz([1],[2,3,4],[true],[true],8);
 	subtraction2.quizzes[subtraction2.quizzes.length-1].title = "Subtraction and integers";
 
 	protection1em.quizblocks = [addition1,subtraction1,addition2,subtraction2];
@@ -55,22 +55,22 @@ function bhstarttree(){
 	var subtraction3 = new Quizblock("arithmatic","Subtracting III");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
 	subtraction1.prizesize = 5; //Describes amount statistic will be upgraded with a rating of 1.
-	subtraction3.addsubquiz([1],[2],[true],[true],16);//placeholder for custom quizzes that step throguh multidigit subtraction process.
-	subtraction3.addsubquiz([1],[2,3,4],[true],[true],16);
+	subtraction3.addsubquiz([1],[2],[true],[true],8);//placeholder for custom quizzes that step throguh multidigit subtraction process.
+	subtraction3.addsubquiz([1],[2,3,4],[true],[true],8);
 	var addition4 = new Quizblock("arithmatic","Adding IV");
 	addition4.prizetype = "armor";//Describes what statistic will be upgraded by passing the quiz
 	addition4.prizesize = 100; //Describes amount statistic will be upgraded with a rating of 1.
-	addition4.addaddquiz([2],[2],[false],12);
-	addition4.addaddquiz([3],[2],[false],12);
-	addition4.addaddquiz([4,5,6],[2],[false],6);
-	addition4.addaddquiz([2,3],[3],[false],6);
+	addition4.addaddquiz([2],[2],[false],6);
+	addition4.addaddquiz([3],[2],[false],6);
+	addition4.addaddquiz([4,5,6],[2],[false],4);
+	addition4.addaddquiz([2,3],[3],[false],4);
 	var subtraction4 = new Quizblock("arithmatic","Subtracting IV");
 	subtraction1.prizetype = "maxshield";//Describes what statistic will be upgraded by passing the quiz
 	subtraction1.prizesize = 10; //Describes amount statistic will be upgraded with a rating of 1.
-	subtraction4.addsubquiz([2],[2],[false],[false],12);//placeholder for custom quizzes that step throguh multidigit subtraction process.
-	subtraction4.addsubquiz([3,4,5],[2],[false],[false],12);
-	subtraction4.addsubquiz([2,3,4],[2],[false],[true],12);
-	subtraction4.addsubquiz([2,3],[2],[true],[true],12);
+	subtraction4.addsubquiz([2],[2],[false],[false],6);//placeholder for custom quizzes that step throguh multidigit subtraction process.
+	subtraction4.addsubquiz([3,4,5],[2],[false],[false],6);
+	subtraction4.addsubquiz([2,3,4],[2],[false],[true],6);
+	subtraction4.addsubquiz([2,3],[2],[true],[true],6);
 	protection2em.quizblocks = [addition3,subtraction3,addition4,subtraction4];
 	protection2em.logo = logos[1]
 
@@ -114,7 +114,7 @@ function bhstarttree(){
 	mixingbowl2.addaddquiz([1],[5],[true],4);
 	mixingbowl2.addsubquiz([2],[2],[true],[true],4);
 	mixingbowl2.addsubquiz([1],[3],[true],[true],4);
-	mixingbowl2.addsubquiz([1],[2],[true],[true],8);
+	mixingbowl2.addsubquiz([1],[2],[true],[true],4);
 	mixingbowl2.mergequizzes();
 	mixingbowl2.quizzes[0].scramble();
 	adaptfast1.quizzes.push(mixingbowl2.quizzes[0]);

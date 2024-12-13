@@ -265,7 +265,7 @@ class Player{
 			this.mouseyoffset = windowmouseyoffset;
 			this.task = "Collect Bling";
 			this.transparentui = false;
-			this.money = 3001
+			this.money = 3001;
 			this.mapscale = 40; //Map zoom
 			this.navactive = 0;
 			this.boosters = 0;
@@ -273,7 +273,7 @@ class Player{
 			this.deadtime = 0;
 			this.shiptarget = 1;
 			respawnbonus(this,bonuslevel);//sus
-			aplayer.ship.match(systems[ps].outposts[0]);//also sus
+			this.ship.match(systems[ps].outposts[0]);//also sus
 			time = 0; //sus
 			}
 		if (this.alive==false){

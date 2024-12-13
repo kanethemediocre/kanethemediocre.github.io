@@ -470,6 +470,44 @@ class System{
 				context.strokeStyle = "blue";
 				context.stroke();
 				context.restore();
+				
+				
+				if (systems[ps].players > 1){
+					context.save();
+					context.beginPath();
+					context.rect(canvas.width-400,canvas.height-400,400,400);
+					context.clip();
+					if (theplayer.transparentui == false){
+						context.fillStyle = "#080808";//Background is grey
+						context.fillRect(canvas.width-400,canvas.height-400,400,400);//cornerrner map area		
+						}
+					systems[ps].draw2(this.players[1].ship.x,this.players[1].ship.y); 
+					
+
+					context.beginPath(); //Border of map rectangle
+					context.rect(0,canvas.height-300,400,300); //2*this.s wide
+					context.lineWidth = 2; 
+					context.strokeStyle = "blue";
+					context.stroke();	
+					context.beginPath(); //Border of map rectangle
+					context.rect(0,canvas.height-302,402,302); //2*this.s wide
+					context.lineWidth = 2; 
+					context.strokeStyle = "purple";
+					context.stroke();	
+					context.beginPath(); //Border of map rectangle
+					context.rect(0,canvas.height-304,404,304); //2*this.s wide
+					context.strokeStyle = "red";
+					context.stroke();	
+					context.beginPath(); //Border of map rectangle
+					context.rect(0,canvas.height-306,406,306); //2*this.s wide
+					context.strokeStyle = "purple";
+					context.stroke();
+					context.beginPath(); //Border of map rectangle
+					context.rect(0,canvas.height-308,408,308); //2*this.s wide
+					context.strokeStyle = "blue";
+					context.stroke();
+					context.restore();
+					}
 				}
 			else{
 				var mapx = 240;
@@ -1120,7 +1158,7 @@ class System{
 		if (this.planetarycollisions){//Planets are normally set up to not collide with each other, but in special cases it can be enabled.
 			var i=0;
 			var j=1;
-			while (j<this.planets.length){//Handles sun only, sun not moved by collisions.
+			while (j<this.planets.length){
 				this.planets[i].circlecollide(this.planets[j]);
 				j++;
 				}
@@ -1136,7 +1174,7 @@ class System{
 			}
 		if (this.bombcollisions){
 			var i=0;
-			while (i<this.players.length){//Handles sun only, sun not moved by collisions.
+			while (i<this.players.length){
 				var j=0;
 				while(j<this.players[i].blasters.length){
 					var k=0;
@@ -1307,7 +1345,8 @@ class System{
 					var m = 0;
 					while (m<this.players.length){ //players bombs hit other players
 						if (this.players[m].alive==true){
-							this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
+							//Friendly fire disabled
+							//this.players[i].blasters[j].bombs[k].bombcollide(this.players[m].ship);
 							}
 						m++;
 						}
@@ -3043,4 +3082,19 @@ class System{
 			context.stroke();	
 			}
 		}
+	clearoutposts(range){
+		var i=0;
+		while(i<this.outposts.length){
+			var j=0;
+			while (j<this.npcs.length){
+				if (this.outposts[i].distance(this.npcs[j].ship)<range){this.npcs[j].ship.hp = -200;}
+				j++;
+				}
+			i++;
+			}
+		}
+	
+	
+	
+	
 	}//end of system class////////////////////////////////////////////////////////////////////////////////////////////////////////////////

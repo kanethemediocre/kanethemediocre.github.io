@@ -60,6 +60,29 @@ window.addEventListener("keydown", function (event) {
 		showstats = !showstats; //skethy global
 		//console.log("Itriedtotakekeyboardinputx");
 		}
+	else if (event.key=="["){ 
+		aturret.d = aturret.d-.08;
+		}
+	else if (event.key=="]"){ 
+		aturret.d = aturret.d+.08;
+		}
+	else if (event.key==";"){ 
+		if (players>1){
+			var fakeplayer = new Player();
+			fakeplayer.ship.match(aturret);
+			myplayer.blasters[aturretwep].fire(fakeplayer,time)
+			}
+		}
+	else if (event.key=="Backspace"){ 
+		players++;
+		myplayer.ship.s = 48
+		myplayer.thrustmultiplier = 0.5;
+		if (players>3){
+			players = 1;
+			myplayer.ship.s = 28;
+			}
+		}
+				
 	else if (event.key=="Insert"){
 		if (cheatmode == 1){
 			var i=0;
@@ -103,6 +126,10 @@ window.addEventListener("keydown", function (event) {
 		//systems[ps].players[myi].vkactive = false; 
 		systems[ps].players[myi].mousexoffset = fullscreenmousexoffset;
 		systems[ps].players[myi].mouseyoffset = fullscreenmouseyoffset; 
+		needtofinishfullscreen = 10;
+
+  
+		
 		//if (vkeys[vkeys.length-2].x == 420){vkeys[vkeys.length-2].x = 99999;}//Disables mobile support
 	}else{
 		var theplayer = systems[ps].players[myi];
