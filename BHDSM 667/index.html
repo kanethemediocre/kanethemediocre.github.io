@@ -335,30 +335,32 @@ function handlegamepads(myplayer){
 		i++;
 		}
 	//console.log(gamepads);
-	aturret.d = -1*Math.atan2(gamepads[0].axes[0],gamepads[0].axes[1]) + Math.PI/2;
-	if ((!aturretfirebutton)&&(gamepads[0].buttons[7].pressed)&&(myplayer.blasters[aturretwep].ecost<aturretenergy)){
-		var fakeplayer = new Player();
-		fakeplayer.ship.match(aturret);
-		myplayer.blasters[aturretwep].fire(fakeplayer,time);
-		aturretenergy = aturretenergy - myplayer.blasters[aturretwep].ecost;
-		aturretfirebutton = true;
-		}
-	else if (!gamepads[0].buttons[7].pressed){
-		aturretfirebutton = false;
-		}
-	
-	if ((!aturretwepbutton)&&(gamepads[0].buttons[6].pressed)){
-		aturretwep++;
-		aturretwepbutton = true;
-		while(turretweapons.includes(aturretwep)==false){
+	if ((gamepads.length>0)&&(gamepads[0])){
+		aturret.d = -1*Math.atan2(gamepads[0].axes[0],gamepads[0].axes[1]) + Math.PI/2;
+		if ((!aturretfirebutton)&&(gamepads[0].buttons[7].pressed)&&(myplayer.blasters[aturretwep].ecost<aturretenergy)){
+			var fakeplayer = new Player();
+			fakeplayer.ship.match(aturret);
+			myplayer.blasters[aturretwep].fire(fakeplayer,time);
+			aturretenergy = aturretenergy - myplayer.blasters[aturretwep].ecost;
+			aturretfirebutton = true;
+			}
+		else if (!gamepads[0].buttons[7].pressed){
+			aturretfirebutton = false;
+			}
+
+		if ((!aturretwepbutton)&&(gamepads[0].buttons[6].pressed)){
 			aturretwep++;
-			if (aturretwep>14){aturretwep = 0;}
+			aturretwepbutton = true;
+			while(turretweapons.includes(aturretwep)==false){
+				aturretwep++;
+				if (aturretwep>14){aturretwep = 0;}
+				}
+			}
+		if (!gamepads[0].buttons[6].pressed){
+			aturretwepbutton = false;
 			}
 		}
-	if (!gamepads[0].buttons[6].pressed){
-		aturretwepbutton = false;
-		}
-	if (gamepads.length>1){
+	if ((gamepads.length>1)&&(gamepads[1])){
 		bturret.d = -1*Math.atan2(gamepads[1].axes[0],gamepads[1].axes[1]) + Math.PI/2;
 		if ((!bturretfirebutton)&&(gamepads[1].buttons[7].pressed)&&(myplayer.blasters[bturretwep].ecost<bturretenergy)){
 			var fakeplayer = new Player();
