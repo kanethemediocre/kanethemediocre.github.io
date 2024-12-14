@@ -19,6 +19,7 @@ function hud(playerindex){
 	var shipsinrange = [];//To help guide what ships are targetable by the player, I'm generating a list of indices
 	var fshipsinrange = [];
 	var eshipsinrange = [];
+	var eshiplevel = 0;
 	var closestdistance = 999999;//needs to be larger than radarrange 
 	var closestindex = 0; 
 	var i=0;
@@ -26,8 +27,13 @@ function hud(playerindex){
 		var tdistance = Math.floor(myplayer.ship.distance(systems[ps].npcs[i].ship));
 		if (tdistance<myplayer.radarrange){
 			shipsinrange.push(i);
-			if (systems[ps].npcs[i].ai.playerhostile){ eshipsinrange.push(i); }
-			else {fshipsinrange.push(i);}
+			if (systems[ps].npcs[i].ai.playerhostile){
+				eshipsinrange.push(i); 
+				eshiplevel = eshiplevel + systems[ps].npcs[i].ship.level;
+				}
+			else {
+				fshipsinrange.push(i);
+				}
 			if ((myplayer.ship.pointingat(systems[ps].npcs[i].ship))&&(myplayer.targetlock<0)){
 				myplayer.shiptarget = i;	
 				}
@@ -83,9 +89,12 @@ function hud(playerindex){
 		//context.font = '24px Ariel';
 		//context.fillStyle = "lime";
 		//context.fillText(fshipsinrange.length+" Friendly ships detected", canvas.width-408, 20);	
+		context.font = '24px Ariel';
 		context.fillStyle = "red";
-		
-		context.fillText(eshipsinrange.length+" Enemy ships detected", canvas.width-408, 50);	
+		context.fillText(eshipsinrange.length+" Enemies in range", canvas.width-408, 20);	
+		context.fillText("Mean level: "+Math.floor(eshiplevel/eshipsinrange.length), canvas.width-408, 50);	
+		context.fillStyle = "white";
+		context.fillText("System ID: "+ps, 408, canvas.height-20);			
 		
 		if (myplayer.targetlock>=0){
 			context.font = '24px Ariel';
@@ -325,12 +334,29 @@ function hud(playerindex){
 		}
 	myplayer.blasters[myplayer.wep].drawsights(myplayer,time);
 	if (players>1){
-		context.fillText("T1 Weapon: "+aturretwep, canvas.width/2 - 80,100);
-		context.fillText("T1 Energy "+aturretenergy, canvas.width/2 + 80,100);
+		context.font = context.font='20px Arial';
+		context.fillText("Turret 1 Weapon: "+aturretwep+" "+myplayer.blasters[aturretwep].name, canvas.width - 300,canvas.height-100);
+		//context.fillText("Turret 1 Energy "+aturretenergy, canvas.width- 180,canvas.height-60);
 		}
 	if (players>2){
-		context.fillText("T2 Weapon: "+bturretwep, canvas.width/2 - 80,128);
-		context.fillText("T2 Energy "+bturretenergy, canvas.width/2 + 80,128);
+		context.fillText("Turret 2 Weapon: "+bturretwep+" "+myplayer.blasters[bturretwep].name, canvas.width - 300,canvas.height-60);
+		var conflictwep1 = -1;
+		var conflictwep2 = -1;
+		if (myplayer.wep==aturretwep){conflictwep1 = aturretwep;}
+		if (myplayer.wep==bturretwep){conflictwep2 = bturretwep;}
+		if (bturretwep==aturretwep){
+			conflictwep1 = aturretwep;
+			conflictwep2 = aturretwep;
+			}
+		context.fillStyle = "red";
+		
+		if (conflictwep1>1){
+			context.fillText("Conflict on weapon "+aturretwep, canvas.width - 256,canvas.height-80);
+			}
+		if (conflictwep2>1){
+			context.fillText("Conflict on weapon "+bturretwep, canvas.width - 256,canvas.height-40);
+			}
+		//context.fillText("T2 Energy "+bturretenergy, canvas.width/2 + 80,128);
 		}
 
 //Autopilot indicator
@@ -363,24 +389,8 @@ function hud(playerindex){
 		if (myplayer.emenu >= 2){
 			myplayer.emtrees[myplayer.emg].draw(myplayer,400,100);
 			}
-		//else if (myplayer.emenu == 3){
-		//	myplayer.emtrees[myplayer.emg].emods[myplayer.emh].draw(400,200);
-		////	}
-		//else if (myplayer.emenu == 4){
-		//	myplayer.emtrees[myplayer.emg].emods[myplayer.emh].quizblocks[myplayer.emi].draw(400,200);
-		//	}
-		//else if (myplayer.emenu == 5){
-		//	myplayer.emtrees[myplayer.emg].emods[myplayer.emh].quizblocks[myplayer.emi].quizzes[myplayer.emj].draw(400,200);
-		//	}
 		}
-		//var mytree = myplayer.emtrees[myplayer.emg];
-		//var mymod = mytree.emods[myplayer.emh];
-		//var myquiz = myplayer.emtrees[myplayer.emg].emods[myplayer.emh].quizblocks[myplayer.emi].quizzes[myplayer.emj];
-		
-		//if (myplayer.emenu==4){
-		//	myquiz.draw(500,200);
-		//testmodule.drawplots(700,400);
-		//}
+
 ////Shopping!//////////////////////////////////////////////////////
 	if ((myplayer.dockstate>=0)&&(myplayer.dockstate<systems[ps].shops.length)){
 		if (myplayer.shopmode == 0){

@@ -1,7 +1,12 @@
 //constructor(name,description,price,type,basedamage,updamage,maxdamage,basespeed,upspeed,maxspeed,baseboom,upboom,maxboom,basen,upn,maxn,basetimer,uptimer,maxtimer,nrg,bombcolor,ID){
  function bhblasters(){
+	 	 let weapon1 = new Blaster("Fast Banger","The cheapest blaster by far, but not the worst.  Fires every time you tap the trigger with very low energy cost.  Recommended for it's ease of use rather than damage potential. ",100,"semirapid",                            
+	 8,4,10,12,4,4,0.4,0.4,10,24,0,0,30,15,10,32,"grey","ID not implemented");
+	 
+	 /*
 	 let weapon1 = new Blaster("Banger","A simple, energy efficient blaster.  Your ships starting weapon may not be exciting, but it gets the job done and has great upgrade potential.",100,"plain",                            
 	 12,6,10,12,4,10,0.5,0.5,10,1,0,0,36,12,10,12,"red","ID not implemented");
+	 */
 	 weapon1.phas = true; //this is the starter blaster
 	 //weapon1.etier = 1; //testing bounce stuff
 	  weapon1.recoil = -0.15;

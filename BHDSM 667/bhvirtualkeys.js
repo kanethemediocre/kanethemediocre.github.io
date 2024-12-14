@@ -35,7 +35,7 @@ function allvkeys(xmax,ymax){   //constructor(key,label,x,y){
 	var backspacevk = new Virtualkey("Backspace","Backspace",472,-999);//constructor(key,label,x,y)
 	var entervk = new Virtualkey("Enter","Enter",784,-999);//constructor(key,label,x,y)
 	var mobilethrust = new Virtualkey("thrust", "Thrust mode is OFF",420+10000,ymax-64);
-	var azt=new Virtualkey("azt","Autozoom",188,ymax-340);//constructor(key,label,x,y)
+	var azt=new Virtualkey("azt","Autozoom",188+10000,ymax-340);//constructor(key,label,x,y)
 	var zvk=new Virtualkey("z","Z",xmax-204,ymax-216);//constructor(key,label,x,y){
 	var allkeys = [avk,bvk,cvk,gvk,jvk,mvk,nvk,qvk,dvk,pvk,vvk,spacebarvk,lbracketvk,rbracketvk,gtvk,ltvk,plusvk,minusvk,upjvk,downjvk,upsvk,downsvk,backspacevk,entervk,upwvk,downwvk,rightwvk,leftwvk,mobilethrust,zvk,azt];
 	return allkeys;

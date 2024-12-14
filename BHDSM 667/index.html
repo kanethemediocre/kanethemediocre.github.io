@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle: Deep Space Mine 676</title>
+    <title>Bling Hustle: Deep Space Mine 678</title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -326,6 +326,14 @@ respawnbonus(aplayer,bonuslevel);
 
 function handlegamepads(myplayer){
 	var gamepads = navigator.getGamepads();
+	var turretweapons = [];
+	var i=0;
+	while(i<15){
+		if ((i!=0)&&(i!=5)&&(i!=6)&&(i!=8)&&(i!=5)&&(myplayer.blasters[i].phas)){
+			turretweapons.push(i);
+			}
+		i++;
+		}
 	//console.log(gamepads);
 	aturret.d = -1*Math.atan2(gamepads[0].axes[0],gamepads[0].axes[1]) + Math.PI/2;
 	if ((!aturretfirebutton)&&(gamepads[0].buttons[7].pressed)&&(myplayer.blasters[aturretwep].ecost<aturretenergy)){
@@ -341,18 +349,15 @@ function handlegamepads(myplayer){
 	
 	if ((!aturretwepbutton)&&(gamepads[0].buttons[6].pressed)){
 		aturretwep++;
-		if ((aturretwep==5)||(aturretwep==6)){
-			aturretwep = 7;
+		aturretwepbutton = true;
+		while(turretweapons.includes(aturretwep)==false){
+			aturretwep++;
+			if (aturretwep>14){aturretwep = 0;}
 			}
-		else if(aturretwep==8){
-			aturretwep = 9;
-			}
-		else if (aturretwep>14){aturretwep=1;}
-			aturretwepbutton = true;
-			}
-		else if (!gamepads[0].buttons[6].pressed){
-			aturretwepbutton = false;
-			}
+		}
+	if (!gamepads[0].buttons[6].pressed){
+		aturretwepbutton = false;
+		}
 	if (gamepads.length>1){
 		bturret.d = -1*Math.atan2(gamepads[1].axes[0],gamepads[1].axes[1]) + Math.PI/2;
 		if ((!bturretfirebutton)&&(gamepads[1].buttons[7].pressed)&&(myplayer.blasters[bturretwep].ecost<bturretenergy)){
@@ -367,7 +372,14 @@ function handlegamepads(myplayer){
 			}
 		
 		if ((!bturretwepbutton)&&(gamepads[1].buttons[6].pressed)){
+			
 			bturretwep++;
+			while(turretweapons.includes(bturretwep)==false){
+				bturretwep++;
+				if (bturretwep>14){bturretwep = 0;}
+				}
+			
+			
 			if ((bturretwep==5)||(bturretwep==6)){
 				bturretwep = 7;
 				}
@@ -544,12 +556,12 @@ function update() {
 	if (players>1){
 		aturret.drawship(vwx,vwy);
 		aturret.drawpointer(vwx,vwy,64,128,aturret.c);
-		aturret.drawstatusbar(vwx,vwy,20,4,32,aturretenergy/100,"red");
+		aturret.drawstatusbar(vwx,vwy,24,4,32,aturretenergy/100,"red");
 		}
 	if (players>2){
 		bturret.drawship(vwx,vwy); 
 		bturret.drawpointer(vwx,vwy,64,128,bturret.c);
-		bturret.drawstatusbar(vwx,vwy,20,4,32,bturretenergy/100,"red");
+		bturret.drawstatusbar(vwx,vwy,24,4,32,bturretenergy/100,"red");
 		}
 	if (ps>-1){//ps==0 is the menu system.  Hud looks dumb here, and I want room for other stuff.
 		if (supercompass%2==1){
