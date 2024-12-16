@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>Bling Hustle: Deep Space Mine 678</title>
+    <title>Bling Hustle: Deep Space Mine 681</title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -316,6 +316,16 @@ function respawnbonus(theplayer,thebonuslevel){
 		systems[i].players.push(theplayer);
 		i++;
 		}
+	theplayer.wep = 1;
+	aturretwep = 1;
+	bturretwep = 1;
+	cturretwep = 1;
+	dturretwep = 1;
+	if (players>1){
+		theplayer.ship.s = 48
+		theplayer.thrustmultiplier = 0.5;
+		}
+	
 	}
 respawnbonus(aplayer,bonuslevel);
 //respawnbonus(bplayer,bonuslevel);
@@ -557,12 +567,12 @@ function update() {
 	systems[ps].draw2(vwx,vwy); //draws home system planets, ships, and bot bombs if close
 	if (players>1){
 		aturret.drawship(vwx,vwy);
-		aturret.drawpointer(vwx,vwy,64,128,aturret.c);
+		aturret.drawpointer(vwx,vwy,64,256,aturret.c);
 		aturret.drawstatusbar(vwx,vwy,24,4,32,aturretenergy/100,"red");
 		}
 	if (players>2){
 		bturret.drawship(vwx,vwy); 
-		bturret.drawpointer(vwx,vwy,64,128,bturret.c);
+		bturret.drawpointer(vwx,vwy,64,256,bturret.c);
 		bturret.drawstatusbar(vwx,vwy,24,4,32,bturretenergy/100,"red");
 		}
 	if (ps>-1){//ps==0 is the menu system.  Hud looks dumb here, and I want room for other stuff.
@@ -581,36 +591,38 @@ function update() {
 			}
 		}
 //////////Mouse turning/////////////////////////////////
-	if (systems[ps].players.length>0){//This prevents errors at start
-		//autopilot check used to go here
-		if (players>1){//players variable refers to off-system UMO and control variables.
-			if (myship.d>2*Math.PI){ myship.d = myship.d - 2*Math.PI; }
-			else if (myship.d<0){ myship.d = myship.d + 2*Math.PI; }
-			var bettermoused = myplayer.moused-Math.PI;
-			if (bettermoused<0){ bettermoused = bettermoused+2*Math.PI; }
-			var dirdiff = bettermoused - myship.d;
-			//console.log(dirdiff);
-			if (dirdiff<-1*Math.PI){dirdiff = dirdiff+2*Math.PI;}
-			var increment = 0.0625;
-			if (((2*Math.PI-Math.abs(dirdiff))<increment) || ((Math.abs(dirdiff))<increment) ) {
-				myship.d = bettermoused;
-				//console.log("amirunning");
-				}
-			else{
-				if (Math.abs(dirdiff)>Math.PI){ increment = increment * -1; }
-				if (dirdiff>0){	
-					myship.d = myship.d+increment;
+	if (myplayer.autopilot==0){
+		if (systems[ps].players.length>0){//This prevents errors at start
+
+			if (players>1){//players variable refers to off-system UMO and control variables.
+				if (myship.d>2*Math.PI){ myship.d = myship.d - 2*Math.PI; }
+				else if (myship.d<0){ myship.d = myship.d + 2*Math.PI; }
+				var bettermoused = myplayer.moused-Math.PI;
+				if (bettermoused<0){ bettermoused = bettermoused+2*Math.PI; }
+				var dirdiff = bettermoused - myship.d;
+				//console.log(dirdiff);
+				if (dirdiff<-1*Math.PI){dirdiff = dirdiff+2*Math.PI;}
+				var increment = 0.0625;
+				if (((2*Math.PI-Math.abs(dirdiff))<increment) || ((Math.abs(dirdiff))<increment) ) {
+					myship.d = bettermoused;
+					//console.log("amirunning");
 					}
-				else {
-					myship.d = myship.d-increment;
+				else{
+					if (Math.abs(dirdiff)>Math.PI){ increment = increment * -1; }
+					if (dirdiff>0){	
+						myship.d = myship.d+increment;
+						}
+					else {
+						myship.d = myship.d-increment;
+						}
 					}
 				}
-			}
 			else{
 				myship.d = myplayer.moused-Math.PI;
 				}
+			}
+		}
 
-	}
 systems[ps].autopilot(myi);////////////Autopilot behavior section//
 systems[ps].handlemap(myi);
 systems[ps].hovertext(myi,vkeys,svkeys);

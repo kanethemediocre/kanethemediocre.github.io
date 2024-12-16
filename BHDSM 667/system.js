@@ -848,8 +848,9 @@ class System{
 			if (theplayer.navactive==2){theship.seek3(this.outposts[theplayer.navtarget],20,30,time, 1500);}
 			}
 		if (theplayer.autopilot == 2){//"autobrake"
-			if (theplayer.navactive==1){ theship.hold(this.planets[theplayer.navtarget],30,time); }
-			if (theplayer.navactive==2){ theship.hold(this.outposts[theplayer.navtarget],30,time); }
+			theship.hold(this.planets[0],30,time);
+			//if (theplayer.navactive==1){ theship.hold(this.planets[theplayer.navtarget],30,time); }
+			//if (theplayer.navactive==2){ theship.hold(this.outposts[theplayer.navtarget],30,time); }
 			}
 		if (theplayer.autopilot == 3){//not used
 			var orbitr = 1000;
