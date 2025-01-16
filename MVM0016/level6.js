@@ -1,4 +1,4 @@
-function loadlevel5(){ 
+function loadlevel6(){ 
  var alevel = new Warehouse(4000,4000,0,1,[],[]); 
 	var player0 = new Umb(-500,-1000,32,80,100,1);
 	player0.c = "blue";
