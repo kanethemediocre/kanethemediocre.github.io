@@ -677,8 +677,57 @@ class Warehouse{
 		this.addpuzzlemod2n(x,y,gap,g,pos,modboxes);	
 		}
 
-
-
+	addpuzzlemod2nv(x,y,gap,g,pos,modboxes){//for 2 separate rows of bullet mods
+		var i=0;
+		while(i<modboxes.length){
+			modboxes[i].x = x-(modboxes.length-i)*gap/2;
+			modboxes[i].y = y;
+			modboxes[i].xs = 64;
+			modboxes[i].ys = 64;
+			modboxes[i].c = "red";
+			this.bmboxes.push(modboxes[i]);
+			i=i+2;
+			}
+		var i=1;
+		while(i<modboxes.length){
+			modboxes[i].x = x-(modboxes.length-i+1)*gap/2; //This assumes row is on opposite side, but positions will be overridden and may instead be above
+			modboxes[i].y = y-gap;
+			modboxes[i].xs = 64;
+			modboxes[i].ys = 64;
+			modboxes[i].c = "red";
+			this.bmboxes.push(modboxes[i]);
+			i=i+2;
+			}
+		var solutionbox = new Umb(x, y-150, 128, 256 ,solven2mod(g,modboxes,pos),1 );
+		solutionbox.publiclabel = solutionbox.hp;
+		solutionbox.c = "purple";
+		this.mrboxes.push(solutionbox);
+		return solutionbox.hp;
+		}
+	addrandompuzzlemod2nv(x,y,n,gap,gs,nums,ops){
+		var q=0;
+		var solution = 0;
+		while((q<100)&&(solution<=0)){
+			var g = gs[Math.floor(Math.random()*gs.length)];
+			var pos = Math.floor(Math.random()*(n+1));
+			if (pos==n){var pos = Math.floor(Math.random()*(n+1));}
+			var i=0;
+			var modboxes = []
+			while(i<n){
+				var pnum=nums[Math.floor(Math.random()*nums.length)];
+				var pop=ops[Math.floor(Math.random()*ops.length)];
+				var amodbox = new Umb(x, y, 64, 64 ,pnum,1 );
+				amodbox.label = pop;
+				amodbox.publiclabel = pop+pnum;
+				modboxes.push(amodbox);
+				i++;
+				}
+			solution = solven2mod(g,modboxes,pos)
+			q++;
+			}
+		if (q==100){console.log("mod n2 puzzle solution out of bounds 100 times");}
+		this.addpuzzlemod2nv(x,y,gap,g,pos,modboxes);	
+		}
 
 
 

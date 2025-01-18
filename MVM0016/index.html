@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>MVM0015 </title>
+    <title>MVM0016 </title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -149,11 +149,12 @@ function solvenmod(g,modboxes,pos){
 		if (s<=0){ failure = true;}
 		i++;
 		}
-	if (failure){s = -1}
+	if (failure){s = -1;}
 	return s
 	}
 //2 rows of N bullet mods
 function solven2mod(g,modboxes,pos){
+	var failure = false;
 	var s = g;//solution
 	var i=0;
 	if (pos%2==0){//bottom row
@@ -164,26 +165,33 @@ function solven2mod(g,modboxes,pos){
 		}
 	while(i<modboxes.length){
 		s = modboxes[i].bmfunc(s);
+		if (s<=0){ failure = true;}
 		i=i+2;
 		}
+	if (failure){s=-1;}
 	return s;
 	}
 //single row of N bullet mods with bounce
 function solvenmodb(g,modboxes,pos){
+	var failure = false;
 	var s = g;
 	var i = pos;
 	while(i<modboxes.length){
 		s = modboxes[i].bmfunc(s);
+		if (s<=0){ failure = true;}
 		i++;
 		}
 	while(i<modboxes.length*2){
 		s = modboxes[2*modboxes.length-i-1].bmfunc(s);
+		if (s<=0){ failure = true;}
 		i++;
 		}
+	if (failure){s=-1;}
 	return s;
 	}
 //2 rows of N bullet mods with bounce
 function solven2modb(g,modboxes,pos){
+	var failure = false;
 	var s = g;
 	var i=0;
 	if (pos%2==0){//bottom row
@@ -194,12 +202,15 @@ function solven2modb(g,modboxes,pos){
 		}
 	while(i<modboxes.length){
 		s = modboxes[i](s);
+		if (s<=0){ failure = true;}
 		i=i+2;
 		}
 	while(i<modboxes.length*2){
 		s = modboxes[2*modboxes.length-i-1].bmfunc(s);
+		if (s<=0){ failure = true;}
 		i=i+2;
 		}
+	if (failure){s=-1;}
 	return s;
 	}
 

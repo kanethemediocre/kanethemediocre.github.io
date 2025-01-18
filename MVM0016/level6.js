@@ -10,7 +10,7 @@ function loadlevel6(){
 		var puzzlex = 0;
 		var puzzley = -1000+1000*i;//each puzzle 1000 pixels lower
 		var puzzlel = 1000+1000*i; //each puzzle 1000 pixels right
-		alevel.addrandompuzzlemod2n(puzzlex,puzzley,8,250,[2],[1,2,3,4,5],["+"]);
+		alevel.addrandompuzzlemod2nv(puzzlex,puzzley,8,250,[2],[1,2,3,4,5],["+"]);
 		var frontfloor = new Umb(puzzlex-puzzlel-64,puzzley+128,puzzlel,50,0,1);
 		frontfloor.c = "green";
 		var backfloor = new Umb(puzzlex+puzzlel+64,puzzley+128,puzzlel,50,0,1);
@@ -22,7 +22,7 @@ function loadlevel6(){
 		var puzzlex = 0;
 		var puzzley = -1000+1000*i;//each puzzle 1000 pixels lower
 		var puzzlel = 1000+1000*i; //each puzzle 1000 pixels right
-		alevel.addrandompuzzlemod2n(puzzlex,puzzley,4,250,[2],[1,2,3,4,5],["+","-"]);
+		alevel.addrandompuzzlemod2nv(puzzlex,puzzley,8,250,[2],[1,2,3,4,5],["+","-"]);
 		var frontfloor = new Umb(puzzlex-puzzlel-64,puzzley+128,puzzlel,50,0,1);
 		frontfloor.c = "green";
 		var backfloor = new Umb(puzzlex+puzzlel+64,puzzley+128,puzzlel,50,0,1)
@@ -34,7 +34,7 @@ function loadlevel6(){
 		var puzzlex = 0;
 		var puzzley = -1000+1000*i;//each puzzle 1000 pixels lower
 		var puzzlel = 1000+1000*i; //each puzzle 1000 pixels right
-		alevel.addrandompuzzlemod2n(puzzlex,puzzley,4,250,[2],[1,2,3,4],["+","-","*"]);
+		alevel.addrandompuzzlemod2nv(puzzlex,puzzley,8,250,[2],[1,2,3,4],["+","-","*"]);
 		var frontfloor = new Umb(puzzlex-puzzlel-64,puzzley+128,puzzlel,50,0,1);
 		frontfloor.c = "green";
 		var backfloor = new Umb(puzzlex+puzzlel+64,puzzley+128,puzzlel,50,0,1)
@@ -46,7 +46,7 @@ function loadlevel6(){
 		var puzzlex = 0;
 		var puzzley = -1000+1000*i;//each puzzle 1000 pixels lower
 		var puzzlel = 1000+1000*i; //each puzzle 1000 pixels right
-		alevel.addrandompuzzlemod2n(puzzlex,puzzley,4,250,[2],[1,2,3,4],["+","-","*","/"]);
+		alevel.addrandompuzzlemod2nv(puzzlex,puzzley,8,250,[2],[1,2,3,4],["+","-","*","/"]);
 		var frontfloor = new Umb(puzzlex-puzzlel-64,puzzley+128,puzzlel,50,0,1);
 		frontfloor.c = "green";
 		var backfloor = new Umb(puzzlex+puzzlel+64,puzzley+128,puzzlel,50,0,1);

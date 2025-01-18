@@ -46,7 +46,7 @@ function loadlevel5(){
 		var puzzlex = 0;
 		var puzzley = -1000+1000*i;//each puzzle 1000 pixels lower
 		var puzzlel = 1000+1000*i; //each puzzle 1000 pixels right
-		alevel.addrandompuzzlemod2n(puzzlex,puzzley,4,250,[2],[1,2,3,4],["+","-","*","/"]);
+		alevel.addrandompuzzlemod2n(puzzlex,puzzley,4,20,[2],[1,2,3,4],["+","-","*","/"]);
 		var frontfloor = new Umb(puzzlex-puzzlel-64,puzzley+128,puzzlel,50,0,1);
 		frontfloor.c = "green";
 		var backfloor = new Umb(puzzlex+puzzlel+64,puzzley+128,puzzlel,50,0,1);
