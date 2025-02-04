@@ -5,7 +5,7 @@ function loadlevel0(){
 	crate0.c = "brown";
 	var bouncyblock0 = new Umb(-300,-130,50,50,0,2);//constructor(xx,yy,xxs,yys,hp,solid)
 	bouncyblock0.c = "magenta";
-	var player0 = new Umb(0,-220,32,80,100,1);
+	var player0 = new Umb(0,-2200,32,80,100,1);
 	player0.c = "blue";
 	player0.publiclabel = player0.hp;
 	var enemy0 = new Umb(100,-120,40,100,4,1);
@@ -133,14 +133,24 @@ function loadlevel0(){
 		i++;
 		}	
 		
-
+	
 
 	currentlevel.addline(2000,-160,2500,-600,32,"red");
 	
 	currentlevel.addline(2500,-160,3000,-600,32,"purple");//addline(x1,y1,x2,y2,stairnum,staircolor){ //Essentially a staircase of boxes, from point 1 to point 2.
-
-		
+	currentlevel.addrighttriangle(2300,-150,200,1,1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){
+	currentlevel.addrighttriangle(2600,-150,200,1,-1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){		
+	currentlevel.addrighttriangle(2900,-150,200,-1,1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){	
+	currentlevel.addrighttriangle(3200,-150,200,-1,-1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){	
+	
+	currentlevel.addrighttriangle3(3300,-150,200,1,1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){
+	currentlevel.addrighttriangle3(3600,-150,200,1,-1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){		
+	currentlevel.addrighttriangle3(3900,-150,200,-1,1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){	
+	currentlevel.addrighttriangle3(4200,-150,200,-1,-1,20,"orange");//addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){	
+	
 	currentlevel.xmirror(-1000);	
-		
+	
+	//addrandomground3(           xmin, xmax,ymin, ymax, ystart,yend,dxmin,dxmax,dymin,dymax,color){
+	currentlevel.addrandomground3(-13000,13000,-1200,-1400,-1200,-1200,120,240,-60,60,"red");
 	return currentlevel;
 	}

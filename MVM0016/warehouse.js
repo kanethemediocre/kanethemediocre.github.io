@@ -240,7 +240,12 @@ class Warehouse{
 						var totalys = this.mrboxes[i].ys+this.mrboxes[j].ys;
 						var dy = this.mrboxes[i].y-this.mrboxes[j].y;
 						if (Math.abs(dy)<totalys){//A collision happened!
-							this.mrboxes[i].terraincollide(this.mrboxes[j]);
+							if ((this.mrboxes[i].solid==1)&&(this.mrboxes[j].solid==3)){ //Collision between normal solid and ?spiky? solid
+								this.mrboxes[i].ouchcollide(this.mrboxes[j]);
+								}
+							else{
+								this.mrboxes[i].terraincollide(this.mrboxes[j]);
+								}
 							//Some kind of collision goes here
 							}
 						}
@@ -577,8 +582,322 @@ class Warehouse{
 			var nextstair = new Umb(stairdx*i+x1, stairdy*i+y1, stairdx, stairdy ,0 ,1 );//constructor(xx,yy,xxs,yys,hp,solid)
 			nextstair.c = color;
 			this.srboxes.push(new Umb(nextstair));
-			console.log(nextstair.x+" "+nextstair.y,this.srboxes.length);
+			//console.log(nextstair.x+" "+nextstair.y,this.srboxes.length);
 			i++;
+			}
+		}
+	addrighttriangle(x1,y1,size,xdir,ydir,stairdy,color){
+		var staircolor = "red";
+		var lastx = x1;
+		var i=0;
+		while( xdir*lastx < xdir*(x1+size*xdir) ){
+			var newbox = new Umb(stairdy*i*xdir+x1, stairdy*i*ydir+y1, Math.abs(stairdy)/2, Math.abs(stairdy)/2 ,0 ,1 );
+			lastx = newbox.x
+			newbox.c = staircolor;
+			this.srboxes.push(newbox);////constructor(xx,yy,xxs,yys,hp,solid)
+			i++;
+			}
+		//add boxes for bottom and side
+		if (xdir>0){
+			if (ydir>0){
+				var botbox = new Umb(x1+size*xdir/2, y1+size, size/2+stairdy/2, Math.abs(stairdy)/2 ,0 ,1 );
+				var sidebox = new Umb(x1, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );
+				}
+			else {
+				var botbox = new Umb(x1+size*xdir/2, y1, size/2+stairdy/2, Math.abs(stairdy)/2 ,0 ,1 );
+				var sidebox = new Umb(x1+size*xdir, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );//fix
+				}
+			}
+		else{
+			if (ydir>0){
+				var botbox = new Umb(x1+size*xdir/2, y1+size, size/2+stairdy/2, Math.abs(stairdy)/2 ,0 ,1 );
+				var sidebox = new Umb(x1, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );
+				}
+			else {
+				var botbox = new Umb(x1+size*xdir/2, y1, size/2+stairdy/2, Math.abs(stairdy)/2 ,0 ,1 );
+				var sidebox = new Umb(x1+size*xdir, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );//fix
+				}
+			}
+		this.srboxes.push(botbox);
+		this.srboxes.push(sidebox);
+		//var sidebox = new Umb(x1, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );
+		//var sidebox = new Umb(x1+size, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );//fix
+		}
+	addrighttriangle2(x1,y1,size,xdir,ydir,stairdy,color){
+		var staircolor = "red";
+		var lastx = x1;
+		var sidewallx = x1+size*xdir;
+		
+		var i=0;
+		while( xdir*lastx < xdir*(x1+size*xdir) ){
+			var cx1 = x1 + stairdy*i*xdir;
+			var cy1 = y1 + stairdy*i*ydir;
+			var cx2 = cx1+stairdy/2;//size*xdir;
+			var cy2 = cy1+stairdy/2;
+			var newbox = new Umb(1,2,3,4 ,0 ,1 );//position and size values are junk and get replaced by cornersxyxy
+			newbox.cornersxyxy(cx1,cy1,cx2,cy2);
+			lastx = cx1;
+			newbox.c = staircolor;
+			if (i==0){newbox.c = "pink";}
+			this.srboxes.push(newbox);////constructor(xx,yy,xxs,yys,hp,solid)
+			i++;
+			}
+		//add boxes for bottom and side
+		//var sidebox = new Umb(x1, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );
+		//var sidebox = new Umb(x1+size, y1+size*ydir/2, Math.abs(stairdy)/2, size/2+stairdy/2 ,0 ,1 );//fix
+		}
+		
+	addrighttriangle3(x1,y1,size,xdir,ydir,stairdy,color){//This one works.
+		var staircolor = "red";
+		var currenty = y1;
+		var currentx = x1;
+		var sidex = x1
+		if ( (xdir>0)&&(ydir>0) ){	sidex = x1; }//reduce this when it's confirmed
+		if ( (xdir<0)&&(ydir>0) ){	sidex = x1; }
+		if ( (xdir>0)&&(ydir<0) ){	sidex = x1+size; }
+		if ( (xdir<0)&&(ydir<0) ){	sidex = x1-size; }
+		//console.log(x1+"   "+sidex)
+		var i=0;
+		while( ydir*currenty<ydir*(y1+size*ydir) ){
+			var newbox = new Umb(1,2,3,4,0,1);//constructor(xx,yy,xxs,yys,hp,solid)  size and position values here are placeholders
+			currenty = y1+i*stairdy*ydir;
+			currentx = x1+i*stairdy*xdir;
+			//newbox.cornersxyxy(currentx,currenty,currentx+stairdy*xdir,currenty+stairdy*ydir);
+			newbox.cornersxyxy(currentx,currenty,sidex,currenty+(stairdy+1)*ydir);//works for xdir = 1, ydir = 1
+			newbox.c = color;
+			this.srboxes.push(newbox);
+			i++;
+			}
+		}
+	addsolidstair45(x1,y1,size,xdir,ydir,stairdy,color){//This one works.
+		var staircolor = "red";
+		var currenty = y1;
+		var currentx = x1;
+		var sidex = x1
+		if ( (xdir>0)&&(ydir>0) ){	sidex = x1; }//reduce this when it's confirmed
+		if ( (xdir<0)&&(ydir>0) ){	sidex = x1; }
+		if ( (xdir>0)&&(ydir<0) ){	sidex = x1+size; }
+		if ( (xdir<0)&&(ydir<0) ){	sidex = x1-size; }
+		console.log(x1+"   "+sidex)
+		var i=0;
+		while( ydir*currenty<ydir*(y1+size*ydir) ){
+			var newbox = new Umb(1,2,3,4,0,1);//constructor(xx,yy,xxs,yys,hp,solid)  size and position values here are placeholders
+			currenty = y1+i*stairdy*ydir;
+			currentx = x1+i*stairdy*xdir;
+			//newbox.cornersxyxy(currentx,currenty,currentx+stairdy*xdir,currenty+stairdy*ydir);
+			newbox.cornersxyxy(currentx,currenty,sidex,currenty+(stairdy+1)*ydir);//works for xdir = 1, ydir = 1
+			newbox.c = color;
+			this.srboxes.push(newbox);
+			i++;
+			}
+		}
+	addsolidstaircase(x1,y1,x2,y2,stairdy,color){
+		var staircolor = "red";
+		var currenty = y1;
+		var currentx = x1;
+		var dx = x2-x1;
+		var dy = y2-y1;
+		var xdir = 1;
+		var ydir = 1;
+		var sidex = x1;
+		if (dx<0){xdir = -1;}
+		//if (dy<0){
+		//	ydir = -1;
+		//	sidex = x2;
+		//	}
+		var slope = 1;
+		if (dx!=0){slope=dy/dx;}
+		console.log(x1+"   "+sidex)
+		var i=0;
+		while( ydir*currenty<ydir*(y1+dy) ){
+			var newbox = new Umb(1,2,3,4,0,1);//constructor(xx,yy,xxs,yys,hp,solid)  size and position values here are placeholders
+			currenty = y1+i*stairdy*ydir;
+			currentx = x1+i*stairdy*xdir/slope;
+			//newbox.cornersxyxy(currentx,currenty,currentx+stairdy*xdir,currenty+stairdy*ydir);
+			newbox.cornersxyxy(currentx,currenty,sidex,currenty+(stairdy+1)*ydir);//works for xdir = 1, ydir = 1
+			newbox.c = color;
+			this.srboxes.push(newbox);
+			i++;
+			}
+		}
+	addsolidstaircase2(x1,y1,x2,y2,stairdy,staircolor){ //Essentially a staircase of boxes, from point 1 to point 2.
+		//var stairnum = 32;
+		//var x1 = 4000;
+		//var y1 = -100;
+		//var x2 = 3500;
+		//var y2 = -900;
+		var dx = x2-x1;
+		var dy = y2-y1;
+		var stairdx = Math.floor(dx / (dy/stairdy));
+		var sidex = x1;
+		if (dy<0){sidex = x2;}
+		var currentx = x1;
+		var currenty = y1;
+		//var staircolor = "red";
+		var i=0;
+		while(i<100){//fix loop bounds
+			var newbox = new Umb(1, 2, 3, 4 ,0 ,1 );
+			currentx = x1 + stairdx*i;
+			//if (dx>0){	currentx = x1 + stairdx*i; }
+			//else {currentx = x1 - stairdx*i; }
+			if (dy>0){	currenty =  y1 + stairdy*i;  }
+			else {currenty =  y1 - stairdy*i }
+			//var newbox = new Umb(stairdx*i+x1, stairdy*i+y1, Math.abs(stairdx)/2, Math.abs(stairdy)/2 ,0 ,1 );
+			newbox.cornersxyxy(currentx,currenty,sidex,currenty+(stairdy+1));//works for xdir = 1, ydir = 1
+			newbox.c = staircolor;
+			this.srboxes.push(newbox);////constructor(xx,yy,xxs,yys,hp,solid)
+			//console.log(currentlevel.srboxes[currentlevel.srboxes.length-1]);
+			i++;
+			}	
+		}
+	addrandomground(xmin,xmax,ymin,ymax,dx,dymin,dymax,color){//individual srboxes with noise
+		var xnow = xmin;
+		var ynow = Math.floor((ymin + ymax) / 2);
+		while(xnow<xmax){
+			var xsize = Math.floor(dx/2);
+			var ysize = 64;
+			var yshift = Math.floor(dymin + Math.random()*(dymax-dymin));
+			xnow = xnow+xsize;
+			ynow = ynow+yshift;
+			if (ynow>ymax){ynow = ymax;}
+			else if (ynow<ymin){ynow = ymin;}
+			//console.log(xnow+" "+ynow);
+			var abox = new Umb(xnow,ynow,xsize,ysize,0,1);
+			abox.c = color;
+			this.srboxes.push(abox);;
+			}	
+		}
+	addrandomground2(xmin,xmax,ymin,ymax,dxmin,dxmax,dymin,dymax,color){//based on addlinefunction
+		var xnow = xmin;
+		var ynow = Math.floor((ymin + ymax) / 2);
+		while(xnow<xmax){
+			var xshift = Math.floor(dxmin + Math.random()*(dxmax-dxmin));
+			var yshift = Math.floor(dymin + Math.random()*(dymax-dymin));
+			var stairnum = Math.abs(yshift/16);
+			console.log(xnow+" "+ynow);
+			this.addline(xnow,ynow,xnow+xshift,ynow+yshift,stairnum,color);//addline(x1,y1,x2,y2,stairnum,staircolor){
+			//var abox = new Umb(xnow,ynow,xsize,ysize,0,1);
+			//abox.c = color;
+			//this.srboxes.push(abox);
+			xnow = xnow+xshift;
+			ynow = ynow+yshift;
+			}	
+		}
+	addrandomground3(xmin,xmax,ymin,ymax,ystart,yend,dxmin,dxmax,dymin,dymax,hilly,bottomy,color){//based on addlinefunction
+		var xnow = xmin;
+		var ynow = ystart;
+		var ythick = 100;
+		var ydir = 1;
+		var stairstep = 20;
+		while(xnow<xmax){
+			var xshift = Math.floor(dxmin + Math.random()*(dxmax-dxmin));
+			var yshift = Math.floor(dymin + Math.random()*(dymax-dymin));
+			xshift = xshift+stairstep - xshift%stairstep;
+			yshift = yshift+stairstep - yshift%stairstep;
+			var stairnum = Math.abs(yshift/16);
+			//console.log(xnow+" "+ynow);
+			if (Math.random()<hilly){ //Make a slope
+				console.log("shift = "+yshift+" ynow = "+ynow);
+				if ( (ynow+yshift) > ymax ){
+					yshift = ymax - ynow;//ynow + yshift = ymax
+					console.log("yshift max");
+					//ynow = ymax;
+					}
+				else if ( (ynow+yshift) < ymin ){
+					yshift = ymin - ynow; //yshift is negative in these cases
+					console.log("yshift min");
+					//ynow = ymin;
+					}
+				else{
+					console.log("yshift in bounds");
+					}
+				console.log("new yshift = "+yshift);
+					
+				if (yshift<0){ydir = -1;}
+				else {ydir = 1;}
+				xshift = Math.abs(yshift);
+				//currentlevel.addsolidstair45(editx1,edity1,size,xdir,ydir,stairstep,editcolors[editcolori]);
+				this.addsolidstair45(xnow,ynow,Math.abs(yshift),1,ydir,stairstep,color);
+				var abox = new Umb(1,2,3,4,0,1);
+				var floortopy = ynow;
+				if (ydir>0){floortopy = ynow + yshift;}
+				abox.c = color;
+				abox.cornersxyxy(xnow,floortopy,xnow + xshift,bottomy);
+				this.srboxes.push(abox);
+				ynow = ynow+yshift;
+				console.log("slope"+xnow+" "+ynow);
+				}
+			else{  //make a flat
+				var abox = new Umb(1,2,3,4,0,1);
+				abox.c = color;
+				abox.cornersxyxy(xnow,ynow,xnow + xshift,bottomy);
+				this.srboxes.push(abox);
+				console.log("flat"+xnow+" "+ynow);
+				}
+			//this.addline(xnow,ynow,xnow+xshift,ynow+yshift,stairnum,color);//addline(x1,y1,x2,y2,stairnum,staircolor){
+			//var abox = new Umb(xnow,ynow,xsize,ysize,0,1);
+			//abox.c = color;
+			//this.srboxes.push(abox);
+			xnow = xnow+xshift;
+			//ynow = ynow+yshift;
+			}	
+		}
+	addrandomfloaters(xmin,xmax,ymin,ymax,dxmin,dxmax,dymin,dymax,color,density,cohesion){
+		var xnow = xmin;
+		var ynow =  Math.floor(ymin + Math.random()*(ymax-ymin));
+		var xstart = xmin;
+		var xend = xmin
+		var maxlength = 512;
+		var toggle = false;
+		while(xnow<xmax){
+			if (Math.random()>cohesion){
+				if (  ((!toggle)&&(Math.random()<density)) || ((toggle)&&(Math.random()>density)) || ((toggle)&&(xnow-xstart>maxlength))  )  {
+					toggle = !toggle;
+					if (toggle){//starting floater
+						ynow =  Math.floor(ymin + Math.random()*(ymax-ymin));
+						xstart = xnow;
+						}
+					else{//ending floater
+						xend = xnow;
+						var xsize = Math.floor((xend-xstart)/2);
+						var ysize = Math.floor(dymin + Math.random()*(dymax-dymin));
+						var abox = new Umb(xstart+xsize,ynow,xsize,ysize,0,1);
+						abox.c = color;
+						this.srboxes.push(abox);;
+						}
+					}
+				}
+			xnow = xnow + dxmin;
+			}
+		}
+		
+		
+	addrandomfloaters2(xmin,xmax,ymin,ymax,dxmin,dxmax,dymin,dymax,color,density,cohesion){
+		var xnow = xmin;
+		var ynow =  Math.floor(ymin + Math.random()*(ymax-ymin));
+		var xstart = xmin;
+		var xend = xmin
+		var maxlength = 512;
+		var toggle = false;
+		while(xnow<xmax){
+			if (Math.random()>cohesion){
+				if (  ((!toggle)&&(Math.random()<density)) || ((toggle)&&(Math.random()>density)) || ((toggle)&&(xnow-xstart>maxlength))  )  {
+					toggle = !toggle;
+					if (toggle){//starting floater
+						ynow =  Math.floor(ymin + Math.random()*(ymax-ymin));
+						xstart = xnow;
+						}
+					else{//ending floater
+						xend = xnow;
+						var xsize = Math.floor((xend-xstart)/2);
+						var ysize = Math.floor(dymin + Math.random()*(dymax-dymin));
+						var abox = new Umb(xstart+xsize,ynow,xsize,ysize,0,1);
+						abox.c = color;
+						this.srboxes.push(abox);
+						}
+					}
+				}
+			xnow = xnow + dxmin;
 			}
 		}
 	addpuzzlemodn(x,y,gap,g,pos,modboxes){//For a single row of bullet modifiers
@@ -728,10 +1047,65 @@ class Warehouse{
 		if (q==100){console.log("mod n2 puzzle solution out of bounds 100 times");}
 		this.addpuzzlemod2nv(x,y,gap,g,pos,modboxes);	
 		}
+	addpuzzlemodnb(x,y,gap,g,pos,modboxes){//For a single row of bullet modifiers
+		var modx = 0;
+		var mody = 0;
+		var i=0;
+		while(i<modboxes.length){
+			modboxes[i].x = x-(i+1)*gap;
+			modboxes[i].y = y;
+			modboxes[i].xs = 64;
+			modboxes[i].ys = 64;
+			modboxes[i].c = "red";
+			this.bmboxes.push(modboxes[i]);
+			i++;
+			}
+		var solutionbox = new Umb(x, y, 128, 128 ,solvenmodb(g,modboxes,pos),1 );
+		var bouncebox = new Umb( x-(modboxes.length+1)*gap, y, 128, 256 ,0,2 );
+		//var indicatorbox = new Umb(x-(modboxes.length-pos)*gap, y-500, 128, 128 ,solvenmodb(g,modboxes,pos),1 );
+		solutionbox.publiclabel = solutionbox.hp;
+		solutionbox.c = "purple";
+		this.mrboxes.push(solutionbox);
+		this.srboxes.push(bouncebox);
+		return solutionbox.hp;
+		}
+	addrandompuzzlemodnb(x,y,n,gap,gs,nums,ops){
+		var q=0;
+		var solution = 0;
+		while((q<100)&&(solution<=0)){
+			var g = gs[Math.floor(Math.random()*gs.length)];
+			var pos = Math.floor(Math.random()*(2*n+1));
+			if (pos==n){var pos = Math.floor(Math.random()*(n+1));}
+			var i=0;
+			var modboxes = []
+			while(i<n){
+				var pnum=nums[Math.floor(Math.random()*nums.length)];
+				var pop=ops[Math.floor(Math.random()*ops.length)];
+				var amodbox = new Umb(x, y, 64, 64 ,pnum,1 );
+				amodbox.label = pop;
+				amodbox.publiclabel = pop+pnum;
+				modboxes.push(amodbox);
+				i++;
+				}
+			solution = solvenmodb(g,modboxes,pos)
+			q++;
+			}
+		if (q==100){console.log("mod n puzzle solution out of bounds 100 times");}
+		this.addpuzzlemodnb(x,y,gap,g,pos,modboxes);	
+		}
 
 
 
 
-
-
+	cleanup(){//removes objects with 0 size;
+		var i=0;
+		while(i<this.srboxes.length){
+			if ((this.srboxes[i].xs<1)||(this.srboxes[i].ys<1)){
+				this.srboxes.splice(i,1);//remove the box if either size is 0 or less
+				//remove the box
+				}
+			i++;
+			}
+		
+		}
 	}

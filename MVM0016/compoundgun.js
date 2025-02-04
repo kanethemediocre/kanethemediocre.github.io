@@ -49,7 +49,7 @@ class CompoundGun{
 			while(i<this.basenum){
 				var ay = y - halfspread + dy*i
 				var newbullet = new Umb(x,ay,12,12,this.answer,1);//constructor(xx,yy,xxs,yys,hp,solid){
-				newbullet.x = newbullet.x+64*dir+i;
+				newbullet.x = newbullet.x+64*dir+i*speed*2;
 				newbullet.vx = vx+dir*speed;
 				newbullet.label = "0";
 				newbullet.publiclabel = newbullet.hp;

@@ -19,6 +19,7 @@ class Umb{
 		this.xdir = 1;
 		this.ydir = 0;
 		this.ai = "none";
+		this.sprites = [];
 		}
 	bmfunc(g){
 		var s = g;
@@ -140,6 +141,28 @@ class Umb{
 				}
 			}						
 		}
+	ouchcollide(that){
+		var totalxs = this.xs+that.xs;
+		var totalys = this.ys+that.ys;
+		var dx = this.x-that.x;
+		var dy = this.y - that.y;
+		
+		var overlapx = totalxs - Math.abs(dx);
+		var overlapy = totalys - Math.abs(dy);		
+		if (overlapx<overlapy){//resolve by modifying x
+
+			if (dx>0){//this feels avoidable but ok
+				this.x = this.x + overlapx;
+				this.vx = this.vx + 16;
+				}
+			else {
+				this.x = this.x - overlapx;
+				this.vx = this.vx - 16;
+				}
+			}
+		this.hp = this.hp - 1;
+		this.publiclabel = this.hp;
+		}
 	drag(){
 		var basedrag = 0.96;
 		var overspeed = 12;
@@ -155,7 +178,7 @@ class Umb{
 		var y = this.y - viewy;
 		context.fillStyle = this.c;
 		context.fillRect(x-this.xs,y-this.ys,this.xs*2,this.ys*2);
-		context.font = "16px Arial";
+		context.font = "24px Arial";
 		context.fillText(this.label,this.x,this.y);
 		}
 	drawboxoutline(viewx,viewy){
@@ -170,9 +193,9 @@ class Umb{
 		}	
 	drawlabel(viewx,viewy){
 		var x = this.x - viewx - 6;//coordinates of center as drawn
-		var y = this.y - viewy + 6;
+		var y = this.y - viewy + 8;
 		context.fillStyle = this.c;
-		context.font = "16px Arial";
+		context.font = "24px Arial";
 		context.fillText(this.publiclabel,x,y);
 		}
 	drawdude(viewx,viewy){
@@ -192,4 +215,15 @@ class Umb{
 		var foot2y = this.y-viewy-this.ys*0.98;
 		
 		}
+	cornersxyxy(x1,y1,x2,y2){//Sets location and size to fit specified corners
+		var x = (x1+x2)/2;
+		var y = (y1+y2)/2;
+		var xs = Math.abs(x1-x2)/2;
+		var ys = Math.abs(y1-y2)/2;
+		this.x = x;
+		this.y = y;
+		this.xs = xs;
+		this.ys = ys;
+		}
+	
 	}

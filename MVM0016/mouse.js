@@ -76,7 +76,15 @@ function mouseUpHandler(e) {
 			currentlevel.addline(editx1,edity1,editx2,edity2,stairnum,editcolors[editcolori]);
 			
 			}
-		else if (boxmodei==6){//This is delete mode
+		else if (boxmodei==6){//solid Stairs
+			var stairstep = 20;
+			var xdir = (editx2-editx1)/Math.abs(editx2-editx1);
+			var ydir = (edity2-edity1)/Math.abs(edity2-edity1);
+			var size = Math.abs(edity1-edity2)-Math.abs(edity1-edity2)%stairstep;
+			currentlevel.addsolidstair45(editx1,edity1,size,xdir,ydir,stairstep,editcolors[editcolori]);//addsolidstair45(x1,y1,size,xdir,ydir,stairdy,color){//This one works.
+			//currentlevel.addsolidstaircase2(editx1,edity1,editx2,edity2,stairstep,editcolors[editcolori]);	//	addsolidstaircase(x1,y1,x2,y2,stairdy,color){
+			}
+		else if (boxmodei==7){//This is delete mode
 			var i=0;
 			while(i<currentlevel.srboxes.length){
 				if (newbox.collide(currentlevel.srboxes[i])){
