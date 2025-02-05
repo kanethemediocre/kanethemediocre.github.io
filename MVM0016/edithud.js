@@ -51,5 +51,5 @@ function edithud(){
 	context.fillText("b to save level to console as js",25,256);
 	
 	context.font = "16px Arial";
-	context.fillText("l to change level (0-10)",25,288);
+	context.fillText("l to change level ("+leveli+")",25,288);
 	}

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>MVM0023</title>
+    <title>MVM0025</title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -26,9 +26,18 @@
 <script type="text/javascript" src="level9.js"></script>
 <script type="text/javascript" src="level10.js"></script>
 <script type="text/javascript" src="level11.js"></script>
+<script type="text/javascript" src="level12.js"></script>
+<script type="text/javascript" src="level13.js"></script>
+<script type="text/javascript" src="level14.js"></script>
+<script type="text/javascript" src="level15.js"></script>
+<script type="text/javascript" src="level16.js"></script>
+<script type="text/javascript" src="level17.js"></script>
+<script type="text/javascript" src="level18.js"></script>
+<script type="text/javascript" src="level19.js"></script>
 <script type="text/javascript" src="keyboard.js"></script>
 <script type="text/javascript" src="mouse.js"></script>
 <script type="text/javascript" src="edithud.js"></script>
+<script type="text/javascript" src="playerhud.js"></script>
 <script type="text/javascript" src="portals.js"></script>
 <script>
 
@@ -81,6 +90,7 @@ function openFullscreen() {
 	gun4.basenum = 4;	
 	
 	var guns = [gun0,gun1,gun2,gun3,gun4];
+	var gnames = ["Cero","Pistoluno","Matrelladosa","Matresadora","Cuatro"];
 	var cgm0 = new CGMod(1,"+",0,10);//constructor(num,operator,effect,delay){
 	var hasweapons = [false,true,true,true,true];// weapons 0-4 for now
 	var currentweapon = 1;
@@ -108,6 +118,7 @@ function openFullscreen() {
 	var editdiri = 0
 	var editdirs = ["up","down","left","right"];
 	var saving = false;
+	var score = 0;
 
 var savetestlevel = loadlevel0();//new Warehouse(4000,4000,[spawn0],1,[floor0,crate0],[player0,enemy0]);//constructor(xxs,yys,spawns,gravity,srboxes,mrboxes){
 var savetestlist = savetestlevel.saveaslist();
@@ -127,10 +138,11 @@ var portal7 = new Umb(1000,-800,100,100,7,0);
 var portal8 = new Umb(1000,-1200,100,100,8,0);
 var portal9 = new Umb(600,-1500,100,100,9,0);
 var portals = [portal0,portal1,portal2,portal3,portal4,portal5,portal6,portal7,portal8,portal9];
-var levels = [loadlevel0(),loadlevel1(),loadlevel2(),loadlevel3(),loadlevel4(),loadlevel5(),loadlevel6(),loadlevel7(),loadlevel8(),loadlevel9(),loadlevel10(),loadlevel11()];
+var levels = [loadlevel0(),loadlevel1(),loadlevel2(),loadlevel3(),loadlevel4(),loadlevel5(),loadlevel6(),loadlevel7(),loadlevel8(),loadlevel9(),
+			loadlevel10(),loadlevel11(),loadlevel12(),loadlevel13(),loadlevel14(),loadlevel15(),loadlevel16(),loadlevel17(),loadlevel18(),loadlevel19()];
 //levels[4].addrandompuzzlemodn(0,-1000,4,300,[2],[1,2,3,4],["+","-","*","/"]);
 //levels[4].srboxes.push(new Umb(-1000,-700,4000,50,0,1));//constructor(xx,yy,xxs,yys,hp,solid){
-var leveli = 10;
+var leveli =9;
 currentlevel = levels[10];
 
 
@@ -290,6 +302,7 @@ function update() {
 	//console.log(player0.y);
 	currentlevel.drawall(viewx,viewy);
 	drawgun(viewx,viewy,currentlevel.mrboxes[0],thegun);
+	playerhud();
 	if (editmode){
 		edithud();
 		}

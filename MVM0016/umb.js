@@ -173,6 +173,13 @@ class Umb{
 			this.vx = this.vx*overspeeddrag;
 			}
 		}
+	deadcheck(){
+		if (this.hp==0){this.y = 100000;}//killing
+		else if (this.hp<0){//Resetting to full health
+			this.hp = this.maxhp;
+			this.publiclabel = this.hp;
+			}
+		}
 	drawboxfill(viewx,viewy){
 		var x = this.x - viewx;//coordinates of center as drawn
 		var y = this.y - viewy;

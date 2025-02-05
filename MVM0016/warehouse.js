@@ -161,11 +161,7 @@ class Warehouse{
 			this.mrboxes[i].x = this.mrboxes[i].x + this.mrboxes[i].vx;
 			this.mrboxes[i].y = this.mrboxes[i].y + this.mrboxes[i].vy; 
 			this.mrboxes[i].drag();
-			if (this.mrboxes[i].hp==0){this.mrboxes[i].y = -100000;}
-			else if (this.mrboxes[i].hp<0){
-				this.mrboxes[i].hp = this.mrboxes[i].maxhp;
-				this.mrboxes[i].publiclabel = this.mrboxes[i].hp;
-				}
+			this.mrboxes[i].deadcheck();
 			if (this.mrboxes[i].ai=="randomwalk"){
 				//console.log(this.mrboxes[i].xdir);
 				this.mrboxes[i].vx = this.mrboxes[i].vx + this.mrboxes[i].xdir*0.5;
@@ -264,15 +260,13 @@ class Warehouse{
 					if (Math.abs(dy)<totalys){//bullet hits character
 						this.mrboxes[i].hp = this.mrboxes[i].hp - this.bboxes[j].hp;
 						this.mrboxes[i].publiclabel = this.mrboxes[i].hp;
+						this.mrboxes[i].deadcheck();
 						this.bboxes[j].hp = 0;
 						}
 					}
 				j++;
 				}	
 
-
-
-			
 			var j=0;
 			while(j<this.bboxes.length){//against all static rigid boxes (walls, terrain)
 				var totalxs = this.mrboxes[i].xs+this.bboxes[j].xs;
@@ -840,6 +834,24 @@ class Warehouse{
 			//this.srboxes.push(abox);
 			xnow = xnow+xshift;
 			//ynow = ynow+yshift;
+			}	
+		}
+	addrandomground4(xmin,xmax,ymin,ymax,dx,dymin,dymax,bottomy,color){//individual srboxes with noise and flat bottom
+		var xnow = xmin;
+		var ynow = Math.floor((ymin + ymax) / 2);
+		while(xnow<xmax){
+			var xsize = Math.floor(dx/2);
+			var ysize = 64;
+			var yshift = Math.floor(dymin + Math.random()*(dymax-dymin));
+			xnow = xnow+xsize;
+			ynow = ynow+yshift;
+			if (ynow>ymax){ynow = ymax;}
+			else if (ynow<ymin){ynow = ymin;}
+			//console.log(xnow+" "+ynow);
+			var abox = new Umb(xnow,ynow,xsize,ysize,0,1);
+			abox.cornersxyxy(xnow,ynow,xnow + dx,bottomy);//Overrides position and size.  
+			abox.c = color;
+			this.srboxes.push(abox);;
 			}	
 		}
 	addrandomfloaters(xmin,xmax,ymin,ymax,dxmin,dxmax,dymin,dymax,color,density,cohesion){
