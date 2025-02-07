@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"> 
-    <title>MVM0025</title>
+    <title>MVM0026</title>
     <style></style>
 	   <link rel="shortcut icon" href="favicon.ico" >
    <link rel="icon" type="image/gif" href="animated_favicon1.gif" >
@@ -39,6 +39,9 @@
 <script type="text/javascript" src="edithud.js"></script>
 <script type="text/javascript" src="playerhud.js"></script>
 <script type="text/javascript" src="portals.js"></script>
+
+
+
 <script>
 
 // declare global variables/////////////////////////////////////////////////
@@ -75,6 +78,14 @@ function openFullscreen() {
 ////////update function this is the game loop bruh////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+var boop1 = new Audio("./sounds/boop1.mp3");
+var boop2 = new Audio("./sounds/boop2.mp3");
+var chirp1 = new Audio("./sounds/chirp1.mp3");
+var chirp2 = new Audio("./sounds/chirp2.mp3");
+var cash1 = new Audio("./sounds/cash1.mp3");
+var cash2 = new Audio("./sounds/cash2.mp3");
+
+
 	var bullet0 = new Umb(200,400,16,16,1,1);
 	var spawn0 = new Umb(-300,100,16,16,0,0);
 	var gun0 = new CompoundGun(1,0,1);//constructor(numslots,basevalue,baseeffect){
@@ -93,7 +104,7 @@ function openFullscreen() {
 	var gnames = ["Cero","Pistoluno","Matrelladosa","Matresadora","Cuatro"];
 	var cgm0 = new CGMod(1,"+",0,10);//constructor(num,operator,effect,delay){
 	var hasweapons = [false,true,true,true,true];// weapons 0-4 for now
-	var currentweapon = 1;
+	var currentweapon = 2;
 	var editmode = true;
 	var editx1 = 0;
 	var editx2 = 0;
@@ -111,14 +122,16 @@ function openFullscreen() {
 	var editoperatori = 0;
 	var editoperators = ["+","-","*","/","^"];
 	var edititemi = 0;
-	var edititems = ["g1","g2","g3","g4","hp20"];
-	var editais = ["none","randomwalk","randomhop","randomwalkandhop","randomwalkwithhop","left","right"];
+	var edititems = ["g1","g2","g3","g4","hp20","$"];
+	var editais = ["none","randomwalk","randomhover","randomfly","randomhop","randomwalkandhop","randomwalkwithhop","left","right"];
 	var editaii = 0;
 	var editsolid = 1;
 	var editdiri = 0
 	var editdirs = ["up","down","left","right"];
 	var saving = false;
 	var score = 0;
+	var money = 0;
+	var rainbowcolors = ["red","orange","yellow","green","blue","purple"];
 
 var savetestlevel = loadlevel0();//new Warehouse(4000,4000,[spawn0],1,[floor0,crate0],[player0,enemy0]);//constructor(xxs,yys,spawns,gravity,srboxes,mrboxes){
 var savetestlist = savetestlevel.saveaslist();
@@ -142,8 +155,8 @@ var levels = [loadlevel0(),loadlevel1(),loadlevel2(),loadlevel3(),loadlevel4(),l
 			loadlevel10(),loadlevel11(),loadlevel12(),loadlevel13(),loadlevel14(),loadlevel15(),loadlevel16(),loadlevel17(),loadlevel18(),loadlevel19()];
 //levels[4].addrandompuzzlemodn(0,-1000,4,300,[2],[1,2,3,4],["+","-","*","/"]);
 //levels[4].srboxes.push(new Umb(-1000,-700,4000,50,0,1));//constructor(xx,yy,xxs,yys,hp,solid){
-var leveli =9;
-currentlevel = levels[10];
+var leveli =12;
+currentlevel = levels[12];
 
 
 
@@ -228,7 +241,7 @@ function solven2modb(g,modboxes,pos){
 var thegun = new Umb(0,0,40,20,0,0);
 
 function drawgun(viewx,viewy,abox,agun){//
-		agun.x = abox.x+48*abox.xdir;
+		agun.x = abox.x+64*abox.xdir;
 		agun.y = abox.y;
 		agun.drawboxoutline(viewx,viewy)
 		context.fillStyle = agun.c;
@@ -260,7 +273,7 @@ function update() {
 
 	if (keyspressed.includes("w")){
 		if (myplayerbox.grounded){
-			var jump = 32;
+			var jump = 36;
 			myplayerbox.vy = myplayerbox.vy - jump;
 			}
 		}
@@ -298,10 +311,12 @@ function update() {
 	currentlevel.updateall();
 	currentlevel.collideall();
 	
-	
+	var killbonus = currentlevel.deadscore();
+	score = score + killbonus * 50;
 	//console.log(player0.y);
 	currentlevel.drawall(viewx,viewy);
 	drawgun(viewx,viewy,currentlevel.mrboxes[0],thegun);
+	currentlevel.mrboxes[0].drawhpbar(viewx,viewy);
 	playerhud();
 	if (editmode){
 		edithud();

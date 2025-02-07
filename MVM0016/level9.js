@@ -6,5 +6,6 @@ function loadlevel9(){
 	player0.publiclabel = player0.hp;
 	alevel.mrboxes.push(player0);
 	alevel.addrandomground4(-4000,4000,-2500,-2000,24,-16,16,-1800,"purple");//addrandomground(xmin,xmax,ymin,ymax,dx,dymin,dymax,bottomy,color){
+		
  return alevel; 
  }

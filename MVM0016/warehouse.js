@@ -10,6 +10,7 @@ class Warehouse{
 		this.bmboxes = [];//bullet modifier boxes 
 		this.mmboxes = []; //motion modifier boxes (modifies bullets, players motions)
 		this.itboxes = [];//items
+		this.anboxes = [];
 		}
 	saveaslist(){
 		var srboxeslist = [];
@@ -152,9 +153,7 @@ class Warehouse{
 			}	
 			console.log(i);
 		}	
-	
 	updateall(){
-		
 		var i=0;
 		while(i<this.mrboxes.length){
 			this.mrboxes[i].vy = this.mrboxes[i].vy + this.gravity;
@@ -163,15 +162,12 @@ class Warehouse{
 			this.mrboxes[i].drag();
 			this.mrboxes[i].deadcheck();
 			if (this.mrboxes[i].ai=="randomwalk"){
-				//console.log(this.mrboxes[i].xdir);
 				this.mrboxes[i].vx = this.mrboxes[i].vx + this.mrboxes[i].xdir*0.5;
 				if ((time+i)%20==0){
 					this.mrboxes[i].xdir = Math.floor(Math.random()*3) - 1;//-1, 0, or 1
 					}
 				}
 			if (this.mrboxes[i].ai=="randomhop"){
-				//console.log(this.mrboxes[i].xdir);
-				//this.mrboxes[i].vx = this.mrboxes[i].vx + this.mrboxes[i].xdir*0.5;
 				if ((time+i)%20==0){
 					console.log(this.mrboxes[i].vy);
 					this.mrboxes[i].vy = this.mrboxes[i].vy-12;//-1, 0, or 1
@@ -179,20 +175,46 @@ class Warehouse{
 					}
 				}
 			if (this.mrboxes[i].ai=="left"){
-				//console.log(this.mrboxes[i].xdir);
-				//this.mrboxes[i].vx = this.mrboxes[i].vx + this.mrboxes[i].xdir*0.5;
 				if ((time+i)%10==0){
 					this.mrboxes[i].vx = this.mrboxes[i].vx-6;//-1, 0, or 1
 					}
 				}
 			if (this.mrboxes[i].ai=="right"){
-				//console.log(this.mrboxes[i].xdir);
-				//this.mrboxes[i].vx = this.mrboxes[i].vx + this.mrboxes[i].xdir*0.5;
 				if ((time+i)%10==0){
 					this.mrboxes[i].vx= this.mrboxes[i].vx+6;//-1, 0, or 1
 					}
 				}
-	
+			if (this.mrboxes[i].ai=="hoverleft"){
+				this.mrboxes[i].vy = this.mrboxes[i].vy-1;//counter gravity
+				if ((time+i)%10==0){
+					this.mrboxes[i].vx = this.mrboxes[i].vx-6;//-1, 0, or 1
+					}
+				}
+			if (this.mrboxes[i].ai=="hoverright"){
+				this.mrboxes[i].vy = this.mrboxes[i].vy-1;//counter gravity
+				if ((time+i)%10==0){
+					this.mrboxes[i].vx= this.mrboxes[i].vx+6;//-1, 0, or 1
+					}
+				}
+			if (this.mrboxes[i].ai=="randomhover"){
+				this.mrboxes[i].vx = this.mrboxes[i].vx + this.mrboxes[i].xdir*0.5;
+				this.mrboxes[i].vy = this.mrboxes[i].vy-1;//counter gravity
+				if ((time+i)%20==0){
+					this.mrboxes[i].xdir = Math.floor(Math.random()*3) - 1;//-1, 0, or 1
+					}
+				}	
+			if (this.mrboxes[i].ai=="randomfly"){
+				this.mrboxes[i].vx = this.mrboxes[i].vx + this.mrboxes[i].xdir*0.5;
+				this.mrboxes[i].vy = this.mrboxes[i].vy + this.mrboxes[i].ydir*0.5;
+				this.mrboxes[i].y = this.mrboxes[i].y + this.mrboxes[i].ydir
+				this.mrboxes[i].vy = this.mrboxes[i].vy-1;//counter gravity
+				if ((time+i)%20==0){
+					this.mrboxes[i].xdir = Math.floor(Math.random()*3) - 1;//-1, 0, or 1
+					}
+				if ((time+i)%20==10){
+					this.mrboxes[i].ydir = Math.floor(Math.random()*3) - 1;//-1, 0, or 1
+					}
+				}
 			i++;
 			}
 		var i=0;
@@ -201,6 +223,27 @@ class Warehouse{
 			this.bboxes[i].y = this.bboxes[i].y + this.bboxes[i].vy; 
 			i++;
 			}
+		var i=0;
+		while(i<this.anboxes.length){
+			if (this.anboxes[i].hp%4==0){
+				var ci = (this.anboxes[i].hp/4)%rainbowcolors.length;
+				this.anboxes[i].c = rainbowcolors[ci];
+				console.log("anim color update " +this.anboxes[i].c);
+				}
+			console.log("explosion update "+i+" hp "+this.anboxes[i].hp);
+			this.anboxes[i].x = this.anboxes[i].x + this.anboxes[i].vx;
+			this.anboxes[i].y = this.anboxes[i].y + this.anboxes[i].vy; 
+			this.anboxes[i].xs = this.anboxes[i].xs + 12; 
+			this.anboxes[i].ys = this.anboxes[i].ys + 12; 
+			this.anboxes[i].hp--;
+			if (this.anboxes[i].hp<=0){
+				this.anboxes.splice(i,1)
+				}
+			else
+				{
+				i++;
+				}
+			}
 		//bullet modifier boxes and motion modifier boxes are assumed static for now, but if that changes,
 		//their updates will go here.
 		}
@@ -208,7 +251,6 @@ class Warehouse{
 	collideall(){
 		var i=0;
 		while(i<this.mrboxes.length){//Check all moving rigid boxes (mostly characters)
-			//console.log("collidemrboxes");
 			var j=0;
 			this.mrboxes[i].grounded = false;
 			while(j<this.srboxes.length){//against all static rigid boxes (walls, terrain)
@@ -219,16 +261,12 @@ class Warehouse{
 					var dy = this.mrboxes[i].y-this.srboxes[j].y;
 					if (Math.abs(dy)<totalys){//A collision happened!
 						this.mrboxes[i].terraincollide(this.srboxes[j]);
-						//Some kind of collision goes here
 						}
 					}
 				j++;
 				}
 			var j=i+1;
-			//console.log(this.mrboxes.length);
-			//console.log(this.mrboxes[i].solid);
 			while((j<this.mrboxes.length)&&(this.mrboxes[i].solid>0)){//check moving rigid boxes against each other, if they are both solid
-				//console.log("itriedtocollidemrmr");
 				if (this.mrboxes[j].solid>0) {
 					var totalxs = this.mrboxes[i].xs+this.mrboxes[j].xs;
 					var dx = this.mrboxes[i].x-this.mrboxes[j].x;
@@ -242,7 +280,6 @@ class Warehouse{
 							else{
 								this.mrboxes[i].terraincollide(this.mrboxes[j]);
 								}
-							//Some kind of collision goes here
 							}
 						}
 					}
@@ -251,7 +288,7 @@ class Warehouse{
 				}
 
 			var j=0;
-			while(j<this.bboxes.length){//against all static rigid boxes (walls, terrain)
+			while(j<this.bboxes.length){//against all bullet boxes (walls, terrain)
 				var totalxs = this.mrboxes[i].xs+this.bboxes[j].xs;
 				var dx = this.mrboxes[i].x-this.bboxes[j].x;
 				if (Math.abs(dx)<totalxs){
@@ -260,28 +297,17 @@ class Warehouse{
 					if (Math.abs(dy)<totalys){//bullet hits character
 						this.mrboxes[i].hp = this.mrboxes[i].hp - this.bboxes[j].hp;
 						this.mrboxes[i].publiclabel = this.mrboxes[i].hp;
+						if (this.mrboxes[i].hp == 0){//Add and explosion if a death is happening here
+							var anexplosion = new Umb(this.mrboxes[i].x,this.mrboxes[i].y,this.mrboxes[i].xs,this.mrboxes[i].ys,24,0);
+							anexplosion.c = "orange";
+							this.anboxes.push(anexplosion);
+							}
 						this.mrboxes[i].deadcheck();
 						this.bboxes[j].hp = 0;
 						}
 					}
 				j++;
-				}	
-
-			var j=0;
-			while(j<this.bboxes.length){//against all static rigid boxes (walls, terrain)
-				var totalxs = this.mrboxes[i].xs+this.bboxes[j].xs;
-				var dx = this.mrboxes[i].x-this.bboxes[j].x;
-				if (Math.abs(dx)<totalxs){
-					var totalys = this.mrboxes[i].ys+this.bboxes[j].ys;
-					var dy = this.mrboxes[i].y-this.bboxes[j].y;
-					if (Math.abs(dy)<totalys){//bullet hits character
-						this.mrboxes[i].hp = this.mrboxes[i].hp - this.bboxes[j].hp;
-						this.mrboxes[i].publiclabel = this.mrboxes[i].hp;
-						this.bboxes[j].hp = 0;
-						}
-					}
-				j++;
-				}			
+				}				
 			var j=0;
 			while(j<this.mmboxes.length){//against all movement modifiersn)
 				var totalxs = this.mrboxes[i].xs+this.mmboxes[j].xs;
@@ -311,20 +337,17 @@ class Warehouse{
 							this.mrboxes[i].hp = this.mrboxes[i].hp + 20;
 							if (this.mrboxes[i].hp>this.mrboxes[i].maxhp){ this.mrboxes[i].hp = this.mrboxes[i].maxhp; }
 							this.mrboxes[i].publiclabel = this.mrboxes[i].hp;
-							this.itboxes.splice(i,1);
 							}
-						else if (this.itboxes[j].label=="g2"){
-							hasweapons[2] = true;//global scope shame
-							this.itboxes.splice(i,1);
+						else if (this.itboxes[j].label=="g1"){	hasweapons[1] = true; }//global scope shame
+						else if (this.itboxes[j].label=="g2"){	hasweapons[2] = true; }//global scope shame
+						else if (this.itboxes[j].label=="g3"){	hasweapons[3] = true; }
+						else if (this.itboxes[j].label=="g4"){	hasweapons[4] = true; }
+						else if (this.itboxes[j].label=="$"){
+							money = money + 25;
+							score = score + 100;
+							cash1.play();
 							}
-						else if (this.itboxes[j].label=="g3"){
-							hasweapons[3] = true;
-							this.itboxes.splice(i,1);
-							}
-						else if (this.itboxes[j].label=="g4"){
-							hasweapons[4] = true;
-							this.itboxes.splice(i,1);
-							}
+						this.itboxes.splice(j,1);
 						}
 					}
 				j++;
@@ -344,18 +367,13 @@ class Warehouse{
 						if ((this.bboxes[i].solid==2)||(this.srboxes[j].solid==2)){//elastic bullets
 							var overlapx = totalxs - Math.abs(dx);
 							var overlapy = totalys - Math.abs(dy);
-							//console.log(overlapy)
 							if (overlapx<overlapy){//resolve by modifying x
-								//if ((overlapy<maxstep)&&(dy<0)){this.bboxes[i].y = this.bboxes[i].y - overlapy;}
-								//else{
 									if (dx>0){//this feels avoidable but ok
 										this.bboxes[i].x = this.bboxes[i].x + overlapx;
 										}
 									else {
 										this.bboxes[i].x = this.bboxes[i].x - overlapx;
 										}
-									//this.vx = -1*this.vx;
-									//}
 								this.bboxes[i].vx = -1*this.bboxes[i].vx;
 								}
 							else{//resolve by modifying y
@@ -368,8 +386,7 @@ class Warehouse{
 									}
 								this.bboxes[i].vy = -1*this.bboxes[i].vy;
 								}						
-							this.bboxes[i].vy = -1*this.bboxes[i].vy;
-							//bounce collision here
+							this.bboxes[i].vy = -1*this.bboxes[i].vy;//this seems wrong / redundant
 							}
 						else{//On inelastic materials, just kill the bullet.
 							this.bboxes[i].hp = 0;
@@ -390,9 +407,7 @@ class Warehouse{
 					if (Math.abs(dy)<totalys){//Bullet entered modifier
 						inmod = true;
 						if (this.bboxes[i].label == "0"){
-						//console.log("*tried 0");
 							if (this.bmboxes[j].label == "*"){
-								//console.log("*tried");
 								this.bboxes[i].hp = this.bboxes[i].hp * this.bmboxes[j].hp;
 								}
 							if (this.bmboxes[j].label == "/"){
@@ -411,8 +426,6 @@ class Warehouse{
 								this.bboxes[i].hp = this.bboxes[i].hp - this.bmboxes[j].hp;
 								}
 							this.bboxes[i].publiclabel = this.bboxes[i].hp;
-							//Bullet is in bullet modifier box
-							//Need to modify bullet hp according to value and function of 
 							}
 						}
 					}
@@ -450,41 +463,44 @@ class Warehouse{
 			}
 		var i=0;
 		while(i<this.mrboxes.length){
-			//console.log("itriedtodrawmrboxes");
+			context.lineWidth = 2;
 			this.mrboxes[i].drawboxoutline(viewx,viewy);
 			this.mrboxes[i].drawlabel(viewx,viewy);
 			i++;
 			}	
 		var i=0;
 		while(i<this.bboxes.length){
-			//console.log("itriedtodrawmrboxes");
+			context.lineWidth = 2;
 			this.bboxes[i].drawboxoutline(viewx,viewy);
 			this.bboxes[i].drawlabel(viewx,viewy);
-			//console.log(this.bboxes[i].publiclabel);
 			i++;
 			}	
 		var i=0;
 		while(i<this.bmboxes.length){
-			//console.log("itriedtodrawmrboxes");
+			context.lineWidth = 2;
 			this.bmboxes[i].drawboxoutline(viewx,viewy);
 			this.bmboxes[i].drawlabel(viewx,viewy);
-			//console.log(this.bboxes[i].publiclabel);
 			i++;
 			}	
 		var i=0;
 		while(i<this.mmboxes.length){
-			//console.log("itriedtodrawmrboxes");
+			context.lineWidth = 2;
 			this.mmboxes[i].drawboxoutline(viewx,viewy);
 			this.mmboxes[i].drawlabel(viewx,viewy);
-			//console.log(this.bboxes[i].publiclabel);
 			i++;
 			}	
 		var i=0;
 		while(i<this.itboxes.length){
-			//console.log("itriedtodrawmrboxes");
+			context.lineWidth = 2;
 			this.itboxes[i].drawboxoutline(viewx,viewy);
 			this.itboxes[i].drawlabel(viewx,viewy);
-			//console.log(this.bboxes[i].publiclabel);
+			i++;
+			}	
+		var i=0;
+		while(i<this.anboxes.length){//All animations are explosions for now
+			context.lineWidth = 8;
+			this.anboxes[i].drawboxoutline(viewx,viewy);
+			//console.log("draw animation box " + i);
 			i++;
 			}	
 		}
@@ -546,12 +562,14 @@ class Warehouse{
 			}
 		this.itboxes.push(...moreboxes);
 		}
+	addcoin(x,y){
+		var itemcoin1 =  new Umb(x,y,24,24,1,1);
+		itemcoin1.label = "$";
+		itemcoin1.c = "yellow";
+		itemcoin1.publiclabel = "$";
+		this.itboxes.push(itemcoin1);
+		}
 	addline(x1,y1,x2,y2,stairnum,staircolor){ //Essentially a staircase of boxes, from point 1 to point 2.
-		//var stairnum = 32;
-		//var x1 = 4000;
-		//var y1 = -100;
-		//var x2 = 3500;
-		//var y2 = -900;
 		var dx = x2-x1;
 		var dy = y2-y1;
 		var stairdx = Math.floor(dx / stairnum);
@@ -562,7 +580,6 @@ class Warehouse{
 			var newbox = new Umb(stairdx*i+x1, stairdy*i+y1, Math.abs(stairdx)/2, Math.abs(stairdy)/2 ,0 ,1 );
 			newbox.c = staircolor;
 			this.srboxes.push(newbox);////constructor(xx,yy,xxs,yys,hp,solid)
-			//console.log(currentlevel.srboxes[currentlevel.srboxes.length-1]);
 			i++;
 			}	
 		}
@@ -1007,7 +1024,6 @@ class Warehouse{
 		if (q==100){console.log("mod n2 puzzle solution out of bounds 100 times");}
 		this.addpuzzlemod2n(x,y,gap,g,pos,modboxes);	
 		}
-
 	addpuzzlemod2nv(x,y,gap,g,pos,modboxes){//for 2 separate rows of bullet mods
 		var i=0;
 		while(i<modboxes.length){
@@ -1105,19 +1121,30 @@ class Warehouse{
 		if (q==100){console.log("mod n puzzle solution out of bounds 100 times");}
 		this.addpuzzlemodnb(x,y,gap,g,pos,modboxes);	
 		}
-
-
-
-
 	cleanup(){//removes objects with 0 size;
 		var i=0;
 		while(i<this.srboxes.length){
 			if ((this.srboxes[i].xs<1)||(this.srboxes[i].ys<1)){
 				this.srboxes.splice(i,1);//remove the box if either size is 0 or less
-				//remove the box
 				}
 			i++;
 			}
 		
+		}
+	deadscore(){
+		var numkills = 0;
+		var kills = [];
+		var i=1;
+		while(i<this.mrboxes.length){
+			if (this.mrboxes[i].y>=1000000){
+				kills.push(this.mrboxes[i].maxhp)
+				numkills++;
+				this.mrboxes.splice(i,1);
+				}
+			else{
+				i++; 
+				}
+			}
+		return numkills;
 		}
 	}

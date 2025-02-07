@@ -60,7 +60,7 @@ window.addEventListener("keydown", function (event) {
 		}
 	if (event.key=="v"){
 		editsolid++;
-		if (editsolid>=3){
+		if (editsolid>=4){
 			editsolid = 0;
 			}			
 		}

@@ -3,73 +3,45 @@ function loadlevel12(){
 	player0.c = "blue";
 	player0.publiclabel = player0.hp;
 
-	var i=0;
-	while(i<40){
-		var enemy0 = new Umb(100,-120,40,100,4,1);
-		enemy0.c = "red";
-		enemy0.publiclabel = enemy0.hp;
-		
-		i++;
-		}
-	var spawn0 = new Umb(-300,100,16,16,0,0);
-	var bulletmod0 = new Umb(1600,-100,100,100,2,0);
-	bulletmod0.label = "*";
-	bulletmod0.publiclabel = bulletmod0.label + " " + bulletmod0.hp;
-	var bulletmod1 = new Umb(2900,-150,100,100,2,0);
-	bulletmod1.label = "+";
-	bulletmod1.publiclabel = bulletmod1.label + " " + bulletmod1.hp;
-	var bulletmod2 = new Umb(4200,-50,100,100,2,0);
-	bulletmod2.label = "/";
-	bulletmod2.publiclabel = bulletmod2.label + " " + bulletmod2.hp;
-	var bulletmod3 = new Umb(6500,-150,100,100,1,0);
-	bulletmod3.label = "-";
-	bulletmod3.publiclabel = bulletmod3.label + " " + bulletmod3.hp;
-	
-	var itemgun2 =  new Umb(200,-100,24,24,1,1);
-	itemgun2.label = "g2";
-	itemgun2.c = "purple";
-	itemgun2.publiclabel = "2";
-	var itemgun3 =  new Umb(1400,-100,24,24,1,1);
-	itemgun3.label = "g3";
-	itemgun3.c = "purple";
-	itemgun3.publiclabel = "3";
-	var itemgun4 =  new Umb(2200,-100,24,24,1,1);
-	itemgun4.label = "g4";
-	itemgun4.c = "purple";
-	itemgun4.publiclabel = "4";
-	var itemhp20=  new Umb(3200,-100,24,24,1,1);
-	itemhp20.label = "hp20";
-	itemhp20.c = "green";
-	itemhp20.publiclabel = "+20";
-	
 	var itemcoin1 =  new Umb(3200,-100,24,24,1,1);
-	itemhp20.label = "$";
-	itemhp20.c = "yellow";
-	itemhp20.publiclabel = "$";
+	itemcoin1.label = "$";
+	itemcoin1.c = "yellow";
+	itemcoin1.publiclabel = "$";
 
 	var gun0 = new CompoundGun(1,1,1);//constructor(numslots,basevalue,baseeffect){
 	var cgm0 = new CGMod(1,"+",0,10);//constructor(num,operator,effect,delay){
 
 	var currentlevel = new Warehouse(4000,4000,[0],1,[],[player0]);//constructor(xxs,yys,spawns,gravity,srboxes,mrboxes){
-	currentlevel.itboxes = [itemgun2,itemgun3,itemgun4,itemhp20];
+	currentlevel.itboxes = [itemcoin1];
 	var sprinklex1 = 1000;
 	var sprinkledx = 500;
 	var sprinkley = -800;
 	var i=0;
+	while(i<80){
+		currentlevel.addcoin(i*400+Math.floor(Math.random()*300),-1200);
+		currentlevel.addcoin(i*400+Math.floor(Math.random()*300),-650);
+		i++;
+		}
+	var sprinklex1 = 1000;
+	var sprinkledx = 800;
+	var sprinkley = -800;
+	var i=0;
 	while(i<40){
-		var enemy0 = new Umb(sprinklex1+sprinkledx*i,-500,32,80,Math.floor(Math.random()*10),3);
+		var enemy0 = new Umb(sprinklex1+sprinkledx*i,-800,32,80,Math.floor(Math.random()*10)+2,3);
 		enemy0.c = "orange";
 		enemy0.publiclabel = enemy0.hp;
 		enemy0.ai = "randomwalk";
 		currentlevel.mrboxes.push(enemy0);
+		var enemy1 = new Umb(sprinklex1+sprinkledx*i,-1100-Math.floor(Math.random()*400),40,40,Math.floor(Math.random()*10)+2,3);
+		enemy1.c = "orange";
+		enemy1.publiclabel = enemy1.hp;
+		enemy1.ai = "randomhover";
+		currentlevel.mrboxes.push(enemy1);
 		i++;
-		}
-	currentlevel.bmboxes.push(bulletmod0);
-	currentlevel.bmboxes.push(bulletmod1);
-	currentlevel.bmboxes.push(bulletmod2);
-	currentlevel.bmboxes.push(bulletmod3);
+		}	
+	currentlevel.addrandomfloaters(-8000,8000,-700,-900,32,32,32,32,"green",0.6,0.85);//addrandomfloaters(xmin,xmax,ymin,ymax,dxmin,dxmax,dymin,dymax,color,density,cohesion){
 	//addrandomground3(           xmin,  xmax, ymin,ymax,ystart,yend,dxmin,dxmax,dymin,dymax,hilly,bottomy,color){
-	currentlevel.addrandomground3(-13000,13000,-600,-200,-200,  -200,120  ,240,  -160, 160,  0.4,  0, "red");
+	currentlevel.addrandomground3(-8000,8000,-650,-400,-200,  -200,120  ,240,  -160, 160,  0.4,  0, "red");
 	currentlevel.cleanup();
 	return currentlevel;
 	}

@@ -160,6 +160,16 @@ class Umb{
 				this.vx = this.vx - 16;
 				}
 			}
+		else{ //Still resolves my modifying x, but I might add a vertical bounce factor later.
+			if (dx>0){//this feels avoidable but ok
+				this.x = this.x + overlapx;
+				this.vx = this.vx + 16;
+				}
+			else {
+				this.x = this.x - overlapx;
+				this.vx = this.vx - 16;
+				}			
+			}
 		this.hp = this.hp - 1;
 		this.publiclabel = this.hp;
 		}
@@ -174,7 +184,10 @@ class Umb{
 			}
 		}
 	deadcheck(){
-		if (this.hp==0){this.y = 100000;}//killing
+		if (this.hp==0){
+			this.y = 1000000;
+			boop1.play();
+			}//killing
 		else if (this.hp<0){//Resetting to full health
 			this.hp = this.maxhp;
 			this.publiclabel = this.hp;
@@ -197,7 +210,13 @@ class Umb{
 		context.stroke();
 		//context.font = "16px Arial";
 		//context.fillText(this.publiclabel,x,y);
-		}	
+		}
+	drawhpbar(viewx,viewy){
+				var x = this.x - viewx;//coordinates of center as drawn
+		var y = this.y - viewy;
+		context.fillStyle = "green";
+		context.fillRect(x-this.xs*0.9,y+this.ys*0.8,this.xs*1.8*this.hp/this.maxhp,8);
+		}
 	drawlabel(viewx,viewy){
 		var x = this.x - viewx - 6;//coordinates of center as drawn
 		var y = this.y - viewy + 8;

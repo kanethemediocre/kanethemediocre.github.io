@@ -18,7 +18,7 @@ function playerhud(){
 	context.fillText("Puntos: "+score,225,160);
 	
 			context.font = "16px Arial";
-	context.fillText("Dinero: "+score,225,192);
+	context.fillText("Dinero: "+money,225,192);
 	
 	context.font = "32px Arial";
 	context.strokeStyle = "red";
